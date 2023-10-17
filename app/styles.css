@@ -1,23 +1,34 @@
+@tailwind base;
+@tailwind components;
 @tailwind utilities;
 
-@import '@rubriclab/ui/build.css';
-
 html {
-	@apply bg-off-white;
+	@apply bg-white text-black dark:bg-black dark:text-white;
 }
 
-h1 {
-	@apply font-cal-sans;
-}
-
-code {
-	@apply border-stone-700/80 bg-orange-200/60;
-}
-
-a {
-	@apply text-orange-500 !important;
-}
-
-blockquote {
-	@apply border-stone-500/80;
+@layer base {
+	p {
+		@apply text-black dark:text-white;
+	}
+	h1 {
+		@apply font-neue-bit text-6xl text-black dark:text-white md:text-7xl;
+	}
+	h2 {
+		@apply text-3xl;
+	}
+	h3 {
+		@apply font-neue-bit text-3xl text-black dark:text-white;
+	}
+	input {
+		@apply w-full rounded-md border p-3 text-neutral-600 focus:outline-none;
+	}
+	textarea {
+		@apply h-32 w-full resize-none rounded-md border p-3 text-neutral-600 focus:outline-none;
+	}
+	code {
+		@apply rounded-md bg-neutral-200 dark:bg-neutral-950;
+	}
+	blockquote {
+		@apply border-stone-500/80;
+	}
 }

@@ -1,7 +1,7 @@
 const lineAttributes = {
 	fill: 'none',
-	opacity: 0.4,
-	stroke: '#a8a29e', // Stone-400
+	opacity: 0.2,
+	stroke: '#000000',
 	strokeWidth: 1
 }
 
