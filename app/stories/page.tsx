@@ -1,10 +1,10 @@
-import {ContactButton} from '@rubriclab/ui'
 import {ArrowUpRightIcon} from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import {getMetadata} from '../../lib/utils'
 import {getCaseStudies} from '../../sanity/sanity-utils'
 import {CaseStudy} from '../../types/sanity'
+import Button from '../components/Button'
 
 export const metadata = getMetadata({title: 'Customer Stories'})
 
@@ -16,15 +16,15 @@ const StoryCard = ({
 	story: {title, summary, slug, imageUrl}
 }: StoryCardProps) => (
 	<Link
-		className='bg-off-white group relative w-full rounded-xl border p-10 opacity-90 shadow-2xl transition-opacity hover:!opacity-100'
+		className='group relative w-full rounded-xl border bg-off-white p-10 opacity-90 shadow-2xl transition-opacity hover:!opacity-100'
 		href={`/stories/${slug}`}
 		target='_blank'>
 		<div className='relative mb-5 h-40 rounded-lg'>
 			<Image
-				src={imageUrl}
 				alt='Customer story image'
 				className='rounded-md object-cover'
 				fill
+				src={imageUrl}
 			/>
 		</div>
 		<div className='w-full space-y-4 text-black/60 transition-colors group-hover:text-orange-500'>
@@ -52,9 +52,11 @@ const Storys = async () => {
 						story={story}
 					/>
 				))}
-				<ContactButton
+				<Button
 					body='Ready to tell a new story?'
 					className='mt-32'
+					href='/contact'
+					variant='light'
 				/>
 			</div>
 		</div>
