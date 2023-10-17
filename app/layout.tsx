@@ -5,7 +5,7 @@ import {META} from '../lib/constants'
 import BackgroundGrid from './components/BackgroundGrid'
 import Footer from './components/Footer'
 import NavBar from './components/NavBar'
-import {ToastProvider} from './components/toast'
+import {ToastProvider} from './components/Toast'
 import './styles.css'
 
 const jakartaSans = Plus_Jakarta_Sans({subsets: ['latin']})
