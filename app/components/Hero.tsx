@@ -25,22 +25,22 @@ export default function Hero() {
 			<AnimatePresence>
 				{start && (
 					<motion.div
-						initial={{opacity: 0}}
 						animate={{opacity: 1}}
+						className='flex w-full flex-col items-center gap-16'
 						exit={{opacity: 0}}
-						transition={{duration: 3, delay: 1}}
-						className='flex w-full flex-col items-center gap-16'>
+						initial={{opacity: 0}}
+						transition={{delay: 1, duration: 3}}>
 						<Announcement />
 						<div className='flex flex-col items-center gap-16 text-black dark:text-white'>
 							<p className='max-w-2xl text-center text-4xl sm:text-5xl'>
 								We&apos;re a digital studio making{' '}
 								<span className='font-neue-bit text-7xl'>ai-first</span> software.
 							</p>
-							<p className='invisible sm:visible'>
+							<p className='text-secondary invisible sm:visible'>
 								Press{' '}
 								<span
-									onClick={() => router.push('/contact')}
-									className='mx-1 cursor-pointer rounded-md bg-black px-3 py-2 text-white transition-opacity hover:opacity-80 dark:bg-white dark:text-black'>
+									className='mx-1 cursor-pointer rounded-md bg-black px-2.5 py-1.5 font-medium text-white transition-opacity hover:opacity-80 dark:bg-white dark:text-black'
+									onClick={() => router.push('/contact')}>
 									R
 								</span>{' '}
 								anytime to get started
