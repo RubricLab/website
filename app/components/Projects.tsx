@@ -21,7 +21,9 @@ const projects = [
 
 export default function Projects() {
 	return (
-		<div className='flex min-h-screen flex-col items-center justify-center gap-20 bg-neutral-100 p-8 dark:bg-gradient-to-b dark:from-black dark:via-neutral-950 dark:to-black'>
+		<div
+			className='flex min-h-screen flex-col items-center justify-center gap-20 bg-neutral-100 p-8 dark:bg-gradient-to-b dark:from-black dark:via-neutral-950 dark:to-black'
+			id='projects'>
 			<h1 className='text-black dark:text-white'>_featured projects</h1>
 			<div className='flex max-w-4xl flex-col gap-5'>
 				{projects.map(project => (

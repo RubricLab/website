@@ -2,7 +2,9 @@ import Link from 'next/link'
 
 export default function Letter() {
 	return (
-		<div className='flex min-h-screen flex-col items-center justify-center bg-white p-8 dark:bg-black'>
+		<div
+			className='flex min-h-screen flex-col items-center justify-center bg-white p-8 dark:bg-black'
+			id='letter'>
 			<div className='flex flex-col gap-8'>
 				<div className='flex max-w-3xl flex-col gap-5'>
 					<h1 className='text-7xl'>A note to the builders.</h1>
