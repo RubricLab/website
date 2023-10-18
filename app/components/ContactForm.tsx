@@ -3,7 +3,6 @@
 import {useRouter} from 'next/navigation'
 import {useState} from 'react'
 import {copyToClipboard} from '../../lib/utils'
-import Button from './Button'
 
 export default function ContactForm() {
 	const router = useRouter()
@@ -30,7 +29,7 @@ export default function ContactForm() {
 	}
 	return (
 		<div className='flex w-full max-w-sm flex-col gap-8'>
-			<div className='flex flex-col gap-5'>
+			{/* <div className='flex flex-col gap-5'>
 				<input
 					placeholder='Name'
 					onChange={e => setName(e.target.value)}
@@ -43,16 +42,16 @@ export default function ContactForm() {
 					placeholder='Message'
 					onChange={e => setMessage(e.target.value)}
 				/>
-			</div>
+			</div> */}
 			<div className='flex flex-col gap-3'>
-				<Button
+				{/* <Button
 					disabled={sending}
 					body='Submit'
 					variant='dark'
 					onClick={handleSubmit}
-				/>
+				/> */}
 				<p className='text-center text-sm'>
-					Alternatively, email us at{' '}
+					Please email us at{' '}
 					<button
 						className='font-semibold underline-offset-4 hover:underline'
 						onClick={() => copyToClipboard('hello@rubriclab.com')}>

@@ -7,7 +7,7 @@ It was bootstrapped with [`create-rubric-app`](https://www.npmjs.com/package/cre
 To install the dependencies, run:
 
 ```bash
-bun install
+bun i
 ```
 
 To run the dev server, run:
