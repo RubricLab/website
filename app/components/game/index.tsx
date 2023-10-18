@@ -88,7 +88,7 @@ export default function Game({
 		const rows = Math.floor(screenHeight / min_width) * 2
 		const cols = Math.floor(screenWidth / min_width) * 2
 
-		return {rows, cols}
+		return {cols, rows}
 	}
 
 	const [gridSize, setGridSize] = useState<GridSize>({cols: 40, rows: 20})
@@ -132,8 +132,8 @@ export default function Game({
 	return (
 		<div className='absolute left-0 top-0 z-[-1] min-h-screen w-full'>
 			<Grid
-				running={running}
 				grid={grid}
+				running={running}
 			/>
 		</div>
 	)

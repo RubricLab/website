@@ -8,17 +8,17 @@ export default function Grid({grid, running}: Props) {
 		<div>
 			{grid.map((row, i) => (
 				<div
-					key={i}
-					className='flex'>
+					className='flex'
+					key={i}>
 					{row.map((cell, j) => (
 						<div
-							key={`${i},${j}`}
 							className={`aspect-square w-full ${
 								cell &&
 								(running
 									? 'bg-neutral-200 dark:bg-neutral-800'
 									: 'bg-black dark:bg-white')
 							}`}
+							key={`${i},${j}`}
 						/>
 					))}
 				</div>
