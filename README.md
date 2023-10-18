@@ -2,7 +2,7 @@
 
 This project is for [Rubric Labs](https://rubriclab.com)' website.
 
-It was bootstrapped with `create-rubric-app`.
+It was bootstrapped with [`create-rubric-app`](https://www.npmjs.com/package/create-rubric-app).
 
 To install the dependencies, run:
 
