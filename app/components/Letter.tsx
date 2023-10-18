@@ -28,8 +28,7 @@ export default function Letter() {
 					<p>
 						We want to sit down with you, skip the BS, break the rules and figure out
 						how we can add value. We commit to being honest, open and fun. If you have
-						an idea, project or problem, drop use a line. Let&apos;s melt some
-						servers.
+						an idea, project or problem, drop us a line. Let&apos;s melt some servers.
 					</p>
 				</div>
 
