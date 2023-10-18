@@ -31,4 +31,13 @@ html {
 	blockquote {
 		@apply border-stone-500/80;
 	}
+	.text-primary {
+		@apply text-black dark:text-white;
+	}
+	.text-secondary {
+		@apply text-neutral-600 dark:text-neutral-400;
+	}
+	.text-tertiary {
+		@apply text-neutral-500;
+	}
 }
