@@ -26,7 +26,7 @@ html {
 		@apply h-32 w-full resize-none rounded-md border p-3 text-neutral-600 focus:outline-none;
 	}
 	code {
-		@apply rounded-md bg-neutral-200 dark:bg-neutral-950;
+		@apply rounded-md bg-neutral-200 px-1 py-0.5 dark:bg-neutral-700;
 	}
 	blockquote {
 		@apply border-stone-500/80;
