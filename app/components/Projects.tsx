@@ -8,7 +8,7 @@ const projects = [
 		title: 'Cal.ai'
 	},
 	{
-		desc: 'A bot that labels your GitHub issues using AI.',
+		desc: 'A bot that labels your GitHub issues using AI. Used in 400+ projects.',
 		href: 'https://maige.app/',
 		title: 'Maige'
 	},
