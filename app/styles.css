@@ -31,6 +31,9 @@ html {
 	blockquote {
 		@apply border-stone-500/80;
 	}
+	aside {
+		@apply rounded-md bg-neutral-100 p-2 dark:bg-neutral-600;
+	}
 	.text-primary {
 		@apply text-black dark:text-white;
 	}
