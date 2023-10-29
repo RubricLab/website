@@ -6,7 +6,7 @@ export const META = {
 	githubURL: 'https://github.com/rubriclab',
 	siteURL: 'https://rubriclab.com',
 	title: 'Rubric',
-	twitter: '@rubriclabs'
+	twitter: '@RubricLabs'
 }
 
 export const DEFAULT_META: Metadata = {

@@ -1,19 +1,30 @@
 'use client'
 import Link from 'next/link'
-import {useRouter} from 'next/navigation'
+import {usePathname, useRouter} from 'next/navigation'
 import {useEffect} from 'react'
 import Button from './Button'
 import Title from './Title'
 
+const shortcuts = [
+	{keys: ['r', 'R'], href: '/contact'},
+	{keys: ['b', 'B'], href: '/blog'},
+	{keys: ['p', 'P'], href: '/projects'},
+	{keys: ['n', 'N'], href: '/newsletter'}
+]
+
 export default function NavBar() {
 	const router = useRouter()
+	const pathname = usePathname()
 
 	useEffect(() => {
-		// Get started with R
+		// Ignore event handlers on the studio route
+		if (pathname === '/studio') return
+
+		// Get started with keyboard navigation
 		const handleKeyboardEvent = (event: KeyboardEvent) => {
-			if (['r', 'R'].includes(event.key)) router.push('/contact')
-			if (['b', 'B'].includes(event.key)) router.push('/blog')
-			if (['p', 'P'].includes(event.key)) router.push('/projects')
+			shortcuts.map(shortcut => {
+				if (shortcut.keys.includes(event.key)) router.push(shortcut.href)
+			})
 		}
 
 		// Add event listener
