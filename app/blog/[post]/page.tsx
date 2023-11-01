@@ -28,7 +28,7 @@ export default async function Post({params}: PostProps) {
 	const slug = params.post
 	const post = await getPost(slug)
 	return (
-		<main className='mt-20 flex h-full w-full flex-col items-center p-5 sm:px-10'>
+		<main className='my-20 flex h-full w-full flex-col items-center p-5 sm:px-10'>
 			<div className='flex max-w-3xl flex-col gap-10'>
 				{/* Cover image */}
 				<div className='relative h-40 w-full'>
