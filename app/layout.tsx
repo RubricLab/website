@@ -29,9 +29,9 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
 	return (
 		<html lang='en'>
 			<head>
-				<PlausibleProvider domain='rubriclab.com' />
+				<PlausibleProvider domain='rubriclabs.com' />
 				<meta
-					content='https://rubriclab.com/twitter-image?01'
+					content='https://rubriclabs.com/twitter-image?01'
 					name='twitter:image'></meta>
 			</head>
 			<body

@@ -15,7 +15,7 @@
 			"has": [
 				{
 					"type": "host",
-					"value": "brand.rubriclab.com"
+					"value": "brand.rubriclabs.com"
 				}
 			],
 			"source": "/"
@@ -35,7 +35,7 @@
 			"has": [
 				{
 					"type": "host",
-					"value": "island.rubriclab.com"
+					"value": "island.rubriclabs.com"
 				}
 			],
 			"source": "/"

@@ -54,8 +54,8 @@ export default function ContactForm() {
 					Please email us at{' '}
 					<button
 						className='font-semibold underline-offset-4 hover:underline'
-						onClick={() => copyToClipboard('hello@rubriclab.com')}>
-						hello@rubriclab.com
+						onClick={() => copyToClipboard('hello@rubriclabs.com')}>
+						hello@rubriclabs.com
 					</button>
 				</p>
 			</div>
