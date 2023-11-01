@@ -1,6 +1,6 @@
 # Website
 
-This project is for [Rubric Labs](https://rubriclab.com)' website.
+This project is for [Rubric Labs](https://rubriclabs.com)' website.
 
 It was bootstrapped with [`create-rubric-app`](https://www.npmjs.com/package/create-rubric-app).
 
