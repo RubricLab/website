@@ -34,6 +34,9 @@ html {
 	aside {
 		@apply rounded-md bg-neutral-100 p-2 dark:bg-neutral-600;
 	}
+	ul {
+		@apply list-inside list-disc;
+	}
 	.text-primary {
 		@apply text-black dark:text-white;
 	}
