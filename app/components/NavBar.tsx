@@ -6,10 +6,10 @@ import Button from './Button'
 import Title from './Title'
 
 const shortcuts = [
-	{keys: ['r', 'R'], href: '/contact'},
-	{keys: ['b', 'B'], href: '/blog'},
-	{keys: ['p', 'P'], href: '/projects'},
-	{keys: ['n', 'N'], href: '/newsletter'}
+	{href: '/contact', keys: ['r', 'R']},
+	{href: '/blog', keys: ['b', 'B']},
+	{href: '/projects', keys: ['p', 'P']},
+	{href: '/newsletter', keys: ['n', 'N']}
 ]
 
 export default function NavBar() {
@@ -18,7 +18,7 @@ export default function NavBar() {
 
 	useEffect(() => {
 		// Ignore event handlers on the studio route
-		if (pathname === '/studio') return
+		if (pathname.startsWith('/studio')) return
 
 		// Get started with keyboard navigation
 		const handleKeyboardEvent = (event: KeyboardEvent) => {
@@ -37,15 +37,15 @@ export default function NavBar() {
 	return (
 		<nav className='absolute left-[50%] top-0 z-20 flex w-full -translate-x-1/2 items-center justify-between gap-1 p-5 sm:px-10'>
 			<Link
-				href='/'
-				className='text-inherit no-underline'>
+				className='text-inherit no-underline'
+				href='/'>
 				<Title size='small' />
 			</Link>
 			<Button
 				body='Get in touch'
-				variant='dark'
-				href='/contact'
 				className='w-fit'
+				href='/contact'
+				variant='dark'
 			/>
 		</nav>
 	)
