@@ -17,7 +17,7 @@ export const ProjectCard = ({url, title, body}: ProjectCardProps) => {
 			href={url}
 			target='_blank'>
 			<div className='flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-5'>
-				<h1 className='text-primary flex-wrap text-5xl sm:w-2/5'>{title}</h1>
+				<h1 className='text-primary flex-wrap text-4xl sm:w-2/5'>{title}</h1>
 				<div className='sm:w-4/5'>
 					{typeof body === 'string' ? (
 						<p className='text-secondary text-lg'>{body}</p>
