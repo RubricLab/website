@@ -29,11 +29,11 @@ export default function Button({
 		return (
 			<Link
 				className={cn(
-					`group flex w-full items-center justify-between gap-20 rounded-md ${variants[variant]} px-4 py-2`,
+					`group flex w-full items-center justify-between gap-20 rounded-md no-underline ${variants[variant]} px-4 py-2`,
 					className
 				)}
 				href={href}>
-				<span className='font-neue-bit mt-[3px] text-2xl'>{body}</span>
+				<span className='mt-[3px] font-neue-bit text-2xl'>{body}</span>
 				<ArrowRight className='transition-all duration-300 group-hover:translate-x-1.5' />
 			</Link>
 		)

@@ -13,7 +13,7 @@ type ProjectCardProps = {
 export const ProjectCard = ({url, title, body}: ProjectCardProps) => {
 	return (
 		<Link
-			className='group relative w-full rounded-xl border-2 border-neutral-400 bg-white p-10 dark:border-neutral-700 dark:bg-black'
+			className='group relative w-full rounded-xl border-2 border-neutral-400 bg-white p-10 no-underline dark:border-neutral-700 dark:bg-black'
 			href={url}
 			target='_blank'>
 			<div className='flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-5'>

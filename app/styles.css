@@ -10,6 +10,9 @@ html {
 	p {
 		@apply text-black dark:text-white;
 	}
+	a {
+		@apply underline underline-offset-4 hover:opacity-80;
+	}
 	h1 {
 		@apply font-neue-bit text-6xl text-black dark:text-white md:text-7xl;
 	}

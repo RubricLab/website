@@ -38,19 +38,19 @@ export default function Letter() {
 					<p className='text-base italic'>Signed,</p>
 					<p className='font-semibold'>
 						<Link
-							className='underline-offset-4 hover:underline'
+							className='no-underline underline-offset-4 hover:underline'
 							href='https://twitter.com/dexterstorey'>
 							Dexter
 						</Link>
 						,{' '}
 						<Link
-							className='underline-offset-4 hover:underline'
+							className='no-underline underline-offset-4 hover:underline'
 							href='https://twitter.com/sarimrmalik'>
 							Sarim
 						</Link>
 						, and{' '}
 						<Link
-							className='underline-offset-4 hover:underline'
+							className='no-underline underline-offset-4 hover:underline'
 							href='https://twitter.com/tedspare'>
 							Ted
 						</Link>

@@ -3,11 +3,19 @@ import Link from 'next/link'
 import Button from './Button'
 import Title from './Title'
 
+const items = [
+	{title: 'Projects', href: '/projects'},
+	{title: 'Blog', href: '/blog'},
+	{title: 'Contact', href: '/contact'}
+]
+
 const Footer = () => {
 	return (
 		<div className='z-20 flex w-screen flex-col-reverse items-center justify-between gap-10 bg-black px-5 py-20 text-white dark:bg-white dark:text-black sm:flex-row sm:items-start sm:items-center sm:gap-0 sm:px-10'>
 			<div className='flex flex-col items-center gap-5 sm:items-start'>
-				<Link href='/'>
+				<Link
+					href='/'
+					className='no-underline'>
 					<Title
 						invert
 						size='full'
@@ -25,21 +33,14 @@ const Footer = () => {
 			</div>
 
 			<div className='flex w-full flex-row items-end justify-center gap-10 sm:w-auto sm:flex-col sm:gap-5'>
-				<Link
-					className='underline-offset-4 transition-all duration-300 hover:underline'
-					href='/projects'>
-					Projects
-				</Link>
-				<Link
-					className='underline-offset-4 transition-all duration-300 hover:underline'
-					href='/blog'>
-					Blog
-				</Link>
-				<Link
-					className='underline-offset-4 transition-all duration-300 hover:underline'
-					href='/contact'>
-					Contact
-				</Link>
+				{items.map(item => (
+					<Link
+						key={item.title}
+						className='no-underline underline-offset-4 transition-all duration-300 hover:underline'
+						href={item.href}>
+						{item.title}
+					</Link>
+				))}
 			</div>
 		</div>
 	)
