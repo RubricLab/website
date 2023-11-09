@@ -1,5 +1,5 @@
 import Button from './Button'
-import {ProjectCard} from './ProjectCard'
+import {Card} from './Card'
 
 const projects = [
 	{
@@ -27,7 +27,7 @@ export default function Projects() {
 			<h1 className='text-black dark:text-white'>_featured projects</h1>
 			<div className='flex max-w-4xl flex-col gap-5'>
 				{projects.map(project => (
-					<ProjectCard
+					<Card
 						body={project.desc}
 						key={project.title}
 						title={project.title}

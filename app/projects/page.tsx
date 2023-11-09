@@ -2,7 +2,7 @@ import {getMetadata} from '../../lib/utils'
 import {getProjects} from '../../sanity/sanity-utils'
 import {Project} from '../../types/sanity'
 import Button from '../components/Button'
-import {ProjectCard} from '../components/ProjectCard'
+import {Card} from '../components/Card'
 
 export const metadata = getMetadata({title: 'Projects'})
 
@@ -17,7 +17,7 @@ const Projects = async () => {
 				<h1>Projects</h1>
 				<div className='flex max-w-3xl flex-col gap-5'>
 					{projects.map((project: Project) => (
-						<ProjectCard
+						<Card
 							body={project.content}
 							key={project._id}
 							title={project.name}
