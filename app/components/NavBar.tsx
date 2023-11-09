@@ -22,6 +22,13 @@ export default function NavBar() {
 
 		// Get started with keyboard navigation
 		const handleKeyboardEvent = (event: KeyboardEvent) => {
+			// The target is an input or textarea, so exit the function and do nothing
+			if (
+				event.target instanceof HTMLElement &&
+				(event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA')
+			)
+				return
+
 			shortcuts.map(shortcut => {
 				if (shortcut.keys.includes(event.key)) router.push(shortcut.href)
 			})
