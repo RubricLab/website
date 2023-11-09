@@ -34,7 +34,8 @@ export default function Hero() {
 						<div className='flex flex-col items-center gap-16 text-black dark:text-white'>
 							<p className='max-w-2xl text-center text-4xl sm:text-5xl'>
 								We&apos;re a digital studio making{' '}
-								<span className='font-neue-bit text-7xl'>ai-first</span> software.
+								<span className='font-neue-bit text-5xl md:text-7xl'>ai-first</span>{' '}
+								software.
 							</p>
 							<p className='text-secondary invisible sm:visible'>
 								Press{' '}
