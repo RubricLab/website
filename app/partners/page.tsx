@@ -5,8 +5,18 @@ import {Card} from '../components/Card'
 export const metadata = getMetadata({title: 'Partners'})
 
 const partners = [
-	{title: 'Vercel', href: 'https://vercel.com/experts/rubric'},
-	{title: 'LangChain', href: 'https://www.langchain.com/partners'}
+	{
+		title: 'Vercel',
+		href: 'https://vercel.com/experts/rubric',
+		description:
+			'Vercel makes it easy for engineers to deploy and run web applications.'
+	},
+	{
+		title: 'LangChain',
+		href: 'https://www.langchain.com/partners',
+		description:
+			'LangChain is a framework for building LLM applications from prototype to production.'
+	}
 ]
 
 const Partners = async () => {
@@ -19,6 +29,7 @@ const Partners = async () => {
 						.sort((a, b) => a.title.localeCompare(b.title)) // Sort alphabetically
 						.map(partner => (
 							<Card
+								body={partner.description}
 								title={partner.title}
 								url={partner.href}
 								key={partner.title}
