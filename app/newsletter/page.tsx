@@ -1,4 +1,19 @@
+import {Metadata} from 'next'
+import {DEFAULT_META, META} from '../../lib/constants'
 import NewsletterForm from '../components/NewsletterForm'
+
+export const metadata: Metadata = {
+	...DEFAULT_META,
+	openGraph: {
+		...DEFAULT_META.openGraph,
+		title: `The Grid | ${META.title}`
+	},
+	title: `The Grid | ${META.title}`,
+	twitter: {
+		...DEFAULT_META.twitter,
+		title: `The Grid | ${META.title}`
+	}
+}
 
 export default function Newsletter() {
 	return (
