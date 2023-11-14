@@ -16,7 +16,7 @@ const StoryCard = ({
 	story: {title, summary, slug, imageUrl}
 }: StoryCardProps) => (
 	<Link
-		className='group relative w-full rounded-xl border bg-off-white p-10 opacity-90 shadow-2xl transition-opacity hover:!opacity-100'
+		className='group relative w-full rounded-xl border bg-white p-10 opacity-90 shadow-2xl transition-opacity hover:!opacity-100'
 		href={`/stories/${slug}`}
 		target='_blank'>
 		<div className='relative mb-5 h-40 rounded-lg'>
