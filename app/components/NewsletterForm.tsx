@@ -27,7 +27,7 @@ export default async function NewsletterForm() {
 			<Button
 				variant='dark'
 				type='submit'
-				body='Subsrcibe'
+				body='Subscribe'
 			/>
 		</form>
 	)
