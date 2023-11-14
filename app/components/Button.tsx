@@ -15,7 +15,8 @@ export default function Button({
 	href,
 	onClick,
 	className,
-	disabled
+	disabled,
+	type
 }: {
 	body: string
 	variant: 'dark' | 'light' | 'teal'
@@ -23,6 +24,7 @@ export default function Button({
 	onClick?: () => void
 	className?: string
 	disabled?: boolean
+	type?: 'button' | 'submit' | 'reset'
 }) {
 	// Link
 	if (href)
@@ -37,17 +39,18 @@ export default function Button({
 				<ArrowRight className='transition-all duration-300 group-hover:translate-x-1.5' />
 			</Link>
 		)
-	if (onClick)
+	if (onClick || type === 'submit')
 		return (
 			<button
 				disabled={disabled}
 				onClick={onClick}
+				type={type}
 				className={cn(
-					`group flex w-full items-center justify-between gap-20 rounded-md ${variants[variant]} px-4 py-2`,
+					`group flex w-full items-center justify-between gap-20 rounded-md ${variants[variant]} px-4 py-2 disabled:cursor-not-allowed`,
 					className
 				)}>
 				<span className='font-neue-bit text-2xl'>{body}</span>
-				<ArrowRight className='transition-all duration-300 group-hover:translate-x-1.5' />
+				<ArrowRight className='transition-all duration-300 group-hover:translate-x-1.5 group-disabled:translate-x-0' />
 			</button>
 		)
 }

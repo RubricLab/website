@@ -1,4 +1,5 @@
 import clsx, {type ClassValue} from 'clsx'
+import LoopsClient from 'loops'
 import {Metadata} from 'next'
 import toast from 'react-hot-toast'
 import {twMerge} from 'tailwind-merge'
@@ -63,3 +64,6 @@ export function copyToClipboard(input: string) {
 	navigator.clipboard.writeText(input)
 	toast.success('Email copied')
 }
+
+// Loops emailing client
+export const loopsClient = new LoopsClient(process.env.LOOPS_API_KEY)
