@@ -34,7 +34,7 @@ const Footer = () => {
 				/>
 			</div>
 
-			<div className='flex w-full flex-row items-end justify-center gap-10 sm:w-auto sm:flex-col sm:gap-5'>
+			<div className='flex w-full flex-row flex-wrap items-end justify-center gap-10 sm:w-auto sm:flex-col sm:gap-5'>
 				{items
 					.sort((a, b) => a.title.localeCompare(b.title)) // Sort alphabetically
 					.map(item => (
