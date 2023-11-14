@@ -22,7 +22,8 @@ export async function addSubscriber(
 	const response = await loops.createContact(parsed.email, {
 		firstName: parsed.name,
 		company: parsed.company,
-		source: 'Website'
+		source: 'Website',
+		userGroup: 'Newsletter'
 	})
 
 	// Return response
