@@ -7,7 +7,8 @@ const items = [
 	{title: 'Blog', href: '/blog'},
 	{title: 'Contact', href: '/contact'},
 	{title: 'Partners', href: '/partners'},
-	{title: 'Projects', href: '/projects'}
+	{title: 'Projects', href: '/projects'},
+	{title: 'Newsletter', href: '/newsletter'}
 ]
 
 const Footer = () => {
