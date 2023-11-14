@@ -6,12 +6,12 @@ export const metadata: Metadata = {
 	...DEFAULT_META,
 	openGraph: {
 		...DEFAULT_META.openGraph,
-		title: `The Grid | ${META.title}`
+		title: `The Grid | Newsletter | ${META.title}`
 	},
-	title: `The Grid | ${META.title}`,
+	title: `The Grid | Newsletter | ${META.title}`,
 	twitter: {
 		...DEFAULT_META.twitter,
-		title: `The Grid | ${META.title}`
+		title: `The Grid | Newsletter | ${META.title}`
 	}
 }
 
