@@ -1,15 +1,27 @@
+'use server'
+import {z} from 'zod'
 import {loopsClient as loops} from '../lib/utils'
+
+const schema = z.object({
+	name: z.string(),
+	company: z.string(),
+	email: z.string()
+})
 
 // Create subscriber in Loops
 export async function addSubscriber(
-	name: string,
-	company: string,
-	email: string
+	formData: FormData
 ): Promise<{type: 'success' | 'error'; message: string}> {
+	const parsed = schema.parse({
+		name: formData.get('name'),
+		company: formData.get('company'),
+		email: formData.get('email')
+	})
+
 	// Get response
-	const response = await loops.createContact(email, {
-		firstName: name,
-		company: company,
+	const response = await loops.createContact(parsed.email, {
+		firstName: parsed.name,
+		company: parsed.company,
 		source: 'Website'
 	})
 
