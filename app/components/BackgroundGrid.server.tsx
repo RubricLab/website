@@ -1,8 +1,8 @@
 const lineAttributes = {
 	fill: 'none',
 	opacity: 0.2,
-	stroke: '#000000',
-	strokeWidth: 1
+	stroke: '#FFFFFF',
+	strokeWidth: 2
 }
 
 function BackgroundGrid({
