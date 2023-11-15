@@ -1,6 +1,1 @@
-module.exports = {
-	plugins: {
-		autoprefixer: {},
-		tailwindcss: {}
-	}
-}
+module.exports = require('@rubriclab/tailwind-config/postcss.cjs')
