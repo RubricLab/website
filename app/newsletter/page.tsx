@@ -1,27 +1,27 @@
 import {Metadata} from 'next'
-import {DEFAULT_META, META} from '../../lib/constants'
-import {getNewsletterPosts} from '../../sanity/sanity-utils'
-import {Card} from '../components/Card'
-import NewsletterForm from '../components/NewsletterForm'
+import {Card} from '~/components/Card'
+import NewsletterForm from '~/components/NewsletterForm'
+import {DEFAULT_META, META} from '~/constants/metadata'
+import {getNewsletterPosts} from '~/sanity/utils'
 
 const data = {
-	title: `The Grid | Newsletter | ${META.title}`,
-	description: '3 actionable insights. Once a week. Straight to your inbox.'
+	description: '3 actionable insights. Once a week. Straight to your inbox.',
+	title: `The Grid | Newsletter | ${META.title}`
 }
 
 export const metadata: Metadata = {
 	...DEFAULT_META,
+	description: data.description,
 	openGraph: {
 		...DEFAULT_META.openGraph,
-		title: data.title,
-		description: data.description
+		description: data.description,
+		title: data.title
 	},
 	title: data.title,
-	description: data.description,
 	twitter: {
 		...DEFAULT_META.twitter,
-		title: data.title,
-		description: data.description
+		description: data.description,
+		title: data.title
 	}
 }
 
@@ -46,14 +46,14 @@ export default async function Newsletter() {
 					<div className='grid grid-cols-1 gap-5 lg:grid-cols-2'>
 						{posts.map(post => (
 							<Card
-								title={post.title}
-								url={`/newsletter/${post.slug}`}
 								body={new Date(post.publishedAt).toLocaleDateString('en-US', {
 									day: 'numeric',
 									month: 'short',
 									year: 'numeric'
 								})}
 								key={post._id}
+								title={post.title}
+								url={`/newsletter/${post.slug}`}
 							/>
 						))}
 					</div>

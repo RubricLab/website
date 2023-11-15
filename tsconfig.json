@@ -1,5 +1,9 @@
 {
 	"compilerOptions": {
+		"baseUrl": ".",
+		"paths": {
+			"~/*": ["./lib/*"]
+		},
 		"plugins": [{"name": "next"}]
 	},
 	"exclude": ["node_modules"],
@@ -7,8 +11,10 @@
 	"include": [
 		"./app/**/*.ts",
 		"./app/**/*.tsx",
+		"./lib/**/*.ts",
+		"./lib/**/*.tsx",
 		".next/types/**/*.ts",
 		"next-env.d.ts",
-		"lib/**/*.ts"
+		"sanity.cli.ts"
 	]
 }

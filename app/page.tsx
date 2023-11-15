@@ -1,7 +1,7 @@
-import {getMetadata} from '../lib/utils'
-import Hero from './components/Hero'
-import Letter from './components/Letter'
-import Projects from './components/Projects'
+import Hero from '~/components/Hero'
+import Letter from '~/components/Letter'
+import Projects from '~/components/Projects'
+import getMetadata from '~/utils/getMetadata'
 
 export const metadata = getMetadata({title: 'Home'})
 

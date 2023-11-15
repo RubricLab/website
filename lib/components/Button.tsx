@@ -1,7 +1,7 @@
 'use client'
 import {ArrowRight} from 'lucide-react'
 import Link from 'next/link'
-import {cn} from '../../lib/utils'
+import cn from '~/utils/cn'
 
 const variants = {
 	dark: 'border-2 border-black border-opacity-20 bg-[#151617] text-white',
@@ -42,13 +42,13 @@ export default function Button({
 	if (onClick || type === 'submit')
 		return (
 			<button
-				disabled={disabled}
-				onClick={onClick}
-				type={type}
 				className={cn(
 					`group flex w-full items-center justify-between gap-20 rounded-md ${variants[variant]} px-4 py-2 disabled:cursor-not-allowed`,
 					className
-				)}>
+				)}
+				disabled={disabled}
+				onClick={onClick}
+				type={type}>
 				<span className='font-neue-bit text-2xl'>{body}</span>
 				<ArrowRight className='transition-all duration-300 group-hover:translate-x-1.5 group-disabled:translate-x-0' />
 			</button>

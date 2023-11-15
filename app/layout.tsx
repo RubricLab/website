@@ -1,11 +1,11 @@
 import PlausibleProvider from 'next-plausible'
 import {Plus_Jakarta_Sans} from 'next/font/google'
 import localFont from 'next/font/local'
-import {META} from '../lib/constants'
-import BackgroundGrid from './components/BackgroundGrid'
-import Footer from './components/Footer'
-import NavBar from './components/NavBar'
-import {ToastProvider} from './components/Toast'
+import BackgroundGrid from '~/components/BackgroundGrid'
+import Footer from '~/components/Footer'
+import NavBar from '~/components/NavBar'
+import {ToastProvider} from '~/components/Toast'
+import {META} from '~/constants/metadata'
 import './styles.css'
 
 const jakartaSans = Plus_Jakarta_Sans({subsets: ['latin']})

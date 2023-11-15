@@ -1,8 +1,8 @@
-import {getMetadata} from '../../lib/utils'
-import {getProjects} from '../../sanity/sanity-utils'
-import {Project} from '../../types/sanity'
-import Button from '../components/Button'
-import {Card} from '../components/Card'
+import Button from '~/components/Button'
+import {Card} from '~/components/Card'
+import {getProjects} from '~/sanity/utils'
+import {Project} from '~/types/sanity'
+import getMetadata from '~/utils/getMetadata'
 
 export const metadata = getMetadata({title: 'Projects'})
 
