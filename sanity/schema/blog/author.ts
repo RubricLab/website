@@ -14,7 +14,7 @@ const author = {
 		{
 			name: 'slug',
 			options: {
-				source: 'name'
+				source: 'firstName'
 			},
 			title: 'Slug',
 			type: 'slug'
