@@ -12,6 +12,11 @@ const author = {
 			type: 'string'
 		},
 		{
+			name: 'twitter',
+			title: 'Twitter',
+			type: 'string'
+		},
+		{
 			name: 'slug',
 			options: {
 				source: 'firstName'
@@ -57,7 +62,8 @@ const author = {
 	preview: {
 		select: {
 			media: 'image',
-			title: 'name'
+			title: 'name',
+			twitter: 'twitter'
 		}
 	},
 	title: 'Author',
