@@ -38,7 +38,7 @@ html {
 		@apply rounded-md bg-neutral-100 p-2 dark:bg-neutral-600;
 	}
 	ul {
-		@apply list-inside list-disc;
+		@apply flex list-inside list-disc flex-col gap-3;
 	}
 	.text-primary {
 		@apply text-black dark:text-white;
