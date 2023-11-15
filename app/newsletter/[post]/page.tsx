@@ -2,7 +2,7 @@ import {PortableText} from '@portabletext/react'
 import {Metadata} from 'next'
 import Link from 'next/link'
 import {DEFAULT_META, META} from '~/constants/metadata'
-import {getNewsletterPost} from '~/sanity/sanity-utils'
+import {getNewsletterPost} from '~/sanity/utils'
 
 type Props = {
 	params: {post: string}

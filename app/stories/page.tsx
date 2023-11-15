@@ -2,7 +2,7 @@ import {ArrowUpRightIcon} from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import Button from '~/components/Button'
-import {getCaseStudies} from '~/sanity/sanity-utils'
+import {getCaseStudies} from '~/sanity/utils'
 import {CaseStudy} from '~/types/sanity'
 import getMetadata from '~/utils/getMetadata'
 

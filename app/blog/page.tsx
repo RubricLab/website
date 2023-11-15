@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import Button from '~/components/Button'
 import {DEFAULT_META, META} from '~/constants/metadata'
-import {getPosts} from '~/sanity/sanity-utils'
+import {getPosts} from '~/sanity/utils'
 import {Post} from '~/types/sanity'
 import parseDate from '~/utils/parseDate'
 

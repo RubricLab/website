@@ -1,6 +1,6 @@
 import {PortableText} from '@portabletext/react'
 import Image from 'next/image'
-import {getCaseStudy} from '~/sanity/sanity-utils'
+import {getCaseStudy} from '~/sanity/utils'
 import getMetadata from '~/utils/getMetadata'
 
 export const metadata = getMetadata({title: 'Customer Stories'})

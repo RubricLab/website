@@ -3,7 +3,7 @@ import {Metadata} from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import {DEFAULT_META, META} from '~/constants/metadata'
-import {getPost} from '~/sanity/sanity-utils'
+import {getPost} from '~/sanity/utils'
 
 export const metadata: Metadata = {
 	...DEFAULT_META,

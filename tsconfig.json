@@ -14,6 +14,7 @@
 		"./lib/**/*.ts",
 		"./lib/**/*.tsx",
 		".next/types/**/*.ts",
-		"next-env.d.ts"
+		"next-env.d.ts",
+		"sanity.cli.ts"
 	]
 }
