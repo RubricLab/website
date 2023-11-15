@@ -62,7 +62,7 @@ const author = {
 	preview: {
 		select: {
 			media: 'image',
-			title: 'name',
+			title: 'firstName',
 			twitter: 'twitter'
 		}
 	},
