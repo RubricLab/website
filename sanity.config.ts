@@ -1,8 +1,8 @@
 import {visionTool} from '@sanity/vision'
 import {defineConfig} from 'sanity'
 import {deskTool} from 'sanity/desk'
-import env from './lib/env.mjs'
-import schemas from './sanity/schema'
+import env from '~/env.mjs'
+import schemas from '~/sanity/schema'
 
 // Sanity config file
 const config = defineConfig({

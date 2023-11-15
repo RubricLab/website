@@ -1,8 +1,8 @@
 import {Metadata} from 'next'
-import {DEFAULT_META, META} from '../../constants/metadata'
-import {Card} from '../../lib/components/Card'
-import NewsletterForm from '../../lib/components/NewsletterForm'
-import {getNewsletterPosts} from '../../sanity/sanity-utils'
+import {Card} from '~/components/Card'
+import NewsletterForm from '~/components/NewsletterForm'
+import {DEFAULT_META, META} from '~/constants/metadata'
+import {getNewsletterPosts} from '~/sanity/sanity-utils'
 
 const data = {
 	description: '3 actionable insights. Once a week. Straight to your inbox.',

@@ -1,7 +1,7 @@
 'use client'
 import {ArrowRight} from 'lucide-react'
 import Link from 'next/link'
-import cn from '../../utils/cn'
+import cn from '~/utils/cn'
 
 const variants = {
 	dark: 'border-2 border-black border-opacity-20 bg-[#151617] text-white',

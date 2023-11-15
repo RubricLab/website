@@ -1,6 +1,6 @@
-import Button from '../../lib/components/Button'
-import {Card} from '../../lib/components/Card'
-import getMetadata from '../../utils/getMetadata'
+import Button from '~/components/Button'
+import {Card} from '~/components/Card'
+import getMetadata from '~/utils/getMetadata'
 
 export const metadata = getMetadata({title: 'Partners'})
 

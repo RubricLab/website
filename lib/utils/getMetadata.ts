@@ -1,5 +1,5 @@
 import {Metadata} from 'next'
-import {DEFAULT_META, META} from '../constants/metadata'
+import {DEFAULT_META, META} from '~/constants/metadata'
 
 /**
  * Get metadata for a page. Optionally override title, description, and preview image URL.

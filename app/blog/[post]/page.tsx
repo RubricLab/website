@@ -2,8 +2,8 @@ import {PortableText} from '@portabletext/react'
 import {Metadata} from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
-import {DEFAULT_META, META} from '../../../constants/metadata'
-import {getPost} from '../../../sanity/sanity-utils'
+import {DEFAULT_META, META} from '~/constants/metadata'
+import {getPost} from '~/sanity/sanity-utils'
 
 export const metadata: Metadata = {
 	...DEFAULT_META,

@@ -1,6 +1,6 @@
 'use server'
 import {z} from 'zod'
-import loops from '../utils/loopsClient'
+import loops from '~/utils/loopsClient'
 
 const schema = z.object({
 	company: z.string(),

@@ -2,11 +2,11 @@ import {ArrowUpRightIcon} from 'lucide-react'
 import {Metadata} from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
-import {DEFAULT_META, META} from '../../constants/metadata'
-import Button from '../../lib/components/Button'
-import {Post} from '../../lib/types/sanity'
-import {getPosts} from '../../sanity/sanity-utils'
-import parseDate from '../../utils/parseDate'
+import Button from '~/components/Button'
+import {DEFAULT_META, META} from '~/constants/metadata'
+import {getPosts} from '~/sanity/sanity-utils'
+import {Post} from '~/types/sanity'
+import parseDate from '~/utils/parseDate'
 
 export const metadata: Metadata = {
 	...DEFAULT_META,

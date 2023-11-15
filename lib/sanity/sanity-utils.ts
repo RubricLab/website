@@ -1,12 +1,6 @@
 import {createClient, groq} from 'next-sanity'
-import env from '../../lib/env.mjs'
-import {
-	CaseStudy,
-	Home,
-	Newsletter,
-	Post,
-	Project
-} from '../../lib/types/sanity'
+import env from '~/env.mjs'
+import {CaseStudy, Home, Newsletter, Post, Project} from '~/types/sanity'
 
 // Sanity client
 const sanity = createClient({
