@@ -10,10 +10,6 @@ const nextConfig = {
 			}
 		]
 	},
-	reactStrictMode: true,
-	transpilePackages: [''],
-	experimental: {
-		serverActions: true
-	}
+	reactStrictMode: true
 }
 export default nextConfig
