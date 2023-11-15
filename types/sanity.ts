@@ -37,6 +37,8 @@ export type Post = {
 	mainImage: string
 	body: PortableTextBlock[]
 	publishedAt: Date
+	authorName: string
+	authorTwitter: string
 }
 
 export type CaseStudy = {

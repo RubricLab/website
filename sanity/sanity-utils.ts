@@ -73,7 +73,9 @@ export async function getPost(slug: string): Promise<Post> {
         "slug": slug.current,
         "mainImage": mainImage.asset->url,
         body,
-        publishedAt
+        publishedAt,
+        "authorName": author->firstName,
+        "authorTwitter": author->twitter,
     }`,
 		{slug}
 	)

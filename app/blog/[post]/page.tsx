@@ -1,6 +1,7 @@
 import {PortableText} from '@portabletext/react'
 import {Metadata} from 'next'
 import Image from 'next/image'
+import Link from 'next/link'
 import {DEFAULT_META, META} from '../../../lib/constants'
 import {getPost} from '../../../sanity/sanity-utils'
 
@@ -41,7 +42,26 @@ export default async function Post({params}: PostProps) {
 						style={{objectFit: 'cover', objectPosition: 'center'}}
 					/>
 				</div>
-				<h2>{post.title}</h2>
+				{/* Title & author */}
+				<div className='flex flex-col gap-3'>
+					<h2>{post.title}</h2>
+					<div className='flex gap-1 opacity-70'>
+						<span>From</span>
+						<Link
+							href={post.authorTwitter}
+							className='no-underline'>
+							<span>{post.authorName}</span>
+						</Link>
+						<span>on</span>
+						<span>
+							{new Date(post.publishedAt).toLocaleDateString('en-US', {
+								day: 'numeric',
+								month: 'short',
+								year: 'numeric'
+							})}
+						</span>
+					</div>
+				</div>
 				<div className='flex flex-col gap-4'>
 					<PortableText value={post.body} />
 				</div>
