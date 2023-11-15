@@ -1,11 +1,18 @@
 import {createClient, groq} from 'next-sanity'
-import {CaseStudy, Home, Newsletter, Post, Project} from '../lib/types/sanity'
+import env from '../../lib/env.mjs'
+import {
+	CaseStudy,
+	Home,
+	Newsletter,
+	Post,
+	Project
+} from '../../lib/types/sanity'
 
 // Sanity client
 const sanity = createClient({
-	apiVersion: process.env.NEXT_PUBLIC_SANITY_API_VERSION,
-	dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
-	projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT,
+	apiVersion: env.NEXT_PUBLIC_SANITY_API_VERSION,
+	dataset: env.NEXT_PUBLIC_SANITY_DATASET,
+	projectId: env.NEXT_PUBLIC_SANITY_PROJECT,
 	useCdn: true
 })
 
