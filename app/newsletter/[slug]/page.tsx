@@ -30,27 +30,26 @@ export default async function NewsletterPost({params}: PostProps) {
 
 	return (
 		<div className='flex min-h-screen w-full flex-col items-center justify-center px-5 sm:px-10'>
-			<div className='flex max-w-3xl flex-col gap-10 rounded-md bg-black px-10 py-14'>
+			<div className='flex max-w-3xl flex-col gap-10'>
 				<div>
 					<Link
 						href='/newsletter'
 						className='no-underline'>
 						<h1>{post.title}</h1>
 					</Link>
-					<p className='text-sm'>
-						Published:{' '}
-						{new Date(post.publishedAt).toLocaleDateString('en-US', {
-							day: 'numeric',
-							month: 'short',
-							year: 'numeric'
-						})}
-					</p>
 				</div>
 				<div className='flex flex-col gap-4'>
 					<PortableText value={post.body} />
 					<div>
 						--
 						<p>{post.authorName}</p>
+						<p>
+							{new Date(post.publishedAt).toLocaleDateString('en-US', {
+								day: 'numeric',
+								month: 'short',
+								year: 'numeric'
+							})}
+						</p>
 					</div>
 				</div>
 			</div>
