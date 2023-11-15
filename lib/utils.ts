@@ -3,7 +3,7 @@ import LoopsClient from 'loops'
 import {Metadata} from 'next'
 import toast from 'react-hot-toast'
 import {twMerge} from 'tailwind-merge'
-import {DEFAULT_META, META} from './constants'
+import {DEFAULT_META, META} from '../constants/metadata'
 
 // Parse string to Date object and return "Month DD, YYYY" format
 export function parseDate(input: Date | string) {

@@ -1,5 +1,5 @@
 import {Metadata} from 'next'
-import {DEFAULT_META, META} from '../../lib/constants'
+import {DEFAULT_META, META} from '../../constants/metadata'
 import {getNewsletterPosts} from '../../sanity/sanity-utils'
 import {Card} from '../components/Card'
 import NewsletterForm from '../components/NewsletterForm'

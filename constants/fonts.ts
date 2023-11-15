@@ -1,3 +1,3 @@
 export const FONTS = {
-	calSansURL: 'https://rubriclabs.com/fonts/CalSans-SemiBold.ttf'
+	neueBit: 'https://rubriclabs.com/fonts/PPNeueBit-Bold.otf'
 }
