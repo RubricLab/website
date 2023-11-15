@@ -43,7 +43,7 @@ const Storys = async () => {
 	const stories = await getCaseStudies()
 
 	return (
-		<div className='mt-28 flex h-full flex-col gap-10 2xl:justify-center'>
+		<div className='my-28 flex h-full flex-col gap-10 2xl:justify-center'>
 			<h1>Customer Stories</h1>
 			<div className='mx-auto flex max-w-xl flex-col items-center gap-5 py-10'>
 				{stories.map((story: CaseStudy) => (
