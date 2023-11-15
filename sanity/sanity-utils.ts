@@ -138,6 +138,7 @@ export async function getNewsletterPost(slug: string): Promise<Newsletter> {
         body,
         publishedAt,
         "authorName": author->firstName,
+        "authorTwitter": author->twitter,
     }`,
 		{slug}
 	)

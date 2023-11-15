@@ -58,4 +58,5 @@ export type Newsletter = {
 	body: PortableTextBlock[]
 	publishedAt: Date
 	authorName: string
+	authorTwitter: string
 }

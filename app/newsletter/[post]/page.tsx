@@ -49,9 +49,13 @@ export default async function NewsletterPost({params}: Props) {
 				<div className='flex flex-col gap-4'>
 					<PortableText value={post.body} />
 					<div>
-						--
-						<p>{post.authorName}</p>
-						<p>
+						<p>—</p>
+						<Link
+							className='font-neue-bit text-2xl no-underline'
+							href={post.authorTwitter}>
+							{post.authorName}
+						</Link>
+						<p className='opacity-60'>
 							{new Date(post.publishedAt).toLocaleDateString('en-US', {
 								day: 'numeric',
 								month: 'short',
