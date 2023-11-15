@@ -54,7 +54,7 @@ const post = {
 			return {...selection, subtitle: author && `by ${author}`}
 		},
 		select: {
-			author: 'author.name',
+			author: 'author.firstName',
 			media: 'mainImage',
 			publishedAt: 'publishedAt',
 			title: 'title'

@@ -2,8 +2,13 @@
 const author = {
 	fields: [
 		{
-			name: 'name',
-			title: 'Name',
+			name: 'firstName',
+			title: 'First Name',
+			type: 'string'
+		},
+		{
+			name: 'lastName',
+			title: 'Last Name',
 			type: 'string'
 		},
 		{

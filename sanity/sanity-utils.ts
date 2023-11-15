@@ -137,7 +137,7 @@ export async function getNewsletterPost(slug: string): Promise<Newsletter> {
         "slug": slug.current,
         body,
         publishedAt,
-        "authorName": author->name,
+        "authorName": author->firstName,
     }`,
 		{slug}
 	)

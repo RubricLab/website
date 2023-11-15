@@ -40,7 +40,7 @@ const newsletter = {
 			return {...selection, subtitle: author && `by ${author}`}
 		},
 		select: {
-			author: 'author.name',
+			author: 'author.firstName',
 			publishedAt: 'publishedAt',
 			title: 'title'
 		}
