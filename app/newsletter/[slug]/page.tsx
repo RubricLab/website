@@ -27,7 +27,6 @@ export const revalidate = 60 // revalidate this page every 60 seconds
 export default async function NewsletterPost({params}: PostProps) {
 	const slug = params.slug
 	const post = await getNewsletterPost(slug)
-	console.log(post.authorName)
 
 	return (
 		<div className='flex min-h-screen w-full flex-col items-center justify-center px-5 sm:px-10'>
