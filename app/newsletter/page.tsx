@@ -1,5 +1,7 @@
 import {Metadata} from 'next'
 import {DEFAULT_META, META} from '../../lib/constants'
+import {getNewsletterPosts} from '../../sanity/sanity-utils'
+import {Card} from '../components/Card'
 import NewsletterForm from '../components/NewsletterForm'
 
 export const metadata: Metadata = {
@@ -15,9 +17,12 @@ export const metadata: Metadata = {
 	}
 }
 
-export default function Newsletter() {
+export const revalidate = 60 // revalidate this page every 60 seconds
+
+export default async function Newsletter() {
+	const posts = await getNewsletterPosts()
 	return (
-		<div className='flex min-h-screen items-center justify-center px-5 sm:px-10'>
+		<div className='grid min-h-screen w-full grid-cols-2 items-center justify-between px-5 sm:px-10'>
 			<div className='flex w-full max-w-sm flex-col gap-8'>
 				<div className='flex flex-col'>
 					<h1>The Grid</h1>
@@ -26,6 +31,23 @@ export default function Newsletter() {
 					</div>
 				</div>
 				<NewsletterForm />
+			</div>
+			<div className='flex flex-col gap-5'>
+				<h2>Past Newsletters</h2>
+				<div className='grid grid-cols-2 gap-5'>
+					{posts.map(post => (
+						<Card
+							title={post.title}
+							url={`/newsletter/${post.slug}`}
+							body={new Date(post.publishedAt).toLocaleDateString('en-US', {
+								day: 'numeric',
+								month: 'short',
+								year: 'numeric'
+							})}
+							key={post._id}
+						/>
+					))}
+				</div>
 			</div>
 		</div>
 	)

@@ -49,3 +49,13 @@ export type CaseStudy = {
 	body: PortableTextBlock[]
 	publishedAt: Date
 }
+
+export type Newsletter = {
+	_id: string
+	_createdAt: Date
+	title: string
+	slug: string
+	body: PortableTextBlock[]
+	publishedAt: Date
+	authorName: string
+}
