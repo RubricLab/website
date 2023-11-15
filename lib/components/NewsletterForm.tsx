@@ -1,4 +1,4 @@
-import addSubscriber from '../../actions/addSubscriber'
+import addSubscriber from '../actions/addSubscriber'
 import Button from './Button'
 
 export default async function NewsletterForm() {

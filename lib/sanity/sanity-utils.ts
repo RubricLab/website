@@ -1,5 +1,5 @@
 import {createClient, groq} from 'next-sanity'
-import {CaseStudy, Home, Newsletter, Post, Project} from '../types/sanity'
+import {CaseStudy, Home, Newsletter, Post, Project} from '../lib/types/sanity'
 
 // Sanity client
 const sanity = createClient({

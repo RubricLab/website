@@ -9,6 +9,7 @@
 		"./app/**/*.tsx",
 		".next/types/**/*.ts",
 		"next-env.d.ts",
-		"lib/**/*.ts"
+		"./lib/**/*.ts",
+		"./lib/**/*.tsx"
 	]
 }

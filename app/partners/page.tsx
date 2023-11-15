@@ -1,21 +1,21 @@
+import Button from '../../lib/components/Button'
+import {Card} from '../../lib/components/Card'
 import getMetadata from '../../utils/getMetadata'
-import Button from '../components/Button'
-import {Card} from '../components/Card'
 
 export const metadata = getMetadata({title: 'Partners'})
 
 const partners = [
 	{
-		title: 'Vercel',
-		href: 'https://vercel.com/experts/rubric',
 		description:
-			'Vercel makes it easy for engineers to deploy and run web applications.'
+			'Vercel makes it easy for engineers to deploy and run web applications.',
+		href: 'https://vercel.com/experts/rubric',
+		title: 'Vercel'
 	},
 	{
-		title: 'LangChain',
-		href: 'https://www.langchain.com/partners',
 		description:
-			'LangChain is a framework for building LLM applications from prototype to production.'
+			'LangChain is a framework for building LLM applications from prototype to production.',
+		href: 'https://www.langchain.com/partners',
+		title: 'LangChain'
 	}
 ]
 
@@ -30,9 +30,9 @@ const Partners = async () => {
 						.map(partner => (
 							<Card
 								body={partner.description}
+								key={partner.title}
 								title={partner.title}
 								url={partner.href}
-								key={partner.title}
 							/>
 						))}
 				</div>

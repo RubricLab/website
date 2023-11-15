@@ -1,10 +1,10 @@
 import {ArrowUpRightIcon} from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import Button from '../../lib/components/Button'
+import {CaseStudy} from '../../lib/types/sanity'
 import {getCaseStudies} from '../../sanity/sanity-utils'
-import {CaseStudy} from '../../types/sanity'
 import getMetadata from '../../utils/getMetadata'
-import Button from '../components/Button'
 
 export const metadata = getMetadata({title: 'Customer Stories'})
 
