@@ -18,18 +18,18 @@ export const metadata: Metadata = {
 }
 
 type PostProps = {
-	params: {slug: string}
+	params: {post: string}
 }
 
 export const revalidate = 60 // revalidate this page every 60 seconds
 
 // Newsletter post page
 export default async function NewsletterPost({params}: PostProps) {
-	const slug = params.slug
+	const slug = params.post
 	const post = await getNewsletterPost(slug)
 
 	return (
-		<div className='flex min-h-screen w-full flex-col items-center justify-center px-5 sm:px-10'>
+		<div className='my-20 flex min-h-screen w-full flex-col items-center justify-center px-5 sm:my-0 sm:px-10'>
 			<div className='flex max-w-3xl flex-col gap-10'>
 				<div>
 					<Link
