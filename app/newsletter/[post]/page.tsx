@@ -4,27 +4,33 @@ import Link from 'next/link'
 import {DEFAULT_META, META} from '../../../lib/constants'
 import {getNewsletterPost} from '../../../sanity/sanity-utils'
 
-export const metadata: Metadata = {
-	...DEFAULT_META,
-	openGraph: {
-		...DEFAULT_META.openGraph,
-		title: `The Grid | ${META.title}`
-	},
-	title: `The Grid | ${META.title}`,
-	twitter: {
-		...DEFAULT_META.twitter,
-		title: `The Grid | ${META.title}`
-	}
+type Props = {
+	params: {post: string}
 }
 
-type PostProps = {
-	params: {post: string}
+// Dynamic metadata using route parameters
+export async function generateMetadata({params}: Props): Promise<Metadata> {
+	// Read route params
+	const slug = params.post
+	return {
+		...DEFAULT_META,
+		openGraph: {
+			...DEFAULT_META.openGraph,
+			title: `The Grid | ${slug} | ${META.title}`
+		},
+		title: `The Grid | ${slug} | ${META.title}`,
+		description: '3 actionable insights. Once a week. Straight to your inbox.',
+		twitter: {
+			...DEFAULT_META.twitter,
+			title: `The Grid | ${slug} | ${META.title}`
+		}
+	}
 }
 
 export const revalidate = 60 // revalidate this page every 60 seconds
 
 // Newsletter post page
-export default async function NewsletterPost({params}: PostProps) {
+export default async function NewsletterPost({params}: Props) {
 	const slug = params.post
 	const post = await getNewsletterPost(slug)
 

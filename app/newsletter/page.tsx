@@ -11,6 +11,7 @@ export const metadata: Metadata = {
 		title: `The Grid | Newsletter | ${META.title}`
 	},
 	title: `The Grid | Newsletter | ${META.title}`,
+	description: '3 actionable insights. Once a week. Straight to your inbox.',
 	twitter: {
 		...DEFAULT_META.twitter,
 		title: `The Grid | Newsletter | ${META.title}`
