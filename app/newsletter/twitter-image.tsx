@@ -1,4 +1,4 @@
-import {ImageResponse} from 'next/server'
+import {ImageResponse} from 'next/og'
 import colors from 'tailwindcss/colors'
 import BackgroundGrid from '~/components/BackgroundGrid.server'
 import {FONTS} from '~/constants/fonts'
