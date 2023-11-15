@@ -25,6 +25,7 @@
 	"devDependencies": {
 		"@rubriclab/eslint-config": "latest",
 		"@rubriclab/prettier-config": "latest",
+		"@rubriclab/tailwind-config": "latest",
 		"@rubriclab/typescript-config": "latest",
 		"@sanity/eslint-config-studio": "^3.0.1",
 		"@types/node": "20.5.1",
