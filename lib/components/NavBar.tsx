@@ -39,7 +39,7 @@ export default function NavBar() {
 
 		// Clean up event listener
 		return () => window.removeEventListener('keydown', handleKeyboardEvent)
-	}, [router])
+	}, [router, pathname])
 
 	if (pathname.startsWith('/studio')) return <></>
 

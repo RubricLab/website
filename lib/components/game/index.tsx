@@ -1,5 +1,5 @@
 'use client'
-import {Dispatch, SetStateAction, useEffect, useState} from 'react'
+import {Dispatch, SetStateAction, useCallback, useEffect, useState} from 'react'
 import Grid from './Grid'
 
 interface GridSize {
@@ -80,7 +80,7 @@ export default function Game({
 	let speed = 75
 
 	// Calculate even grid dimensions based on screen size
-	const calculateEvenGridSize = (): GridSize => {
+	const calculateEvenGridSize = useCallback((): GridSize => {
 		const screenHeight = window.innerHeight
 		const screenWidth = window.innerWidth
 
@@ -89,7 +89,7 @@ export default function Game({
 		const cols = Math.floor(screenWidth / min_width) * 2
 
 		return {cols, rows}
-	}
+	}, [min_width])
 
 	const [gridSize, setGridSize] = useState<GridSize>({cols: 40, rows: 20})
 	const [grid, setGrid] = useState(generateGrid(gridSize))
@@ -105,12 +105,12 @@ export default function Game({
 		return () => {
 			window.removeEventListener('resize', handleResize)
 		}
-	}, [])
+	}, [calculateEvenGridSize])
 
 	useEffect(() => {
 		setGridSize(calculateEvenGridSize())
 		setGrid(generateGrid(calculateEvenGridSize()))
-	}, [])
+	}, [calculateEvenGridSize])
 
 	useEffect(() => {
 		if (!running) return
@@ -127,7 +127,7 @@ export default function Game({
 		)
 
 		return () => clearInterval(timer)
-	}, [running, speed])
+	}, [running, speed, setRunning])
 
 	return (
 		<div className='absolute left-0 top-0 z-[-1] min-h-screen w-full'>
