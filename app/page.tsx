@@ -1,4 +1,4 @@
-import {getMetadata} from '../lib/utils'
+import getMetadata from '../utils/getMetadata'
 import Hero from './components/Hero'
 import Letter from './components/Letter'
 import Projects from './components/Projects'

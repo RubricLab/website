@@ -2,7 +2,7 @@
 
 import {useRouter} from 'next/navigation'
 import {useState} from 'react'
-import {copyToClipboard} from '../../lib/utils'
+import copyToClipboard from '../../utils/copyToClipboard'
 
 export default function ContactForm() {
 	const router = useRouter()

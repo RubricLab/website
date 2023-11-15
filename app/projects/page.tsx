@@ -1,6 +1,6 @@
-import {getMetadata} from '../../lib/utils'
 import {getProjects} from '../../sanity/sanity-utils'
 import {Project} from '../../types/sanity'
+import getMetadata from '../../utils/getMetadata'
 import Button from '../components/Button'
 import {Card} from '../components/Card'
 
