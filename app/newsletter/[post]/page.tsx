@@ -16,13 +16,15 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
 		...DEFAULT_META,
 		openGraph: {
 			...DEFAULT_META.openGraph,
-			title: `The Grid | ${slug} | ${META.title}`
+			title: `The Grid | ${slug} | ${META.title}`,
+			description: '3 actionable insights. Once a week. Straight to your inbox.'
 		},
 		title: `The Grid | ${slug} | ${META.title}`,
 		description: '3 actionable insights. Once a week. Straight to your inbox.',
 		twitter: {
 			...DEFAULT_META.twitter,
-			title: `The Grid | ${slug} | ${META.title}`
+			title: `The Grid | ${slug} | ${META.title}`,
+			description: '3 actionable insights. Once a week. Straight to your inbox.'
 		}
 	}
 }

@@ -4,17 +4,24 @@ import {getNewsletterPosts} from '../../sanity/sanity-utils'
 import {Card} from '../components/Card'
 import NewsletterForm from '../components/NewsletterForm'
 
+const data = {
+	title: `The Grid | Newsletter | ${META.title}`,
+	description: '3 actionable insights. Once a week. Straight to your inbox.'
+}
+
 export const metadata: Metadata = {
 	...DEFAULT_META,
 	openGraph: {
 		...DEFAULT_META.openGraph,
-		title: `The Grid | Newsletter | ${META.title}`
+		title: data.title,
+		description: data.description
 	},
-	title: `The Grid | Newsletter | ${META.title}`,
-	description: '3 actionable insights. Once a week. Straight to your inbox.',
+	title: data.title,
+	description: data.description,
 	twitter: {
 		...DEFAULT_META.twitter,
-		title: `The Grid | Newsletter | ${META.title}`
+		title: data.title,
+		description: data.description
 	}
 }
 
