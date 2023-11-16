@@ -7,14 +7,15 @@ type CardProps = {
 	url: string
 	title: string
 	body?: string | PortableTextBlock[]
+	target?: '_blank' | '_parent' | '_self' | 'top'
 }
 
-export const Card = ({url, title, body}: CardProps) => {
+export const Card = ({url, title, body, target = '_blank'}: CardProps) => {
 	return (
 		<Link
 			className='group relative w-full rounded-xl border-2 border-neutral-400 bg-white p-10 no-underline dark:border-neutral-700 dark:bg-black'
 			href={url}
-			target='_blank'>
+			target={target}>
 			<div className='flex h-full flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-5'>
 				<h1 className='text-primary flex h-full flex-wrap items-center text-4xl sm:w-2/5'>
 					{title}
