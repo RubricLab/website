@@ -3,15 +3,16 @@ import {z} from 'zod'
 import loops from '~/utils/loopsClient'
 
 const schema = z.object({
-	company: z.string(),
+	company: z.string().optional(),
 	email: z.string(),
 	name: z.string()
 })
 
 // Create subscriber in Loops
 export default async function addSubscriber(
+	prevState: any,
 	formData: FormData
-): Promise<{type: 'success' | 'error'; message: string}> {
+) {
 	const parsed = schema.parse({
 		company: formData.get('company'),
 		email: formData.get('email'),
@@ -28,7 +29,7 @@ export default async function addSubscriber(
 
 	// Return response
 	if (response.success)
-		return {message: 'Subscribed to newsletter', type: 'success'}
+		return {message: `Successfully subscribed ${parsed.email}`, type: 'success'}
 	else if ('message' in response)
 		return {
 			message: response.message,
