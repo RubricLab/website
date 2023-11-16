@@ -45,6 +45,12 @@ export default function ContactForm() {
 						required
 					/>
 					<input
+						type='text'
+						name='company'
+						placeholder='Company'
+						required
+					/>
+					<input
 						type='email'
 						name='email'
 						placeholder='Email'
@@ -54,6 +60,7 @@ export default function ContactForm() {
 						placeholder='Message'
 						name='message'
 						required
+						maxLength={300}
 					/>
 				</div>
 				<SubmitButton />
