@@ -1,5 +1,5 @@
 'use client'
-import {useEffect} from 'react'
+import {useEffect, useRef} from 'react'
 import {useFormState, useFormStatus} from 'react-dom'
 import sendContactRequest from '~/actions/sendContactRequest'
 import copyToClipboard from '~/utils/copyToClipboard'
@@ -24,17 +24,21 @@ function SubmitButton() {
 }
 
 export default function ContactForm() {
+	const formRef = useRef(null)
 	const [state, formAction] = useFormState(sendContactRequest, initialState)
 
 	// Trigger toast when state changes
 	useEffect(() => {
-		if (state?.type === 'success') toast.success(state?.message)
-		else if (state?.type === 'error') toast.error(state?.message)
+		if (state?.type === 'success') {
+			toast.success(state?.message)
+			setTimeout(() => formRef.current.reset(), 2 * 1000) // Reset form state
+		} else if (state?.type === 'error') toast.error(state?.message)
 	}, [state])
 
 	return (
 		<div className='flex w-full max-w-sm flex-col gap-4'>
 			<form
+				ref={formRef}
 				className='flex w-full flex-col gap-8'
 				action={formAction}>
 				<div className='flex flex-col gap-4'>
