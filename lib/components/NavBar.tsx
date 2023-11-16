@@ -50,12 +50,14 @@ export default function NavBar() {
 				href='/'>
 				<Title size='small' />
 			</Link>
-			<Button
-				body='Get in touch'
-				className='w-fit'
-				href='/contact'
-				variant='dark'
-			/>
+			{pathname !== '/contact' && (
+				<Button
+					body='Get in touch'
+					className='w-fit'
+					href='/contact'
+					variant='dark'
+				/>
+			)}
 		</nav>
 	)
 }
