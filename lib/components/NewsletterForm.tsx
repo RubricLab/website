@@ -16,7 +16,6 @@ export default async function NewsletterForm() {
 				type='text'
 				name='company'
 				placeholder='Company'
-				required
 			/>
 			<input
 				type='text'
