@@ -1,4 +1,4 @@
-import toast from 'react-hot-toast'
+import {toast} from '~/components/Toast'
 
 // Copy to clipboard
 export default function copyToClipboard(input: string) {

@@ -4,7 +4,7 @@ import localFont from 'next/font/local'
 import BackgroundGrid from '~/components/BackgroundGrid'
 import Footer from '~/components/Footer'
 import NavBar from '~/components/NavBar'
-import {ToastProvider} from '~/components/Toast'
+import {Toaster} from '~/components/Toast'
 import {META} from '~/constants/metadata'
 import './styles.css'
 
@@ -39,7 +39,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
 				className={`${jakartaSans.className} ${neueBit.variable} relative flex h-full min-h-screen w-full flex-col items-center`}>
 				<NavBar />
 				<BackgroundGrid className='fixed z-0 h-full w-full' />
-				<ToastProvider />
+				<Toaster />
 				<main className='z-10 w-full 2xl:max-w-6xl'>{children}</main>
 				<Footer />
 			</body>
