@@ -49,7 +49,7 @@ const PostCard = ({post}: PostCardProps) => {
 			{/* Post details */}
 			<div className='flex h-1/2 flex-col gap-3 rounded-b-md bg-white p-5 dark:bg-black'>
 				<p className='text-secondary text-base'>{date}</p>
-				<h3>{post.title}</h3>
+				<h3 className='font-neue-bit'>{post.title}</h3>
 			</div>
 		</Link>
 	)

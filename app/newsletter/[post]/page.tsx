@@ -1,6 +1,7 @@
 import {PortableText} from '@portabletext/react'
 import {Metadata} from 'next'
 import Link from 'next/link'
+import Button from '~/components/Button'
 import {DEFAULT_META, META} from '~/constants/metadata'
 import {getNewsletterPost} from '~/sanity/utils'
 
@@ -40,10 +41,11 @@ export default async function NewsletterPost({params}: Props) {
 		<div className='my-20 flex min-h-screen w-full flex-col items-center justify-center px-5 sm:my-0 sm:px-10'>
 			<div className='flex max-w-3xl flex-col gap-10'>
 				<div>
+					<h1>{post.title}</h1>
 					<Link
 						href='/newsletter'
 						className='no-underline'>
-						<h1>{post.title}</h1>
+						<h3>The Grid</h3>
 					</Link>
 				</div>
 				<div className='flex flex-col gap-4'>
@@ -64,6 +66,12 @@ export default async function NewsletterPost({params}: Props) {
 						</p>
 					</div>
 				</div>
+				<Button
+					body='Subscribe to The Grid'
+					variant='dark'
+					href='/newsletter'
+					className='w-fit'
+				/>
 			</div>
 		</div>
 	)

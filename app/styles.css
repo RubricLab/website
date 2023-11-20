@@ -20,7 +20,7 @@ html {
 		@apply text-3xl;
 	}
 	h3 {
-		@apply font-neue-bit text-3xl leading-7 text-black dark:text-white;
+		@apply text-3xl leading-7 text-black dark:text-white;
 	}
 	input {
 		@apply w-full rounded-md border p-3 text-neutral-600 focus:outline-none;
