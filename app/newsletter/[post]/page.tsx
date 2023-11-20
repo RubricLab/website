@@ -70,7 +70,7 @@ export default async function NewsletterPost({params}: Props) {
 					body='Subscribe to The Grid'
 					variant='dark'
 					href='/newsletter'
-					className='w-fit'
+					className='sm:w-fit'
 				/>
 			</div>
 		</div>
