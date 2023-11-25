@@ -8,7 +8,8 @@ const items = [
 	{title: 'Contact', href: '/contact'},
 	{title: 'Partners', href: '/partners'},
 	{title: 'Projects', href: '/projects'},
-	{title: 'Newsletter', href: '/newsletter'}
+	{title: 'Newsletter', href: '/newsletter'},
+	{title: 'Brand', href: '/brand'}
 ]
 
 const Footer = () => {
@@ -34,7 +35,7 @@ const Footer = () => {
 				/>
 			</div>
 
-			<div className='flex w-full flex-row flex-wrap items-end justify-center gap-10 sm:w-auto sm:flex-col sm:gap-5'>
+			<div className='flex w-full flex-row flex-wrap items-end justify-center gap-10 sm:w-auto sm:flex-col sm:gap-3'>
 				{items
 					.sort((a, b) => a.title.localeCompare(b.title)) // Sort alphabetically
 					.map(item => (

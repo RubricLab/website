@@ -2,6 +2,10 @@
 	"redirects": [
 		{
 			"destination": "https://rubric.notion.site/Brand-Guidelines-d2e47d1618e44258bd74185bfb901744",
+			"source": "/brand"
+		},
+		{
+			"destination": "https://rubric.notion.site/Brand-Guidelines-d2e47d1618e44258bd74185bfb901744",
 			"has": [
 				{
 					"type": "host",
