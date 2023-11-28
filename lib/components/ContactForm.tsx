@@ -13,6 +13,12 @@ const initialState = {
 
 function SubmitButton() {
 	const {pending} = useFormStatus()
+
+	// Add loading state
+	useEffect(() => {
+		if (pending) toast.loading('Submitting...')
+	}, [pending])
+
 	return (
 		<Button
 			variant='dark'
