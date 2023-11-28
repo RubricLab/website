@@ -12,6 +12,12 @@ const initialState = {
 
 function SubscribeButton() {
 	const {pending} = useFormStatus()
+
+	// Add loading state
+	useEffect(() => {
+		if (pending) toast.loading('Subscribing...')
+	}, [pending])
+
 	return (
 		<Button
 			variant='dark'
