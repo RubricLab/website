@@ -4,24 +4,28 @@ import {Metadata} from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import Button from '~/components/Button'
-import {DEFAULT_META, META} from '~/constants/metadata'
+import {DEFAULT_META} from '~/constants/metadata'
 import {getPost, sanity} from '~/sanity/utils'
 
-export const metadata: Metadata = {
-	...DEFAULT_META,
-	openGraph: {
-		...DEFAULT_META.openGraph,
-		title: `Blog | ${META.title}`
-	},
-	title: `Blog | ${META.title}`,
-	twitter: {
-		...DEFAULT_META.twitter,
-		title: `Blog | ${META.title}`
-	}
+type Props = {
+	params: {post: string}
 }
 
-type PostProps = {
-	params: {post: string}
+export async function generateMetadata({params}: Props): Promise<Metadata> {
+	const slug = params.post
+	const post = await getPost(slug)
+	return {
+		...DEFAULT_META,
+		openGraph: {
+			...DEFAULT_META.openGraph,
+			title: `${post.title} | Blog`
+		},
+		title: `${post.title} | Blog`,
+		twitter: {
+			...DEFAULT_META.twitter,
+			title: `${post.title} | Blog`
+		}
+	}
 }
 
 const portableComponents = {
@@ -47,7 +51,7 @@ const portableComponents = {
 export const revalidate = 60 // revalidate this page every 60 seconds
 
 // Blog post page
-export default async function Post({params}: PostProps) {
+export default async function Post({params}: Props) {
 	const slug = params.post
 	const post = await getPost(slug)
 	return (
