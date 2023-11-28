@@ -3,7 +3,7 @@ import env from '~/env.mjs'
 import {CaseStudy, Home, Newsletter, Post, Project} from '~/types/sanity'
 
 // Sanity client
-const sanity = createClient({
+export const sanity = createClient({
 	apiVersion: env.NEXT_PUBLIC_SANITY_API_VERSION,
 	dataset: env.NEXT_PUBLIC_SANITY_DATASET,
 	projectId: env.NEXT_PUBLIC_SANITY_PROJECT,
@@ -55,6 +55,7 @@ export async function getPosts(): Promise<Post[]> {
         _id,
         _createdAt,
         title,
+        "authorName": author->firstName,
         "slug": slug.current,
         "mainImage": mainImage.asset->url,
         publishedAt

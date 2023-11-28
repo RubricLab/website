@@ -61,7 +61,6 @@ const post = {
 		}
 	},
 	title: 'Post',
-
 	type: 'document'
 }
 
