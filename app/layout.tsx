@@ -34,9 +34,11 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
 			<body
 				className={`${jakartaSans.className} ${neueBit.variable} relative flex h-full min-h-screen w-full flex-col items-center`}>
 				<NavBar />
-				<BackgroundGrid className='fixed z-0 h-full w-full' />
+				<BackgroundGrid className='pointer-events-none fixed z-20 h-full w-full' />
 				<Toaster />
-				<main className='z-10 w-full 2xl:max-w-6xl'>{children}</main>
+				<main className='z-30 mb-96 min-h-screen w-full bg-white dark:bg-black 2xl:max-w-6xl'>
+					{children}
+				</main>
 				<Footer />
 			</body>
 		</html>

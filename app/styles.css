@@ -43,6 +43,9 @@ html {
 	.text-primary {
 		@apply text-black dark:text-white;
 	}
+	.text-negative {
+		@apply text-white dark:text-black;
+	}
 	.text-secondary {
 		@apply text-neutral-600 dark:text-neutral-400;
 	}

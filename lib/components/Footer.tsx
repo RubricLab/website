@@ -14,7 +14,7 @@ const items = [
 
 const Footer = () => {
 	return (
-		<div className='z-20 flex w-screen flex-col-reverse items-center justify-between gap-10 bg-black px-5 py-20 text-white dark:bg-white dark:text-black sm:flex-row sm:items-center sm:gap-0 sm:px-10'>
+		<div className='fixed bottom-0 z-10 flex w-screen flex-col-reverse items-center justify-between gap-10 bg-black px-5 py-16 text-white dark:bg-white dark:text-black sm:flex-row sm:items-center sm:gap-0 sm:px-10 sm:py-20'>
 			<div className='flex flex-col items-center gap-5 sm:items-start'>
 				<Link
 					href='/'
@@ -25,13 +25,16 @@ const Footer = () => {
 					/>
 				</Link>
 				<div className='flex flex-col gap-1'>
-					<p className='font-2xl'> Let&apos;s make something amazing, together.</p>
+					<p className='font-2xl text-negative'>
+						{' '}
+						Let&apos;s make something amazing, together.
+					</p>
 				</div>
 				<Button
 					body='Get in touch'
 					variant='dark'
 					href='/contact'
-					className='mt-2 w-fit'
+					className='mt-2 w-full max-w-sm'
 				/>
 			</div>
 
