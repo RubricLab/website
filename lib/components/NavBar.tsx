@@ -44,7 +44,7 @@ export default function NavBar() {
 	if (pathname.startsWith('/studio')) return <></>
 
 	return (
-		<nav className='absolute left-[50%] top-0 z-20 flex w-full -translate-x-1/2 items-center justify-between gap-1 p-5 sm:px-10'>
+		<nav className='absolute left-[50%] top-0 z-40 flex w-full -translate-x-1/2 items-center justify-between gap-1 p-5 sm:px-10'>
 			<Link
 				className='text-inherit no-underline'
 				href='/'>
