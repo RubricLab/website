@@ -1,4 +1,4 @@
-import {PortableText} from '@portabletext/react'
+import {PortableText, PortableTextReactComponents} from '@portabletext/react'
 import urlBuilder from '@sanity/image-url'
 import {Metadata} from 'next'
 import Image from 'next/image'
@@ -28,10 +28,10 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
 	}
 }
 
-const portableComponents = {
+const portableComponents: Partial<PortableTextReactComponents> = {
 	types: {
 		image: ({value}) => (
-			<div className='opacity-90 transition-opacity hover:opacity-100'>
+			<div className='opacity-80 transition-opacity duration-500 hover:opacity-100'>
 				<Image
 					src={urlBuilder(sanity).image(value).url()}
 					alt={value.alt || ' '}
@@ -46,6 +46,19 @@ const portableComponents = {
 				) : null}
 			</div>
 		)
+	},
+	block: {
+		blockquote: ({children}: {children?: any}) => (
+			<blockquote className='border-secondary text-secondary border-l pl-4'>
+				{children}
+			</blockquote>
+		),
+		normal: ({children}: {children?: any}) => (
+			<p className='text-secondary leading-7'>{children}</p>
+		)
+	},
+	listItem: {
+		bullet: ({children}) => <li className='text-secondary'>{children}</li>
 	}
 }
 
@@ -57,7 +70,7 @@ export default async function Post({params}: Props) {
 	const post = await getPost(slug)
 
 	return (
-		<div className='mb-48 mt-20 flex h-full w-full flex-col items-center p-5 sm:px-10'>
+		<div className='mb-48 mt-28 flex h-full w-full flex-col items-center p-5 sm:px-10'>
 			<div className='flex max-w-3xl flex-col gap-10'>
 				{/* Cover image */}
 				<div className='relative h-96 w-full'>
@@ -73,13 +86,15 @@ export default async function Post({params}: Props) {
 				{/* Title & author */}
 				<div className='flex w-full flex-col gap-2'>
 					<h1>{post.title}</h1>
-					<div className='text-secondary flex gap-1'>
-						<Link
-							href={post.authorTwitter}
-							className='no-underline'>
-							<span>{post.authorName}</span>
-						</Link>
-						<span>~</span>
+					<div className='text-tertiary flex flex-col gap-1'>
+						<span className='space-x-1'>
+							<span>By</span>
+							<Link
+								href={post.authorTwitter}
+								className='no-underline'>
+								{post.authorName}
+							</Link>
+						</span>
 						<span>
 							{new Date(post.publishedAt).toLocaleDateString('en-US', {
 								day: 'numeric',

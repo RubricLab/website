@@ -9,7 +9,7 @@ const items = [
 	{title: 'Partners', href: '/partners'},
 	{title: 'Projects', href: '/projects'},
 	{title: 'Newsletter', href: '/newsletter'},
-	{title: 'Brand', href: '/brand'}
+	{title: 'Brand', href: 'https://brand.rubriclabs.com'}
 ]
 
 const Footer = () => {

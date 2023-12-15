@@ -13,7 +13,7 @@ const Projects = async () => {
 
 	return (
 		<div className='my-28 flex w-full flex-col items-center 2xl:justify-center'>
-			<div className='flex h-full flex-col gap-20 p-8'>
+			<div className='flex h-full flex-col gap-20 p-5 sm:p-8'>
 				<h1>Projects</h1>
 				<div className='flex max-w-3xl flex-col gap-5'>
 					{projects.map((project: Project) => (

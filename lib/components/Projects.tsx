@@ -22,10 +22,10 @@ const projects = [
 export default function Projects() {
 	return (
 		<div
-			className='flex min-h-screen flex-col items-center justify-center gap-20 bg-neutral-100 p-8 dark:bg-gradient-to-b dark:from-black dark:via-neutral-950 dark:to-black'
+			className='flex min-h-screen flex-col items-center justify-center gap-16 bg-neutral-100 p-8 dark:bg-gradient-to-b dark:from-black dark:via-neutral-950 dark:to-black'
 			id='projects'>
 			<h1 className='text-black dark:text-white'>_featured projects</h1>
-			<div className='flex max-w-4xl flex-col gap-5'>
+			<div className='flex max-w-xl flex-col gap-5'>
 				{projects.map(project => (
 					<Card
 						body={project.desc}
@@ -34,13 +34,13 @@ export default function Projects() {
 						url={project.href}
 					/>
 				))}
+				<Button
+					body='Explore more'
+					className='mt-7'
+					href='/projects'
+					variant='dark'
+				/>
 			</div>
-			<Button
-				body='Learn more'
-				className='w-fit'
-				href='/projects'
-				variant='dark'
-			/>
 		</div>
 	)
 }

@@ -20,7 +20,7 @@ const history = [
 export default function Announcement() {
 	return (
 		<Link
-			className='group flex items-center gap-3 rounded-full border-2 border-neutral-500 bg-neutral-200 px-3.5 py-2 text-center text-black no-underline shadow-lg dark:bg-neutral-950 dark:text-white'
+			className='border-secondary group flex items-center gap-3 rounded-md border bg-neutral-100 px-3.5 py-2 text-center text-black no-underline shadow-lg dark:bg-neutral-950 dark:text-white'
 			href={history[1].href}
 			target={history[1].target}>
 			<p className='text-sm sm:text-base'>

@@ -30,9 +30,9 @@ export const revalidate = 60 // revalidate this page every 60 seconds
 export default async function Newsletter() {
 	const posts = await getNewsletterPosts()
 	return (
-		<div className='flex min-h-screen w-full items-center justify-center px-5 pb-40'>
-			<div className='grid grid-cols-1'>
-				<div className='flex h-screen w-full max-w-sm flex-col justify-center gap-8'>
+		<div className='flex w-full items-center justify-center px-5 py-40'>
+			<div className='grid grid-cols-1 space-y-32'>
+				<div className='flex w-full max-w-xl flex-col justify-center gap-8'>
 					<div className='flex flex-col'>
 						<h1>The Grid</h1>
 						<div className='flex w-full flex-col gap-2 text-2xl'>

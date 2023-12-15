@@ -11,7 +11,7 @@ html {
 		@apply text-black dark:text-white;
 	}
 	a {
-		@apply underline decoration-black decoration-2 underline-offset-2 transition-opacity hover:opacity-80 dark:decoration-white;
+		@apply underline decoration-neutral-800 decoration-2 underline-offset-2 transition-opacity hover:opacity-80 dark:decoration-neutral-200;
 	}
 	h1 {
 		@apply font-neue-bit text-6xl text-black dark:text-white md:text-7xl;
@@ -43,13 +43,16 @@ html {
 	.text-primary {
 		@apply text-black dark:text-white;
 	}
+	.text-secondary {
+		@apply text-neutral-700 dark:text-neutral-300;
+	}
+	.text-tertiary {
+		@apply text-neutral-600 dark:text-neutral-400;
+	}
 	.text-negative {
 		@apply text-white dark:text-black;
 	}
-	.text-secondary {
-		@apply text-neutral-600 dark:text-neutral-400;
-	}
-	.text-tertiary {
-		@apply text-neutral-500;
+	.border-secondary {
+		@apply border-stone-200/90 dark:border-stone-800/90;
 	}
 }

@@ -2,7 +2,7 @@ import {Metadata} from 'next'
 
 export const META = {
 	desc:
-		'We are a lean team of developers & designers that build software end-to-end.',
+		'A lean team of developers & designers building AI-enabled software end-to-end.',
 	githubURL: 'https://github.com/rubriclab',
 	siteURL: 'https://rubriclabs.com',
 	title: 'Rubric',
@@ -18,7 +18,6 @@ export const DEFAULT_META: Metadata = {
 		type: 'website',
 		url: META.siteURL
 	},
-	themeColor: '#E1DCDB',
 	title: META.title,
 	twitter: {
 		card: 'summary_large_image',
