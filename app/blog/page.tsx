@@ -32,29 +32,30 @@ const PostCard = ({post}: PostCardProps) => {
 	const date = parseDate(post.publishedAt)
 	return (
 		<Link
-			className='duration-400 group relative flex h-96 flex-col rounded-md border border-stone-700/80 bg-white text-black no-underline transition-colors hover:bg-opacity-80'
+			className='duration-400 group relative flex h-96 flex-col overflow-hidden rounded-md border border-stone-200/90 text-black no-underline transition-colors hover:bg-opacity-80 dark:border-stone-800/90'
 			href={`/blog/${post.slug}`}
 			key={post._id}>
-			<ArrowUpRightIcon className='duration-400 absolute right-2 top-2 h-14 w-14 opacity-0 transition-opacity group-hover:opacity-100' />
+			<ArrowUpRightIcon className='duration-400 absolute right-0 top-0 h-12 w-12 opacity-0 transition-opacity group-hover:opacity-100' />
 			{/* Cover image */}
 			<div className='relative h-1/2 w-full'>
 				<Image
 					alt='Blog cover image'
-					className='duration-400 rounded-t-sm transition-opacity group-hover:opacity-80'
+					className='duration-400 transition-opacity group-hover:opacity-80'
 					fill
 					src={post.mainImage}
 					style={{objectFit: 'cover', objectPosition: 'center'}}
 				/>
 			</div>
 			{/* Post details */}
-			<div className='flex h-1/2 flex-col justify-between gap-3 rounded-b-md bg-white p-5 dark:bg-black'>
-				<div className='flex flex-col gap-3'>
-					<p className='text-secondary text-base'>{date}</p>
-					<h3 className='font-neue-bit'>{post.title}</h3>
+			<div className='flex h-1/2 flex-col justify-between bg-white p-4 dark:bg-black'>
+				<h3 className='font-neue-bit text-4xl'>{post.title}</h3>
+				<div className='flex w-full justify-between text-sm'>
+					<p className='space-x-1'>
+						<span className='text-secondary'>By</span>
+						<span>{post.authorName}</span>
+					</p>
+					<p className='text-secondary'>{date}</p>
 				</div>
-				<p>
-					<span className='opacity-80'>Written by:</span> {post.authorName}
-				</p>
 			</div>
 		</Link>
 	)
