@@ -23,10 +23,10 @@ html {
 		@apply text-3xl leading-7 text-black dark:text-white;
 	}
 	input {
-		@apply border-secondary w-full rounded-md border bg-neutral-100 p-3 text-neutral-600 focus:outline-none dark:bg-neutral-900;
+		@apply border-secondary w-full rounded-md border bg-neutral-100 p-3 text-neutral-500 focus:outline-none dark:bg-neutral-900;
 	}
 	textarea {
-		@apply h-32 w-full resize-none rounded-md border p-3 text-neutral-600 focus:outline-none;
+		@apply border-secondary h-32 w-full resize-none rounded-md border bg-neutral-100 p-3 text-neutral-500 focus:outline-none dark:bg-neutral-900;
 	}
 	code {
 		@apply rounded-md bg-neutral-200 px-1 py-0.5 dark:bg-neutral-700;
