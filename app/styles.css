@@ -11,7 +11,7 @@ html {
 		@apply text-black dark:text-white;
 	}
 	a {
-		@apply underline underline-offset-4 hover:opacity-80;
+		@apply underline decoration-black decoration-2 underline-offset-2 transition-opacity hover:opacity-80 dark:decoration-white;
 	}
 	h1 {
 		@apply font-neue-bit text-6xl text-black dark:text-white md:text-7xl;

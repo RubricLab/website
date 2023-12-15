@@ -30,21 +30,22 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
 
 const portableComponents = {
 	types: {
-		image: ({value}) => {
-			return (
-				<div className='relative h-96 w-full'>
-					<Image
-						src={urlBuilder(sanity).image(value).fit('max').auto('format').url()}
-						alt={value.alt || ' '}
-						loading='lazy'
-						fill
-						style={{objectFit: 'cover', objectPosition: 'center'}}
-						className='rounded-md'
-					/>
-					<span className='opacity-80'>{value.alt}</span>
-				</div>
-			)
-		}
+		image: ({value}) => (
+			<div className='opacity-90 transition-opacity hover:opacity-100'>
+				<Image
+					src={urlBuilder(sanity).image(value).url()}
+					alt={value.alt || ' '}
+					loading='lazy'
+					width={0}
+					height={0}
+					sizes='100vw'
+					className='my-4 h-auto w-full rounded-md'
+				/>
+				{value.alt ? (
+					<p className='text-center text-sm text-stone-500'>{value.alt}</p>
+				) : null}
+			</div>
+		)
 	}
 }
 
@@ -54,8 +55,9 @@ export const revalidate = 60 // revalidate this page every 60 seconds
 export default async function Post({params}: Props) {
 	const slug = params.post
 	const post = await getPost(slug)
+
 	return (
-		<div className='my-20 flex h-full w-full flex-col items-center p-5 sm:px-10'>
+		<div className='mb-48 mt-20 flex h-full w-full flex-col items-center p-5 sm:px-10'>
 			<div className='flex max-w-3xl flex-col gap-10'>
 				{/* Cover image */}
 				<div className='relative h-96 w-full'>
@@ -69,9 +71,9 @@ export default async function Post({params}: Props) {
 					/>
 				</div>
 				{/* Title & author */}
-				<div className='flex w-full flex-col gap-3'>
-					<h2>{post.title}</h2>
-					<div className='flex gap-1'>
+				<div className='flex w-full flex-col gap-2'>
+					<h1>{post.title}</h1>
+					<div className='text-secondary flex gap-1'>
 						<Link
 							href={post.authorTwitter}
 							className='no-underline'>
@@ -87,14 +89,14 @@ export default async function Post({params}: Props) {
 						</span>
 					</div>
 				</div>
-				<hr className='border-stone-700' />
+				<hr className='border-stone-300 dark:border-stone-800' />
 				<div className='flex flex-col gap-4'>
 					<PortableText
 						value={post.body}
 						components={portableComponents}
 					/>
 				</div>
-				<div className='flex w-full justify-center'>
+				<div className='mt-16 flex w-full justify-center'>
 					<Button
 						body='Get in touch'
 						variant='dark'
