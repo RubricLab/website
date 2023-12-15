@@ -23,6 +23,7 @@ function SubscribeButton() {
 			variant='dark'
 			type='submit'
 			body='Subscribe'
+			className='mt-3'
 			disabled={pending}
 		/>
 	)
@@ -43,7 +44,7 @@ export default function NewsletterForm() {
 	return (
 		<form
 			ref={formRef}
-			className='flex w-full flex-col justify-end gap-5'
+			className='flex w-full flex-col justify-end gap-3'
 			action={formAction}>
 			<input
 				type='text'
@@ -63,7 +64,7 @@ export default function NewsletterForm() {
 				required
 			/>
 			<SubscribeButton />
-			<p className='text-center text-base opacity-80'>
+			<p className='text-center text-sm opacity-80'>
 				Read by 32 other ambitious builders.
 			</p>
 		</form>

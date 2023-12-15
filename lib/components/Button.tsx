@@ -4,8 +4,8 @@ import Link from 'next/link'
 import cn from '~/utils/cn'
 
 const variants = {
-	dark: 'border-2 border-black border-opacity-20 bg-[#151617] text-white',
-	light: 'bg-neutral-100 text-black',
+	dark: 'bg-black dark:bg-white text-negative',
+	light: 'bg-neutral-100 dark:bg-neutral-900 text-primary',
 	teal: 'bg-teal text-black'
 }
 
@@ -49,7 +49,7 @@ export default function Button({
 				disabled={disabled}
 				onClick={onClick}
 				type={type}>
-				<span className='font-neue-bit text-2xl'>{body}</span>
+				<span className='mt-[3px] font-neue-bit text-2xl'>{body}</span>
 				<ArrowRight className='transition-all duration-300 group-hover:translate-x-1.5 group-disabled:translate-x-0' />
 			</button>
 		)

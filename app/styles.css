@@ -23,7 +23,7 @@ html {
 		@apply text-3xl leading-7 text-black dark:text-white;
 	}
 	input {
-		@apply w-full rounded-md border p-3 text-neutral-600 focus:outline-none;
+		@apply border-secondary w-full rounded-md border bg-neutral-100 p-3 text-neutral-600 focus:outline-none dark:bg-neutral-900;
 	}
 	textarea {
 		@apply h-32 w-full resize-none rounded-md border p-3 text-neutral-600 focus:outline-none;

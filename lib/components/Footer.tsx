@@ -32,7 +32,7 @@ const Footer = () => {
 				</div>
 				<Button
 					body='Get in touch'
-					variant='dark'
+					variant='light'
 					href='/contact'
 					className='mt-2 w-full max-w-sm'
 				/>
