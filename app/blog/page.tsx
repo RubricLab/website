@@ -40,7 +40,7 @@ const PostCard = ({post}: PostCardProps) => {
 			<div className='relative h-1/2 w-full'>
 				<Image
 					alt='Blog cover image'
-					className='duration-400 rounded-t-md transition-opacity group-hover:opacity-80'
+					className='duration-400 rounded-t-sm transition-opacity group-hover:opacity-80'
 					fill
 					src={post.mainImage}
 					style={{objectFit: 'cover', objectPosition: 'center'}}
