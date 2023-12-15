@@ -42,7 +42,7 @@ export default function ContactForm() {
 	}, [state])
 
 	return (
-		<div className='flex w-full max-w-sm flex-col gap-4'>
+		<div className='flex w-full max-w-md flex-col gap-4'>
 			<form
 				ref={formRef}
 				className='flex w-full flex-col gap-8'
