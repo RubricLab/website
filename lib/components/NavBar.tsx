@@ -6,10 +6,11 @@ import Button from './Button'
 import Title from './Title'
 
 const shortcuts = [
-	{href: '/contact', keys: ['r', 'R']},
-	{href: '/blog', keys: ['b', 'B']},
-	{href: '/projects', keys: ['p', 'P']},
-	{href: '/newsletter', keys: ['n', 'N']}
+	{href: '/contact', key: 'r'},
+	{href: '/blog', key: 'b'},
+	{href: '/projects', key: 'p'},
+	{href: '/newsletter', key: 'n'},
+	{href: '/', key: 'h'}
 ]
 
 export default function NavBar() {
@@ -30,7 +31,7 @@ export default function NavBar() {
 				return
 
 			shortcuts.map(shortcut => {
-				if (shortcut.keys.includes(event.key)) router.push(shortcut.href)
+				if (shortcut.key == event.key.toLowerCase()) router.push(shortcut.href)
 			})
 		}
 
