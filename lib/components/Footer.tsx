@@ -1,5 +1,6 @@
 'use client'
 import Link from 'next/link'
+import BackgroundGrid from './BackgroundGrid'
 import Button from './Button'
 import Title from './Title'
 
@@ -14,7 +15,8 @@ const items = [
 
 const Footer = () => {
 	return (
-		<div className='fixed bottom-0 z-10 flex h-96 w-screen flex-col-reverse items-center justify-between gap-10 bg-black px-5 py-16 text-white dark:bg-white dark:text-black sm:flex-row sm:items-center sm:gap-0 sm:px-10 sm:py-20'>
+		<div className='fixed bottom-0 z-10 flex h-96 w-screen flex-col-reverse items-center justify-between gap-10 overflow-hidden bg-black px-5 py-16 text-white dark:bg-white dark:text-black sm:flex-row sm:items-center sm:gap-0 sm:px-10 sm:py-20'>
+			<BackgroundGrid className='pointer-events-none absolute bottom-0 left-0 h-screen w-full' />
 			<div className='flex flex-col items-center gap-5 sm:items-start'>
 				<Link
 					href='/'
@@ -34,7 +36,7 @@ const Footer = () => {
 					body='Get in touch'
 					variant='light'
 					href='/contact'
-					className='mt-2 w-full max-w-sm'
+					className='z-20 mt-2 w-full max-w-sm'
 				/>
 			</div>
 

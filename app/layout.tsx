@@ -1,7 +1,6 @@
 import PlausibleProvider from 'next-plausible'
 import {Plus_Jakarta_Sans} from 'next/font/google'
 import localFont from 'next/font/local'
-import BackgroundGrid from '~/components/BackgroundGrid'
 import Footer from '~/components/Footer'
 import NavBar from '~/components/NavBar'
 import {Toaster} from '~/components/Toast'
@@ -34,9 +33,8 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
 			<body
 				className={`${jakartaSans.className} ${neueBit.variable} relative flex h-full min-h-screen w-full flex-col items-center`}>
 				<NavBar />
-				<BackgroundGrid className='pointer-events-none fixed z-20 h-full w-full' />
 				<Toaster />
-				<main className='z-30 mb-96 min-h-screen w-full bg-white dark:bg-black 2xl:max-w-6xl'>
+				<main className='z-30 mb-96 min-h-screen w-full bg-white dark:bg-black'>
 					{children}
 				</main>
 				<Footer />
