@@ -31,7 +31,8 @@ export default function Button({
 		return (
 			<Link
 				className={cn(
-					`group flex w-full items-center justify-between gap-20 rounded-md no-underline ${variants[variant]} px-4 py-2`,
+					`group flex w-full items-center justify-between gap-20 rounded-md px-4 py-2 no-underline`,
+					variants[variant],
 					className
 				)}
 				href={href}>
@@ -39,11 +40,13 @@ export default function Button({
 				<ArrowRight className='transition-all duration-300 group-hover:translate-x-1.5' />
 			</Link>
 		)
+	// Button
 	if (onClick || type === 'submit')
 		return (
 			<button
 				className={cn(
-					`group flex w-full items-center justify-between gap-20 rounded-md ${variants[variant]} px-4 py-2 disabled:cursor-not-allowed`,
+					`group flex w-full items-center justify-between gap-20 rounded-md px-4 py-2 disabled:cursor-not-allowed`,
+					variants[variant],
 					className
 				)}
 				disabled={disabled}
