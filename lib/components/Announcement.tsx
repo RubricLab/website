@@ -15,6 +15,13 @@ const history = [
 		href: 'https://twitter.com/RubricLabs/status/1719812696575529220',
 		date: new Date('11/1/2023')
 	}
+	// TODO: uncomment
+	// {
+	// 	title: 'Launch: Year in Code',
+	// 	target: '_blank',
+	// 	href: '/blog/year-in-code',
+	// 	date: new Date('12/18/2023')
+	// }
 ]
 
 export default function Announcement() {
