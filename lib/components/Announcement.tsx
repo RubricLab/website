@@ -15,9 +15,9 @@ const history = [
 		href: 'https://twitter.com/RubricLabs/status/1719812696575529220',
 		date: new Date('11/1/2023')
 	}
-	// TODO: uncomment
-	// {
-	// 	title: 'Launch: Year in Code',
+	// TODO: uncomment and commit
+	// ,{
+	// 	title: 'Your Year in Code',
 	// 	target: '_blank',
 	// 	href: '/blog/year-in-code',
 	// 	date: new Date('12/18/2023')
@@ -25,13 +25,16 @@ const history = [
 ]
 
 export default function Announcement() {
+	const latest = history[history.length - 1]
+
 	return (
 		<Link
 			className='border-secondary group flex items-center gap-3 rounded-md border bg-neutral-100 px-3.5 py-2 text-center text-black no-underline shadow-lg dark:bg-neutral-950 dark:text-white'
-			href={history[1].href}
-			target={history[1].target}>
-			<p className='text-sm sm:text-base'>
-				<span className='font-semibold'>New:</span> {history[1].title}
+			href={latest.href}
+			target={latest.target}>
+			<p className='space-x-1 text-sm sm:text-base'>
+				<span className='font-semibold'>New:</span>
+				<span>{latest.title}</span>
 			</p>
 			<ArrowUpRight className='transition-all duration-300 group-hover:-translate-y-1 group-hover:translate-x-1' />
 		</Link>
