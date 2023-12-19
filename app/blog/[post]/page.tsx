@@ -31,7 +31,7 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
 const portableComponents: Partial<PortableTextReactComponents> = {
 	types: {
 		image: ({value}) => (
-			<div className='opacity-90'>
+			<div>
 				<Image
 					src={urlBuilder(sanity).image(value).url()}
 					alt={value.alt || ' '}
