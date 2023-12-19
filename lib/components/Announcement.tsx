@@ -14,14 +14,13 @@ const history = [
 		target: '_blank',
 		href: 'https://twitter.com/RubricLabs/status/1719812696575529220',
 		date: new Date('11/1/2023')
+	},
+	{
+		title: 'Your Year in Code',
+		target: '_blank',
+		href: 'https://year-in-code.com',
+		date: new Date('12/19/2023')
 	}
-	// TODO: uncomment and commit
-	// ,{
-	// 	title: 'Your Year in Code',
-	// 	target: '_blank',
-	// 	href: '/blog/year-in-code',
-	// 	date: new Date('12/18/2023')
-	// }
 ]
 
 export default function Announcement() {
