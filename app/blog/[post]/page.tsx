@@ -1,11 +1,11 @@
-import {PortableText, PortableTextReactComponents} from '@portabletext/react'
-import urlBuilder from '@sanity/image-url'
+import {PortableText} from '@portabletext/react'
 import {Metadata} from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import Button from '~/components/Button'
+import SanityComponents from '~/components/Sanity'
 import {DEFAULT_META} from '~/constants/metadata'
-import {getPost, sanity} from '~/sanity/utils'
+import {getPost} from '~/sanity/utils'
 
 type Props = {
 	params: {post: string}
@@ -25,40 +25,6 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
 			...DEFAULT_META.twitter,
 			title: `${post.title} | Blog`
 		}
-	}
-}
-
-const portableComponents: Partial<PortableTextReactComponents> = {
-	types: {
-		image: ({value}) => (
-			<div>
-				<Image
-					src={urlBuilder(sanity).image(value).url()}
-					alt={value.alt || ' '}
-					loading='lazy'
-					width={0}
-					height={0}
-					sizes='100vw'
-					className='my-4 h-auto w-full rounded-md'
-				/>
-				{value.alt ? (
-					<p className='text-center text-sm text-stone-500'>{value.alt}</p>
-				) : null}
-			</div>
-		)
-	},
-	block: {
-		blockquote: ({children}: {children?: any}) => (
-			<blockquote className='border-secondary text-secondary border-l pl-4'>
-				{children}
-			</blockquote>
-		),
-		normal: ({children}: {children?: any}) => (
-			<p className='text-secondary leading-7'>{children}</p>
-		)
-	},
-	listItem: {
-		bullet: ({children}) => <li className='text-secondary'>{children}</li>
 	}
 }
 
@@ -108,7 +74,7 @@ export default async function Post({params}: Props) {
 				<div className='flex flex-col gap-4'>
 					<PortableText
 						value={post.body}
-						components={portableComponents}
+						components={SanityComponents}
 					/>
 				</div>
 				<div className='mt-16 flex w-full justify-center'>

@@ -2,6 +2,7 @@ import {PortableText} from '@portabletext/react'
 import {Metadata} from 'next'
 import Link from 'next/link'
 import Button from '~/components/Button'
+import SanityComponents from '~/components/Sanity'
 import {DEFAULT_META, META} from '~/constants/metadata'
 import {getNewsletterPost} from '~/sanity/utils'
 
@@ -38,8 +39,8 @@ export default async function NewsletterPost({params}: Props) {
 	const post = await getNewsletterPost(slug)
 
 	return (
-		<div className='my-20 flex min-h-screen w-full flex-col items-center justify-center px-5 sm:my-0 sm:px-10'>
-			<div className='flex max-w-3xl flex-col gap-10'>
+		<div className='flex min-h-screen w-full flex-col items-center px-5 sm:my-0 sm:px-10'>
+			<div className='my-28 flex max-w-3xl flex-col gap-10'>
 				<div>
 					<h1>{post.title}</h1>
 					<Link
@@ -49,7 +50,10 @@ export default async function NewsletterPost({params}: Props) {
 					</Link>
 				</div>
 				<div className='flex flex-col gap-4'>
-					<PortableText value={post.body} />
+					<PortableText
+						value={post.body}
+						components={SanityComponents}
+					/>
 					<div>
 						<p>—</p>
 						<Link
