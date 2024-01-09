@@ -3,19 +3,19 @@ import {Card} from './Card'
 
 const projects = [
 	{
-		desc: 'An AI personal assistant that manages your calendar.',
+		desc: 'AI assistant for your calendar.',
 		href: 'https://cal.ai/',
 		title: 'Cal.ai'
 	},
 	{
-		desc: 'A bot that labels your GitHub issues using AI. Used in 400+ projects.',
-		href: 'https://maige.app/',
-		title: 'Maige'
+		desc: 'AI-generated video of your code contributions.',
+		href: 'https://year-in-code.com/',
+		title: 'Graphite'
 	},
 	{
-		desc: 'A unified inbox for your notifications. Used by 3000+ developers.',
-		href: 'https://neat.run/',
-		title: 'Neat'
+		desc: 'AI-powered software maintenance.',
+		href: 'https://maige.app/',
+		title: 'Maige'
 	}
 ]
 
@@ -24,7 +24,10 @@ export default function Projects() {
 		<div
 			className='flex min-h-screen flex-col items-center justify-center gap-16 bg-neutral-100 p-8 dark:bg-neutral-950'
 			id='projects'>
-			<h1 className='text-black dark:text-white'>_featured projects</h1>
+			<div className='flex flex-col items-center'>
+				<h1 className='text-black dark:text-white'>_featured projects</h1>
+				<h3>Trusted by the best.</h3>
+			</div>
 			<div className='flex max-w-xl flex-col gap-5'>
 				{projects.map(project => (
 					<Card
