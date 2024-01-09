@@ -6,6 +6,7 @@ import Button from './Button'
 import Title from './Title'
 
 const shortcuts = [
+	{href: '/agency', key: 'a'},
 	{href: '/contact', key: 'r'},
 	{href: '/blog', key: 'b'},
 	{href: '/projects', key: 'p'},
