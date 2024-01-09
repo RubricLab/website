@@ -23,8 +23,8 @@ export default function Agency() {
 	return (
 		<div className='flex flex-col'>
 			<Hero />
-			<HowWeWork />
 			<Projects />
+			<HowWeWork />
 			<Testimonials />
 			<FAQs />
 		</div>
