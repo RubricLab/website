@@ -1,4 +1,4 @@
-import Hero from '~/components/Hero'
+import Hero from '~/components/LandingHero'
 import Letter from '~/components/Letter'
 import Projects from '~/components/Projects'
 import getMetadata from '~/utils/getMetadata'
