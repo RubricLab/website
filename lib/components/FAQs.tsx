@@ -33,7 +33,7 @@ function FAQ({question, answer}: {question: string; answer: string}) {
 export default function FAQs() {
 	return (
 		<div className='flex min-h-screen flex-col items-center justify-center gap-16 bg-white p-8 dark:bg-black'>
-			<h2>Frequently asked questions</h2>
+			<h1>Frequently asked questions</h1>
 			<div className='flex w-full max-w-3xl flex-col gap-3'>
 				{items.map(item => (
 					<FAQ

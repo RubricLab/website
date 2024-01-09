@@ -42,7 +42,10 @@ function Testimonial({
 export default function Testimonials() {
 	return (
 		<div className='flex min-h-screen flex-col items-center justify-center gap-16 bg-neutral-100 p-8 dark:bg-neutral-950'>
-			<h2>Loved by the best.</h2>
+			<div className='flex flex-col items-center'>
+				<h1>Loved by the best.</h1>
+				<h3>Read what folks have to say about us.</h3>
+			</div>
 			<div className='flex gap-10'>
 				{comments.map(item => (
 					<Testimonial

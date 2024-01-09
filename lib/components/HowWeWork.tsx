@@ -45,7 +45,10 @@ function Step({
 export default function HowWeWork() {
 	return (
 		<div className='flex min-h-screen flex-col items-center justify-center gap-16 bg-white p-8 dark:bg-black'>
-			<h2>How we work</h2>
+			<div className='flex flex-col items-center'>
+				<h1>We like to keep things simple.</h1>
+				<h3>Learn about how we work.</h3>
+			</div>
 			<div className='flex w-full max-w-3xl flex-col gap-5'>
 				{steps.map((step, index) => (
 					<Step
