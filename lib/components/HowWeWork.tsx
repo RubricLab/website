@@ -1,25 +1,29 @@
 const steps = [
 	{
-		title: 'Call',
+		title: 'Prospecting',
 		description:
-			'We discuss your vision for the project, outline the success criteria and what an ideal outcome looks like.'
+			'We call once for 30 min to discuss your project, goals, and roadmap.'
 	},
 	{
-		title: 'Scope',
+		title: 'Scoping',
 		description:
-			'We write a memo, outlining the rough scope, effort, and timeline.'
+			'Provided there is mutual fit, our team writes a memo, outlining the effort, timeline, and budget.'
 	},
 	{
-		title: 'Iterate',
-		description: 'We iterate on this together untile we have mutual clarity.'
+		title: 'Onboarding',
+		description:
+			'After agreeing on project terms, we add you to a shared Slack channel, and get going.'
 	},
 	{
-		title: 'Start',
+		title: 'Building',
 		description:
-			'We add you to a shared Slack channel, share a project management board, and are off to the races.'
+			'We execute on the project terms and update you weekly or bi-weekly.'
 	},
-	{title: 'Deliver', description: 'We deliver the project.'},
-	{title: 'Maintain', description: 'We maintain the project.'}
+	{
+		title: 'Offboarding',
+		description:
+			'After delivering, we can maintain the project on a monthly retainer or hand it off to your team.'
+	}
 ]
 
 function Step({
