@@ -17,7 +17,7 @@ export default async function Icon() {
 				viewBox='0 0 32 32'
 				fill='none'
 				xmlns='http://www.w3.org/2000/svg'>
-				<g clip-path='url(#frame)'>
+				<g clipPath='url(#frame)'>
 					<rect
 						width='32'
 						height='32'

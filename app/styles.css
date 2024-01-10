@@ -55,4 +55,19 @@ html {
 	.border-secondary {
 		@apply border-stone-200/90 dark:border-stone-800/90;
 	}
+	@keyframes slide-left {
+		0% {
+			left: 0;
+		}
+		100% {
+			left: -100%;
+		}
+	}
+	.animate-carousel {
+		width: 200%;
+		animation: slide-left 10s linear infinite;
+	}
+	.animate-carousel:hover {
+		animation-play-state: paused;
+	}
 }

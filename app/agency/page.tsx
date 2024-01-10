@@ -2,6 +2,7 @@ import {Metadata} from 'next'
 import Hero from '~/components/AgencyHero'
 import FAQs from '~/components/FAQs'
 import HowWeWork from '~/components/HowWeWork'
+import {Logos} from '~/components/Logos'
 import Projects from '~/components/Projects'
 import Testimonials from '~/components/Testimonials'
 import {DEFAULT_META, META} from '~/constants/metadata'
@@ -23,6 +24,7 @@ export default function Agency() {
 	return (
 		<div className='flex flex-col'>
 			<Hero />
+			<Logos />
 			<Projects />
 			<HowWeWork />
 			<Testimonials />
