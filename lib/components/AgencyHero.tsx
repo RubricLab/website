@@ -13,7 +13,7 @@ export default function Hero() {
 					initial={{opacity: 0}}
 					transition={{duration: 2}}>
 					<div className='flex h-full flex-col gap-8 text-black dark:text-white sm:gap-16'>
-						<p className='text-6xl tracking-tight sm:text-8xl sm:leading-[7.5rem]'>
+						<p className='text-5xl tracking-tight sm:text-8xl sm:leading-[7.5rem]'>
 							We make <span className='whitespace-nowrap font-bold'>AI-enabled</span>,{' '}
 							<span className='font-bold'>magical</span> software.
 						</p>

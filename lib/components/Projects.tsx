@@ -1,5 +1,5 @@
-import Button from './Button'
-import {Card} from './Card'
+import {ArrowRight, ArrowUpRight} from 'lucide-react'
+import Link from 'next/link'
 
 const projects = [
 	{
@@ -10,7 +10,7 @@ const projects = [
 	{
 		desc: 'AI-generated video of your code contributions.',
 		href: 'https://year-in-code.com/',
-		title: 'Graphite'
+		title: 'Year in Code'
 	},
 	{
 		desc: 'AI-powered software maintenance.',
@@ -22,27 +22,38 @@ const projects = [
 export default function Projects() {
 	return (
 		<div
-			className='flex min-h-screen flex-col items-center justify-center gap-16 bg-neutral-100 p-8 dark:bg-neutral-950'
+			className='flex min-h-screen w-full flex-col items-center justify-center gap-16 bg-neutral-100 p-5 py-20 dark:bg-neutral-950 sm:p-10'
 			id='projects'>
-			<div className='flex flex-col items-center'>
-				<h1>_featured projects</h1>
-				<h3>Trusted by the best.</h3>
+			<div className='flex flex-col items-start sm:items-center'>
+				<div className='text-tertiary font-neue-bit text-3xl sm:text-4xl'>
+					_featured projects
+				</div>
+				<h3 className='text-secondary'>We work with the best.</h3>
 			</div>
-			<div className='flex max-w-xl flex-col gap-5'>
-				{projects.map(project => (
-					<Card
-						body={project.desc}
-						key={project.title}
-						title={project.title}
-						url={project.href}
-					/>
+			<div className='grid gap-5 sm:grid-cols-2'>
+				{projects.map(({title, desc, href}) => (
+					<div
+						key={title}
+						className='border-secondary group col-span-1 flex h-[50vh] w-full max-w-[50vh] flex-col gap-1 border p-5 transition-colors hover:border-white'>
+						<div className='text-4xl font-semibold'>{title}</div>
+						<p className='text-secondary text-lg leading-6'>{desc}</p>
+						<div className='grow' />
+						<Link
+							className='group/link ml-auto flex gap-1 opacity-0 transition-opacity delay-200 duration-500 group-hover:opacity-100'
+							href={href}>
+							<span>Learn more</span>
+							<ArrowUpRight className='w-4 transition-transform group-hover/link:-translate-y-1 group-hover/link:translate-x-1' />
+						</Link>
+					</div>
 				))}
-				<Button
-					body='Explore more'
-					className='mt-7'
-					href='/projects'
-					variant='dark'
-				/>
+				<div className='border-secondary flex w-full max-w-[50vh] items-end justify-end border border-dashed p-5 sm:h-[50vh]'>
+					<Link
+						href='/projects'
+						className='group flex gap-2'>
+						<span>See more</span>
+						<ArrowRight className='w-4 transition-transform group-hover:translate-x-1' />
+					</Link>
+				</div>
 			</div>
 		</div>
 	)
