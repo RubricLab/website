@@ -1,5 +1,6 @@
 'use client'
 import Link from 'next/link'
+import {META} from '~/constants/metadata'
 import BackgroundGrid from './BackgroundGrid'
 import Button from './Button'
 import Title from './Title'
@@ -10,7 +11,8 @@ const items = [
 	{title: 'Partners', href: '/partners'},
 	{title: 'Projects', href: '/projects'},
 	{title: 'Newsletter', href: '/newsletter'},
-	{title: 'Brand', href: 'https://brand.rubriclabs.com'}
+	{title: 'Brand', href: 'https://brand.rubriclabs.com'},
+	{title: 'GitHub', href: META.githubURL}
 ]
 
 const Footer = () => {
@@ -42,7 +44,7 @@ const Footer = () => {
 
 			<div className='flex w-full flex-row flex-wrap items-end justify-center gap-10 sm:w-auto sm:flex-col sm:gap-3'>
 				{items
-					.sort((a, b) => a.title.localeCompare(b.title)) // Sort alphabetically
+					// Removed alphabetical sort in favour of sorting for funnel
 					.map(item => (
 						<Link
 							key={item.title}
