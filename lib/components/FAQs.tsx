@@ -44,10 +44,9 @@ function FAQ({question, answer}) {
 
 	return (
 		<div
-			className={`flex h-12 w-full cursor-pointer flex-col gap-3 rounded-md bg-neutral-100 p-3 transition-[height] duration-100 ease-in hover:h-36 dark:bg-neutral-950 ${
+			className={`flex h-12 w-full cursor-pointer flex-col gap-3 rounded-md bg-neutral-100 p-3 transition-[height] duration-200 ease-in hover:h-36 dark:bg-neutral-950 ${
 				expand ? 'justify-start' : 'justify-center'
 			}`}
-			onClick={() => setExpand(prev => !prev)}
 			onMouseEnter={() => setExpand(true)}
 			onMouseLeave={() => setExpand(false)}>
 			<div className='flex w-full items-center justify-between'>
