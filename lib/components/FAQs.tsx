@@ -1,7 +1,6 @@
 'use client'
-import {AnimatePresence, motion} from 'framer-motion'
 import {ChevronDownIcon} from 'lucide-react'
-import {useRef, useState} from 'react'
+import {useState} from 'react'
 import Button from './Button'
 
 const items = [
@@ -42,18 +41,15 @@ const items = [
 
 function FAQ({question, answer}) {
 	const [expand, setExpand] = useState(false)
-	const ref = useRef(null)
-
-	// Function to calculate height of the content
-	const calculateHeight = () => {
-		if (ref.current) return ref.current.offsetHeight
-		else return 'auto'
-	}
 
 	return (
-		<motion.div
-			className={`flex w-full cursor-pointer flex-col gap-3 rounded-md bg-neutral-100 p-3 transition-[height] duration-500 dark:bg-neutral-950`}
-			onClick={() => setExpand(prev => !prev)}>
+		<div
+			className={`flex h-12 w-full cursor-pointer flex-col gap-3 rounded-md bg-neutral-100 p-3 transition-[height] duration-100 ease-in hover:h-36 dark:bg-neutral-950 ${
+				expand ? 'justify-start' : 'justify-center'
+			}`}
+			onClick={() => setExpand(prev => !prev)}
+			onMouseEnter={() => setExpand(true)}
+			onMouseLeave={() => setExpand(false)}>
 			<div className='flex w-full items-center justify-between'>
 				<p className='font-bold'>{question}</p>
 				<ChevronDownIcon
@@ -62,20 +58,8 @@ function FAQ({question, answer}) {
 					} h-5 w-5 transition-transform duration-300`}
 				/>
 			</div>
-
-			<AnimatePresence>
-				{expand && (
-					<motion.div
-						initial={{height: 0}}
-						animate={{height: calculateHeight()}}
-						exit={{height: 0}}
-						transition={{duration: 0.3, ease: 'easeIn'}}
-						ref={ref}>
-						<div className='flex flex-col gap-2'>{answer}</div>
-					</motion.div>
-				)}
-			</AnimatePresence>
-		</motion.div>
+			{expand && <div className='flex flex-col gap-2'>{answer}</div>}
+		</div>
 	)
 }
 
