@@ -16,9 +16,6 @@ const SanityComponents: Partial<PortableTextReactComponents> = {
 					sizes='100vw'
 					className='my-4 h-auto w-full rounded-md'
 				/>
-				{value.alt ? (
-					<p className='text-center text-sm text-stone-500'>{value.alt}</p>
-				) : null}
 			</div>
 		)
 	},

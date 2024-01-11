@@ -42,7 +42,21 @@ const post = {
 		},
 		{
 			name: 'body',
-			of: [{type: 'block'}, {type: 'image'}],
+			of: [
+				{type: 'block'},
+				{
+					type: 'image',
+					name: 'image',
+					fields: [
+						{
+							name: 'alt',
+							title: 'Alternative text',
+							type: 'string',
+							validation: r => r.required()
+						}
+					]
+				}
+			],
 			title: 'Body',
 			type: 'array'
 		}
