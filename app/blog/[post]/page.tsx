@@ -4,8 +4,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import Button from '~/components/Button'
 import SanityComponents from '~/components/Sanity'
-import {DEFAULT_META} from '~/constants/metadata'
 import {getPost} from '~/sanity/utils'
+import getMetadata from '~/utils/getMetadata'
 
 type Props = {
 	params: {post: string}
@@ -14,18 +14,12 @@ type Props = {
 export async function generateMetadata({params}: Props): Promise<Metadata> {
 	const slug = params.post
 	const post = await getPost(slug)
-	return {
-		...DEFAULT_META,
-		openGraph: {
-			...DEFAULT_META.openGraph,
-			title: `${post.title} | Blog`
-		},
+	return getMetadata({
 		title: `${post.title} | Blog`,
-		twitter: {
-			...DEFAULT_META.twitter,
-			title: `${post.title} | Blog`
-		}
-	}
+		description:
+			'A post exploring the latest in AI-enabled products and experiences.',
+		path: `blog/${slug}`
+	})
 }
 
 export const revalidate = 60 // revalidate this page every 60 seconds

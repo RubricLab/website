@@ -1,25 +1,18 @@
 import {ArrowUpRightIcon} from 'lucide-react'
-import {Metadata} from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import Button from '~/components/Button'
-import {DEFAULT_META, META} from '~/constants/metadata'
 import {getPosts} from '~/sanity/utils'
 import {Post} from '~/types/sanity'
+import getMetadata from '~/utils/getMetadata'
 import parseDate from '~/utils/parseDate'
 
-export const metadata: Metadata = {
-	...DEFAULT_META,
-	openGraph: {
-		...DEFAULT_META.openGraph,
-		title: `Blog | ${META.title}`
-	},
-	title: `Blog | ${META.title}`,
-	twitter: {
-		...DEFAULT_META.twitter,
-		title: `Blog | ${META.title}`
-	}
-}
+export const metadata = getMetadata({
+	title: 'Blog',
+	description:
+		'Our writings on the latest in AI-enabled products and experiences. Case studies, analyses, and tutorials.',
+	path: 'blog'
+})
 
 type PostCardProps = {
 	post: Post

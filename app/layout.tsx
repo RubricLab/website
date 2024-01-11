@@ -15,12 +15,6 @@ const neueBit = localFont({
 })
 
 export const metadata = {
-	alternates: {
-		canonical: '/',
-		languages: {
-			'en-US': '/en-US'
-		}
-	},
 	metadataBase: new URL(META.siteURL)
 }
 

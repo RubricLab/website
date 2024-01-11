@@ -3,8 +3,8 @@ import {Metadata} from 'next'
 import Link from 'next/link'
 import Button from '~/components/Button'
 import SanityComponents from '~/components/Sanity'
-import {DEFAULT_META, META} from '~/constants/metadata'
 import {getNewsletterPost} from '~/sanity/utils'
+import getMetadata from '~/utils/getMetadata'
 
 type Props = {
 	params: {post: string}
@@ -14,21 +14,11 @@ type Props = {
 export async function generateMetadata({params}: Props): Promise<Metadata> {
 	// Read route params
 	const slug = params.post
-	return {
-		...DEFAULT_META,
-		openGraph: {
-			...DEFAULT_META.openGraph,
-			title: `The Grid | ${slug} | ${META.title}`,
-			description: '3 actionable insights. Once a week. Straight to your inbox.'
-		},
-		title: `The Grid | ${slug} | ${META.title}`,
+	return getMetadata({
+		title: `The Grid | ${slug}`,
 		description: '3 actionable insights. Once a week. Straight to your inbox.',
-		twitter: {
-			...DEFAULT_META.twitter,
-			title: `The Grid | ${slug} | ${META.title}`,
-			description: '3 actionable insights. Once a week. Straight to your inbox.'
-		}
-	}
+		path: `newsletter/${slug}`
+	})
 }
 
 export const revalidate = 60 // revalidate this page every 60 seconds

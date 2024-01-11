@@ -1,24 +1,17 @@
-import {Metadata} from 'next'
 import Hero from '~/components/AgencyHero'
 import FAQs from '~/components/FAQs'
 import HowWeWork from '~/components/HowWeWork'
 import {Logos} from '~/components/Logos'
 import Projects from '~/components/Projects'
 import Testimonials from '~/components/Testimonials'
-import {DEFAULT_META, META} from '~/constants/metadata'
+import getMetadata from '~/utils/getMetadata'
 
-export const metadata: Metadata = {
-	...DEFAULT_META,
-	openGraph: {
-		...DEFAULT_META.openGraph,
-		title: `Agency | ${META.title}`
-	},
-	title: `Agency | ${META.title}`,
-	twitter: {
-		...DEFAULT_META.twitter,
-		title: `Agency | ${META.title}`
-	}
-}
+export const metadata = getMetadata({
+	title: 'Agency',
+	description:
+		'We make AI-enabled magical software. Rubric is a digital studio specializing in LangChain, Next.js, and AI-enabled product development.',
+	path: 'agency'
+})
 
 export default function Agency() {
 	return (

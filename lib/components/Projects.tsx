@@ -50,7 +50,7 @@ export default function Projects() {
 					<Link
 						href='/projects'
 						className='group flex gap-2'>
-						<span>See more</span>
+						<span>See all projects</span>
 						<ArrowRight className='w-4 transition-transform group-hover:translate-x-1' />
 					</Link>
 				</div>

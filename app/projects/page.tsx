@@ -4,7 +4,12 @@ import {getProjects} from '~/sanity/utils'
 import {Project} from '~/types/sanity'
 import getMetadata from '~/utils/getMetadata'
 
-export const metadata = getMetadata({title: 'Projects'})
+export const metadata = getMetadata({
+	title: 'Projects',
+	description:
+		"Rubric is the digital studio behind Year in Code, Cal.ai, Maige, and more. We're a team of engineers, designers, and product managers who build AI-enabled magical software.",
+	path: 'projects'
+})
 
 export const revalidate = 60 // revalidate this page every 60 seconds
 

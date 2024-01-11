@@ -1,29 +1,13 @@
-import {Metadata} from 'next'
 import {Card} from '~/components/Card'
 import NewsletterForm from '~/components/NewsletterForm'
-import {DEFAULT_META, META} from '~/constants/metadata'
 import {getNewsletterPosts} from '~/sanity/utils'
+import getMetadata from '~/utils/getMetadata'
 
-const data = {
+export const metadata = getMetadata({
+	title: 'The Grid | Newsletter',
 	description: '3 actionable insights. Once a week. Straight to your inbox.',
-	title: `The Grid | Newsletter | ${META.title}`
-}
-
-export const metadata: Metadata = {
-	...DEFAULT_META,
-	description: data.description,
-	openGraph: {
-		...DEFAULT_META.openGraph,
-		description: data.description,
-		title: data.title
-	},
-	title: data.title,
-	twitter: {
-		...DEFAULT_META.twitter,
-		description: data.description,
-		title: data.title
-	}
-}
+	path: 'newsletter'
+})
 
 export const revalidate = 60 // revalidate this page every 60 seconds
 

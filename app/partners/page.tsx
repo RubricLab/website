@@ -2,7 +2,12 @@ import Button from '~/components/Button'
 import {Card} from '~/components/Card'
 import getMetadata from '~/utils/getMetadata'
 
-export const metadata = getMetadata({title: 'Partners'})
+export const metadata = getMetadata({
+	title: 'Partners',
+	description:
+		'We work with startups big and small to ship AI-enabled software. We are proud to have worked with Graphite.dev, Cal.com, and Trigger.dev, among many others. Join the list.',
+	path: 'partners'
+})
 
 const partners = [
 	{
