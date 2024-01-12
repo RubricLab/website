@@ -48,7 +48,9 @@ function Step({
 
 export default function HowWeWork() {
 	return (
-		<div className='flex min-h-screen flex-col items-center justify-center gap-16 bg-white p-8 dark:bg-black'>
+		<div
+			id='how-we-work'
+			className='flex min-h-screen flex-col items-center justify-center gap-16 bg-white p-8 dark:bg-black'>
 			<div className='flex flex-col items-center'>
 				<h1>We like to keep things simple.</h1>
 				<h3>Learn about how we work.</h3>
