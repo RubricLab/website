@@ -12,7 +12,7 @@ const steps = [
 	{
 		title: 'Onboarding',
 		description:
-			'After agreeing on project terms, we add you to a shared Slack channel, and get going.'
+			'After agreeing on project terms, we add you to a shared Slack channel and get going.'
 	},
 	{
 		title: 'Building',
@@ -36,12 +36,12 @@ function Step({
 	description: string
 }) {
 	return (
-		<div className='grid w-full grid-cols-8 gap-3'>
-			<span className='flex h-10 w-10 items-center justify-center rounded-full bg-neutral-100 text-center text-2xl'>
+		<div className='grid w-full grid-cols-8 items-center gap-2'>
+			<span className='border-primary flex h-14 w-14 items-center justify-center rounded-full border text-center text-2xl'>
 				{rank}
 			</span>
-			<h3 className=''>{title}</h3>
-			<p className='col-span-4 col-start-4'>{description}</p>
+			<h3 className='text-secondary font-medium'>{title}</h3>
+			<p className='col-span-4 col-start-5'>{description}</p>
 		</div>
 	)
 }
@@ -55,7 +55,7 @@ export default function HowWeWork() {
 				<h1>We like to keep things simple.</h1>
 				<h3>Learn about how we work.</h3>
 			</div>
-			<div className='flex w-full max-w-3xl flex-col gap-5'>
+			<div className='flex w-full max-w-3xl flex-col gap-12'>
 				{steps.map((step, index) => (
 					<Step
 						key={index}
