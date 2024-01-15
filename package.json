@@ -6,6 +6,8 @@
     "@sanity/image-url": "^1.0.2",
     "@sanity/vision": "^3.19.3",
     "@slack/web-api": "^6.10.0",
+    "@splinetool/react-spline": "^2.2.6",
+    "@splinetool/runtime": "^1.0.28",
     "@t3-oss/env-nextjs": "^0.7.1",
     "axios": "^1.6.2",
     "clsx": "^2.0.0",
