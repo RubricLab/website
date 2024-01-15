@@ -5,6 +5,7 @@ export const META = {
 		'A lean team of developers & designers building AI-enabled software end-to-end.',
 	githubURL: 'https://github.com/RubricLab',
 	twitterURL: 'https://x.com/RubricLabs',
+	linkedinURL: 'https://linkedin.com/company/RubricLabs',
 	siteURL: 'https://rubriclabs.com',
 	title: 'Rubric',
 	twitter: '@RubricLabs'

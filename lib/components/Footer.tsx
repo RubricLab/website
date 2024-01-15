@@ -1,5 +1,5 @@
 'use client'
-import {GithubIcon, TwitterIcon} from 'lucide-react'
+import {GithubIcon, LinkedinIcon, TwitterIcon} from 'lucide-react'
 import Link from 'next/link'
 import {META} from '~/constants/metadata'
 import BackgroundGrid from './BackgroundGrid'
@@ -19,12 +19,23 @@ const socials = [
 	{
 		title: 'GitHub',
 		href: META.githubURL,
-		icon: <GithubIcon className='h-5 w-5' />
+		icon: (
+			<GithubIcon className='h-5 w-5 transition-transform duration-300 hover:-translate-x-0.5' />
+		)
 	},
 	{
 		title: 'Twitter',
 		href: META.twitterURL,
-		icon: <TwitterIcon className='h-5 w-5' />
+		icon: (
+			<TwitterIcon className='h-5 w-5 transition-transform duration-300 hover:rotate-12' />
+		)
+	},
+	{
+		title: 'LinkedIn',
+		href: META.linkedinURL,
+		icon: (
+			<LinkedinIcon className='h-5 w-5 transition-transform duration-300 hover:-translate-y-0.5' />
+		)
 	}
 ]
 
