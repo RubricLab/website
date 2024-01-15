@@ -3,7 +3,8 @@ import {Metadata} from 'next'
 export const META = {
 	description:
 		'A lean team of developers & designers building AI-enabled software end-to-end.',
-	githubURL: 'https://github.com/rubriclab',
+	githubURL: 'https://github.com/RubricLab',
+	twitterURL: 'https://x.com/RubricLabs',
 	siteURL: 'https://rubriclabs.com',
 	title: 'Rubric',
 	twitter: '@RubricLabs'

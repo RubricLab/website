@@ -1,18 +1,31 @@
 'use client'
+import {GithubIcon, TwitterIcon} from 'lucide-react'
 import Link from 'next/link'
 import {META} from '~/constants/metadata'
 import BackgroundGrid from './BackgroundGrid'
 import Button from './Button'
 import Title from './Title'
 
-const items = [
+const pages = [
 	{title: 'Blog', href: '/blog'},
 	{title: 'Contact', href: '/contact'},
 	{title: 'Partners', href: '/partners'},
 	{title: 'Projects', href: '/projects'},
 	{title: 'Newsletter', href: '/newsletter'},
-	{title: 'Brand', href: 'https://brand.rubriclabs.com'},
-	{title: 'GitHub', href: META.githubURL}
+	{title: 'Brand', href: 'https://brand.rubriclabs.com'}
+]
+
+const socials = [
+	{
+		title: 'GitHub',
+		href: META.githubURL,
+		icon: <GithubIcon className='h-5 w-5' />
+	},
+	{
+		title: 'Twitter',
+		href: META.twitterURL,
+		icon: <TwitterIcon className='h-5 w-5' />
+	}
 ]
 
 const Footer = () => {
@@ -42,8 +55,8 @@ const Footer = () => {
 				/>
 			</div>
 
-			<div className='flex w-full flex-row flex-wrap items-end justify-center gap-10 sm:w-auto sm:flex-col sm:gap-3'>
-				{items
+			<div className='flex w-full flex-row flex-wrap items-end justify-center gap-4 sm:w-auto sm:flex-col sm:gap-3'>
+				{pages
 					// Removed alphabetical sort in favour of sorting for funnel
 					.map(item => (
 						<Link
@@ -53,6 +66,17 @@ const Footer = () => {
 							{item.title}
 						</Link>
 					))}
+				<div className='flex w-full items-center justify-center gap-4 sm:justify-end sm:gap-3'>
+					{socials.map(item => (
+						<Link
+							key={item.title}
+							target='_blank'
+							className='no-underline underline-offset-4 transition-all duration-300 hover:underline'
+							href={item.href}>
+							{item.icon}
+						</Link>
+					))}
+				</div>
 			</div>
 		</div>
 	)
