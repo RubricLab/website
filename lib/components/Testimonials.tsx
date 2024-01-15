@@ -2,9 +2,13 @@ import Link from 'next/link'
 
 const comments = [
 	{
-		author: {name: 'Peer Rich', href: 'https://cal.com', company: 'Cal.com'},
+		author: {
+			name: 'Daniel Bevan',
+			href: 'https://design.danielbevan.com',
+			company: 'DB Designs'
+		},
 		comment:
-			'Rubric is an all-star team. They helped us ship our AI-scheduling assistant in weeks. Would work with them again.'
+			'Rubric was an absolute pleasure to work with. They were available to meet on short notice and displayed an immense desire to meet our near-impossible deadlines. Their knowledge of complex AI solutions is impressive. I will definitely be working with the Rubric team again soon.'
 	},
 	{
 		author: {
@@ -12,8 +16,7 @@ const comments = [
 			href: 'https://graphite.dev',
 			company: 'Graphite'
 		},
-		comment:
-			'We went from scope of work to a working prototype in weeks. What they achieved was truly impressive.'
+		comment: '...'
 	}
 ]
 
