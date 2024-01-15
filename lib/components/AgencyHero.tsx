@@ -38,7 +38,7 @@ export default function Hero() {
 					</div>
 				</motion.div>
 			</AnimatePresence>
-			<div className='absolute bottom-0 right-0 h-[70vh] w-full max-w-2xl'>
+			<div className='absolute bottom-0 right-0 h-full w-full max-w-xl'>
 				<Spline scene={spline} />
 			</div>
 		</div>

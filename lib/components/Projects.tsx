@@ -22,7 +22,7 @@ const projects = [
 export default function Projects() {
 	return (
 		<div
-			className='flex min-h-screen w-full flex-col items-center justify-center gap-16 bg-neutral-100 p-5 py-20 dark:bg-neutral-950 sm:p-10'
+			className='flex min-h-screen w-full flex-col items-center justify-center gap-16 bg-neutral-100 p-5 py-28 dark:bg-neutral-950 sm:px-10'
 			id='projects'>
 			<div className='flex flex-col items-start sm:items-center'>
 				<div className='text-tertiary font-neue-bit text-3xl sm:text-4xl'>
