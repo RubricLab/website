@@ -1,4 +1,5 @@
 import Hero from '~/components/AgencyHero'
+import {CTA} from '~/components/CTA'
 import FAQs from '~/components/FAQs'
 import HowWeWork from '~/components/HowWeWork'
 import {Logos} from '~/components/Logos'
@@ -22,6 +23,7 @@ export default function Agency() {
 			<HowWeWork />
 			<Testimonials />
 			<FAQs />
+			<CTA />
 		</div>
 	)
 }

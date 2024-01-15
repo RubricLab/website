@@ -65,9 +65,6 @@ html {
 	}
 	.animate-carousel {
 		width: 200%;
-		animation: slide-left 10s linear infinite;
-	}
-	.animate-carousel:hover {
-		animation-play-state: paused;
+		animation: slide-left 15s linear infinite;
 	}
 }
