@@ -2,7 +2,7 @@ import {PortableText} from '@portabletext/react'
 import {Metadata} from 'next'
 import Link from 'next/link'
 import Button from '~/components/Button'
-import SanityComponents from '~/components/Sanity'
+import {SanityComponents} from '~/components/Sanity'
 import {getNewsletterPost} from '~/sanity/utils'
 import getMetadata from '~/utils/getMetadata'
 
