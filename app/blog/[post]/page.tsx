@@ -3,7 +3,7 @@ import {Metadata} from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import Button from '~/components/Button'
-import SanityComponents from '~/components/Sanity'
+import {SanityComponents} from '~/components/Sanity'
 import {getPost} from '~/sanity/utils'
 import getMetadata from '~/utils/getMetadata'
 

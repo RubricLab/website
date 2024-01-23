@@ -3,7 +3,7 @@ import urlBuilder from '@sanity/image-url'
 import Image from 'next/image'
 import {sanity} from '~/sanity/utils'
 
-const SanityComponents: Partial<PortableTextReactComponents> = {
+export const SanityComponents: Partial<PortableTextReactComponents> = {
 	types: {
 		image: ({value}) => (
 			<div>
@@ -19,6 +19,7 @@ const SanityComponents: Partial<PortableTextReactComponents> = {
 			</div>
 		)
 	},
+	marks: {},
 	block: {
 		blockquote: ({children}: {children?: any}) => (
 			<blockquote className='border-secondary text-secondary border-l pl-4'>
@@ -26,11 +27,19 @@ const SanityComponents: Partial<PortableTextReactComponents> = {
 			</blockquote>
 		),
 		normal: ({children}: {children?: any}) => (
-			<p className='text-secondary leading-7'>{children}</p>
+			<p className='text-red leading-7'>{children}</p>
+		),
+		h1: ({children}: {children?: any}) => (
+			<h1 className='mt-8 leading-10'>{children}</h1>
+		),
+		h2: ({children}: {children?: any}) => (
+			<h2 className='mt-6 font-medium leading-8'>{children}</h2>
+		),
+		h3: ({children}: {children?: any}) => (
+			<h3 className='mt-4 font-medium'>{children}</h3>
 		)
 	},
 	listItem: {
 		bullet: ({children}) => <li className='text-secondary'>{children}</li>
 	}
 }
-export default SanityComponents
