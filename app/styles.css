@@ -11,7 +11,7 @@ html {
 		@apply text-black dark:text-white;
 	}
 	a {
-		@apply underline decoration-neutral-800 decoration-2 underline-offset-2 transition-opacity hover:opacity-80 dark:decoration-neutral-200;
+		@apply underline decoration-neutral-800 decoration-2 underline-offset-4 transition-opacity hover:opacity-80 dark:decoration-neutral-200;
 	}
 	h1 {
 		@apply font-neue-bit text-6xl text-black dark:text-white md:text-7xl;
@@ -38,7 +38,10 @@ html {
 		@apply rounded-md bg-neutral-100 p-2 dark:bg-neutral-600;
 	}
 	ul {
-		@apply flex list-inside list-disc flex-col gap-3;
+		@apply ml-6 flex list-outside list-disc flex-col gap-3;
+	}
+	ol {
+		@apply ml-6 list-outside list-decimal flex-col gap-3;
 	}
 	.text-primary {
 		@apply text-black dark:text-white;
