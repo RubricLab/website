@@ -12,7 +12,8 @@ const pages = [
 	{title: 'Partners', href: '/partners'},
 	{title: 'Projects', href: '/projects'},
 	{title: 'Newsletter', href: '/newsletter'},
-	{title: 'Brand', href: 'https://brand.rubriclabs.com'}
+	{title: 'Brand', href: 'https://brand.rubriclabs.com'},
+	{title: 'Sitemap', href: '/sitemap.xml'}
 ]
 
 const socials = [
