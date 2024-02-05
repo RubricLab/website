@@ -72,6 +72,7 @@ export async function getPost(slug: string): Promise<Post> {
         _id,
         _createdAt,
         title,
+        description,
         "slug": slug.current,
         "mainImage": mainImage.asset->url,
         body,

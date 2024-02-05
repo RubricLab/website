@@ -17,6 +17,7 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
 	return getMetadata({
 		title: `${post.title} | Blog`,
 		description:
+			post.description ||
 			'A post exploring the latest in AI-enabled products and experiences.',
 		path: `blog/${slug}`
 	})
