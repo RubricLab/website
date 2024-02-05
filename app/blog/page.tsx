@@ -57,8 +57,8 @@ const PostCard = ({post}: PostCardProps) => {
 export default async function Blog() {
 	const posts = await getPosts()
 	return (
-		<div className='my-28 flex min-h-screen w-full flex-col items-center px-5 sm:px-10 2xl:justify-center'>
-			<div className='flex h-full max-w-4xl flex-col gap-10'>
+		<div className='my-32 flex min-h-screen w-full flex-col items-center 2xl:justify-center'>
+			<div className='flex h-full max-w-4xl flex-col gap-16 p-5'>
 				<h1>Blog</h1>
 				{/* "Coming soon" if there are no posts */}
 				{posts.length === 0 && (

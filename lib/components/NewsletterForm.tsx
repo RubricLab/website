@@ -44,7 +44,7 @@ export default function NewsletterForm() {
 	return (
 		<form
 			ref={formRef}
-			className='flex w-full flex-col justify-end gap-3'
+			className='flex w-full max-w-2xl flex-col justify-end gap-3'
 			action={formAction}>
 			<input
 				type='text'

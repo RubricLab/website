@@ -13,17 +13,15 @@ type CardProps = {
 export const Card = ({url, title, body, target = '_blank'}: CardProps) => {
 	return (
 		<Link
-			className='border-secondary group relative w-full rounded-md border bg-white p-8 no-underline dark:bg-black'
+			className='border-secondary group relative w-full max-w-md rounded-md border bg-white p-7 no-underline dark:bg-black sm:p-10'
 			href={url}
 			target={target}>
-			<div className='flex h-full flex-col items-start gap-1 sm:flex-row sm:items-center sm:gap-5'>
-				<h1 className='text-primary flex h-full flex-wrap items-center text-4xl sm:w-2/5'>
-					{title}
-				</h1>
+			<div className='flex h-full flex-col items-start justify-start gap-1 py-2 sm:gap-5'>
+				<h1 className='leading-[3.25rem]'>{title}</h1>
 				{body && (
-					<div className='flex h-full items-center sm:w-4/5'>
+					<div className='flex h-full items-start'>
 						{typeof body === 'string' ? (
-							<p className='text-secondary text-lg'>{body}</p>
+							<p className='text-tertiary text-lg'>{body}</p>
 						) : (
 							<PortableText value={body} />
 						)}

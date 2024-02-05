@@ -7,6 +7,11 @@ const newsletter = {
 			type: 'string'
 		},
 		{
+			name: 'description',
+			title: 'Description',
+			type: 'string'
+		},
+		{
 			name: 'slug',
 			options: {
 				maxLength: 96,

@@ -14,9 +14,12 @@ type Props = {
 export async function generateMetadata({params}: Props): Promise<Metadata> {
 	// Read route params
 	const slug = params.post
+	const post = await getNewsletterPost(slug)
 	return getMetadata({
 		title: `The Grid | ${slug}`,
-		description: '3 actionable insights. Once a week. Straight to your inbox.',
+		description:
+			post.description ||
+			'3 actionable insights. Once a week. Straight to your inbox.',
 		path: `newsletter/${slug}`
 	})
 }

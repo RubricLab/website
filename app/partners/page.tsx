@@ -26,10 +26,10 @@ const partners = [
 
 const Partners = async () => {
 	return (
-		<div className='my-28 flex w-full flex-col items-center 2xl:justify-center'>
-			<div className='flex h-full w-full max-w-3xl flex-col gap-20 px-5 sm:px-10'>
+		<div className='my-32 flex w-full flex-col items-center 2xl:justify-center'>
+			<div className='flex h-full w-full max-w-4xl flex-col gap-16 p-5'>
 				<h1>Partners</h1>
-				<div className='flex w-full flex-col gap-3 sm:gap-5'>
+				<div className='grid gap-5 sm:grid-cols-2'>
 					{partners
 						.sort((a, b) => a.title.localeCompare(b.title)) // Sort alphabetically
 						.map(partner => (

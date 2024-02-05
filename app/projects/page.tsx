@@ -17,13 +17,13 @@ const Projects = async () => {
 	const projects = await getProjects()
 
 	return (
-		<div className='my-28 flex w-full flex-col items-center 2xl:justify-center'>
-			<div className='flex h-full flex-col gap-20 p-5 sm:p-8'>
+		<div className='my-32 flex w-full flex-col items-center 2xl:justify-center'>
+			<div className='flex h-full max-w-4xl flex-col gap-16 p-5'>
 				<h1>Projects</h1>
-				<div className='flex max-w-3xl flex-col gap-5'>
+				<div className='grid grid-cols-1 gap-5 sm:grid-cols-2'>
 					{projects.map((project: Project) => (
 						<Card
-							body={project.content}
+							body={project.content[0].children[0].text}
 							key={project._id}
 							title={project.name}
 							url={project.url}

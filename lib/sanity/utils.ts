@@ -120,7 +120,7 @@ export async function getCaseStudy(slug: string): Promise<CaseStudy> {
 export async function getNewsletterPosts(): Promise<Newsletter[]> {
 	// Groq fetch query
 	return sanity.fetch(
-		groq`*[_type == "newsletter" && publishedAt < now()] | order(publishedAt){
+		groq`*[_type == "newsletter" && publishedAt < now()] | order(publishedAt desc){
         _id,
         _createdAt,
         title,
@@ -139,6 +139,7 @@ export async function getNewsletterPost(slug: string): Promise<Newsletter> {
         _id,
         _createdAt,
         title,
+        description,
         "slug": slug.current,
         body,
         publishedAt,
