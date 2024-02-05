@@ -48,13 +48,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 		...blogPosts.map(post => ({
 			url: `${base}/blog/${post.slug}`,
 			lastModified: new Date(post.publishedAt),
-			changeFrequency: 'monthly' as 'monthly'
+			changeFrequency: 'weekly' as 'weekly'
 		})),
 		// Newsletter posts
 		...newsletterPosts.map(post => ({
 			url: `${base}/newsletter/${post.slug}`,
 			lastModified: new Date(post.publishedAt),
-			changeFrequency: 'yearly' as 'yearly'
+			changeFrequency: 'weekly' as 'weekly'
 		}))
 	]
 

@@ -18,7 +18,7 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
 	return getMetadata({
 		title: `The Grid | ${slug}`,
 		description:
-			post.description ||
+			post?.description ||
 			'3 actionable insights. Once a week. Straight to your inbox.',
 		path: `newsletter/${slug}`
 	})
