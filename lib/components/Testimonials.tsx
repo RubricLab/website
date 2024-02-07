@@ -16,7 +16,8 @@ const comments = [
 			href: 'https://graphite.dev',
 			company: 'Graphite'
 		},
-		comment: '...'
+		comment:
+			"In just a few weeks, Rubric went from initial concepts to delivering an engaging AI video experience that reached thousands of users. They're fluent in novel technologies, creative, highly responsive, and went the extra mile to follow through and iterate with us even after initial handoff."
 	}
 ]
 
