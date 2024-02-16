@@ -21,6 +21,12 @@ const history = [
 		href: 'https://year-in-code.com',
 		date: new Date('12/19/2023')
 	}
+	// {
+	// 	title: 'Maige',
+	// 	target: '_blank',
+	// 	href: 'https://maige.app',
+	// 	date: new Date('02/19/2024')
+	// }
 ]
 
 export default function Announcement() {
