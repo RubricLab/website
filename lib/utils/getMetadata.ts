@@ -36,7 +36,7 @@ export default function getMetadata({
 			...DEFAULT_META.twitter,
 			description: description || DEFAULT_META.description,
 			title: combinedTitle,
-			images: previewImageUrl ?? `/opengraph-image`
+			images: previewImageUrl ? [previewImageUrl] : [`/opengraph-image`]
 		},
 		alternates: {
 			canonical: `${DEFAULT_META.openGraph.url}/${path}`
