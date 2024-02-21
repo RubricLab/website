@@ -29,8 +29,8 @@ function Testimonial({
 	author: {name: string; href: string; company: string}
 }) {
 	return (
-		<div className='flex w-[30vw] flex-col gap-3 rounded-md bg-white p-5 dark:bg-black'>
-			<p className='text-xl'>{`"${comment}"`}</p>
+		<div className='flex flex-col gap-3 rounded-md bg-white p-5 sm:w-[30vw] dark:bg-black'>
+			<p className='text-xl font-thin'>{comment}</p>
 			<div className='flex w-full items-center justify-end gap-1'>
 				<Link
 					className='font-semibold no-underline'
@@ -47,12 +47,12 @@ export default function Testimonials() {
 	return (
 		<div
 			id='testimonials'
-			className='flex min-h-screen flex-col items-center justify-center gap-16 bg-neutral-100 p-8 dark:bg-neutral-950'>
-			<div className='flex flex-col items-center'>
+			className='flex min-h-screen flex-col items-center justify-center gap-16 bg-neutral-100 p-8 dark:bg-neutral-900'>
+			<div className='flex flex-col items-center text-center'>
 				<h1>Loved by the best.</h1>
 				<h3>Read what folks have to say about us.</h3>
 			</div>
-			<div className='flex gap-10'>
+			<div className='flex flex-col gap-10 sm:flex-row'>
 				{comments.map(item => (
 					<Testimonial
 						key={item.author.name}

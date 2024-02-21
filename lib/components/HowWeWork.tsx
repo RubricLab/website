@@ -36,12 +36,12 @@ function Step({
 	description: string
 }) {
 	return (
-		<div className='grid w-full grid-cols-8 items-center gap-2'>
+		<div className='flex w-full flex-col gap-2 sm:grid sm:grid-cols-8 sm:items-center'>
 			<span className='border-primary flex h-14 w-14 items-center justify-center rounded-full border text-center text-2xl'>
 				{rank}
 			</span>
 			<h3 className='text-secondary font-medium'>{title}</h3>
-			<p className='col-span-4 col-start-5'>{description}</p>
+			<p className='sm:col-span-4 sm:col-start-5'>{description}</p>
 		</div>
 	)
 }
@@ -51,7 +51,7 @@ export default function HowWeWork() {
 		<div
 			id='how-we-work'
 			className='flex min-h-screen flex-col items-center justify-center gap-16 bg-white p-8 dark:bg-black'>
-			<div className='flex flex-col items-center'>
+			<div className='flex flex-col items-center text-center'>
 				<h1>We like to keep things simple.</h1>
 				<h3>Learn about how we work.</h3>
 			</div>

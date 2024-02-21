@@ -52,14 +52,23 @@ export default function NavBar() {
 				href='/'>
 				<Title size='small' />
 			</Link>
-			{pathname !== '/contact' && (
-				<Button
-					body='Get in touch'
-					className='w-fit'
-					href='/contact'
-					variant='dark'
-				/>
-			)}
+			<div className='flex items-center gap-4'>
+				{pathname !== '/agency' && (
+					<Link
+						className='hidden no-underline underline-offset-4 transition-all duration-300 hover:underline sm:flex'
+						href='/agency'>
+						Agency
+					</Link>
+				)}
+				{pathname !== '/contact' && (
+					<Button
+						body='Get in touch'
+						className='w-fit'
+						href='/contact'
+						variant='dark'
+					/>
+				)}
+			</div>
 		</nav>
 	)
 }
