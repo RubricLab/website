@@ -20,7 +20,8 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
 		description:
 			post?.description ||
 			'3 actionable insights. Once a week. Straight to your inbox.',
-		path: `newsletter/${slug}`
+		path: `newsletter/${slug}`,
+		previewImageUrl: `/newsletter/${slug}/opengraph-image`
 	})
 }
 

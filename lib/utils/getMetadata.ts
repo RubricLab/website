@@ -24,21 +24,19 @@ export default function getMetadata({
 			...DEFAULT_META.openGraph,
 			description: description || DEFAULT_META.description,
 			title: combinedTitle,
-			...(previewImageUrl
-				? {
-						images: [
-							{
-								url: previewImageUrl
-							}
-						]
-				  }
-				: {})
+
+			images: [
+				{
+					url: previewImageUrl ?? `/opengraph-image`
+				}
+			]
 		},
 		title: combinedTitle,
 		twitter: {
 			...DEFAULT_META.twitter,
 			description: description || DEFAULT_META.description,
-			title: combinedTitle
+			title: combinedTitle,
+			images: previewImageUrl ?? `/opengraph-image`
 		},
 		alternates: {
 			canonical: `${DEFAULT_META.openGraph.url}/${path}`
