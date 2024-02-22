@@ -10,6 +10,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 	const newsletterPosts = await getNewsletterPosts()
 	const blogPosts = await getPosts()
 
+	const corePages = [
+		'agency',
+		'blog',
+		'newsletter',
+		'projects',
+		'partners',
+		'contact'
+	]
+
 	/**
 	 * In order of priority
 	 */
@@ -19,31 +28,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 			lastModified: new Date(),
 			changeFrequency: 'monthly' as 'monthly'
 		},
-		{
-			url: `${base}/blog`,
+		// Core pages
+		...corePages.map(page => ({
+			url: `${base}/${page}`,
 			lastModified: new Date(),
 			changeFrequency: 'weekly' as 'weekly'
-		},
-		{
-			url: `${base}/newsletter`,
-			lastModified: new Date(),
-			changeFrequency: 'weekly' as 'weekly'
-		},
-		{
-			url: `${base}/projects`,
-			lastModified: new Date(),
-			changeFrequency: 'weekly' as 'weekly'
-		},
-		{
-			url: `${base}/partners`,
-			lastModified: new Date(),
-			changeFrequency: 'monthly' as 'monthly'
-		},
-		{
-			url: `${base}/contact`,
-			lastModified: new Date(),
-			changeFrequency: 'monthly' as 'monthly'
-		},
+		})),
 		// Blog posts
 		...blogPosts.map(post => ({
 			url: `${base}/blog/${post.slug}`,

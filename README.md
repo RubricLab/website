@@ -15,3 +15,5 @@ To run the dev server, run:
 ```bash
 bun run dev
 ```
+
+After adding a page, please add it to the [sitemap](/app/sitemap.ts).
