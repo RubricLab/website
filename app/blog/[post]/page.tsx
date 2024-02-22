@@ -20,7 +20,7 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
 			post.description ||
 			'A post exploring the latest in AI-enabled products and experiences.',
 		path: `blog/${slug}`,
-		previewImageUrl: `/blog/${slug}/opengraph-image`
+		previewImageUrl: `blog/${slug}/opengraph-image`
 	})
 }
 

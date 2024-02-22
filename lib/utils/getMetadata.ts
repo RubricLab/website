@@ -27,7 +27,7 @@ export default function getMetadata({
 
 			images: [
 				{
-					url: previewImageUrl ?? `/opengraph-image`
+					url: `${META.siteURL}/${previewImageUrl ?? 'opengraph-image'}`
 				}
 			]
 		},
@@ -36,7 +36,11 @@ export default function getMetadata({
 			...DEFAULT_META.twitter,
 			description: description || DEFAULT_META.description,
 			title: combinedTitle,
-			images: previewImageUrl ?? `/opengraph-image`
+			images: [
+				{
+					url: `${META.siteURL}/${previewImageUrl ?? 'opengraph-image'}`
+				}
+			]
 		},
 		alternates: {
 			canonical: `${DEFAULT_META.openGraph.url}/${path}`
