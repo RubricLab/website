@@ -31,8 +31,8 @@ export default function getMetadata({
 
 			images: [
 				{
-					// url: `/${previewImageRoute ?? 'opengraph-image'}?refresh=${refresh || 0}`
-					url: `/${previewImageRoute ?? 'opengraph-image'}?refresh=01`
+					url: `/${previewImageRoute ?? 'opengraph-image'}?refresh=${refresh || 0}`
+					// url: `/${previewImageRoute ?? 'opengraph-image'}?refresh=01`
 				}
 			]
 		},
@@ -43,8 +43,8 @@ export default function getMetadata({
 			title: combinedTitle,
 			images: [
 				{
-					// url: `/${previewImageRoute ?? 'opengraph-image'}?refresh=${refresh || 0}`
-					url: `/${previewImageRoute ?? 'opengraph-image'}?refresh=01`
+					url: `/${previewImageRoute ?? 'opengraph-image'}?refresh=${refresh || 0}`
+					// url: `/${previewImageRoute ?? 'opengraph-image'}?refresh=01`
 				}
 			]
 		},
