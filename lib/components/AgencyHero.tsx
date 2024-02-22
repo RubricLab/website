@@ -7,7 +7,7 @@ const spline = 'https://prod.spline.design/OHikHB3gsuUnIbKX/scene.splinecode'
 
 export default function Hero() {
 	return (
-		<div className='relative flex min-h-screen w-screen flex-col items-center justify-center gap-5 p-5 pt-20 sm:px-10'>
+		<div className='flex h-full min-h-screen w-screen flex-col items-center justify-center gap-5 p-5 pt-20 sm:flex-row sm:px-10'>
 			<AnimatePresence>
 				<motion.div
 					animate={{opacity: 1}}
@@ -15,14 +15,13 @@ export default function Hero() {
 					exit={{opacity: 0}}
 					initial={{opacity: 0}}
 					transition={{duration: 2}}>
-					<div className='flex h-full flex-col gap-8 text-black dark:text-white sm:gap-16'>
-						<p className='text-5xl tracking-tight sm:text-8xl sm:leading-[7.5rem]'>
-							We make <span className='whitespace-nowrap font-bold'>AI-enabled</span>,{' '}
-							<span className='font-bold'>magical</span> software.
+					<div className='flex h-full flex-col gap-8 text-black sm:gap-16 dark:text-white'>
+						<p className='text-4xl tracking-tight sm:text-8xl sm:leading-[7.5rem]'>
+							We make <span className='font-bold'>magical, </span>{' '}
+							<span className='whitespace-nowrap font-bold'>AI-first</span> software.
 						</p>
 						<p className='text-secondary max-w-xl text-2xl sm:leading-10'>
-							Rubric is a digital studio working with startups big & small to build the
-							future users want.
+							We work with startups big & small to build the future users want.
 						</p>
 						<p className='text-secondary invisible sm:visible'>
 							Press{' '}
@@ -38,7 +37,7 @@ export default function Hero() {
 					</div>
 				</motion.div>
 			</AnimatePresence>
-			<div className='absolute bottom-0 right-0 h-full w-full max-w-xl'>
+			<div className='h-[40vh] w-full sm:h-[70vh] sm:max-w-lg'>
 				<Spline scene={spline} />
 			</div>
 		</div>

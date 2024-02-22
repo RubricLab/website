@@ -25,6 +25,7 @@ export const DEFAULT_META: Metadata = {
 		card: 'summary_large_image',
 		creator: META.twitter,
 		description: META.description,
-		title: META.title
+		title: META.title,
+		site: META.twitter
 	}
 }
