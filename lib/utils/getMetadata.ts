@@ -10,7 +10,7 @@ const project = 'website' // The name of the Vercel project.
 
 const [hash] = env.VERCEL_URL.replace(`${project}-`, '').split('-') // The deployment URL is in the format https://project-hash-scope.vercel.app.
 // const refresh = hash.slice(0, 2)
-const refresh = '01'
+const refresh = '02'
 
 export default function getMetadata({
 	title,
