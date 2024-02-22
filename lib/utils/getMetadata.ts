@@ -6,8 +6,6 @@ import env from '~/env.mjs'
  * Get metadata for a page. Optionally override title, description, path, and preview image URL.
  */
 
-const [refresh] = env.VERCEL_URL.split('.vercel.app')
-
 export default function getMetadata({
 	title,
 	description,
@@ -31,8 +29,7 @@ export default function getMetadata({
 
 			images: [
 				{
-					url: `/${previewImageRoute ?? 'opengraph-image'}?refresh=${refresh || 0}`
-					// url: `/${previewImageRoute ?? 'opengraph-image'}?refresh=01`
+					url: `/${previewImageRoute ?? 'opengraph-image'}`
 				}
 			]
 		},
@@ -43,7 +40,9 @@ export default function getMetadata({
 			title: combinedTitle,
 			images: [
 				{
-					url: `/${previewImageRoute ?? 'opengraph-image'}?refresh=${refresh || 0}`
+					url: `/${previewImageRoute ?? 'opengraph-image'}?refresh=${
+						env.VERCEL_GIT_COMMIT_SHA || 0
+					}`
 					// url: `/${previewImageRoute ?? 'opengraph-image'}?refresh=01`
 				}
 			]
