@@ -8,9 +8,9 @@ import env from '~/env.mjs'
 
 const project = 'website' // The name of the Vercel project.
 
-const [generatedUrl] = env.VERCEL_URL.split('.vercel.app') // The deployment URL is in the format https://project-hash-scope.vercel.app.
-const [hash] = generatedUrl.replace(`${project}-`, '').split('-')
-const refresh = hash.slice(0, 2)
+const [hash] = env.VERCEL_URL.replace(`${project}-`, '').split('-') // The deployment URL is in the format https://project-hash-scope.vercel.app.
+// const refresh = hash.slice(0, 2)
+const refresh = '01'
 
 export default function getMetadata({
 	title,
