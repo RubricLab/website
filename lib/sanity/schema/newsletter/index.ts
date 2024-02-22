@@ -31,6 +31,7 @@ const newsletter = {
 			title: 'Published at',
 			type: 'datetime'
 		},
+		{name: 'subscriberCount', title: 'Subscriber count', type: 'number'},
 		{
 			name: 'body',
 			of: [{type: 'block'}, {type: 'image'}],

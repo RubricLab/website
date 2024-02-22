@@ -63,4 +63,5 @@ export type Newsletter = {
 	publishedAt: Date
 	authorName: string
 	authorTwitter: string
+	subscriberCount: number
 }
