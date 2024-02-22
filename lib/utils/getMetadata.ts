@@ -10,6 +10,7 @@ const project = 'website' // The name of the Vercel project.
 
 const [generatedUrl] = env.VERCEL_URL.split('.vercel.app') // The deployment URL is in the format https://project-hash-scope.vercel.app.
 const [hash] = generatedUrl.replace(`${project}-`, '').split('-')
+const refresh = hash.slice(0, 2)
 
 export default function getMetadata({
 	title,
@@ -45,7 +46,7 @@ export default function getMetadata({
 			title: combinedTitle,
 			images: [
 				{
-					url: `/${previewImageRoute ?? 'opengraph-image'}?refresh=${hash || 0}`
+					url: `/${previewImageRoute ?? 'opengraph-image'}?refresh=${refresh || 0}`
 				}
 			]
 		},
