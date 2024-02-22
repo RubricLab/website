@@ -8,9 +8,14 @@ import Button from './Button'
 import {SanityComponents} from './Sanity'
 
 export default function NewsletterPost({post}: {post: Newsletter}) {
+	const getPrevPostSlug = (currentSlug: string) => {
+		const number: number = parseInt(currentSlug)
+		const previousNumber = number - 1
+		return previousNumber.toString().padStart(3, '0') // Ensure slug is of '000' format
+	}
 	return (
 		<div className='flex min-h-screen w-full flex-col items-center px-5 sm:my-0 sm:px-10'>
-			<div className='my-28 flex max-w-3xl flex-col gap-10'>
+			<div className='my-28 flex w-full max-w-3xl flex-col gap-10'>
 				<div>
 					<h1>{post.title}</h1>
 					<Link
@@ -56,12 +61,23 @@ export default function NewsletterPost({post}: {post: Newsletter}) {
 						</p>
 					</div>
 				</div>
-				<Button
-					body='Subscribe to The Grid'
-					variant='dark'
-					href='/newsletter'
-					className='sm:w-fit'
-				/>
+				<div className='flex h-full items-center justify-end gap-2'>
+					{post.slug !== '001' && (
+						<Link
+							className='flex h-full w-fit rounded-md border px-4 py-2 no-underline'
+							href={getPrevPostSlug(post.slug)}>
+							<span className='mt-[3px] font-neue-bit text-2xl'>
+								See previous post
+							</span>
+						</Link>
+					)}
+					<Button
+						body='Subscribe to The Grid'
+						variant='dark'
+						href='/newsletter'
+						className='sm:w-fit'
+					/>
+				</div>
 			</div>
 		</div>
 	)
