@@ -4,6 +4,7 @@ import localFont from 'next/font/local'
 import Footer from '~/components/Footer'
 import NavBar from '~/components/NavBar'
 import {Toaster} from '~/components/Toast'
+import {META} from '~/constants/metadata'
 import './styles.css'
 
 const jakartaSans = Plus_Jakarta_Sans({subsets: ['latin']})
@@ -13,9 +14,9 @@ const neueBit = localFont({
 	variable: '--font-neue-bit'
 })
 
-// export const metadata = {
-// 	metadataBase: new URL(META.siteURL)
-// }
+export const metadata = {
+	metadataBase: new URL(META.siteURL)
+}
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
 	return (

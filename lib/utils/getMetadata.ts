@@ -7,12 +7,12 @@ import {DEFAULT_META, META} from '~/constants/metadata'
 export default function getMetadata({
 	title,
 	description,
-	previewImageUrl,
+	previewImageRoute,
 	path
 }: {
 	title?: string
 	description?: string
-	previewImageUrl?: string
+	previewImageRoute?: string
 	path?: string
 }): Metadata {
 	const combinedTitle = `${title ? `${title} | ` : ''}${META.title}`
@@ -27,7 +27,7 @@ export default function getMetadata({
 
 			images: [
 				{
-					url: previewImageUrl ?? '/opengraph-image'
+					url: `/${previewImageRoute ?? 'opengraph-image'}?refresh=01`
 				}
 			]
 		},
@@ -38,12 +38,12 @@ export default function getMetadata({
 			title: combinedTitle,
 			images: [
 				{
-					url: previewImageUrl ?? '/opengraph-image'
+					url: `/${previewImageRoute ?? 'opengraph-image'}?refresh=01`
 				}
 			]
 		},
 		alternates: {
-			canonical: `${DEFAULT_META.openGraph.url}/${path}`
+			canonical: `/${path}`
 		}
 	}
 }

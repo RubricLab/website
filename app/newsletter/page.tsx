@@ -7,7 +7,7 @@ export const metadata = getMetadata({
 	title: 'The Grid | Newsletter',
 	description: '3 actionable insights. Once a week. Straight to your inbox.',
 	path: 'newsletter',
-	previewImageUrl: '/newsletter/opengraph-image'
+	previewImageRoute: 'newsletter/opengraph-image'
 })
 
 export const revalidate = 60 // revalidate this page every 60 seconds
