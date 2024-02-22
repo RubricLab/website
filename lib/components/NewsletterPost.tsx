@@ -61,10 +61,10 @@ export default function NewsletterPost({post}: {post: Newsletter}) {
 						</p>
 					</div>
 				</div>
-				<div className='flex h-full items-center justify-end gap-2'>
+				<div className='flex h-full flex-col items-center justify-end gap-2 sm:flex-row'>
 					{post.slug !== '001' && (
 						<Link
-							className='flex h-full w-fit rounded-md border px-4 py-2 no-underline'
+							className='flex h-full w-full rounded-md border px-4 py-2 no-underline sm:w-fit'
 							href={getPrevPostSlug(post.slug)}>
 							<span className='mt-[3px] font-neue-bit text-2xl'>
 								See previous post
