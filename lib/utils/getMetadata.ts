@@ -1,5 +1,6 @@
 import {Metadata} from 'next'
 import {DEFAULT_META, META} from '~/constants/metadata'
+import env from '~/env.mjs'
 
 /**
  * Get metadata for a page. Optionally override title, description, path, and preview image URL.
@@ -27,7 +28,7 @@ export default function getMetadata({
 
 			images: [
 				{
-					url: `/${previewImageRoute ?? 'opengraph-image'}?refresh=01`
+					url: `/${previewImageRoute ?? 'opengraph-image'}`
 				}
 			]
 		},
@@ -38,7 +39,9 @@ export default function getMetadata({
 			title: combinedTitle,
 			images: [
 				{
-					url: `/${previewImageRoute ?? 'opengraph-image'}?refresh=01`
+					url: `/${previewImageRoute ?? 'opengraph-image'}?refresh=${
+						env.VERCEL_GIT_COMMIT_SHA
+					}`
 				}
 			]
 		},
