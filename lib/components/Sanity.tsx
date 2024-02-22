@@ -40,6 +40,6 @@ export const SanityComponents: Partial<PortableTextReactComponents> = {
 		)
 	},
 	listItem: {
-		bullet: ({children}) => <li className='text-secondary'>{children}</li>
+		bullet: ({children}) => <li>{children}</li>
 	}
 }
