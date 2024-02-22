@@ -5,9 +5,9 @@ import {FONTS} from '~/constants/fonts'
 
 export const runtime = 'edge'
 
-// export const alt = 'Rubric logo with subtitle: We build software.'
-// export const contentType = 'image/png'
-const size = {
+export const alt = 'Rubric logo with subtitle: We build software.'
+export const contentType = 'image/png'
+export const size = {
 	height: 630,
 	width: 1200
 }
