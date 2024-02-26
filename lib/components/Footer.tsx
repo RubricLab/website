@@ -8,7 +8,8 @@ import Button from './Button'
 import Title from './Title'
 
 const pages = [
-	{title: 'Agency', href: '/agency'},
+	{title: 'About', href: '/about'},
+	{title: 'Lab', href: '/lab'},
 	{title: 'Blog', href: '/blog'},
 	{title: 'Contact', href: '/contact'},
 	{title: 'Partners', href: '/partners'},
@@ -49,7 +50,7 @@ const Footer = () => {
 
 	return (
 		<div className='fixed bottom-0 z-10 flex h-96 w-screen flex-col-reverse items-center justify-between gap-10 overflow-hidden bg-black px-5 py-16 text-white sm:flex-row sm:items-center sm:gap-0 sm:px-10 sm:py-20 dark:bg-white dark:text-black'>
-			<BackgroundGrid className='pointer-events-none absolute bottom-0 left-0 h-screen w-full' />
+			<BackgroundGrid className='pointer-events-none absolute bottom-0 left-0 z-20 h-screen w-full' />
 			<div className='flex flex-col items-center gap-5 sm:items-start'>
 				<Link
 					href='/'
@@ -59,32 +60,16 @@ const Footer = () => {
 						size='full'
 					/>
 				</Link>
-				<div className='flex flex-col gap-1'>
-					<p className='font-2xl text-negative'>
-						{' '}
-						Let&apos;s make something amazing, together.
-					</p>
-				</div>
+				<p className='font-2xl text-negative'>
+					Let&apos;s make something amazing, together.
+				</p>
 				<Button
 					body='Get in touch'
 					variant='light'
 					href='/contact'
 					className='z-20 mt-2 w-full max-w-sm'
 				/>
-			</div>
-
-			<div className='flex w-full flex-row flex-wrap items-end justify-center gap-4 sm:w-auto sm:flex-col sm:gap-3'>
-				{pages
-					// Removed alphabetical sort in favour of sorting for funnel
-					.map(item => (
-						<Link
-							key={item.title}
-							className='no-underline underline-offset-4 transition-all duration-300 hover:underline'
-							href={item.href}>
-							{item.title}
-						</Link>
-					))}
-				<div className='flex w-full items-center justify-center gap-4 sm:justify-end sm:gap-3'>
+				<div className='flex w-full items-center justify-center gap-4 sm:justify-start'>
 					{socials.map(item => (
 						<Link
 							key={item.title}
@@ -94,6 +79,21 @@ const Footer = () => {
 							{item.icon}
 						</Link>
 					))}
+				</div>
+			</div>
+
+			<div className='flex w-full flex-col items-end justify-center gap-4 sm:w-auto sm:flex-col sm:gap-3'>
+				<div className='flex flex-wrap justify-center gap-4 sm:grid sm:grid-cols-2'>
+					{pages
+						// Removed alphabetical sort in favour of sorting for funnel
+						.map(item => (
+							<Link
+								key={item.title}
+								className='no-underline underline-offset-4 transition-all duration-300 hover:underline'
+								href={item.href}>
+								{item.title}
+							</Link>
+						))}
 				</div>
 			</div>
 		</div>

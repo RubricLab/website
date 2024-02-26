@@ -2,6 +2,7 @@
 import Spline from '@splinetool/react-spline'
 import {AnimatePresence, motion} from 'framer-motion'
 import Link from 'next/link'
+import Announcement from './Announcement'
 
 // TODO: update to production URL, however, at the time of writing (Feb 23 2024), prod URL was not updating to draft
 const spline = 'https://draft.spline.design/U8pZk4qwOdsnkA6D/scene.splinecode'
@@ -12,18 +13,23 @@ export default function Hero() {
 			<AnimatePresence>
 				<motion.div
 					animate={{opacity: 1}}
-					className='pointer-events-none z-10 flex w-full flex-col items-center gap-16'
+					className='z-10 flex w-full flex-col items-center gap-16'
 					exit={{opacity: 0}}
 					initial={{opacity: 0}}
 					transition={{duration: 2}}>
 					<div className='flex h-full flex-col gap-8 text-black sm:gap-16 dark:text-white'>
-						<p className='text-4xl tracking-tight sm:text-8xl sm:leading-[7.5rem]'>
-							We make magical,{' '}
-							<span className='whitespace-nowrap font-bold'>AI-first</span> software.
-						</p>
+						<div className='flex flex-col gap-8 sm:gap-0'>
+							<Announcement />
+							<p className='text-4xl tracking-tight sm:text-8xl sm:leading-[7.5rem]'>
+								We make magical,{' '}
+								<span className='whitespace-nowrap font-bold'>AI-first</span> software.
+							</p>
+						</div>
+
 						<p className='text-secondary max-w-xl text-2xl sm:leading-10'>
 							We work with startups big & small to build the future users want.
 						</p>
+
 						<p className='text-secondary invisible sm:visible'>
 							Press{' '}
 							<Link

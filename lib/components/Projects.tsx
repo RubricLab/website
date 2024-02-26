@@ -49,9 +49,7 @@ export default function Projects() {
 			className='flex min-h-screen w-full flex-col items-center justify-center gap-16 bg-neutral-100 p-5 py-28 sm:px-10 dark:bg-neutral-900'
 			id='projects'>
 			<div className='flex flex-col items-start sm:items-center'>
-				<div className='text-tertiary font-neue-bit text-3xl sm:text-4xl'>
-					_featured projects
-				</div>
+				<h1>_featured projects</h1>
 				<h3 className='text-secondary'>We work with the best.</h3>
 			</div>
 			<div className='grid gap-5 sm:grid-cols-2'>

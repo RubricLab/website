@@ -53,11 +53,11 @@ export default function NavBar() {
 				<Title size='small' />
 			</Link>
 			<div className='flex items-center gap-4'>
-				{pathname !== '/agency' && (
+				{pathname !== '/about' && (
 					<Link
 						className='hidden no-underline underline-offset-4 transition-all duration-300 hover:underline sm:flex'
-						href='/agency'>
-						Agency
+						href='/about'>
+						About
 					</Link>
 				)}
 				{pathname !== '/contact' && (

@@ -16,7 +16,7 @@ const history = [
 		date: new Date('11/1/2023')
 	},
 	{
-		title: 'Your Year in Code',
+		title: 'Year in Code w/ Graphite',
 		target: '_blank',
 		href: 'https://year-in-code.com',
 		date: new Date('12/19/2023')
@@ -34,7 +34,7 @@ export default function Announcement() {
 
 	return (
 		<Link
-			className='border-secondary group flex items-center gap-3 rounded-md border bg-neutral-100 px-3.5 py-2 text-center text-black no-underline shadow-lg dark:bg-neutral-950 dark:text-white'
+			className='border-secondary group flex w-fit items-center gap-3 rounded-md border bg-neutral-100 px-3.5 py-2 text-center text-black no-underline shadow-lg dark:bg-neutral-950 dark:text-white'
 			href={latest.href}
 			target={latest.target}>
 			<p className='space-x-1 text-sm sm:text-base'>

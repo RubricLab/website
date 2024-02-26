@@ -48,7 +48,7 @@ export default function Testimonials() {
 		<div
 			id='testimonials'
 			className='flex min-h-screen flex-col items-center justify-center gap-16 bg-neutral-100 p-8 dark:bg-neutral-900'>
-			<div className='flex flex-col items-center text-center'>
+			<div className='flex flex-col items-center'>
 				<h1>Loved by the best.</h1>
 				<h3>Read what folks have to say about us.</h3>
 			</div>
