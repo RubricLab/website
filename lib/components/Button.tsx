@@ -36,7 +36,7 @@ export default function Button({
 					className
 				)}
 				href={href}>
-				<span className='mt-[3px] font-neue-bit text-2xl'>{body}</span>
+				<span className='font-neue-bit text-2xl'>{body}</span>
 				<ArrowRight className='transition-all duration-300 group-hover:translate-x-1.5' />
 			</Link>
 		)
@@ -52,8 +52,8 @@ export default function Button({
 				disabled={disabled}
 				onClick={onClick}
 				type={type}>
-				<span className='mt-[3px] font-neue-bit text-2xl'>{body}</span>
-				<ArrowRight className='transition-all duration-300 group-hover:translate-x-1.5 group-disabled:translate-x-0' />
+				<span className='font-neue-bit text-2xl'>{body}</span>
+				<ArrowRight className='font-neue-bit transition-all duration-300 group-hover:translate-x-1.5 group-disabled:translate-x-0' />
 			</button>
 		)
 }
