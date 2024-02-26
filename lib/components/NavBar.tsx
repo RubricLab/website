@@ -6,12 +6,14 @@ import Button from './Button'
 import Title from './Title'
 
 const shortcuts = [
-	{href: '/agency', key: 'a'},
+	{href: '/about', key: 'a'},
+	{href: '/lab', key: 'l'},
 	{href: '/contact', key: 'r'},
 	{href: '/blog', key: 'b'},
 	{href: '/projects', key: 'p'},
 	{href: '/newsletter', key: 'n'},
-	{href: '/', key: 'h'}
+	{href: '/', key: 'h'},
+	{href: '/', key: 'escape'}
 ]
 
 export default function NavBar() {
