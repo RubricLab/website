@@ -1,10 +1,13 @@
 'use client'
 import {ArrowRight} from 'lucide-react'
 import Link from 'next/link'
+import {ReactElement} from 'react'
 import cn from '~/utils/cn'
 
 const variants = {
-	dark: 'bg-black dark:bg-white text-negative',
+	outline: 'bg-transparent outline outline-1 text-primary',
+	dark:
+		'bg-black dark:bg-white text-negative outline outline-1 outline-black dark:outline-white',
 	light: 'bg-neutral-100 dark:bg-neutral-900 text-primary',
 	teal: 'bg-teal text-black'
 }
@@ -16,15 +19,19 @@ export default function Button({
 	onClick,
 	className,
 	disabled,
-	type
+	type,
+	icon = (
+		<ArrowRight className='font-neue-bit transition-all duration-300 group-hover:translate-x-1.5 group-disabled:translate-x-0' />
+	)
 }: {
 	body: string
-	variant: 'dark' | 'light' | 'teal'
+	variant: 'dark' | 'light' | 'teal' | 'outline'
 	href?: string
 	onClick?: () => void
 	className?: string
 	disabled?: boolean
 	type?: 'button' | 'submit' | 'reset'
+	icon?: ReactElement
 }) {
 	// Link
 	if (href)
@@ -37,7 +44,7 @@ export default function Button({
 				)}
 				href={href}>
 				<span className='font-neue-bit text-2xl'>{body}</span>
-				<ArrowRight className='transition-all duration-300 group-hover:translate-x-1.5' />
+				{icon}
 			</Link>
 		)
 	// Button
@@ -53,7 +60,7 @@ export default function Button({
 				onClick={onClick}
 				type={type}>
 				<span className='font-neue-bit text-2xl'>{body}</span>
-				<ArrowRight className='font-neue-bit transition-all duration-300 group-hover:translate-x-1.5 group-disabled:translate-x-0' />
+				{icon}
 			</button>
 		)
 }
