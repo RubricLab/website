@@ -1,3 +1,6 @@
+import LabHero from '~/components/hero/LabHero'
+import DashboardTeaser from '~/components/projects/DashboardTeaser'
+import MaigeTeaser from '~/components/projects/MaigeTeaser'
 import getMetadata from '~/utils/getMetadata'
 
 export const metadata = getMetadata({
@@ -9,8 +12,10 @@ export const metadata = getMetadata({
 
 export default function Lab() {
 	return (
-		<div className='flex min-h-screen flex-col items-center justify-center'>
-			<h1>Coming soon.</h1>
-		</div>
+		<>
+			<LabHero />
+			<MaigeTeaser />
+			<DashboardTeaser />
+		</>
 	)
 }
