@@ -65,7 +65,7 @@ export default function NewsletterForm() {
 			/>
 			<SubscribeButton />
 			<p className='text-center text-sm opacity-80'>
-				Read by 44 other ambitious builders.
+				Read by 46 other ambitious builders.
 			</p>
 		</form>
 	)
