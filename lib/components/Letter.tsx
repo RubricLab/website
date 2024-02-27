@@ -39,19 +39,19 @@ export default function Letter() {
 					<p className='font-semibold'>
 						<Link
 							className='no-underline underline-offset-4 hover:underline'
-							href='https://twitter.com/dexterstorey'>
+							href='https://x.com/dexterstorey'>
 							Dexter
 						</Link>
 						,{' '}
 						<Link
 							className='no-underline underline-offset-4 hover:underline'
-							href='https://twitter.com/sarimrmalik'>
+							href='https://x.com/sarimrmalik'>
 							Sarim
 						</Link>
 						, and{' '}
 						<Link
 							className='no-underline underline-offset-4 hover:underline'
-							href='https://twitter.com/tedspare'>
+							href='https://x.com/tedspare'>
 							Ted
 						</Link>
 						.

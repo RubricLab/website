@@ -12,7 +12,7 @@ const history = [
 	{
 		title: 'Check out our launch of Create Rubric App',
 		target: '_blank',
-		href: 'https://twitter.com/RubricLabs/status/1719812696575529220',
+		href: 'https://x.com/RubricLabs/status/1719812696575529220',
 		date: new Date('11/1/2023')
 	},
 	{
