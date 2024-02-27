@@ -1,9 +1,9 @@
-import Hero from '~/components/AgencyHero'
 import {CTA} from '~/components/CTA'
 import FAQs from '~/components/FAQs'
 import HowWeWork from '~/components/HowWeWork'
 import Projects from '~/components/Projects'
 import Testimonials from '~/components/Testimonials'
+import Hero from '~/components/hero/AgencyHero'
 import getMetadata from '~/utils/getMetadata'
 
 export const metadata = getMetadata({

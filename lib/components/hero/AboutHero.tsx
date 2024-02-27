@@ -1,10 +1,8 @@
 'use client'
-import {useRouter} from 'next/navigation'
 import {useEffect, useState} from 'react'
-import Game from './game'
+import Game from '../game'
 
-export default function Hero() {
-	const router = useRouter()
+export default function AboutHero() {
 	const [start, setStart] = useState(false)
 
 	useEffect(() => {
