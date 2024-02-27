@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 export default function LabHero() {
 	return (
-		<div className='flex min-h-screen flex-col items-center justify-center gap-5 p-8'>
+		<div className='flex min-h-screen flex-col items-center justify-center gap-5 p-5 sm:px-0'>
 			<div className='flex w-full max-w-3xl flex-col gap-5'>
 				<h1>The Lab</h1>
 				<p>

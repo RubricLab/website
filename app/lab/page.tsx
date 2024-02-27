@@ -12,10 +12,10 @@ export const metadata = getMetadata({
 
 export default function Lab() {
 	return (
-		<>
+		<div className='flex flex-col'>
 			<LabHero />
 			<MaigeTeaser />
 			<DashboardTeaser />
-		</>
+		</div>
 	)
 }
