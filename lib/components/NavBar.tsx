@@ -62,6 +62,13 @@ export default function NavBar() {
 						About
 					</Link>
 				)}
+				{pathname !== '/lab' && (
+					<Link
+						className='hidden no-underline underline-offset-4 transition-all duration-300 hover:underline sm:flex'
+						href='/lab'>
+						Lab
+					</Link>
+				)}
 				{pathname !== '/contact' && (
 					<Button
 						body='Get in touch'
