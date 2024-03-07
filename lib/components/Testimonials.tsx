@@ -18,6 +18,15 @@ const comments = [
 		},
 		comment:
 			"In just a few weeks, Rubric went from initial concepts to delivering an engaging AI video experience that reached thousands of users. They're fluent in novel technologies, creative, highly responsive, and went the extra mile to follow through and iterate with us even after initial handoff."
+	},
+	{
+		author: {
+			name: 'Mitchell White',
+			href: 'https://glassboxbarbershop.com/',
+			company: 'Blade'
+		},
+		comment:
+			'Working with Rubric has been like having a CTO in our back pocket. They pair the best in strategy with a killer product team to consistently deliver on time every time. From our first conversation when they took time to understand our business needs, I knew trusting them with our MVP build and every iteration since was the right choice.'
 	}
 ]
 
@@ -29,7 +38,7 @@ function Testimonial({
 	author: {name: string; href: string; company: string}
 }) {
 	return (
-		<div className='flex flex-col gap-3 rounded-md bg-white p-5 sm:w-[30vw] dark:bg-black'>
+		<div className='flex flex-col justify-between gap-3 rounded-md bg-white p-5 sm:w-[30vw] dark:bg-black'>
 			<p className='text-xl font-thin'>{comment}</p>
 			<div className='flex w-full items-center justify-end gap-1'>
 				<Link
