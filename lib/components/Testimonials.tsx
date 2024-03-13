@@ -38,11 +38,11 @@ function Testimonial({
 	author: {name: string; href: string; company: string}
 }) {
 	return (
-		<div className='flex flex-col justify-between gap-3 rounded-md bg-white p-5 sm:w-[30vw] dark:bg-black'>
+		<div className='flex flex-col justify-between gap-3 rounded-md bg-white p-5 lg:w-[30vw] dark:bg-black'>
 			<p className='text-xl font-thin'>{comment}</p>
-			<div className='flex w-full items-center justify-end gap-1'>
+			<div className='flex w-full flex-col items-end'>
 				<Link
-					className='font-semibold no-underline'
+					className='text-lg font-semibold no-underline'
 					href={author.href}>
 					{author.name}
 				</Link>
@@ -61,7 +61,7 @@ export default function Testimonials() {
 				<h1>Loved by the best.</h1>
 				<h3>Read what folks have to say about us.</h3>
 			</div>
-			<div className='flex flex-col gap-10 sm:flex-row'>
+			<div className='flex flex-col gap-10 lg:flex-row 2xl:flex-col'>
 				{comments.map(item => (
 					<Testimonial
 						key={item.author.name}
