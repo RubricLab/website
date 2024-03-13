@@ -126,7 +126,8 @@ export async function getNewsletterPosts(): Promise<Newsletter[]> {
         title,
         "slug": slug.current,
         publishedAt,
-        subscriberCount
+        subscriberCount,
+        description
     }`
 	)
 }

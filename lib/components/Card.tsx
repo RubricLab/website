@@ -8,9 +8,16 @@ type CardProps = {
 	title: string
 	body?: string | PortableTextBlock[]
 	target?: '_blank' | '_parent' | '_self' | 'top'
+	date?: string
 }
 
-export const Card = ({url, title, body, target = '_blank'}: CardProps) => {
+export const Card = ({
+	url,
+	title,
+	body,
+	target = '_blank',
+	date
+}: CardProps) => {
 	return (
 		<Link
 			className='border-secondary group relative w-full rounded-md border bg-white p-7 no-underline sm:p-10 dark:bg-black'
@@ -27,6 +34,7 @@ export const Card = ({url, title, body, target = '_blank'}: CardProps) => {
 						)}
 					</div>
 				)}
+				{date && <p className='text-tertiary'>{date}</p>}
 			</div>
 			<ArrowUpRightIcon className='group-hover:text-secondary absolute right-4 top-4 h-8 w-8 text-neutral-500 opacity-0 transition-all duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:opacity-100' />
 		</Link>

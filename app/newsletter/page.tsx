@@ -31,15 +31,16 @@ export default async function Newsletter() {
 					<div className='grid gap-5'>
 						{posts.map(post => (
 							<Card
-								body={new Date(post.publishedAt).toLocaleDateString('en-US', {
-									day: 'numeric',
-									month: 'short',
-									year: 'numeric'
-								})}
+								body={post.description}
 								key={post._id}
 								title={post.title}
 								url={`/newsletter/${post.slug}`}
 								target='_parent'
+								date={new Date(post.publishedAt).toLocaleDateString('en-US', {
+									day: 'numeric',
+									month: 'short',
+									year: 'numeric'
+								})}
 							/>
 						))}
 					</div>
