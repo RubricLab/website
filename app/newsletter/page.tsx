@@ -23,7 +23,7 @@ export default async function Newsletter() {
 						<p>3 actionable insights. Once a week. Straight to your inbox.</p>
 					</div>
 				</div>
-				<NewsletterForm />
+				<NewsletterForm audienceCount={posts[0].subscriberCount} />
 			</div>
 			<div className='flex w-full flex-col justify-center gap-8 sm:w-1/2'>
 				<h2 className='text-secondary'>Past Newsletters</h2>

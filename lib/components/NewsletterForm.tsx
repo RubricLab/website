@@ -29,7 +29,11 @@ function SubscribeButton() {
 	)
 }
 
-export default function NewsletterForm() {
+export default function NewsletterForm({
+	audienceCount
+}: {
+	audienceCount: number
+}) {
 	const formRef = useRef(null)
 	const [state, formAction] = useFormState(addSubscriber, initialState)
 
@@ -65,7 +69,7 @@ export default function NewsletterForm() {
 			/>
 			<SubscribeButton />
 			<p className='text-center text-sm opacity-80'>
-				Read by 46 other ambitious builders.
+				Read by {audienceCount} other ambitious builders.
 			</p>
 		</form>
 	)
