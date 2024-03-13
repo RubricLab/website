@@ -13,7 +13,7 @@ type CardProps = {
 export const Card = ({url, title, body, target = '_blank'}: CardProps) => {
 	return (
 		<Link
-			className='border-secondary group relative w-full max-w-md rounded-md border bg-white p-7 no-underline dark:bg-black sm:p-10'
+			className='border-secondary group relative w-full rounded-md border bg-white p-7 no-underline sm:p-10 dark:bg-black'
 			href={url}
 			target={target}>
 			<div className='flex h-full flex-col items-start justify-start gap-1 py-2 sm:gap-5'>
