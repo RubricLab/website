@@ -29,7 +29,7 @@ export default async function Newsletter() {
 				<div className='flex w-full flex-col justify-center gap-8 sm:w-1/2'>
 					<h2 className='text-secondary'>Past Newsletters</h2>
 					<div className='grid gap-5'>
-						{posts.map(post => (
+						{posts.map((post, i) => (
 							<Card
 								body={post.description}
 								key={post._id}
@@ -41,6 +41,7 @@ export default async function Newsletter() {
 									month: 'short',
 									year: 'numeric'
 								})}
+								isLatest={i === 0}
 							/>
 						))}
 					</div>

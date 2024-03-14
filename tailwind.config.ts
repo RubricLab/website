@@ -9,9 +9,6 @@ const tailwindConfig = {
 			...config.theme.colors
 		},
 		extend: {
-			colors: {
-				teal: '#A8CFCF'
-			},
 			fontFamily: {
 				'neue-bit': ['var(--font-neue-bit)']
 			},

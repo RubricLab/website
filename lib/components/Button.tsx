@@ -8,8 +8,7 @@ const variants = {
 	outline: 'bg-transparent outline outline-1 text-primary',
 	dark:
 		'bg-black dark:bg-white text-negative outline outline-1 outline-black dark:outline-white',
-	light: 'bg-neutral-100 dark:bg-neutral-900 text-primary',
-	teal: 'bg-teal text-black'
+	light: 'bg-neutral-100 dark:bg-neutral-900 text-primary'
 }
 
 export default function Button({

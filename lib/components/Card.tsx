@@ -9,6 +9,7 @@ type CardProps = {
 	body?: string | PortableTextBlock[]
 	target?: '_blank' | '_parent' | '_self' | 'top'
 	date?: string
+	isLatest?: boolean
 }
 
 export const Card = ({
@@ -16,7 +17,8 @@ export const Card = ({
 	title,
 	body,
 	target = '_blank',
-	date
+	date,
+	isLatest
 }: CardProps) => {
 	return (
 		<Link
@@ -36,6 +38,12 @@ export const Card = ({
 				)}
 				{date && <p className='text-tertiary'>{date}</p>}
 			</div>
+			{isLatest && (
+				<div className='border-secondary absolute bottom-5 right-5 flex items-center gap-1 rounded-full border px-1 py-0.5'>
+					<span className='flex h-3 w-3 animate-pulse rounded-full bg-green-500 duration-300' />
+					<span className='text-primary text-xs'>Latest</span>
+				</div>
+			)}
 			<ArrowUpRightIcon className='group-hover:text-secondary absolute right-4 top-4 h-8 w-8 text-neutral-500 opacity-0 transition-all duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:opacity-100' />
 		</Link>
 	)
