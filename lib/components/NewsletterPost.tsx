@@ -25,7 +25,7 @@ export default function NewsletterPost({post}: {post: Newsletter}) {
 					</Link>
 				</div>
 				<div className='flex flex-col gap-4'>
-					<p>Hi friend,</p>
+					<p>Hi there,</p>
 					<p>
 						Welcome back to the Grid. You are 1 of {post.subscriberCount} builders
 						receiving this.
