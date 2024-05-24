@@ -15,8 +15,8 @@ export default function NewsletterPost({post}: {post: Newsletter}) {
 		return previousNumber.toString().padStart(3, '0') // Ensure slug is of '000' format
 	}
 	return (
-		<div className='flex min-h-screen w-full flex-col items-center px-5 sm:my-0 sm:px-10'>
-			<BackgroundGrid className='pointer-events-none absolute left-0 top-0 h-full w-screen' />
+		<div className='relative flex min-h-screen w-full flex-col items-center px-5 sm:my-0 sm:px-10'>
+			<BackgroundGrid className='pointer-events-none absolute left-0 top-0 z-[-1] h-full w-screen' />
 			<div className='my-28 flex w-full max-w-3xl flex-col gap-10'>
 				<div>
 					<h1>{post.title}</h1>
