@@ -40,7 +40,7 @@ export const Card = ({
 			</div>
 			{isLatest && (
 				<div className='border-secondary absolute bottom-5 right-5 flex items-center gap-1 rounded-full border px-1 py-0.5'>
-					<span className='flex h-3 w-3 animate-pulse rounded-full bg-green-500 duration-300' />
+					<span className='flex h-3 w-3 animate-pulse rounded-full bg-green-500 duration-300 dark:bg-lime-500' />
 					<span className='text-primary text-xs'>Latest</span>
 				</div>
 			)}

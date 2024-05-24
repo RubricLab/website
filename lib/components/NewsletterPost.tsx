@@ -4,6 +4,7 @@ import {PortableText} from '@portabletext/react'
 import Link from 'next/link'
 import {Newsletter} from '~/types/sanity'
 import copyToClipboard from '~/utils/copyToClipboard'
+import BackgroundGrid from './BackgroundGrid'
 import Button from './Button'
 import {SanityComponents} from './Sanity'
 
@@ -15,6 +16,7 @@ export default function NewsletterPost({post}: {post: Newsletter}) {
 	}
 	return (
 		<div className='flex min-h-screen w-full flex-col items-center px-5 sm:my-0 sm:px-10'>
+			<BackgroundGrid className='pointer-events-none absolute left-0 top-0 h-full w-screen' />
 			<div className='my-28 flex w-full max-w-3xl flex-col gap-10'>
 				<div>
 					<h1>{post.title}</h1>
@@ -64,7 +66,7 @@ export default function NewsletterPost({post}: {post: Newsletter}) {
 				<div className='flex h-full flex-col items-center justify-end gap-2 sm:flex-row'>
 					{post.slug !== '001' && (
 						<Button
-							className='w-fit'
+							className='w-full sm:w-fit'
 							body='See previous post'
 							variant='outline'
 							href={getPrevPostSlug(post.slug)}

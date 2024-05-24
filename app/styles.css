@@ -38,10 +38,10 @@ html {
 		@apply rounded-md bg-neutral-100 p-2 dark:bg-neutral-600;
 	}
 	ul {
-		@apply ml-6 flex list-outside list-disc flex-col gap-3;
+		@apply ml-10 flex list-outside list-disc flex-col gap-3;
 	}
 	ol {
-		@apply ml-6 list-outside list-decimal flex-col gap-3;
+		@apply ml-10 flex list-outside list-decimal flex-col gap-3;
 	}
 	.text-primary {
 		@apply text-black dark:text-white;
