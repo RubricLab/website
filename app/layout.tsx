@@ -28,7 +28,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
 				className={`${jakartaSans.className} ${neueBit.variable} relative flex h-full min-h-screen w-full flex-col items-center`}>
 				<NavBar />
 				<Toaster />
-				<main className='z-30 mb-96 min-h-screen w-full bg-white dark:bg-black'>
+				<main className='z-30 mb-[80vh] min-h-screen w-full bg-white sm:mb-96 dark:bg-black'>
 					{children}
 				</main>
 				<Footer />

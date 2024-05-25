@@ -49,7 +49,7 @@ const Footer = () => {
 	if (pathname.startsWith('/studio')) return <></>
 
 	return (
-		<div className='fixed bottom-0 z-10 flex h-96 w-screen flex-col-reverse items-center justify-between gap-10 overflow-hidden bg-black px-5 py-16 text-white sm:flex-row sm:items-center sm:gap-0 sm:px-10 sm:py-20 dark:bg-white dark:text-black'>
+		<div className='fixed bottom-0 z-10 flex h-[80vh] w-screen flex-col-reverse items-center justify-between gap-10 overflow-hidden bg-black px-5 py-16 text-white sm:h-96 sm:flex-row sm:items-center sm:gap-0 sm:px-10 sm:py-20 dark:bg-white dark:text-black'>
 			<BackgroundGrid className='pointer-events-none absolute bottom-0 left-0 z-20 h-screen w-full' />
 			<div className='flex flex-col items-center gap-5 sm:items-start'>
 				<Link
