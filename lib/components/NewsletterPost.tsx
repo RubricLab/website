@@ -32,7 +32,7 @@ export default function NewsletterPost({post}: {post: Newsletter}) {
 						Welcome back to the Grid. You are 1 of {post.subscriberCount} builders
 						receiving this.
 					</p>
-					<p>Three actionable bullets, once a week, let&apos;s dive in.</p>
+					<p>Three (or more) actionable bullets, once a week, let&apos;s dive in.</p>
 					<PortableText
 						value={post.body}
 						components={SanityComponents}
