@@ -1,7 +1,7 @@
 'use server'
+
 import {z} from 'zod'
-import notionClient from '~/utils/notionClient'
-import slackClient from '~/utils/slackClient'
+import {ROS} from '~/constants/ros'
 
 const schema = z.object({
 	message: z.string(),
@@ -22,65 +22,36 @@ export default async function sendContactRequest(
 		company: formData.get('company')
 	})
 
-	// Create page in Notion
-	const notionResponse = await notionClient.pages.create({
-		parent: {
-			database_id: process.env.NOTION_PAGE_ID
-		},
-		icon: {type: 'emoji', emoji: '🏄‍♀'},
-		children: [
-			{
-				type: 'heading_3',
-				heading_3: {
-					rich_text: [{type: 'text', text: {content: 'Message from client'}}]
-				}
-			},
-			{
-				type: 'quote',
-				quote: {rich_text: [{type: 'text', text: {content: parsed.message}}]}
+	if (!parsed.name || !parsed.email || !parsed.message)
+		return {message: `Missing required information`, type: 'error'}
+
+	try {
+		// Submit formData to Ros API
+		const externalResponse = await fetch(ROS.api.leads, {
+			method: 'POST',
+			body: new URLSearchParams({
+				message: parsed.message,
+				email: parsed.email,
+				name: parsed.name,
+				company: parsed.company
+			}),
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded'
 			}
-		],
-		properties: {
-			Name: {
-				type: 'title',
-				title: [
-					{
-						type: 'text',
-						text: {
-							content: parsed.name
-						}
-					}
-				]
-			},
-			Email: {
-				type: 'email',
-				email: parsed.email
-			},
-			Status: {
-				type: 'select',
-				select: {name: 'Lead'}
-			},
-			Source: {
-				type: 'select',
-				select: {name: 'Website'}
-			},
-			Company: {
-				type: 'rich_text',
-				rich_text: [{type: 'text', text: {content: parsed.company}}]
+		})
+
+		// Return response
+		if (externalResponse.ok)
+			return {message: `Request submitted`, type: 'success'}
+	} catch (err) {
+		if (err instanceof Error)
+			return {
+				message: err.message,
+				type: 'error'
 			}
+		return {
+			message: `Unexpected error: ${JSON.stringify(err)}`,
+			type: 'error'
 		}
-	})
-
-	const restructuredName = parsed.name.replace(/\s+/g, '-') // Convert "First Name" to "First-Name"
-	const notionPageUrl = `https://notion.so/rubric/${restructuredName}-${notionResponse.id}`
-
-	// // Send message to Slack
-	const slackResponse = await slackClient.chat.postMessage({
-		channel: 'C05AQKAJL9X',
-		text: `New lead \n\n${parsed.name}, ${parsed.company}, ${parsed.email} \n\n${parsed.message} \n\nLink to Notion: ${notionPageUrl}`
-	})
-
-	// Return response
-	if (slackResponse.ok) return {message: `Request submitted`, type: 'success'}
-	return {message: 'Unexpected error', type: 'error'}
+	}
 }
