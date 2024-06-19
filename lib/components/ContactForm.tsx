@@ -1,4 +1,5 @@
 'use client'
+import {ArrowRightIcon, LoaderIcon} from 'lucide-react'
 import {useEffect, useRef} from 'react'
 import {useFormState, useFormStatus} from 'react-dom'
 import sendContactRequest from '~/actions/sendContactRequest'
@@ -14,17 +15,19 @@ const initialState = {
 function SubmitButton() {
 	const {pending} = useFormStatus()
 
-	// Add loading state
-	useEffect(() => {
-		if (pending) toast.loading('Submitting...')
-	}, [pending])
-
 	return (
 		<Button
 			variant='dark'
 			type='submit'
 			body='Submit'
 			disabled={pending}
+			icon={
+				pending ? (
+					<LoaderIcon className='h-4 w-4 animate-pulse' />
+				) : (
+					<ArrowRightIcon className='font-neue-bit transition-all duration-300 group-hover:translate-x-1.5 group-disabled:translate-x-0' />
+				)
+			}
 		/>
 	)
 }

@@ -51,7 +51,7 @@ export default function Button({
 		return (
 			<button
 				className={cn(
-					`group flex w-full items-center justify-between gap-20 rounded-md px-4 py-2 disabled:cursor-not-allowed`,
+					`group flex w-full items-center justify-between gap-20 rounded-md px-4 py-2 disabled:cursor-not-allowed disabled:opacity-80`,
 					variants[variant],
 					className
 				)}
