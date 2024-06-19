@@ -2,6 +2,7 @@
 
 import {z} from 'zod'
 import {ROS} from '~/constants/ros'
+import env from '~/env.mjs'
 
 const schema = z.object({
 	message: z.string(),
@@ -36,7 +37,8 @@ export default async function sendContactRequest(
 				company: parsed.company
 			}),
 			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded'
+				'Content-Type': 'application/x-www-form-urlencoded',
+				API_KEY: env.ROS_API_KEY
 			}
 		})
 
