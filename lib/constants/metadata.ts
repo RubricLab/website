@@ -7,7 +7,7 @@ export const META = {
 	twitterURL: 'https://x.com/RubricLabs',
 	linkedinURL: 'https://linkedin.com/company/RubricLabs',
 	siteURL: 'https://rubriclabs.com',
-	title: 'Rubric',
+	title: 'Rubric Labs',
 	twitter: '@RubricLabs'
 }
 
