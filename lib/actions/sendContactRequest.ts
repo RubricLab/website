@@ -38,7 +38,7 @@ export default async function sendContactRequest(
 			}),
 			headers: {
 				'Content-Type': 'application/x-www-form-urlencoded',
-				API_KEY: env.ROS_API_KEY
+				Authorization: `Bearer ${env.ROS_SECRET}`
 			}
 		})
 
