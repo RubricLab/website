@@ -39,43 +39,36 @@ const questions = [
 	{
 		question: 'What is your project minimum?',
 		answer: (
-			<>
-				<p>$20k.</p>
-				<p>
-					However, it depends on the project and team. We make exceptions depending
-					on great founder-team fit, so feel free to reach out.
-				</p>
-			</>
+			<p className='text-tertiary '>
+				We don&apos;t work on projects shorter than 3 weeks.
+			</p>
 		)
 	},
 	{
 		question: 'Do I work with your engineers directly?',
 		answer: (
-			<>
-				<p>No.</p>
-				<p>
-					You interact with a member of our team at a weekly or biweekly cadence with
-					project updates.
-				</p>
-			</>
+			<p className='text-tertiary'>
+				No. You interact with a member of our team at a weekly or biweekly cadence.
+			</p>
 		)
 	},
 	{
 		question: 'Do you help with maintenance after the project?',
 		answer: (
-			<>
-				<p>Yes.</p>
-				<p>Maintenance is paid and negotiated in the contract upfront.</p>
-			</>
+			<p className='text-tertiary'>
+				Yes. Maintenance is paid and negotiated in the contract upfront.
+			</p>
 		)
 	},
 	{
 		question: 'How do you work with clients?',
 		answer: (
-			<div className='flex flex-col gap-3'>
+			<div className='text-tertiary flex flex-col gap-3 '>
 				<ol>
 					{steps.map((step, index) => (
-						<li key={step.title}>
+						<li
+							key={step.title}
+							className='text-tertiary'>
 							<span className='font-bold'>{step.title}</span> — {step.description}
 						</li>
 					))}
@@ -95,9 +88,7 @@ function FAQ({question, answer}) {
 				<AccordionTrigger className='text-left text-lg'>
 					{question}
 				</AccordionTrigger>
-				<AccordionContent className='text-tertiary text-lg'>
-					{answer}
-				</AccordionContent>
+				<AccordionContent className='text-lg'>{answer}</AccordionContent>
 			</AccordionItem>
 		</Accordion>
 	)
@@ -105,7 +96,9 @@ function FAQ({question, answer}) {
 
 export default function FAQs() {
 	return (
-		<SectionLayout id='faq'>
+		<SectionLayout
+			id='faq'
+			isAlternate>
 			<h1>Frequently asked questions</h1>
 			<div className='flex w-full max-w-3xl flex-col items-center justify-center gap-3'>
 				{questions.map(question => (

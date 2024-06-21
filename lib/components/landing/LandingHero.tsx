@@ -1,4 +1,5 @@
 'use client'
+
 import Spline from '@splinetool/react-spline'
 import {AnimatePresence, motion} from 'framer-motion'
 import Link from 'next/link'
@@ -12,6 +13,7 @@ export default function LandingHero() {
 	return (
 		<SectionLayout
 			id='hero'
+			isAlternate
 			className='gap-5'>
 			<div className='flex w-full max-w-7xl flex-col items-center justify-center gap-5 sm:flex-row'>
 				<AnimatePresence>
