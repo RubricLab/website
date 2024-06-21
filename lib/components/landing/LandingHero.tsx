@@ -3,12 +3,12 @@ import Spline from '@splinetool/react-spline'
 import {AnimatePresence, motion} from 'framer-motion'
 import Link from 'next/link'
 import Announcement from '../Announcement'
-import SectionLayout from '../SectionLayout'
+import SectionLayout from './SectionLayout'
 
 // TODO: update to production URL, however, at the time of writing (Feb 23 2024), prod URL was not updating to draft
 const spline = 'https://draft.spline.design/U8pZk4qwOdsnkA6D/scene.splinecode'
 
-export default function AgencyHero() {
+export default function LandingHero() {
 	return (
 		<SectionLayout
 			id='hero'

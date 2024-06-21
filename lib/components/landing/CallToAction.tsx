@@ -1,7 +1,7 @@
-import Button from './Button'
+import Button from '../Button'
 import SectionLayout from './SectionLayout'
 
-export const CTA = () => {
+const CallToAction = () => {
 	return (
 		<SectionLayout
 			id='cta'
@@ -19,3 +19,5 @@ export const CTA = () => {
 		</SectionLayout>
 	)
 }
+
+export default CallToAction

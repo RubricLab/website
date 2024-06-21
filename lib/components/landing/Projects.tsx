@@ -1,9 +1,9 @@
 import {ArrowRight, ArrowUpRight} from 'lucide-react'
 import Link from 'next/link'
+import {Cal} from '../logos/Cal'
+import {Graphite} from '../logos/Graphite'
+import {Maige} from '../logos/Maige'
 import SectionLayout from './SectionLayout'
-import {Cal} from './logos/Cal'
-import {Graphite} from './logos/Graphite'
-import {Maige} from './logos/Maige'
 
 const projects = [
 	{
