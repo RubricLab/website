@@ -3,13 +3,16 @@ import Spline from '@splinetool/react-spline'
 import {AnimatePresence, motion} from 'framer-motion'
 import Link from 'next/link'
 import Announcement from '../Announcement'
+import SectionLayout from '../SectionLayout'
 
 // TODO: update to production URL, however, at the time of writing (Feb 23 2024), prod URL was not updating to draft
 const spline = 'https://draft.spline.design/U8pZk4qwOdsnkA6D/scene.splinecode'
 
 export default function AgencyHero() {
 	return (
-		<div className='flex h-full min-h-screen w-screen flex-col items-center justify-center gap-5 p-5 pt-20 sm:flex-row sm:px-10'>
+		<SectionLayout
+			id='hero'
+			className='gap-5'>
 			<div className='flex w-full max-w-7xl flex-col items-center justify-center gap-5 sm:flex-row'>
 				<AnimatePresence>
 					<motion.div
@@ -49,6 +52,6 @@ export default function AgencyHero() {
 					<Spline scene={spline} />
 				</div>
 			</div>
-		</div>
+		</SectionLayout>
 	)
 }

@@ -1,3 +1,5 @@
+import SectionLayout from './SectionLayout'
+
 const steps = [
 	{
 		title: 'Prospecting',
@@ -48,9 +50,7 @@ function Step({
 
 export default function HowWeWork() {
 	return (
-		<div
-			id='how-we-work'
-			className='flex min-h-screen flex-col items-center justify-center gap-16 bg-white p-8 dark:bg-black'>
+		<SectionLayout id='how-we-work'>
 			<div className='flex flex-col items-center text-center'>
 				<h1>We like to keep things simple.</h1>
 				<h3>Learn about how we work.</h3>
@@ -65,6 +65,6 @@ export default function HowWeWork() {
 					/>
 				))}
 			</div>
-		</div>
+		</SectionLayout>
 	)
 }

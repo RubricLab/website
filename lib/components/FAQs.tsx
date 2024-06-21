@@ -5,6 +5,7 @@ import {
 	AccordionItem,
 	AccordionTrigger
 } from './Accordion'
+import SectionLayout from './SectionLayout'
 
 const items = [
 	{
@@ -62,9 +63,7 @@ function FAQ({question, answer}) {
 
 export default function FAQs() {
 	return (
-		<div
-			id='faq'
-			className='flex min-h-screen flex-col items-center justify-center gap-16 p-8 sm:py-28'>
+		<SectionLayout id='faq'>
 			<h1>Frequently asked questions</h1>
 			<div className='flex w-full max-w-3xl flex-col items-center justify-center gap-3'>
 				{items.map(item => (
@@ -75,6 +74,6 @@ export default function FAQs() {
 					/>
 				))}
 			</div>
-		</div>
+		</SectionLayout>
 	)
 }

@@ -1,5 +1,6 @@
 import {ArrowRight, ArrowUpRight} from 'lucide-react'
 import Link from 'next/link'
+import SectionLayout from './SectionLayout'
 import {Cal} from './logos/Cal'
 import {Graphite} from './logos/Graphite'
 import {Maige} from './logos/Maige'
@@ -45,9 +46,9 @@ const projects = [
 
 export default function Projects() {
 	return (
-		<div
-			className='flex min-h-screen w-full flex-col items-center justify-center gap-16 bg-neutral-100 p-5 py-28 sm:px-10 dark:bg-neutral-900'
-			id='projects'>
+		<SectionLayout
+			id='projects'
+			isAlternate>
 			<div className='flex flex-col items-start sm:items-center'>
 				<h1>_featured projects</h1>
 				<h3 className='text-secondary'>We work with the best.</h3>
@@ -56,7 +57,7 @@ export default function Projects() {
 				{projects.map(({title, desc, href, logo}) => (
 					<div
 						key={title}
-						className='border-secondary group col-span-1 flex h-[50vh] w-full max-w-[50vh] flex-col gap-2 border p-5 transition-colors hover:border-white'>
+						className='border-secondary group col-span-1 flex h-[50vh] w-full flex-col gap-2 border p-5 transition-colors hover:border-white sm:max-w-[50vh]'>
 						<div className='text-4xl font-semibold'>{title}</div>
 						<p className='text-secondary text-lg leading-6'>{desc}</p>
 						<div className='grow' />
@@ -80,6 +81,6 @@ export default function Projects() {
 					</Link>
 				</div>
 			</div>
-		</div>
+		</SectionLayout>
 	)
 }

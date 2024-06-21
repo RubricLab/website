@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import SectionLayout from './SectionLayout'
 
 const comments = [
 	{
@@ -54,9 +55,9 @@ function Testimonial({
 
 export default function Testimonials() {
 	return (
-		<div
+		<SectionLayout
 			id='testimonials'
-			className='flex min-h-screen flex-col items-center justify-center gap-16 bg-neutral-100 p-8 dark:bg-neutral-900'>
+			isAlternate>
 			<div className='flex flex-col items-center'>
 				<h1>Loved by the best.</h1>
 				<h3>Read what folks have to say about us.</h3>
@@ -70,6 +71,6 @@ export default function Testimonials() {
 					/>
 				))}
 			</div>
-		</div>
+		</SectionLayout>
 	)
 }
