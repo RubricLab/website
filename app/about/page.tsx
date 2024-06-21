@@ -1,4 +1,4 @@
-import Hero from '~/components/hero/AboutHero'
+import AboutHero from '~/components/AboutHero'
 import Letter from '~/components/Letter'
 import getMetadata from '~/utils/getMetadata'
 
@@ -12,7 +12,7 @@ export const metadata = getMetadata({
 export default function About() {
 	return (
 		<div className='flex flex-col'>
-			<Hero />
+			<AboutHero />
 			<Letter />
 		</div>
 	)

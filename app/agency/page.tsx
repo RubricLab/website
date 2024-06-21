@@ -1,9 +1,9 @@
-import {CTA} from '~/components/CTA'
-import FAQs from '~/components/FAQs'
-import HowWeWork from '~/components/HowWeWork'
-import Projects from '~/components/Projects'
-import Testimonials from '~/components/Testimonials'
-import Hero from '~/components/hero/AgencyHero'
+import CallToAction from '~/components/landing/CallToAction'
+import FAQs from '~/components/landing/FAQs'
+import HowWeWork from '~/components/landing/HowWeWork'
+import LandingHero from '~/components/landing/LandingHero'
+import Projects from '~/components/landing/Projects'
+import Testimonials from '~/components/landing/Testimonials'
 import getMetadata from '~/utils/getMetadata'
 
 export const metadata = getMetadata({
@@ -16,12 +16,12 @@ export const metadata = getMetadata({
 export default function Agency() {
 	return (
 		<div className='flex flex-col'>
-			<Hero />
+			<LandingHero />
 			<Projects />
 			<HowWeWork />
 			<Testimonials />
 			<FAQs />
-			<CTA />
+			<CallToAction />
 		</div>
 	)
 }

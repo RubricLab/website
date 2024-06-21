@@ -1,6 +1,6 @@
 'use client'
 import {useEffect, useState} from 'react'
-import Game from '../game'
+import Game from './game'
 
 export default function AboutHero() {
 	const [start, setStart] = useState(false)
