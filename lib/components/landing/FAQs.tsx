@@ -7,16 +7,44 @@ import {
 } from '../Accordion'
 import SectionLayout from './SectionLayout'
 
-const items = [
+const steps = [
+	{
+		title: 'Prospecting',
+		description:
+			'We call once for 30 min to discuss your project, goals, and roadmap.'
+	},
+	{
+		title: 'Scoping',
+		description:
+			'Provided there is mutual fit, our team writes a memo, outlining the effort, timeline, and budget.'
+	},
+	{
+		title: 'Onboarding',
+		description:
+			'After agreeing on project terms, we add you to a shared Slack channel and get going.'
+	},
+	{
+		title: 'Building',
+		description:
+			'We execute on the project terms and update you weekly or bi-weekly.'
+	},
+	{
+		title: 'Offboarding',
+		description:
+			'After delivering, we can maintain the project on a monthly retainer or hand it off to your team. We prefer to hand it off to your team.'
+	}
+]
+
+const questions = [
 	{
 		question: 'What is your project minimum?',
 		answer: (
 			<>
-				<div>$20k.</div>
-				<div>
+				<p>$20k.</p>
+				<p>
 					However, it depends on the project and team. We make exceptions depending
 					on great founder-team fit, so feel free to reach out.
-				</div>
+				</p>
 			</>
 		)
 	},
@@ -24,11 +52,11 @@ const items = [
 		question: 'Do I work with your engineers directly?',
 		answer: (
 			<>
-				<div>No.</div>
-				<div>
+				<p>No.</p>
+				<p>
 					You interact with a member of our team at a weekly or biweekly cadence with
 					project updates.
-				</div>
+				</p>
 			</>
 		)
 	},
@@ -36,9 +64,23 @@ const items = [
 		question: 'Do you help with maintenance after the project?',
 		answer: (
 			<>
-				<div>Yes.</div>
-				<div>Maintenance is paid and negotiated in the contract upfront.</div>
+				<p>Yes.</p>
+				<p>Maintenance is paid and negotiated in the contract upfront.</p>
 			</>
+		)
+	},
+	{
+		question: 'How do you work with clients?',
+		answer: (
+			<div className='flex flex-col gap-3'>
+				<ol>
+					{steps.map((step, index) => (
+						<li key={step.title}>
+							<span className='font-bold'>{step.title}</span> — {step.description}
+						</li>
+					))}
+				</ol>
+			</div>
 		)
 	}
 ]
@@ -66,11 +108,11 @@ export default function FAQs() {
 		<SectionLayout id='faq'>
 			<h1>Frequently asked questions</h1>
 			<div className='flex w-full max-w-3xl flex-col items-center justify-center gap-3'>
-				{items.map(item => (
+				{questions.map(question => (
 					<FAQ
-						key={item.question}
-						answer={item.answer}
-						question={item.question}
+						key={question.question}
+						answer={question.answer}
+						question={question.question}
 					/>
 				))}
 			</div>
