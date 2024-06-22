@@ -34,7 +34,7 @@ export default function HowWeWork() {
 					}}
 					className='flex max-w-3xl flex-col'>
 					<div className='flex flex-col gap-5'>
-						<p className='text-3xl text-neutral-400 dark:text-neutral-500'>
+						<p className='text-3xl leading-normal text-neutral-400 dark:text-neutral-500'>
 							We specialize in building proof of concept software in Artifical
 							Intelligence —{' '}
 							<span className='text-secondary'>
@@ -42,7 +42,7 @@ export default function HowWeWork() {
 							</span>
 							. We cover the entire stack.
 						</p>
-						<p className='text-3xl text-neutral-400 dark:text-neutral-500'>
+						<p className='text-3xl leading-normal text-neutral-400 dark:text-neutral-500'>
 							We move quickly, work in sprints & like to take full ownership over the
 							project. We&apos;re builders at heart & our core value prop is in{' '}
 							<span className='text-secondary'>speed & quality of execution.</span>
