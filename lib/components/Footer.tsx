@@ -1,5 +1,5 @@
 'use client'
-import {GithubIcon, LinkedinIcon, TwitterIcon} from 'lucide-react'
+import {GithubIcon, LinkedinIcon} from 'lucide-react'
 import Link from 'next/link'
 import {usePathname} from 'next/navigation'
 import {META} from '~/constants/metadata'
@@ -31,7 +31,9 @@ const socials = [
 		title: 'Twitter',
 		href: META.twitterURL,
 		icon: (
-			<TwitterIcon className='h-5 w-5 transition-transform duration-300 hover:rotate-12' />
+			<div className='flex h-5 w-5 items-center justify-center pb-1 text-2xl transition-transform duration-300'>
+				<span className='no-underline hover:no-underline'>𝕏</span>
+			</div>
 		)
 	},
 	{
