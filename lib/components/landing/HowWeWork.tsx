@@ -38,7 +38,7 @@ export default function HowWeWork() {
 							We specialize in building proof of concept software in Artifical
 							Intelligence —{' '}
 							<span className='text-secondary'>
-								wireframing, architecture, design & development
+								wireframing, architecting, designing & development
 							</span>
 							. We cover the entire stack.
 						</p>
