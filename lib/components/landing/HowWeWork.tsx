@@ -33,17 +33,19 @@ export default function HowWeWork() {
 						visible: {opacity: 1, y: 0, transition: {duration: 0.6, ease: 'easeOut'}}
 					}}
 					className='flex max-w-3xl flex-col'>
-					<h1>We like to keep things simple.</h1>
-					<div className='flex flex-col gap-5 '>
+					<div className='flex flex-col gap-5'>
 						<p className='text-3xl text-neutral-400 dark:text-neutral-500'>
-							Our skillset is doing end-to-end, proof of concept work in AI —
-							wireframing, architecture, design & development.
+							We specialize in building proof of concept software in Artifical
+							Intelligence —{' '}
+							<span className='text-secondary'>
+								wireframing, architecture, design & development
+							</span>
+							. We cover the entire stack.
 						</p>
 						<p className='text-3xl text-neutral-400 dark:text-neutral-500'>
-							We move quickly, work in sprints, and like to take full ownership over
-							the project. We&apos;re{' '}
-							<span className='text-secondary'>builders at heart</span> and our core
-							value prop is in speed & quality of execution.
+							We move quickly, work in sprints & like to take full ownership over the
+							project. We&apos;re builders at heart & our core value prop is in{' '}
+							<span className='text-secondary'>speed & quality of execution.</span>
 						</p>
 					</div>
 				</motion.div>

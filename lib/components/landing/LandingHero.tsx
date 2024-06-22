@@ -36,7 +36,7 @@ export default function LandingHero() {
 								We work with startups big & small to build the future users want.
 							</p>
 
-							<p className='text-secondary invisible sm:visible'>
+							<p className='text-tertiary invisible sm:visible'>
 								Press{' '}
 								<Link
 									href='/contact'

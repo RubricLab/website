@@ -51,7 +51,9 @@ export default function Projects() {
 			isAlternate>
 			<div className='flex flex-col items-start sm:items-center'>
 				<h1>_featured projects</h1>
-				<h3 className='text-secondary'>We work with the best.</h3>
+				<h3 className='text-secondary'>
+					We work with leading builders in the space.
+				</h3>
 			</div>
 			<div className='grid gap-5 sm:grid-cols-2'>
 				{projects.map(({title, desc, href, logo}) => (

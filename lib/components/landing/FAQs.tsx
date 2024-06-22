@@ -48,7 +48,7 @@ const questions = [
 		question: 'Do I work with your engineers directly?',
 		answer: (
 			<p className='text-tertiary'>
-				No. You interact with a member of our team at a weekly or biweekly cadence.
+				No. You interact with a member of our team at a recurring cadence.
 			</p>
 		)
 	},
