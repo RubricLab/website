@@ -14,15 +14,14 @@ export default function LandingHero() {
 		<SectionLayout
 			id='hero'
 			isAlternate
-			className='gap-5'>
-			<div className='flex w-full max-w-7xl flex-col items-center justify-center gap-5 sm:flex-row'>
-				<AnimatePresence>
-					<motion.div
-						animate={{opacity: 1}}
-						className='z-10 flex w-full flex-col items-center gap-16'
-						exit={{opacity: 0}}
-						initial={{opacity: 0}}
-						transition={{duration: 2}}>
+			className='gap-5 bg-gradient-to-b from-neutral-100 via-neutral-100 to-white dark:from-neutral-800 dark:via-neutral-800 dark:to-black'>
+			<AnimatePresence>
+				<motion.div
+					initial={{opacity: 0, y: 20}}
+					transition={{duration: 0.6, ease: 'easeOut'}}
+					animate={{opacity: 1, y: 0}}
+					className='flex w-full max-w-7xl flex-col items-center justify-center gap-5 sm:flex-row'>
+					<div className='z-10 flex w-full flex-col items-center gap-16'>
 						<div className='flex h-full flex-col gap-8 text-black sm:gap-16 dark:text-white'>
 							<div className='flex flex-col gap-8 sm:gap-0'>
 								<Announcement />
@@ -48,12 +47,12 @@ export default function LandingHero() {
 								anytime to get started.
 							</p>
 						</div>
-					</motion.div>
-				</AnimatePresence>
-				<div className='h-[40vh] w-full sm:h-[70vh] sm:max-w-md'>
-					<Spline scene={spline} />
-				</div>
-			</div>
+					</div>
+					<div className='h-[40vh] w-full sm:h-[70vh] sm:max-w-md'>
+						<Spline scene={spline} />
+					</div>
+				</motion.div>
+			</AnimatePresence>
 		</SectionLayout>
 	)
 }
