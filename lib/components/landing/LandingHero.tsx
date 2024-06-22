@@ -27,8 +27,8 @@ export default function LandingHero() {
 							<div className='flex flex-col gap-8 sm:gap-0'>
 								<Announcement />
 								<p className='text-4xl tracking-tight sm:text-8xl sm:leading-[7.5rem]'>
-									We make magical,{' '}
-									<span className='whitespace-nowrap font-bold'>AI-first</span> software.
+									We make magical, <span className='whitespace-nowrap'>AI-first</span>{' '}
+									software.
 								</p>
 							</div>
 
