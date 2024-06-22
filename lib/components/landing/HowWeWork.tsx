@@ -21,7 +21,7 @@ export default function HowWeWork() {
 	return (
 		<SectionLayout
 			id='how-we-work'
-			className='relative items-end'>
+			className='relative items-start'>
 			<GradientBackgroundGrid />
 			<AnimatePresence mode='wait'>
 				<motion.div
