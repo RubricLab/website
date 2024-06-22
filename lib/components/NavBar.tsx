@@ -52,7 +52,7 @@ export default function NavBar() {
 			<Link
 				className='text-inherit no-underline'
 				href='/'>
-				<Title size='full' />
+				<Title size='small' />
 			</Link>
 			<div className='flex items-center gap-4'>
 				{pathname !== '/about' && (
