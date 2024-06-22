@@ -52,6 +52,7 @@ export default function ContactForm() {
 				action={formAction}>
 				<div className='flex flex-col gap-4'>
 					<input
+						autoFocus
 						type='text'
 						name='name'
 						placeholder='First name'
