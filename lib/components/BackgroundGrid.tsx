@@ -1,5 +1,7 @@
 'use client'
 
+import cn from '~/utils/cn'
+
 const lineAttributes = {
 	fill: 'none',
 	stroke: '#737373', // Neutral-500
@@ -15,7 +17,7 @@ function BackgroundGrid({
 }) {
 	return (
 		<svg
-			className={`opacity-10 dark:opacity-20 ${className}`}
+			className={cn('opacity-10 dark:opacity-20', className)}
 			preserveAspectRatio='xMidYMid slice' // slice means scale the SVG to cover the entire viewport, possibly cropping the SVG in the process
 			viewBox='0 0 1000 1000'
 			xmlns='http://www.w3.org/2000/svg'
