@@ -83,7 +83,9 @@ function Testimonial({
 
 export default function Testimonials() {
 	return (
-		<SectionLayout id='testimonials'>
+		<SectionLayout
+			id='testimonials'
+			className='from-white to-white dark:from-black dark:to-black'>
 			<div className='flex flex-col items-center'>
 				<h1>Loved by the best.</h1>
 				<h3>Read what folks have to say about us.</h3>

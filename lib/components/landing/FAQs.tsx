@@ -98,7 +98,7 @@ export default function FAQs() {
 	return (
 		<SectionLayout
 			id='faq'
-			isAlternate>
+			className='from-white to-white dark:from-black dark:to-black'>
 			<h1>Frequently asked questions</h1>
 			<div className='flex w-full max-w-3xl flex-col items-center justify-center gap-3'>
 				{questions.map(question => (
