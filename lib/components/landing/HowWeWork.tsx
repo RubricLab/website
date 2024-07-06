@@ -35,7 +35,7 @@ export default function HowWeWork() {
 					className='flex max-w-3xl flex-col'>
 					<div className='flex flex-col gap-5'>
 						<p className='text-3xl leading-normal text-neutral-400 dark:text-neutral-500'>
-							We specialize in building proof of concept software in Artifical
+							We specialize in building proof of concept software in Artificial
 							Intelligence —{' '}
 							<span className='text-secondary'>
 								wireframing, architecting, designing & development
