@@ -1,19 +1,20 @@
 import {ArrowRight, ArrowUpRight} from 'lucide-react'
 import Link from 'next/link'
-import {Cal} from '../logos/Cal'
 import {Graphite} from '../logos/Graphite'
+import {Gumloop} from '../logos/Gumloop'
 import {Maige} from '../logos/Maige'
 import SectionLayout from './SectionLayout'
 
 const projects = [
 	{
-		desc: 'AI assistant for your calendar.',
-		href: 'https://cal.ai/',
-		title: 'Cal.ai',
+		desc:
+			'Dashboard, component system, and landing page for Gumloop, the platform for automating any workflow with AI.',
+		href: 'https://gumloop.com/',
+		title: 'Gumloop',
 		logo: (
-			<Cal
-				key='cal'
-				className='w-28'
+			<Gumloop
+				key='gumloop'
+				className='opacity-60'
 			/>
 		)
 	},
