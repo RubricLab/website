@@ -32,7 +32,8 @@ export default function LandingHero() {
 							</div>
 
 							<p className='text-secondary max-w-xl text-2xl sm:leading-10'>
-								We work with startups big & small to build the future users want.
+								We are an applied AI lab working with companies to build the future
+								users want.
 							</p>
 
 							<p className='text-tertiary invisible sm:visible'>

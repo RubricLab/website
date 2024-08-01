@@ -10,7 +10,7 @@ import getMetadata from '~/utils/getMetadata'
 export const metadata = getMetadata({
 	title: 'Lab',
 	description:
-		'We make AI-enabled magical software. Rubric is a digital studio specializing in LangChain, Next.js, and AI-enabled product development.',
+		'We are an applied AI lab working with companies to build the future users want with magical software.',
 	path: 'lab'
 })
 

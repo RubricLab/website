@@ -39,7 +39,7 @@ export default async function Image({params}: Props) {
 				/>
 				<div style={{color: colors['white'], fontSize: 200}}>Rubric</div>
 				<div style={{color: colors['white'], fontSize: 48}}>
-					A digital studio making AI-first software.
+					An applied AI lab making software.
 				</div>
 			</div>
 		),

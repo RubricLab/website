@@ -7,7 +7,7 @@ import getMetadata from '~/utils/getMetadata'
 export const metadata = getMetadata({
 	title: 'Projects',
 	description:
-		"Rubric is the digital studio behind Year in Code, Cal.ai, Maige, and more. We're a team of engineers, designers, and product managers who build AI-enabled magical software.",
+		"Rubric is an applied AI lab behind Year in Code, Cal.ai, Maige, and more. We're a team of engineers, designers, and product managers who build AI-powered magical software.",
 	path: 'projects'
 })
 
