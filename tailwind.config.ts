@@ -5,9 +5,6 @@ const tailwindConfig = {
 	content: ['./app/**/*.tsx', './lib/**/*.tsx'],
 	presets: [config],
 	theme: {
-		colors: {
-			...config.theme.colors
-		},
 		extend: {
 			fontFamily: {
 				'neue-bit': ['var(--font-neue-bit)']
