@@ -52,7 +52,7 @@
 	"private": true,
 	"scripts": {
 		"bleed": "ncu -u && bun i",
-		"build": "basehub && next build",
+		"build": "npx basehub && next build",
 		"clean": "rm -rf .next && rm -rf node_modules && rm -f bun.lockb",
 		"dev": "basehub dev & next dev",
 		"format": "prettier --write .",
