@@ -1,0 +1,98 @@
+.code-snippet {
+	display: flex;
+	flex-direction: column;
+	background-color: var(--colors-surface-secondary);
+	border-radius: var(--borderRadius-xl);
+	margin: var(--spacing-4) 0px;
+	border: 1px solid var(--colors-border-DEFAULT);
+	width: 100%;
+	overflow: hidden;
+}
+
+.code-snippet .header {
+	padding: var(--spacing-4);
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	border-bottom: 1px solid var(--colors-border-DEFAULT);
+}
+
+.code-snippet .content {
+	overflow-x: auto;
+	background-color: var(--colors-surface-secondary);
+	position: relative;
+}
+
+.code-snippet .content :global(pre) {
+	margin: 0 !important;
+	font-size: var(--fontSize-sm) !important;
+	word-wrap: break-word;
+	background-color: var(--colors-surface-secondary) !important;
+	outline-color: var(--colors-accent-500);
+}
+
+.code-snippet .content :global(pre) :global(span.line-indicator) {
+	display: inline-block;
+	pointer-events: none;
+	position: sticky;
+	left: 0;
+	background-color: var(--colors-surface-secondary);
+	color: var(--colors-text-tertiary);
+	user-select: none;
+	width: 44px !important;
+	text-align: end;
+	padding-right: 12px !important;
+}
+
+.code-snippet .content {
+	--shiki-color-text: var(--colors-grayscale-950);
+	--shiki-background: var(--colors-surface-secondary);
+	--shiki-token-constant: var(--colors-accent-700);
+	--shiki-token-function: var(--colors-grayscale-600);
+	--shiki-token-string-expression: var(--colors-grayscale-500);
+	--shiki-token-string: var(--colors-accent-400);
+	--shiki-token-comment: var(--colors-grayscale-400);
+	--shiki-token-keyword: var(--colors-accent-500);
+	--shiki-token-parameter: #d6deeb;
+	--shiki-token-punctuation: #c792e9;
+	--shiki-token-link: #79b8ff;
+}
+
+:global(.dark) .code-snippet {
+	background-color: var(--colors-dark-surface-secondary);
+	border: 1px solid var(--colors-dark-border-DEFAULT);
+}
+
+:global(.dark) .code-snippet .header {
+	border-bottom: 1px solid var(--colors-dark-border-DEFAULT);
+}
+
+:global(.dark) .code-snippet .content {
+	background-color: var(--colors-dark-surface-secondary);
+}
+
+:global(.dark) .code-snippet .content :global(pre) {
+	background-color: var(--colors-dark-surface-secondary) !important;
+}
+
+:global(.dark)
+	.code-snippet
+	.content
+	:global(pre)
+	:global(span.line-indicator) {
+	color: var(--colors-dark-text-tertiary);
+	background-color: var(--colors-dark-surface-secondary);
+}
+
+:global(.dark) .code-snippet .content {
+	--shiki-color-text: var(--colors-grayscale-950);
+	--shiki-background: var(--colors-dark-surface-secondary);
+	--shiki-token-constant: var(--colors-accent-200);
+	--shiki-token-function: var(--colors-grayscale-400);
+	--shiki-token-string-expression: var(--colors-grayscale-500);
+	--shiki-token-string: var(--colors-accent-400);
+	--shiki-token-comment: var(--colors-grayscale-600);
+	--shiki-token-keyword: var(--colors-accent-500);
+	--shiki-token-parameter: #d6deeb;
+	--shiki-token-punctuation: #c792e9;
+}

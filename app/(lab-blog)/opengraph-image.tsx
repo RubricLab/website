@@ -1,7 +1,7 @@
+import BackgroundGrid from '@/lib/components/BackgroundGrid.server'
+import {FONTS} from '@/lib/constants/fonts'
 import {ImageResponse} from 'next/og'
 import colors from 'tailwindcss/colors'
-import {FONTS} from '~/constants/fonts'
-import {getPost} from '~/sanity/utils'
 
 export const runtime = 'edge'
 
@@ -13,13 +13,10 @@ export const size = {
 }
 
 type Props = {
-	params: {post: string}
+	params: object
 }
 
 export default async function Image({params}: Props) {
-	console.log('Path params: ', params)
-	const post = await getPost(params.post)
-
 	return new ImageResponse(
 		(
 			<div
@@ -34,29 +31,15 @@ export default async function Image({params}: Props) {
 					position: 'relative',
 					width: '100%'
 				}}>
-				<img
-					src={post.mainImage}
+				<BackgroundGrid
 					style={{
-						zIndex: -1,
 						position: 'absolute',
-						width: '100%',
-						height: '100%',
-						opacity: 0.5
+						width: size.width
 					}}
 				/>
-				<div style={{color: colors['white'], fontSize: 100, textAlign: 'center'}}>
-					{post.title}
-				</div>
-
-				<div
-					style={{
-						position: 'absolute',
-						left: '20px',
-						bottom: '20px',
-						color: colors['white'],
-						fontSize: 48
-					}}>
-					Rubric Blog
+				<div style={{color: colors['white'], fontSize: 200}}>Rubric</div>
+				<div style={{color: colors['white'], fontSize: 48}}>
+					An applied AI lab making software.
 				</div>
 			</div>
 		),

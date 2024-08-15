@@ -9,5 +9,6 @@
 	"editor.formatOnSave": true,
 	"editor.codeActionsOnSave": {
 		"source.fixAll.eslint": "explicit"
-	}
+	},
+	"css.customData": [".vscode/tailwind.json"]
 }

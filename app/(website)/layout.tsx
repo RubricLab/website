@@ -1,16 +1,16 @@
+import Footer from '@/lib/components/Footer'
+import NavBar from '@/lib/components/NavBar'
+import {Toaster} from '@/lib/components/Toast'
+import {META} from '@/lib/constants/metadata'
 import PlausibleProvider from 'next-plausible'
 import {Plus_Jakarta_Sans} from 'next/font/google'
 import localFont from 'next/font/local'
-import Footer from '~/components/Footer'
-import NavBar from '~/components/NavBar'
-import {Toaster} from '~/components/Toast'
-import {META} from '~/constants/metadata'
 import './styles.css'
 
 const jakartaSans = Plus_Jakarta_Sans({subsets: ['latin']})
 
 const neueBit = localFont({
-	src: '../public/fonts/PPNeueBit-Bold.otf',
+	src: '../../public/fonts/PPNeueBit-Bold.otf',
 	variable: '--font-neue-bit'
 })
 

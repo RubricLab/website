@@ -2,6 +2,7 @@
 	"compilerOptions": {
 		"baseUrl": ".",
 		"paths": {
+			"@/*": ["./*"],
 			"~/*": ["./lib/*"]
 		},
 		"plugins": [{"name": "next"}]
@@ -9,11 +10,15 @@
 	"exclude": ["node_modules"],
 	"extends": "@rubriclab/typescript-config/nextjs",
 	"include": [
+		"**/*.ts",
+		"**/*.tsx",
 		"./app/**/*.ts",
 		"./app/**/*.tsx",
 		"./lib/**/*.ts",
 		"./lib/**/*.tsx",
 		".next/types/**/*.ts",
+		".next/types/**/*.ts",
+		"next-env.d.ts",
 		"next-env.d.ts",
 		"sanity.cli.ts"
 	]
