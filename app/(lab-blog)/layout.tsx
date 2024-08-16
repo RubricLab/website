@@ -4,6 +4,8 @@ import {GeistSans} from 'geist/font/sans'
 import PlausibleProvider from 'next-plausible'
 import {Providers} from './providers'
 
+import BackgroundGrid from '@/common/lab-blog-layout/background-grid'
+import Header from '@/common/lab-blog-layout/header'
 import './styles.css'
 
 export const metadata = {
@@ -18,9 +20,14 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
 			<head>
 				<PlausibleProvider domain='rubriclabs.com' />
 			</head>
-			<body className='font-mono'>
+
+			<body className='px-sides font-mono'>
 				<Providers>
-					<main className=''>{children}</main>
+					<Header />
+					<div className='relative'>
+						<BackgroundGrid />
+						<main className='pt-header'>{children}</main>
+					</div>
 				</Providers>
 			</body>
 		</html>

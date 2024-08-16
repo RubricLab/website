@@ -3,16 +3,58 @@
 @tailwind utilities;
 
 :root {
+	/* spacing */
 	--header-height: 64px;
+	--spacing-sides: 1.5rem;
+	--col-count: 12;
+	--col-width: calc((100vw - (var(--spacing-sides) * 2)) / var(--col-count));
 
+	/* base colors */
+
+	--white: 255 255 255;
+	--black: 0 0 0;
+
+	--shade-50: 246 246 246;
+	--shade-100: 231 231 231;
+	--shade-200: 209 209 209;
+	--shade-300: 176 176 176;
+	--shade-400: 136 136 136;
+	--shade-500: 109 109 109;
+	--shade-600: 93 93 93;
+	--shade-700: 79 79 79;
+	--shade-800: 71 71 71;
+	--shade-900: 61 61 61;
+	--shade-950: 38 38 38;
+
+	/* colors variables */
+	--color-text: var(--white);
+	--color-text-secondary: var(--shade-200);
+	--color-text-tertiary: var(--shade-400);
+	--color-surface: var(--black);
+	--color-surface-contrast: var(--white);
+	--color-border: var(--shade-800);
+	--color-control: var(--white);
+}
+
+:root:not(html.dark) {
+	--color-text: var(--black);
+	--color-text-secondary: var(--shade-800);
+	--color-text-tertiary: var(--shade-600);
+	--color-surface: var(--white);
+	--color-surface-contrast: var(--black);
+	--color-border: var(--shade-200);
+	--color-control: var(--black);
+}
+
+html {
 	text-rendering: geometricprecision;
 	-webkit-text-size-adjust: 100%;
 	-webkit-font-smoothing: antialiased;
 	-moz-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 
-	color: theme('colors.dark.text.DEFAULT');
-	background-color: theme('colors.dark.surface.DEFAULT');
+	color: theme('colors.text.DEFAULT');
+	background-color: theme('colors.surface.DEFAULT');
 
 	::selection {
 		background-color: theme('colors.surface.contrast');
@@ -21,22 +63,7 @@
 	*:focus-visible {
 		outline-color: theme('colors.control.DEFAULT');
 	}
-}
 
-:root:not(html.dark) {
-	color: theme('colors.text.DEFAULT');
-	background-color: theme('colors.surface.DEFAULT');
-
-	::selection {
-		background-color: theme('colors.gray.200');
-	}
-
-	*:focus-visible {
-		outline-color: theme('colors.control.DEFAULT');
-	}
-}
-
-html {
 	&::-webkit-scrollbar {
 		display: none;
 	}

@@ -165,14 +165,14 @@ export default async function BlogPage({
 					if (!blogpost) return notFound()
 
 					return (
-						<>
+						<div className='bg-surface-contrast border-dark-border mx-auto w-[calc(var(--col-width)*8+2px)] -translate-x-px border'>
 							<PageView _analyticsKey={blogpost._analyticsKey} />
-							<Section>
+							<Section className='max-w-col-8 w-col-8'>
 								<Heading subtitle={blogpost.description}>
-									<h1>{blogpost._title}</h1>
+									<h1 className='text-[64px]'>{blogpost._title}</h1>
 								</Heading>
 								<div className='flex flex-col items-center justify-center gap-3'>
-									<div className='flex max-w-screen-lg items-center justify-center gap-12 text-base'>
+									<div className='flex items-center justify-center gap-12 text-base'>
 										{blogpost.authors.map(author => (
 											<figure
 												key={author._id}
@@ -226,7 +226,7 @@ export default async function BlogPage({
 									</RichText>
 								</div>
 							</Section>
-						</>
+						</div>
 					)
 				}}
 			</Pump>

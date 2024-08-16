@@ -1,9 +1,31 @@
 import config from '@rubriclab/tailwind-config'
 import {Config} from 'tailwindcss'
-import {extendedColors as colors, shades} from './lib/utils/colors'
+import {shades} from './lib/utils/colors'
+
+const generateColumnValues = count => {
+	return Object.fromEntries(
+		[...Array(count)].map((_, i) => [
+			`col-${i + 1}`,
+			`calc(var(--col-width) * ${i + 1})`
+		])
+	)
+}
+
+const columnConfig = generateColumnValues(12)
 
 const tailwindConfig = {
-	content: ['./app/**/*.tsx', './lib/**/*.tsx'],
+	darkMode: 'class',
+	content: [
+		'./app/**/*.{js,ts,jsx,tsx,mdx}',
+		'./lib/**/*.{js,ts,jsx,tsx,mdx}',
+		'./pages/**/*.{js,ts,jsx,tsx,mdx}',
+		'./components/**/*.{js,ts,jsx,tsx,mdx}',
+		'./common/**/*.{js,ts,jsx,tsx,mdx}',
+		'./src/**/*.{js,ts,jsx,tsx,mdx}',
+		'./utils/**/*.{js,ts}',
+		'./hooks/**/*.{js,ts}',
+		'./context/**/*.{js,ts,jsx,tsx}'
+	],
 	presets: [config],
 	theme: {
 		fontFamily: {
@@ -16,43 +38,32 @@ const tailwindConfig = {
 				transparent: 'transparent',
 				shades,
 				text: {
-					DEFAULT: colors.black,
-					secondary: colors.shades[800],
-					tertiary: colors.shades[600]
+					DEFAULT: 'rgb(var(--color-text) / <alpha-value>)',
+					secondary: 'rgb(var(--color-text-secondary) / <alpha-value>)',
+					tertiary: 'rgb(var(--color-text-tertiary) / <alpha-value>)'
 				},
 				surface: {
-					DEFAULT: colors.white,
-					contrast: colors.black
+					DEFAULT: 'rgb(var(--color-surface) / <alpha-value>)',
+					contrast: 'rgb(var(--color-surface-contrast) / <alpha-value>)'
 				},
 				border: {
-					DEFAULT: colors.shades[200]
+					DEFAULT: 'rgb(var(--color-border) / <alpha-value>)'
 				},
 				control: {
-					DEFAULT: colors.black
+					DEFAULT: 'rgb(var(--color-control) / <alpha-value>)'
 				},
 				error: {
-					DEFAULT: '#FF453A'
+					DEFAULT: 'rgb(var(--color-error) / <alpha-value>)'
 				},
 				success: {
-					DEFAULT: '#14C9A2'
-				},
-				dark: {
-					text: {
-						DEFAULT: colors.white,
-						secondary: colors.shades[200],
-						tertiary: colors.shades[400]
-					},
-					surface: {
-						DEFAULT: colors.black,
-						contrast: colors.white
-					},
-					border: {
-						DEFAULT: colors.shades[800]
-					},
-					control: {
-						DEFAULT: colors.white
-					}
+					DEFAULT: 'rgb(var(--color-success) / <alpha-value>)'
 				}
+			},
+			spacing: {
+				...columnConfig,
+				sides: 'var(--spacing-sides)',
+				header: 'var(--header-height)',
+				fold: 'calc(100vw - var(--header-height))'
 			},
 			keyframes: {
 				'accordion-down': {
