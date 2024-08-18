@@ -9,8 +9,12 @@
 
 .code-snippet .content {
   overflow-x: auto;
-  background-color: rgb(var(--color-surface-secondary) / 0.1);
+  background-color: rgb(var(--color-surface-secondary) / 0.06);
   position: relative;
+}
+
+.code-snippet .content ::-webkit-scrollbar {
+  display: none;
 }
 
 .code-snippet .content :global(pre) {

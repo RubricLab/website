@@ -28,13 +28,11 @@ export function CodeSnippet({code, _title = 'Untitled'}: CodeSnippetFragment) {
         'flex w-full flex-col border border-border my-em-[24] text-em-[14/16]'
       )}>
       <header className={s.header}>
-        <div className='flex items-center'>
+        <div className='flex items-center text-text-secondary'>
           <span className='mr-2 size-4'>
             {languagesIcons[code.language as BundledLanguage] ?? <FileIcon />}
           </span>
-          <span className='dark:text-dark-text-secondary text-text-secondary'>
-            {_title}
-          </span>
+          <span>{_title}</span>
         </div>
         <CopyButton text={code.code} />
       </header>
