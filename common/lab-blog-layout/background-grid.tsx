@@ -1,36 +1,43 @@
-const BackgroundGrid = () => {
-	return (
-		<div className='px-sides text-border pointer-events-none fixed inset-0 z-0 flex'>
-			<div
-				className='left-sides absolute h-full w-px'
-				style={{
-					backgroundSize: '1px 1.5rem',
-					background: `repeating-linear-gradient(
+'use client'
+
+const backgroundGradient = `repeating-linear-gradient(
 								to bottom,
-								transparent 0px 12px,
-								currentColor 12px 24px
+								transparent 0px 0.75em,
+								rgb(var(--color-border)) 0.75em 1.5em
 							)`
-				}}
-			/>
-			<div className='grid h-full w-full grid-cols-12 '>
-				{[...Array(12)].map((_, index) => (
-					<div
-						key={index}
-						className='justify-self-end'
-						style={{
-							width: '1px',
-							backgroundSize: '1px 1.5rem',
-							background: `repeating-linear-gradient(
-								to bottom,
-								transparent 0px 12px,
-								currentColor 12px 24px
-							)`
-						}}
-					/>
-				))}
-			</div>
-		</div>
-	)
+
+export type BackgroundGridProps = {
+  highlightColumns?: number[]
+}
+
+const BackgroundGrid = ({highlightColumns}: BackgroundGridProps) => {
+  return (
+    <div className='pointer-events-none fixed inset-0 z-0 flex px-sides text-border'>
+      <div
+        className='absolute left-sides h-full w-px'
+        style={{
+          backgroundSize: '1px 1.5em',
+          background: backgroundGradient
+        }}
+      />
+      <div className='grid h-full w-full grid-cols-12 '>
+        {[...Array(12)].map((_, index) => (
+          <div
+            key={index}
+            className={`grid
+			${highlightColumns?.includes(index) ? 'bg-surface-contrast/5' : ''}`}>
+            <span
+              className='w-px justify-self-end'
+              style={{
+                backgroundSize: '1px 1.5em',
+                background: backgroundGradient
+              }}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  )
 }
 
 export default BackgroundGrid
