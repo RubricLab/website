@@ -41,6 +41,7 @@
   --color-surface-tertiary: var(--shade-700);
   --color-surface-contrast: var(--white);
   --color-border: var(--shade-800);
+  /* --color-border-secondary: var(--shade-900); */
   --color-control: var(--white);
 }
 
@@ -54,6 +55,7 @@
   --color-surface-tertiary: var(--shade-200);
   --color-surface-contrast: var(--black);
   --color-border: var(--shade-300);
+  /* --color-border-secondary: var(--shade-200); */
   --color-control: var(--black);
 }
 

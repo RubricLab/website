@@ -13,10 +13,10 @@ export const richTextClasses = clsx(
   'prose-h1:text-4xl prose-h1:font-medium prose-h1:text-text-primary dark:prose-h1:text-dark-text-primary',
   'prose-h2:text-em-[32/16] prose-h2:font-semibold prose-h2:text-text prose-h2:uppercase',
   'prose-h3:text-em-[24/16] prose-h3:font-semibold prose-h3:text-text prose-h3:uppercase',
-  'prose-blockquote:border-border prose-blockquote:pl-5 prose-blockquote:text-2xl prose-blockquote:text-text-primary dark:prose-blockquote:border-dark-border dark:prose-blockquote:text-dark-text-primary',
+  'prose-blockquote:border-border prose-blockquote:font-medium prose-blockquote:pl-em-[20] prose-blockquote:text-em-[24/16] prose-blockquote:text-text prose-blockquote:border-l-em-[2/16]',
   '[&_blockquote>p]:before:[content:""] prose-blockquote:[&_blockquote>p]:after:[content:""]',
   'prose-h4:text-2xl prose-h4:font-medium',
-  'prose-strong:font-semibold',
+  'prose-strong:font-semibold prose-strong:text-text',
   'prose-a:outline-control prose-a:font-semibold prose-a:text-text prose-a:no-underline hover:prose-a:underline prose-a:underline-offset-[0.25em] prose-a:decoration-control/50',
   'prose-pre:pl-0',
   'prose-li:mt-em-[20] prose-li:mb-em-[24]',
@@ -43,16 +43,11 @@ function Code({
 }) {
   if (isInline)
     return (
-      <code className='text-accent-500 dark:border-dark-border dark:bg-dark-surface-secondary rounded border border-border px-2 py-0.5 before:[content:none] after:[content:none]'>
+      <code className='rounded border border-border bg-surface-contrast/5 text-text-secondary px-em-[8] py-em-[2] before:[content:none] after:[content:none]'>
         {children}
       </code>
     )
-  else
-    return (
-      <pre className='dark:border-dark-border rounded-lg border border-border'>
-        {code}
-      </pre>
-    )
+  else return <pre className='border border-border'>{code}</pre>
 }
 
 export const FaqItemComponentFragment = fragmentOn('FaqItemComponent', {
