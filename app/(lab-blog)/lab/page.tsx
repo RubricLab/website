@@ -44,17 +44,16 @@ const Progress = () => {
 			if (!ref.current) return;
 
 			const scrollPosition = window.scrollY;
+			const windowHeight = window.innerHeight;
 			const projectsSection = document.getElementById('projects');
+
 			if (!projectsSection) return;
 
 			const projectsSectionTop = projectsSection.offsetTop;
-			const projectsSectionHeight = projectsSection.offsetHeight;
-			const projectsSectionBottom = projectsSectionTop + projectsSectionHeight;
+			const projectsSectionBottom = projectsSectionTop + projectsSection.offsetHeight;
 
-			const scrollPercentage = (scrollPosition - projectsSectionTop) / (projectsSectionBottom - projectsSectionTop);
+			const scrollPercentage = (scrollPosition + windowHeight - projectsSectionTop) / (projectsSectionBottom - projectsSectionTop);
 			const scale = Math.max(0, Math.min(1, scrollPercentage));
-
-			console.log(scale);
 
 			ref.current.style.transform = `translateX(${-(1 - scale)*100}%)`;
 		};
@@ -90,8 +89,8 @@ export default function LabPage() {
 					<ProjectContent />
 					<ProjectContent />
 				</div>
-				<aside className='sticky top-header col-[8/13] flex h-fold items-center'>
-					<div className='aspect-square w-full border border-border bg-black'></div>
+				<aside className='sticky top-header col-[8/13] h-fold items-center'>
+					<div className='h-full border border-border bg-black -translate-x-px w-[calc(100%+1px)]'></div>
 				</aside>
 			</section>
 			<div className='fixed bottom-0 left-0 flex h-10 w-full border-t border-border bg-black px-sides'>
