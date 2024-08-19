@@ -3,7 +3,7 @@
 const backgroundGradient = `repeating-linear-gradient(
 								to bottom,
 								transparent 0px 0.75em,
-								rgb(var(--color-border)) 0.75em 1.5em
+								rgb(var(--color-border) / 0.5) 0.75em 1.5em
 							)`
 
 export type BackgroundGridProps = {
