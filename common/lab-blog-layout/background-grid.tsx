@@ -18,7 +18,11 @@ export type BackgroundGridProps = {
 const BackgroundGrid = ({highlightColumns}: BackgroundGridProps) => {
   const tl = useRef<gsap.core.Timeline>(
     gsap.timeline({
-      paused: true
+      paused: true,
+      defaults: {
+        ease: 'power1.out',
+        duration: 0.6
+      }
     })
   )
 
@@ -29,12 +33,25 @@ const BackgroundGrid = ({highlightColumns}: BackgroundGridProps) => {
       document.querySelectorAll('[data-grid-col]')
     )
 
-    tl.current.to(columns, {
-      '--clip-progress': 1,
-      duration: 1,
-      stagger: 0.1,
-      ease: 'power3.out'
-    })
+    const highlightedColumns = gsap.utils.toArray(
+      document.querySelectorAll('[data-highlighted="true"]')
+    )
+
+    tl.current
+      .to(columns, {
+        '--clip-progress': 1,
+        stagger: {
+          ease: 'power1.in',
+          each: 0.1
+        }
+      })
+      .to(highlightedColumns, {
+        '--background-opacity': 0.025,
+        stagger: {
+          ease: 'power1.in',
+          each: 0.1
+        }
+      })
   })
 
   useEffect(() => {
@@ -56,20 +73,25 @@ const BackgroundGrid = ({highlightColumns}: BackgroundGridProps) => {
           } as CSSProperties
         }
       />
-      <div className='grid h-full w-full grid-cols-12 '>
+      <div className='grid h-full w-full grid-cols-12'>
         {[...Array(12)].map((_, index) => (
           <div
             key={index}
+            className='duration- grid transition-colors ease-out'
             data-grid-col={index + 1}
+            data-highlighted={
+              highlightColumns?.includes(index) ? 'true' : 'false'
+            }
             style={
               {
+                '--background-opacity': 0.0,
                 '--clip-progress': 0,
+                background:
+                  'rgb(var(--color-surface-contrast) / var(--background-opacity))',
                 clipPath:
                   'polygon(0% 0%, 100% 0%, 100% calc(var(--clip-progress) * 100%), 0% calc(var(--clip-progress) * 100%))'
               } as CSSProperties
-            }
-            className={`grid
-			${highlightColumns?.includes(index) ? 'bg-surface-contrast/[0.025]' : ''}`}>
+            }>
             <span
               className='w-px justify-self-end'
               style={{
