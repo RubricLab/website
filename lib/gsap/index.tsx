@@ -4,10 +4,7 @@ import gsap from 'gsap'
 import TextPlugin from 'gsap/dist/TextPlugin'
 
 export function GsapSetup() {
-  if (typeof window !== 'undefined') {
-    console.log('registering plugins')
-    gsap.registerPlugin(TextPlugin, useGSAP)
-  }
+  if (typeof window !== 'undefined') gsap.registerPlugin(TextPlugin, useGSAP)
 
   return null
 }
