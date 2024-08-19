@@ -67,9 +67,9 @@ const tailwindConfig: Config = {
       },
       fontSize: {
         'blog-body': [
-          '1em',
+          '1.05em',
           {
-            lineHeight: '1.45',
+            lineHeight: '1.5',
             letterSpacing: '-0.002em'
           }
         ]

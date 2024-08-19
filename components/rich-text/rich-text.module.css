@@ -1,12 +1,17 @@
 .rich-text li p:first-child {
-	margin-top: 0;
-	margin-bottom: 8px !important;
+  margin-top: 0;
+  margin-bottom: 0.5em !important;
 }
 
 .rich-text li p:first-child + p {
-	margin-top: 0;
+  margin-top: 0;
 }
 
 .rich-text li p:last-child {
-	margin-bottom: 0;
+  margin-bottom: 0;
+}
+
+.rich-text li p:first-child strong {
+  /* Add your desired styles here, for example: */
+  @apply font-mono font-semibold uppercase text-text text-em-[20/16];
 }

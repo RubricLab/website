@@ -3,7 +3,7 @@ import type {Metadata} from 'next'
 import {draftMode} from 'next/headers'
 import {notFound} from 'next/navigation'
 
-import {Avatar} from '@/common/avatar'
+import {Author} from '@/common/avatar'
 import {DarkLightImage} from '@/common/dark-light-image'
 import BackgroundGrid from '@/common/lab-blog-layout/background-grid'
 import {CodeSnippet, codeSnippetFragment} from '@/components/code-snippet'
@@ -169,37 +169,34 @@ export default async function BlogPage({
               <PageView _analyticsKey={blogpost._analyticsKey} />
 
               <div className='grid grid-cols-2 border-b border-t border-border my-em-[64]'>
-                <div className='flex flex-col justify-between border-r border-border p-em-[32]'>
-                  <h1 className='font-medium uppercase text-em-[64/16]'>
+                <div className='flex flex-col justify-between border-r border-border p-em-[32] gap-em-[16]'>
+                  <div className='flex'>
+                    {blogpost.categories.map(category => (
+                      <span
+                        key={category}
+                        className='mr-1 border border-border uppercase text-text-tertiary px-em-[8] py-em-[2] text-em-[14/16]'>
+                        {category}
+                      </span>
+                    ))}
+                  </div>
+                  <h1 className='font-medium uppercase text-em-[52/16] 2xl:text-em-[64/16]'>
                     {blogpost._title}
                   </h1>
-                  <div className='flex flex-col items-center justify-center gap-3'>
-                    <div className='flex items-center justify-center gap-12 font-sans text-base'>
+                  <div className='flex items-center gap-em-[16]'>
+                    <div className='flex items-center justify-center space-x-[-1px] text-base'>
                       {blogpost.authors.map(author => (
-                        <figure
+                        <Author
                           key={author._id}
-                          className='flex items-center gap-2'>
-                          <Avatar
-                            key={author._id}
-                            {...author.image}
-                            alt=''
-                            className='!size-11'
-                          />
-                          {author._title}
-                        </figure>
+                          {...author}
+                        />
                       ))}
                     </div>
-                    <div className='dark:divide-dark-border dark:text-dark-text-tertiary flex divide-x divide-border text-sm font-normal text-text-tertiary'>
-                      <p className='pr-2'>{formatDate(blogpost.publishedAt)}</p>
-                      <span className='pl-2'>
-                        {blogpost.categories.map(category => (
-                          <span
-                            key={category}
-                            className='mr-1 capitalize'>
-                            {category}
-                          </span>
-                        ))}
-                      </span>
+                    <span className='h-px bg-border w-em-[64]' />
+
+                    <div className='flex divide-x divide-border text-text-tertiary'>
+                      <p className='uppercase pr-em-[8] text-em-[22/16]'>
+                        {formatDate(blogpost.publishedAt)}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -213,11 +210,7 @@ export default async function BlogPage({
               </div>
 
               <div className='flex justify-center'>
-                <div
-                  className={cx(
-                    richTextClasses
-                    // '[&>p:first-child]:text-2xl [&>p:first-child]:font-light'
-                  )}>
+                <div className={cx(richTextClasses)}>
                   <RichText
                     blocks={blogpost.body.json.blocks}
                     components={{

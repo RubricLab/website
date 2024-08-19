@@ -30,7 +30,9 @@ export function CodeSnippet({code, _title = 'Untitled'}: CodeSnippetFragment) {
       <header className={s.header}>
         <div className='flex items-center text-text-secondary'>
           <span className='mr-2 size-4'>
-            {languagesIcons[code.language as BundledLanguage] ?? <FileIcon />}
+            {languagesIcons[code.language as BundledLanguage] ?? (
+              <FileIcon className='text-current' />
+            )}
           </span>
           <span>{_title}</span>
         </div>

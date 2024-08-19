@@ -9,7 +9,7 @@ import s from './rich-text.module.css'
 
 export const richTextClasses = clsx(
   'prose prose-neutral max-w-prose text-start',
-  'prose-p:text-text/90 prose-p:text-blog-body prose-p:font-sans',
+  'prose-p:text-text/80 prose-p:text-blog-body prose-p:font-sans',
   'prose-h1:text-4xl prose-h1:font-medium prose-h1:text-text-primary dark:prose-h1:text-dark-text-primary',
   'prose-h2:text-em-[32/16] prose-h2:font-semibold prose-h2:text-text prose-h2:uppercase',
   'prose-h3:text-em-[24/16] prose-h3:font-semibold prose-h3:text-text prose-h3:uppercase',
@@ -17,8 +17,9 @@ export const richTextClasses = clsx(
   '[&_blockquote>p]:before:[content:""] prose-blockquote:[&_blockquote>p]:after:[content:""]',
   'prose-h4:text-2xl prose-h4:font-medium',
   'prose-strong:font-semibold',
-  'prose-a:outline-accent-500 dark:prose-a:text-accent-400 prose-a:text-accent-600 prose-a:no-underline hover:prose-a:underline prose-a:decoration-accent-500/50',
+  'prose-a:outline-control prose-a:font-semibold prose-a:text-text prose-a:no-underline hover:prose-a:underline prose-a:underline-offset-[0.25em] prose-a:decoration-control/50',
   'prose-pre:pl-0',
+  'prose-li:mt-em-[20] prose-li:mb-em-[24]',
   s['rich-text']
 )
 
