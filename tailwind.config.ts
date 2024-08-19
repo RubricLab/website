@@ -63,7 +63,7 @@ const tailwindConfig: Config = {
         ...columnConfig,
         sides: 'var(--spacing-sides)',
         header: 'var(--header-height)',
-        fold: 'calc(100vw - var(--header-height))'
+        fold: 'calc(100vh - var(--header-height))'
       },
       fontSize: {
         'blog-body': [

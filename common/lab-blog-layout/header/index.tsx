@@ -57,7 +57,7 @@ const HeaderLink = ({
   return (
     <Link
       href={href}
-      className={`border-r border-border uppercase transition-colors duration-500 ease-in-out p-em-[8] text-em-[20/16]
+      className={`border-r border-border uppercase transition-colors duration-500 ease-in-out p-em-[8] text-em-[16/16]
                         ${isActive ? 'bg-surface-contrast/5 text-text-secondary' : 'text-text-primary hover:bg-surface-contrast/[0.02] hover:text-text-secondary'}
                         ${className}`}
       {...rest}>
