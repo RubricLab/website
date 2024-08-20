@@ -1,17 +1,86 @@
 'use client'
 
-import BackgroundGrid from '@/common/lab-blog-layout/background-grid'
+import Image, {StaticImageData} from 'next/image'
 import {useEffect, useRef} from 'react'
 
-const ContentBox = ({title, paragraph}: {title: string; paragraph: string}) => (
-	<div className='max-w-[49ch] border border-border bg-black uppercase px-em-[24] py-em-[32] text-em-[14/16] 2xl:text-em-[16/16]'>
-		<h5 className='text-em-[22] 2xl:text-em-[24]'>{title}</h5>
-		<p className='opacity-70 mt-em-[16]'>{paragraph}</p>
+import BackgroundGrid from '@/common/lab-blog-layout/background-grid'
+
+import cn from '@/lib/utils/cn'
+import RubricLabSampleImage from '@/public/images/rubric-lab-sample.png'
+import {GridPulseAnimation} from '../blog/components/grid-pulse-animation'
+
+const ContentBox = ({
+	title,
+	paragraph,
+	...rest
+}: {
+	title: string
+	paragraph: string
+} & React.HTMLAttributes<HTMLDivElement>) => {
+	return (
+		<div
+			{...rest}
+			className={cn(
+				'relative max-w-[49ch] overflow-hidden border border-border bg-black uppercase px-em-[24] py-em-[32] text-em-[14/16] 2xl:text-em-[16/16]',
+				rest.className
+			)}>
+			<div
+				style={{
+					maskImage:
+						'radial-gradient(farthest-corner at 100% 100%, black 0%, black 10%, transparent 70%)'
+				}}
+				className='absolute bottom-0 right-0 translate-x-[1em] translate-y-[1em] opacity-70'>
+				<GridPulseAnimation
+					cellSize={`2em`}
+					grid={[8, 6]}
+				/>
+			</div>
+			<h5 className='text-em-[22] 2xl:text-em-[24]'>{title}</h5>
+			<p className='opacity-70 mt-em-[16]'>{paragraph}</p>
+		</div>
+	)
+}
+
+const FooterSlot = ({
+	slot,
+	ctas,
+	...rest
+}: {
+	slot: {
+		type: 'image'
+		alt: string
+	} & StaticImageData
+	ctas: {children: string; variant: 'primary' | 'secondary'}[]
+} & Omit<React.HTMLAttributes<HTMLDivElement>, 'slot'>) => (
+	<div
+		{...rest}
+		className={cn('mt-em-[32]', rest.className)}>
+		{slot.type === 'image' ? (
+			<Image
+				className='border border-border'
+				src={slot.src}
+				width={slot.width}
+				height={slot.height}
+				alt={slot.alt}
+			/>
+		) : null}
+		<div className='flex items-center justify-end pt-em-[16] gap-x-em-[16]'>
+			{ctas.map((cta, idx) => (
+				<button
+					className={cn('uppercase px-em-[18] h-em-[49] text-em-[14/16]', {
+						'bg-surface-contrast text-surface': cta.variant === 'primary',
+						'border border-border bg-black': cta.variant === 'secondary'
+					})}
+					key={idx}>
+					{cta.children}
+				</button>
+			))}
+		</div>
 	</div>
 )
 
 const ProjectContent = () => (
-	<div>
+	<div className='pr-em-[48] pl-em-[24]'>
 		<article className='uppercase'>
 			<h3 className='text-em-[72/16] 2xl:text-em-[96/16]'>Maige</h3>
 			<p className='text-[#B3B3B3] mt-em-[14] text-em-[28/16] 2xl:text-em-[40/16]'>
@@ -21,18 +90,46 @@ const ProjectContent = () => (
 				<span className='border border-border px-em-[14] py-em-[4]'>ai</span>
 			</div>
 		</article>
-		<div className='h-screen mt-em-[56]'>
+
+		<div className='flex flex-col mt-em-[56] space-y-em-[-32]'>
 			<ContentBox
 				title='WHY A CLI?'
 				paragraph='Analyze, refactor, and optimize your codebase effortlessly through intuitive language-driven operations.'
 			/>
-			<div className='max-w-max translate-x-[90%] mt-em-[-24]'>
-				<ContentBox
-					title='WHAT DID WE LEARN?'
-					paragraph='Harness the power of AI to streamline your development process. Interact with your code using plain English commands, making complex tasks accessible to developers of all levels.'
-				/>
-			</div>
+			<ContentBox
+				className='ml-auto'
+				title='WHAT DID WE LEARN?'
+				paragraph='Harness the power of AI to streamline your development process. Interact with your code using plain English commands, making complex tasks accessible to developers of all levels.'
+			/>
+			<ContentBox
+				title='WHAT DID WE LEARN?'
+				paragraph='Harness the power of AI to streamline your development process. Interact with your code using plain English commands, making complex tasks accessible to developers of all levels.'
+			/>
+			<ContentBox
+				className='ml-auto'
+				title='WHY A CLI?'
+				paragraph='Analyze, refactor, and optimize your codebase effortlessly through intuitive language-driven operations.'
+			/>
 		</div>
+
+		<FooterSlot
+			className='mx-auto w-[65%] mt-em-[56]'
+			slot={{
+				type: 'image',
+				...RubricLabSampleImage,
+				alt: 'Rubric Lab Sample'
+			}}
+			ctas={[
+				{
+					variant: 'secondary',
+					children: 'Clone the repo'
+				},
+				{
+					variant: 'primary',
+					children: 'See the video'
+				}
+			]}
+		/>
 	</div>
 )
 
@@ -41,22 +138,25 @@ const Progress = () => {
 
 	useEffect(() => {
 		const handleScroll = () => {
-			if (!ref.current) return;
+			if (!ref.current) return
 
-			const scrollPosition = window.scrollY;
-			const windowHeight = window.innerHeight;
-			const projectsSection = document.getElementById('projects');
+			const scrollPosition = window.scrollY
+			const windowHeight = window.innerHeight
+			const projectsSection = document.getElementById('projects')
 
-			if (!projectsSection) return;
+			if (!projectsSection) return
 
-			const projectsSectionTop = projectsSection.offsetTop;
-			const projectsSectionBottom = projectsSectionTop + projectsSection.offsetHeight;
+			const projectsSectionTop = projectsSection.offsetTop
+			const projectsSectionBottom =
+				projectsSectionTop + projectsSection.offsetHeight
 
-			const scrollPercentage = (scrollPosition + windowHeight - projectsSectionTop) / (projectsSectionBottom - projectsSectionTop);
-			const scale = Math.max(0, Math.min(1, scrollPercentage));
+			const scrollPercentage =
+				(scrollPosition + windowHeight - projectsSectionTop) /
+				(projectsSectionBottom - projectsSectionTop)
+			const scale = Math.max(0, Math.min(1, scrollPercentage))
 
-			ref.current.style.transform = `translateX(${-(1 - scale)*100}%)`;
-		};
+			ref.current.style.transform = `translateX(${-(1 - scale) * 100}%)`
+		}
 
 		window.addEventListener('scroll', handleScroll)
 		return () => {
@@ -66,9 +166,8 @@ const Progress = () => {
 
 	return (
 		<div
-			className='w-full -translate-x-full bg-white/5 h-full'
-			ref={ref}>
-		</div>
+			className='h-full w-full -translate-x-full bg-white/5'
+			ref={ref}></div>
 	)
 }
 
@@ -81,20 +180,22 @@ export default function LabPage() {
 					<span className='opacity-20'>Rubric</span>/Lab
 				</h1>
 			</section>
+
 			<section
 				id='projects'
-				className='relative grid grid-cols-12 items-start'>
-				<div className='col-[1/8]'>
+				className='relative grid grid-cols-12 items-start pb-em-[39]'>
+				<div className='col-[1/8] flex flex-col pb-em-[56] space-y-em-[220]'>
 					<ProjectContent />
 					<ProjectContent />
 					<ProjectContent />
 				</div>
 				<aside className='sticky top-header col-[8/13] h-fold items-center'>
-					<div className='h-full border border-border bg-black -translate-x-px w-[calc(100%+1px)]'></div>
+					<div className='h-full w-[calc(100%+1px)] -translate-x-px border border-border bg-black'></div>
 				</aside>
 			</section>
-			<div className='fixed bottom-0 left-0 flex h-10 w-full border-t border-border bg-black px-sides'>
-				<div className='relative w-full border-x border-border overflow-hidden'>
+
+			<div className='fixed bottom-0 left-0 flex w-full border-t border-border bg-black px-sides h-em-[40]'>
+				<div className='relative w-full overflow-hidden border-x border-border'>
 					<div className='absolute inset-0'>
 						<Progress />
 					</div>
