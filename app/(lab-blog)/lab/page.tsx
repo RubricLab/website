@@ -79,8 +79,10 @@ const FooterSlot = ({
 	</div>
 )
 
-const ProjectContent = () => (
-	<div className='pr-em-[48] pl-em-[24]'>
+const ProjectContent = ({id}: {id: string}) => (
+	<div
+		id={id}
+		className='pr-em-[48] pl-em-[24]'>
 		<article className='uppercase'>
 			<h3 className='text-em-[72/16] 2xl:text-em-[96/16]'>Maige</h3>
 			<p className='text-[#B3B3B3] mt-em-[14] text-em-[28/16] 2xl:text-em-[40/16]'>
@@ -133,7 +135,7 @@ const ProjectContent = () => (
 	</div>
 )
 
-const Progress = () => {
+const ProgressSlot = ({targetId, name}: {targetId: string; name: string}) => {
 	const ref = useRef<HTMLDivElement>(null)
 
 	useEffect(() => {
@@ -141,8 +143,7 @@ const Progress = () => {
 			if (!ref.current) return
 
 			const scrollPosition = window.scrollY
-			const windowHeight = window.innerHeight
-			const projectsSection = document.getElementById('projects')
+			const projectsSection = document.getElementById(targetId)
 
 			if (!projectsSection) return
 
@@ -151,7 +152,7 @@ const Progress = () => {
 				projectsSectionTop + projectsSection.offsetHeight
 
 			const scrollPercentage =
-				(scrollPosition + windowHeight - projectsSectionTop) /
+				(scrollPosition - projectsSectionTop) /
 				(projectsSectionBottom - projectsSectionTop)
 			const scale = Math.max(0, Math.min(1, scrollPercentage))
 
@@ -159,15 +160,30 @@ const Progress = () => {
 		}
 
 		window.addEventListener('scroll', handleScroll)
+
 		return () => {
 			window.removeEventListener('scroll', handleScroll)
 		}
-	}, [])
+	}, [targetId])
 
 	return (
-		<div
-			className='h-full w-full -translate-x-full bg-white/5'
-			ref={ref}></div>
+		<button
+			onClick={() => {
+				const projectsSection = document.getElementById(targetId)
+				if (!projectsSection) return
+
+				window.scrollTo({
+					top: projectsSection.offsetTop + window.innerHeight * 0.85,
+					behavior: 'smooth'
+				})
+			}}
+			className='relative flex flex-1 items-center overflow-hidden border-r border-border uppercase px-em-[24] last:border-r-0'>
+			<div
+				className='absolute left-0 top-0 h-full w-full -translate-x-full bg-white/5'
+				ref={ref}
+			/>
+			{name}
+		</button>
 	)
 }
 
@@ -185,9 +201,9 @@ export default function LabPage() {
 				id='projects'
 				className='relative grid grid-cols-12 items-start pb-em-[39]'>
 				<div className='col-[1/8] flex flex-col pb-em-[56] space-y-em-[220]'>
-					<ProjectContent />
-					<ProjectContent />
-					<ProjectContent />
+					<ProjectContent id='project-1' />
+					<ProjectContent id='project-2' />
+					<ProjectContent id='project-3' />
 				</div>
 				<aside className='sticky top-header col-[8/13] h-fold items-center'>
 					<div className='h-full w-[calc(100%+1px)] -translate-x-px border border-border bg-black'></div>
@@ -195,10 +211,19 @@ export default function LabPage() {
 			</section>
 
 			<div className='fixed bottom-0 left-0 flex w-full border-t border-border bg-black px-sides h-em-[40]'>
-				<div className='relative w-full overflow-hidden border-x border-border'>
-					<div className='absolute inset-0'>
-						<Progress />
-					</div>
+				<div className='relative flex w-full overflow-hidden border-x border-border'>
+					<ProgressSlot
+						targetId='project-1'
+						name='project-1'
+					/>
+					<ProgressSlot
+						targetId='project-2'
+						name='project-2'
+					/>
+					<ProgressSlot
+						targetId='project-3'
+						name='project-3'
+					/>
 				</div>
 			</div>
 		</>
