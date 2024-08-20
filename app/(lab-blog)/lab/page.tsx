@@ -1,7 +1,7 @@
 'use client'
 
 import Image, {StaticImageData} from 'next/image'
-import {useEffect, useRef} from 'react'
+import {useEffect, useRef, useState} from 'react'
 
 import BackgroundGrid from '@/common/lab-blog-layout/background-grid'
 
@@ -177,13 +177,86 @@ const ProgressSlot = ({targetId, name}: {targetId: string; name: string}) => {
 					behavior: 'smooth'
 				})
 			}}
-			className='relative flex flex-1 items-center overflow-hidden border-r border-border uppercase px-em-[24] last:border-r-0'>
+			className='relative flex flex-1 items-center overflow-hidden border-r border-border uppercase transition-[padding_font-size] px-em-[24/16] last:border-r-0'>
 			<div
 				className='absolute left-0 top-0 h-full w-full -translate-x-full bg-white/5'
 				ref={ref}
 			/>
 			{name}
 		</button>
+	)
+}
+
+const ProgressStatus = () => {
+	const [isShrunk, setIsShrunk] = useState(false)
+
+	console.log({isShrunk})
+
+	useEffect(() => {
+		let timeoutId: NodeJS.Timeout
+
+		const handleScroll = () => {
+			setIsShrunk(true)
+			clearTimeout(timeoutId)
+			// timeoutId = setTimeout(() => {
+			// 	setIsShrunk(false)
+			// }, 2000)
+		}
+
+		window.addEventListener('scroll', handleScroll)
+
+		return () => {
+			window.removeEventListener('scroll', handleScroll)
+			clearTimeout(timeoutId)
+		}
+	}, [])
+
+	const handleMouseEnter = () => {
+		setIsShrunk(false)
+	}
+
+	const handleMouseLeave = () => {
+		setIsShrunk(true)
+	}
+
+	const handleFocus = () => {
+		setIsShrunk(false)
+	}
+
+	const handleBlur = () => {
+		setIsShrunk(true)
+	}
+
+	return (
+		<div
+			className={cn(
+				'fixed bottom-0 left-0 flex w-full border-t border-border bg-black px-sides transition-[height]',
+				{
+					'h-em-[20] text-em-[10/16]': isShrunk,
+					'h-em-[40]': !isShrunk
+				}
+			)}
+			onMouseEnter={handleMouseEnter}
+			onMouseLeave={handleMouseLeave}
+			onFocus={handleFocus}
+			onBlur={handleBlur}>
+			{/* extra boundary for mouse enter */}
+			<div className='absolute left-0 top-0 w-full -translate-y-full h-em-[20]' />
+			<div className='relative flex w-full overflow-hidden border-x border-border'>
+				<ProgressSlot
+					targetId='project-1'
+					name='project-1'
+				/>
+				<ProgressSlot
+					targetId='project-2'
+					name='project-2'
+				/>
+				<ProgressSlot
+					targetId='project-3'
+					name='project-3'
+				/>
+			</div>
+		</div>
 	)
 }
 
@@ -210,22 +283,7 @@ export default function LabPage() {
 				</aside>
 			</section>
 
-			<div className='fixed bottom-0 left-0 flex w-full border-t border-border bg-black px-sides h-em-[40]'>
-				<div className='relative flex w-full overflow-hidden border-x border-border'>
-					<ProgressSlot
-						targetId='project-1'
-						name='project-1'
-					/>
-					<ProgressSlot
-						targetId='project-2'
-						name='project-2'
-					/>
-					<ProgressSlot
-						targetId='project-3'
-						name='project-3'
-					/>
-				</div>
-			</div>
+			<ProgressStatus />
 		</>
 	)
 }
