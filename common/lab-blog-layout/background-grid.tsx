@@ -49,7 +49,7 @@ const BackgroundGrid = ({highlightColumns}: BackgroundGridProps) => {
         '--background-opacity': 0.025,
         stagger: {
           ease: 'power1.in',
-          each: 0.1
+          each: 0.05
         }
       })
   })
