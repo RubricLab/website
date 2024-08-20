@@ -261,6 +261,22 @@ const ProgressStatus = () => {
 }
 
 export default function LabPage() {
+	const [asideCanvasVisible, setAsideCanvasVisible] = useState(false)
+
+	useEffect(() => {
+		const handleScroll = () => {
+			const scrollPosition = window.scrollY
+			const threshold = (window.innerHeight * 1) / 2
+			setAsideCanvasVisible(scrollPosition > threshold)
+		}
+
+		window.addEventListener('scroll', handleScroll)
+
+		return () => {
+			window.removeEventListener('scroll', handleScroll)
+		}
+	}, [])
+
 	return (
 		<>
 			<BackgroundGrid highlightColumns={[7, 9, 11]} />
@@ -278,9 +294,13 @@ export default function LabPage() {
 					<ProjectContent id='project-2' />
 					<ProjectContent id='project-3' />
 				</div>
-				<aside className='sticky top-header col-[8/13] h-fold items-center'>
-					<div className='h-full w-[calc(100%+1px)] -translate-x-px border border-border bg-black'></div>
-				</aside>
+				<div
+					className={cn(
+						'fixed right-sides top-header h-fold w-[calc(var(--col-width)*5+1px)] border-l border-r border-border bg-black transition-opacity duration-300 ease-out',
+						{
+							'opacity-0': !asideCanvasVisible
+						}
+					)}></div>
 			</section>
 
 			<ProgressStatus />
