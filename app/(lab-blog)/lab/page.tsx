@@ -8,6 +8,7 @@ import BackgroundGrid from '@/common/lab-blog-layout/background-grid'
 import cn from '@/lib/utils/cn'
 import RubricLabSampleImage from '@/public/images/rubric-lab-sample.png'
 import {GridPulseAnimation} from '../blog/components/grid-pulse-animation'
+import LabWebGL from './gl'
 
 const ContentBox = ({
 	title,
@@ -300,7 +301,9 @@ export default function LabPage() {
 						{
 							'opacity-0': !asideCanvasVisible
 						}
-					)}></div>
+					)}>
+					<LabWebGL />
+				</div>
 			</section>
 
 			<ProgressStatus />
