@@ -2,6 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .bg-lines {
+    background-image: linear-gradient(
+      45deg,
+      transparent 0%,
+      transparent 49%,
+      rgb(var(--color-border) / 0.5) 49%,
+      rgb(var(--color-border) / 0.5) 51%,
+      transparent 51%,
+      transparent 100%
+    );
+    background-size: 1em 1em;
+  }
+
+  .focus-outline {
+    @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-white;
+  }
+}
+
 :root {
   /* viewport scaling */
   --base-viewport: 1512;
