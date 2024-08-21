@@ -117,10 +117,10 @@ export default async function BlogPage({
           if (posts.items.length === 0) notFound()
 
           return (
-            <div className=''>
+            <div className='relative'>
               <PageView _analyticsKey={blog._analyticsKey} />
 
-              <div className='relative grid max-h-fold grid-cols-12'>
+              <div className='grid max-h-fold grid-cols-12'>
                 <div className='sticky top-0 col-span-6 2xl:col-span-5'>
                   <div className='px-em-[12] py-em-[56]'>
                     <h2 className=' whitespace-nowrap uppercase text-text-secondary text-em-[72/16]'>
@@ -131,22 +131,24 @@ export default async function BlogPage({
                     </p>
                   </div>
                   <div className='border border-border bg-surface'>
-                    <SearchHitsProvider
-                      authorsAvatars={authors.items.reduce(
-                        (acc: Record<string, AvatarFragment>, author) => {
-                          acc[author._id] = author.image
+                    <div className='sticky top-header z-20 bg-surface'>
+                      <SearchHitsProvider
+                        authorsAvatars={authors.items.reduce(
+                          (acc: Record<string, AvatarFragment>, author) => {
+                            acc[author._id] = author.image
 
-                          return acc
-                        },
-                        {}
-                      )}>
-                      <Search _searchKey={blogPost._searchKey} />
-                    </SearchHitsProvider>
+                            return acc
+                          },
+                          {}
+                        )}>
+                        <Search _searchKey={blogPost._searchKey} />
+                      </SearchHitsProvider>
 
-                    <TagsFilter
-                      activeCategory={selectedTag}
-                      availableCategories={availableCategories}
-                    />
+                      <TagsFilter
+                        activeCategory={selectedTag}
+                        availableCategories={availableCategories}
+                      />
+                    </div>
 
                     <SearchResults posts={filteredPosts} />
                   </div>

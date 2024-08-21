@@ -17,22 +17,19 @@
   }
 
   .focus-ring {
-    transition:
-      color 0.5s,
-      background-color 0.5s,
-      border-color 0.5s,
-      box-shadow 0.25s;
-    @apply ring-offset-0 ring-offset-surface ease-in-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-control focus-visible:ring-offset-2;
+    @apply ring-offset-0 ring-offset-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-control focus-visible:ring-offset-2;
   }
 
   .focus-within-ring {
+    @apply ring-offset-0 ring-offset-surface focus-within:outline-none focus-within:ring-2 focus-within:ring-control focus-within:ring-offset-2;
+  }
+
+  .transition-colors-shadow {
     transition:
       color 0.5s,
       background-color 0.5s,
       border-color 0.5s,
       box-shadow 0.25s;
-
-    @apply ring-offset-0 ring-offset-surface ease-in-out focus-within:outline-none focus-within:ring-2 focus-within:ring-control focus-within:ring-offset-2;
   }
 }
 
