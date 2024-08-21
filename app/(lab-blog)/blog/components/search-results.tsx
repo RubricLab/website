@@ -34,6 +34,7 @@ export default function SearchResults({posts}: SearchResultsProps) {
           <BlogpostCard
             active={selectedPost?._id === post._id}
             onMouseEnter={() => setSelectedPost(post)}
+            className='focus:z-10'
             key={post._id}
             {...post}
           />
