@@ -39,7 +39,8 @@
 		"styled-components": "^6.1.1",
 		"tailwind-merge": "^2.0.0",
 		"toem-tailwind-plugin": "^0.0.8",
-		"zod": "^3.22.4"
+		"zod": "^3.22.4",
+		"zustand": "^4.5.5"
 	},
 	"devDependencies": {
 		"@rubriclab/eslint-config": "latest",

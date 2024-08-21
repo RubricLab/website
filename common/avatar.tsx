@@ -16,7 +16,7 @@ export function Author({
     <CustomTooltip content={_title}>
       <BaseHubImage
         alt={image.alt ?? `Avatar for ${_title}`}
-        className='border border-border object-cover transition-all size-em-[32]'
+        className='border bg-surface border-border object-cover transition-all size-em-[32]'
         height={image.height}
         src={image.url}
         width={image.width}

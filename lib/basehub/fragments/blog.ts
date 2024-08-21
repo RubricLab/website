@@ -12,7 +12,23 @@ export const blogpostCardFragment = fragmentOn('BlogPostComponent', {
   categories: true
 })
 
+export const blogpostPreviewFragment = fragmentOn('BlogPostComponent', {
+  _id: true,
+  _title: true,
+  _slug: true,
+  description: true,
+  publishedAt: true,
+  authors: authorFragment,
+  image: darkLightImageFragment,
+  categories: true,
+  body: {
+    markdown: true
+  }
+})
+
 export type BlogpostCardFragment = fragmentOn.infer<typeof blogpostCardFragment>
+
+export type BlogpostPreviewFragment = fragmentOn.infer<typeof blogpostPreviewFragment>
 
 export type BlogPostCard = {
   type?: 'card' | 'list' | 'inline-card'

@@ -12,7 +12,8 @@ import {BlogCategory, blogpostCardFragment} from '@/lib/basehub/fragments/blog'
 import {basehub} from 'basehub'
 import type {Metadata} from 'next'
 import {notFound} from 'next/navigation'
-import {BlogpostCard} from './components/blogpost-card'
+import {BlogPreviewList} from './components/blog-preview-list'
+import SearchResults from './components/search-results'
 import TagsFilter from './components/tags-filter'
 
 // export const dynamic = 'force-static'
@@ -45,11 +46,19 @@ export default async function BlogPage({
 }: {
   searchParams: {tag?: string}
 }) {
-  console.log(searchParams)
   const selectedTag = searchParams.tag as BlogCategory
+
   return (
     <>
-      <BackgroundGrid highlightColumns={[5, 7, 9, 11]} />
+      <BackgroundGrid
+        data={{
+          sm: {columnCount: 4, highlightColumns: [1, 3, 5, 7]},
+          md: {columnCount: 4, highlightColumns: [2, 4, 6, 8]},
+          lg: {columnCount: 12, highlightColumns: [3, 5, 7, 9]},
+          xl: {columnCount: 12, highlightColumns: [6, 8, 9, 11]},
+          '2xl': {columnCount: 12, highlightColumns: [5, 7, 9, 11]}
+        }}
+      />
       <Pump
         draft={draftMode().isEnabled}
         next={{revalidate: BASEHUB_REVALIDATE_TIME}}
@@ -105,16 +114,14 @@ export default async function BlogPage({
               )
             : posts.items
 
-          const [latestPost, ...remainingPosts] = filteredPosts
-
           if (posts.items.length === 0) notFound()
 
           return (
-            <div className='relative'>
+            <div className=''>
               <PageView _analyticsKey={blog._analyticsKey} />
 
-              <div className='grid grid-cols-12'>
-                <div className='col-span-6'>
+              <div className='relative grid max-h-fold grid-cols-12'>
+                <div className='sticky top-0 col-span-6 2xl:col-span-5'>
                   <div className='px-em-[12] py-em-[56]'>
                     <h2 className=' whitespace-nowrap uppercase text-text-secondary text-em-[72/16]'>
                       {blog.mainTitle}
@@ -141,38 +148,13 @@ export default async function BlogPage({
                       availableCategories={availableCategories}
                     />
 
-                    <span className='bg-lines block w-full border-b border-border h-em-[48]' />
-                    <div className='relative flex items-center'>
-                      <BlogpostCard
-                        type='inline-card'
-                        {...latestPost}
-                      />
-                      <span className='pointer-events-none absolute -left-sides origin-top-left -rotate-90 select-none text-em-[16/16]'>
-                        <span className='relative block -translate-x-1/2'>
-                          LATEST_POST
-                        </span>
-                      </span>
-                    </div>
-                    <span className='bg-lines block w-full border-b border-border h-em-[32]' />
-
-                    <div className='flex flex-col self-stretch'>
-                      {remainingPosts.map(post => (
-                        <BlogpostCard
-                          key={post._id}
-                          {...post}
-                        />
-                      ))}
-                    </div>
+                    <SearchResults posts={filteredPosts} />
                   </div>
                 </div>
 
-                {/* {blog.featuredPosts?.slice(0, 3).map(post => (
-                  <BlogpostCard
-                    key={post._id}
-                    type='card'
-                    {...post}
-                  />
-                ))} */}
+                <span className='bg-lines col-span-1 hidden h-full 2xl:block' />
+
+                <BlogPreviewList posts={filteredPosts} />
               </div>
             </div>
           )

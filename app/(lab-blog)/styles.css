@@ -16,14 +16,29 @@
     background-size: 1em 1em;
   }
 
-  .focus-outline {
-    @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-white;
+  .focus-ring {
+    transition:
+      color 0.5s,
+      background-color 0.5s,
+      border-color 0.5s,
+      box-shadow 0.25s;
+    @apply ring-offset-0 ring-offset-surface ease-in-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-control focus-visible:ring-offset-2;
+  }
+
+  .focus-within-ring {
+    transition:
+      color 0.5s,
+      background-color 0.5s,
+      border-color 0.5s,
+      box-shadow 0.25s;
+
+    @apply ring-offset-0 ring-offset-surface ease-in-out focus-within:outline-none focus-within:ring-2 focus-within:ring-control focus-within:ring-offset-2;
   }
 }
 
 :root {
   /* viewport scaling */
-  --base-viewport: 1512;
+  --base-viewport: 780;
   --base-size: 16;
   --dynamic-base-size: calc(var(--base-size) / var(--base-viewport) * 100vw);
 
@@ -78,6 +93,12 @@
   --color-control: var(--black);
 }
 
+@screen lg {
+  :root {
+    --base-viewport: 1512;
+  }
+}
+
 @screen 2xl {
   :root {
     --base-viewport: 1920;
@@ -91,7 +112,7 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
+  line-height: normal;
   color: theme('colors.text.DEFAULT');
   background-color: theme('colors.surface.DEFAULT');
 

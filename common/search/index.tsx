@@ -53,7 +53,7 @@ export function SearchContent({_searchKey}: {_searchKey: string}) {
           {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
           <label
             className={clsx(
-              'relative flex w-full cursor-text items-center border-b border-border ring-control pr-em-[72] pl-em-[24] py-em-[16] focus-within:ring'
+              'focus-within-ring relative flex w-full cursor-text items-center border-b border-border pr-em-[72] pl-em-[24] py-em-[16] focus-within:ring'
             )}>
             <SearchBox.Input
               asChild
