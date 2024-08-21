@@ -16,9 +16,7 @@ function useBreakpoint(): Breakpoint {
         ([_, {min, max}]) => width >= min && width <= max
       )
 
-      if (currentBreakpoint) {
-        setBreakpoint(currentBreakpoint[0])
-      }
+      if (currentBreakpoint) setBreakpoint(currentBreakpoint[0])
     }
 
     determineBreakpoint()

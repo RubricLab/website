@@ -37,28 +37,27 @@ export function BlogpostCard({
       return (
         <Link
           key={_id}
-          className={`focus-ring grid w-full grid-cols-[auto_auto] place-content-start items-center 
-            justify-items-start border-b border-border
-            text-base uppercase text-text-secondary px-em-[12] py-em-[20] text-em-[16/16] gap-em-[16] max-md:justify-items-start md:grid-cols-[calc(var(--col-width)*2),repeat(2,1fr),6.5em] md:justify-items-end md:*:first:place-items-start 
-            ${active ? 'bg-surface-contrast' : 'bg-surface'}
+          className={`focus-ring grid w-full grid-cols-[auto_auto] place-content-start items-center justify-items-start 
+            border-b border-border text-base uppercase
+            transition-shadow ease-out px-em-[12] py-em-[20] text-em-[16/16] gap-em-[16] max-md:justify-items-start md:grid-cols-[calc(var(--col-width)*2),repeat(2,1fr),6.5em] md:justify-items-end md:*:first:place-items-start 
+            ${active ? 'bg-surface-contrast text-text-contrast' : 'bg-surface text-text'}
             ${className}`}
           href={`/blog/${_slug}`}
           {...restProps}>
-          <h3
-            className={`relative col-span-2 max-w-col-2 justify-self-start text-balance pr-4 font-medium transition-colors duration-500 max-lg:line-clamp-2 md:col-span-1
-            ${active ? 'text-text-contrast' : ' text-text'}`}>
+          <h3 className='relative col-span-2 max-w-col-2 justify-self-start text-balance pr-4 font-medium max-lg:line-clamp-2 md:col-span-1'>
             {_title}
           </h3>
           <div className='col-span-2 md:col-span-1'>
             {categories.map(category => (
               <Tag
                 size='sm'
+                intent={active ? 'contrast' : 'default'}
                 key={category}>
                 {category}
               </Tag>
             ))}
           </div>
-          <p className='text-text-tertiary lg:text-base'>
+          <p className='opacity-60'>
             {formatDate(publishedAt, {
               year: 'numeric',
               month: '2-digit',
@@ -78,11 +77,14 @@ export function BlogpostCard({
         </Link>
       )
     }
+
     case 'inline-card': {
       return (
         <Link
           key={_id}
-          className={`focus-ring flex border-b border-border text-base hover:bg-surface-secondary ${className}`}
+          className={`focus-ring flex border-b border-border text-base transition-shadow ease-out
+            ${active ? 'bg-surface-contrast text-text-contrast' : 'bg-surface text-text'}
+            ${className}`}
           href={`/blog/${_slug}`}
           {...restProps}>
           <picture className='relative aspect-video w-col-2 shrink-0'>
@@ -95,33 +97,30 @@ export function BlogpostCard({
               width={576}
             />
           </picture>
-          <div className='flex flex-col justify-between uppercase text-text-secondary px-em-[12]  py-em-[20] text-em-[16/16] gap-em-[12] gap-em-[16] '>
+          <div className='flex flex-col justify-between uppercase px-em-[12]  py-em-[20] text-em-[16/16] gap-em-[16] '>
             <div className='flex gap-em-[12]'>
               {categories.map(category => (
                 <Tag
                   size='sm'
+                  intent={active ? 'contrast' : 'default'}
                   key={category}>
                   {category}
                 </Tag>
               ))}
             </div>
-            <h3 className='text-text-primary text-em-[24/16]'>{_title}</h3>
+            <h3 className='text-em-[24/16]'>{_title}</h3>
 
             <div className='flex items-center justify-between'>
               <p className=''>
-                <span className='uppercase text-text-tertiary'>by: </span>
+                <span className='uppercase opacity-60'>by: </span>
                 {authors.map((author, index) => (
                   <Fragment key={author._id}>
                     {index > 0 && ', '}
-                    <span className='text-text-secondary'>
-                      {getAuthorName(author)}
-                    </span>
+                    <span className='opacity-80'>{getAuthorName(author)}</span>
                   </Fragment>
                 ))}
               </p>
-              <p className='dark:text-dark-text-tertiary text-sm text-text-tertiary lg:text-base'>
-                {formatDate(publishedAt)}
-              </p>
+              <p className='opacity-60'>{formatDate(publishedAt)}</p>
             </div>
           </div>
         </Link>
