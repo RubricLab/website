@@ -23,6 +23,7 @@
   word-wrap: break-word;
   background-color: var(--color-surface-secondary) !important;
   outline-color: theme('colors.border.DEFAULT');
+  padding: 0;
 }
 
 .code-snippet .content :global(pre) :global(span.line-indicator) {

@@ -34,7 +34,7 @@ export function CustomTooltip({
       <Tooltip.Portal>
         <Tooltip.Content
           className={clsx(
-            'z-[999] border border-border bg-surface-secondary px-2 py-1 text-sm text-text max-w-em-[160]',
+            'z-[999] border border-border bg-surface-secondary px-2 py-1 text-sm text-text max-w-em-[200]',
             className
           )}
           {...props}>

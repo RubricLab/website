@@ -1,19 +1,17 @@
 import {draftMode} from 'next/headers'
 
-import {Heading} from '@/common/heading'
-import {Section} from '@/common/layout'
-import {SearchContent as Search} from '@/common/search'
-import {SearchHitsProvider} from '@/context/search-hits-context'
-import {avatarFragment, type AvatarFragment} from '@/lib/basehub/fragments'
+import {avatarFragment} from '@/lib/basehub/fragments'
 import {Pump} from 'basehub/react-pump'
 
 import BackgroundGrid from '@/common/lab-blog-layout/background-grid'
 import {PageView} from '@/components/page-view'
 import {BASEHUB_REVALIDATE_TIME} from '@/lib/basehub/constants'
+import {BlogCategory, blogpostCardFragment} from '@/lib/basehub/fragments/blog'
 import {basehub} from 'basehub'
 import type {Metadata} from 'next'
-import {notFound} from 'next/navigation'
-import {BlogpostCard, blogpostCardFragment} from './components/blogpost-card'
+import {BlogPreviewList} from './components/blog-preview-list'
+import SearchContainer from './components/blog-search/search-container'
+import BlogHeading from './components/heading'
 
 export const dynamic = 'force-static'
 
@@ -40,10 +38,24 @@ export const generateMetadata = async (): Promise<Metadata | undefined> => {
   }
 }
 
-export default async function BlogPage() {
+export default async function BlogPage({
+  searchParams
+}: {
+  searchParams: {tag?: string}
+}) {
+  const selectedTag = searchParams.tag as BlogCategory
+
   return (
     <>
-      <BackgroundGrid highlightColumns={[5, 7, 9, 11]} />
+      <BackgroundGrid
+        data={{
+          sm: {columnCount: 4, highlightColumns: [1, 3, 5, 7]},
+          md: {columnCount: 4, highlightColumns: [2, 4, 6, 8]},
+          lg: {columnCount: 12, highlightColumns: [3, 5, 7, 9]},
+          xl: {columnCount: 12, highlightColumns: [6, 8, 9, 11]},
+          '2xl': {columnCount: 12, highlightColumns: [5, 7, 9, 11]}
+        }}
+      />
       <Pump
         draft={draftMode().isEnabled}
         next={{revalidate: BASEHUB_REVALIDATE_TIME}}
@@ -66,6 +78,7 @@ export default async function BlogPage() {
               blog: {
                 _analyticsKey: true,
                 mainTitle: true,
+                subtitle: true,
                 featuredPosts: blogpostCardFragment,
                 listTitle: true,
                 posts: {
@@ -85,49 +98,38 @@ export default async function BlogPage() {
           'use server'
           const {posts} = blog
 
-          if (posts.items.length === 0) notFound()
+          const availableCategories = posts.items.reduce(
+            (acc: BlogCategory[], post) => {
+              return Array.from(new Set([...acc, ...post.categories]))
+            },
+            []
+          )
 
           return (
-            <Section className='gap-16'>
+            <div className='relative'>
               <PageView _analyticsKey={blog._analyticsKey} />
-              <div className='grid grid-cols-1 gap-5 self-stretch md:grid-cols-2'>
-                <Heading align='left'>
-                  <h2>{blog.mainTitle}</h2>
-                </Heading>
-                <SearchHitsProvider
-                  authorsAvatars={authors.items.reduce(
-                    (acc: Record<string, AvatarFragment>, author) => {
-                      acc[author._id] = author.image
 
-                      return acc
-                    },
-                    {}
-                  )}>
-                  <Search _searchKey={blogPost._searchKey} />
-                </SearchHitsProvider>
-                {blog.featuredPosts?.slice(0, 3).map(post => (
-                  <BlogpostCard
-                    key={post._id}
-                    type='card'
-                    {...post}
+              <div className='grid max-h-fold grid-cols-12'>
+                <div className='sticky top-0 col-span-6 2xl:col-span-5'>
+                  <BlogHeading
+                    blog={{
+                      title: blog.mainTitle,
+                      subtitle: blog.subtitle
+                    }}
                   />
-                ))}
-              </div>
-              <div className='w-full space-y-3'>
-                <Heading align='left'>
-                  <h3 className='!text-xl lg:!text-2xl'>{blog.listTitle}</h3>
-                </Heading>
-                <div className='-mx-4 flex flex-col self-stretch'>
-                  {posts.items.map(post => (
-                    <BlogpostCard
-                      key={post._id}
-                      {...post}
-                      className='-mx-4'
-                    />
-                  ))}
+
+                  <SearchContainer
+                    _searchKey={blogPost._searchKey}
+                    posts={posts.items}
+                    availableCategories={availableCategories}
+                  />
                 </div>
+
+                <span className='bg-lines col-span-1 hidden h-full 2xl:block' />
+
+                <BlogPreviewList posts={posts.items} />
               </div>
-            </Section>
+            </div>
           )
         }}
       </Pump>

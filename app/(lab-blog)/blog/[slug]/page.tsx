@@ -100,14 +100,22 @@ export const generateMetadata = async ({
   }
 }
 
-export default async function BlogPage({
+export default async function BlogPostPage({
   params: {slug}
 }: {
   params: {slug: string}
 }) {
   return (
     <>
-      <BackgroundGrid highlightColumns={[1, 10]} />
+      <BackgroundGrid
+        data={{
+          sm: {columnCount: 4},
+          md: {columnCount: 4},
+          lg: {columnCount: 12, highlightColumns: [1, 10]},
+          xl: {columnCount: 12, highlightColumns: [1, 10]},
+          '2xl': {columnCount: 12, highlightColumns: [1, 10]}
+        }}
+      />
       <Pump
         draft={draftMode().isEnabled}
         next={{revalidate: BASEHUB_REVALIDATE_TIME}}

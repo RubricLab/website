@@ -7,7 +7,8 @@ import BackgroundGrid from '@/common/lab-blog-layout/background-grid'
 
 import cn from '@/lib/utils/cn'
 import RubricLabSampleImage from '@/public/images/rubric-lab-sample.png'
-import {GridPulseAnimation} from '../blog/components/grid-pulse-animation'
+
+import {GridPulseAnimation} from './components/grid-pulse-animation'
 import LabWebGL from './gl'
 
 const ContentBox = ({
@@ -280,7 +281,15 @@ export default function LabPage() {
 
 	return (
 		<>
-			<BackgroundGrid highlightColumns={[7, 9, 11]} />
+			<BackgroundGrid
+				data={{
+					sm: {columnCount: 4},
+					md: {columnCount: 4},
+					lg: {columnCount: 12, highlightColumns: [7, 9, 11]},
+					xl: {columnCount: 12, highlightColumns: [7, 9, 11]},
+					'2xl': {columnCount: 12, highlightColumns: [7, 9, 11]}
+				}}
+			/>
 			<section className='relative -mt-header flex h-screen items-center justify-center'>
 				<h1 className='uppercase text-em-[72/16]'>
 					<span className='opacity-20'>Rubric</span>/Lab

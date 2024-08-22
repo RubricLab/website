@@ -1,6 +1,8 @@
 'use client'
 
+import useBreakpoint from '@/hooks/use-breakpoint'
 import {useLoaded} from '@/hooks/use-loaded'
+import {Breakpoint} from '@/lib/utils/breakpoints'
 import {useGSAP} from '@gsap/react'
 import gsap from 'gsap'
 import {CSSProperties, useEffect, useRef} from 'react'
@@ -11,11 +13,20 @@ const backgroundGradient = `repeating-linear-gradient(
 								rgb(var(--color-border) / 0.5) 0.75em 1.5em
 							)`
 
-export type BackgroundGridProps = {
+type GridBreakpointData = {
+  columnCount: Number
   highlightColumns?: number[]
 }
 
-const BackgroundGrid = ({highlightColumns}: BackgroundGridProps) => {
+export type BackgroundGridProps = {
+  data: {
+    [key in Breakpoint]: GridBreakpointData
+  }
+}
+
+const BackgroundGrid = ({data}: BackgroundGridProps) => {
+  const breakpoint = useBreakpoint()
+
   const tl = useRef<gsap.core.Timeline>(
     gsap.timeline({
       paused: true,
@@ -28,31 +39,37 @@ const BackgroundGrid = ({highlightColumns}: BackgroundGridProps) => {
 
   const loaded = useLoaded()
 
-  useGSAP(() => {
-    const columns = gsap.utils.toArray(
-      document.querySelectorAll('[data-grid-col]')
-    )
+  useGSAP(
+    () => {
+      const columns = gsap.utils.toArray(
+        document.querySelectorAll('[data-grid-col]')
+      )
 
-    const highlightedColumns = gsap.utils.toArray(
-      document.querySelectorAll('[data-highlighted="true"]')
-    )
+      const highlightedColumns = gsap.utils.toArray(
+        document.querySelectorAll('[data-highlighted="true"]')
+      )
 
-    tl.current
-      .to(columns, {
-        '--clip-progress': 1,
-        stagger: {
-          ease: 'power1.in',
-          each: 0.1
-        }
-      })
-      .to(highlightedColumns, {
-        '--background-opacity': 0.025,
-        stagger: {
-          ease: 'power1.in',
-          each: 0.1
-        }
-      })
-  })
+      tl.current
+        .to(columns, {
+          '--clip-progress': 1,
+          stagger: {
+            ease: 'power1.in',
+            each: 0.1
+          }
+        })
+        .to(highlightedColumns, {
+          '--background-opacity': 0.025,
+          stagger: {
+            ease: 'power1.in',
+            each: 0.05
+          }
+        })
+    },
+    {
+      revertOnUpdate: true,
+      dependencies: [breakpoint]
+    }
+  )
 
   useEffect(() => {
     if (loaded) tl.current.play()
@@ -73,15 +90,19 @@ const BackgroundGrid = ({highlightColumns}: BackgroundGridProps) => {
           } as CSSProperties
         }
       />
-      <div className='grid h-full w-full grid-cols-12'>
-        {[...Array(12)].map((_, index) => (
+      <div
+        style={{
+          gridTemplateColumns: `repeat(${data[breakpoint].columnCount}, 1fr)`
+        }}
+        className='grid h-full w-full'>
+        {[...Array(data[breakpoint].columnCount)].map((_, index) => (
           <div
             key={index}
             className='duration- grid transition-colors ease-out'
             data-grid-col={index + 1}
-            data-highlighted={
-              highlightColumns?.includes(index) ? 'true' : 'false'
-            }
+            data-highlighted={data[breakpoint].highlightColumns?.includes(
+              index
+            )}
             style={
               {
                 '--background-opacity': 0.0,
