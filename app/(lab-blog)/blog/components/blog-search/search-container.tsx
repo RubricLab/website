@@ -1,7 +1,9 @@
 'use client'
+import useDebouncedCallback from '@/hooks/use-debounced-callback'
 import {BlogCategory, BlogPostCard} from '@/lib/basehub/fragments/blog'
 import {UseSearchResult, useSearch} from 'basehub/react-search'
-import {useRouter, useSearchParams} from 'next/navigation'
+import {usePathname, useRouter, useSearchParams} from 'next/navigation'
+import {useCallback, useEffect} from 'react'
 import BlogFilters from './blog-filters'
 import SearchResults from './search-results'
 
@@ -27,6 +29,7 @@ export default function SearchContainer({
   availableCategories
 }) {
   const router = useRouter()
+  const pathname = usePathname()
   const searchParams = useSearchParams()
 
   const search = useSearch({
@@ -36,21 +39,45 @@ export default function SearchContainer({
     limit: 20
   })
 
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    search.onQueryChange(event.target.value)
-  }
+  const debouncedOnQueryChange = useDebouncedCallback((query: string) => {
+    search.onQueryChange(query)
+  }, 150)
 
-  const handleCategoryChange = (category: BlogCategory) => {
-    const newSearchParams = new URLSearchParams(searchParams)
+  useEffect(() => {
+    const query = searchParams.get('searchQuery') || ''
+    debouncedOnQueryChange(query)
+  }, [searchParams, debouncedOnQueryChange])
 
-    category === activeCategory
-      ? newSearchParams.delete('tag')
-      : newSearchParams.set('tag', category)
+  const handleSearchChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const newSearchParams = new URLSearchParams(searchParams)
+      const query = event.target.value
 
-    router.replace(`/blog?${newSearchParams.toString()}`, {
-      scroll: false
-    })
-  }
+      !query || query === ''
+        ? newSearchParams.delete('searchQuery')
+        : newSearchParams.set('searchQuery', query)
+
+      router.replace(`/blog?${newSearchParams.toString()}`, {
+        scroll: false
+      })
+    },
+    [searchParams, router]
+  )
+
+  const handleCategoryChange = useCallback(
+    (category: BlogCategory) => {
+      const newSearchParams = new URLSearchParams(searchParams)
+
+      category === activeCategory
+        ? newSearchParams.delete('tag')
+        : newSearchParams.set('tag', category)
+
+      router.replace(`/blog?${newSearchParams.toString()}`, {
+        scroll: false
+      })
+    },
+    [searchParams, router, activeCategory]
+  )
 
   return (
     <div className='border border-border bg-surface'>
