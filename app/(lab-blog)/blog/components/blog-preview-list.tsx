@@ -187,6 +187,13 @@ export const BlogPreviewList = ({posts}: BlogPreviewList) => {
 		const activeIndexRad = getAngularStepFromIndex(selectedPostIdx)
 		
 		radOffset.target.current = activeIndexRad
+
+		// Update the wheel value
+		wheel.current = clamp(
+			ANGLE_STEP_RAD * selectedPostIdx,
+			0,
+			ANGLE_STEP_RAD * (DISPLAY_LENGTH - 1)
+		)
 	}, [
 		ANGLE_STEP_RAD,
 		INITIAL_OFFSET,
