@@ -2,7 +2,7 @@
 import useDebouncedCallback from '@/hooks/use-debounced-callback'
 import {BlogCategory, BlogPostCard} from '@/lib/basehub/fragments/blog'
 import {UseSearchResult, useSearch} from 'basehub/react-search'
-import {usePathname, useRouter, useSearchParams} from 'next/navigation'
+import {useRouter, useSearchParams} from 'next/navigation'
 import {useCallback, useEffect} from 'react'
 import BlogFilters from './blog-filters'
 import SearchResults from './search-results'
@@ -29,7 +29,6 @@ export default function SearchContainer({
   availableCategories
 }) {
   const router = useRouter()
-  const pathname = usePathname()
   const searchParams = useSearchParams()
 
   const search = useSearch({
@@ -64,11 +63,19 @@ export default function SearchContainer({
     [searchParams, router]
   )
 
+  const clearQuery = useCallback(() => {
+    const newSearchParams = new URLSearchParams(searchParams)
+    newSearchParams.delete('searchQuery')
+    router.replace(`/blog?${newSearchParams.toString()}`, {
+      scroll: false
+    })
+  }, [searchParams, router])
+
   const handleCategoryChange = useCallback(
-    (category: BlogCategory) => {
+    (category: BlogCategory | null) => {
       const newSearchParams = new URLSearchParams(searchParams)
 
-      category === activeCategory
+      !category || category === activeCategory
         ? newSearchParams.delete('tag')
         : newSearchParams.set('tag', category)
 
@@ -82,8 +89,10 @@ export default function SearchContainer({
   return (
     <div className='border border-border bg-surface'>
       <BlogFilters
+        activeQuery={searchParams.get('searchQuery')}
         activeCategory={activeCategory}
         availableCategories={availableCategories}
+        clearQuery={clearQuery}
         handleCategoryChange={handleCategoryChange}
         handleSearchChange={handleSearchChange}
       />

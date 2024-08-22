@@ -10,6 +10,8 @@ export const $tag = cva(
         secondary:
           'border-text-tertiary bg-surface-contrast/5 text-text-tertiary opacity-60',
         active: 'border-text text-text',
+        danger: 'border-destructive bg-surface-contrast/5 text-destructive',
+
         contrast: 'border-text-contrast text-text-contrast'
       },
       disabled: {
