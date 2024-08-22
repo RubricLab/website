@@ -59,8 +59,6 @@ export default function SearchResults({posts, search}: SearchResultsProps) {
       const posts = container.querySelectorAll('[data-post-id]')
       const dividers = container.querySelectorAll('[data-divider]')
 
-      tl.current.kill()
-
       gsap.set([posts, dividers], {
         '--clip-progress': 1,
         clipPath: 'inset(0 0 calc(var(--clip-progress) * 100%) 0)'
@@ -77,30 +75,14 @@ export default function SearchResults({posts, search}: SearchResultsProps) {
           filter: 'blur(0px)',
           opacity: 1
         })
-        .to(
-          container,
-          {
-            onStart: () => {
-              gsap.set(container, {
-                opacity: 1
-              })
-            },
-            '--clip-progress': 0
-          },
-          '>-0.5'
-        )
         .to([dividers, posts], {
           '--clip-progress': 0,
           stagger: 0.2
         })
-
-      gsap.set(container, {
-        opacity: 1
-      })
     },
     {
-      revertOnUpdate: true,
-      scope: containerRef
+      scope: containerRef,
+      revertOnUpdate: true
     }
   )
 
@@ -135,11 +117,7 @@ export default function SearchResults({posts, search}: SearchResultsProps) {
   const [firstPost, ...remainingPosts] = filteredPosts
 
   return (
-    <div
-      ref={containerRef}
-      style={{
-        opacity: 0
-      }}>
+    <div ref={containerRef}>
       <span
         data-divider
         className='bg-lines block w-full border-b border-border h-em-[48]'
