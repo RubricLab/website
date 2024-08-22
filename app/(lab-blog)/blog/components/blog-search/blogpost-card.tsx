@@ -8,8 +8,10 @@ import {BlogPostCard} from '@/lib/basehub/fragments/blog'
 import {getAuthorName} from '@/lib/utils/author'
 import {formatDate} from '@/lib/utils/dates'
 import {Fragment} from 'react'
+import {CSSProperties} from 'styled-components'
 
 interface BlogpostCardProps extends BlogPostCard, Omit<LinkProps, 'href'> {
+  style?: CSSProperties
   type?: 'card' | 'list' | 'inline-card'
   active?: boolean
 }
@@ -38,7 +40,7 @@ export function BlogpostCard({
         <Link
           key={_id}
           className={`focus-ring grid w-full grid-cols-[auto_auto] place-content-start items-center justify-items-start 
-            border-b border-border text-base uppercase
+            border-t border-border text-base uppercase
             transition-shadow ease-out px-em-[12] py-em-[20] text-em-[16/16] gap-em-[16] max-md:justify-items-start md:grid-cols-[calc(var(--col-width)*2),repeat(2,1fr),6.5em] md:justify-items-end md:*:first:place-items-start 
             ${active ? 'bg-surface-contrast text-text-contrast' : 'bg-surface text-text'}
             ${className}`}

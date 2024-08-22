@@ -1,5 +1,4 @@
 'use client'
-import useDebouncedCallback from '@/hooks/use-debounced-callback'
 import {BlogCategory, BlogPostCard} from '@/lib/basehub/fragments/blog'
 import {UseSearchResult, useSearch} from 'basehub/react-search'
 import {useRouter, useSearchParams} from 'next/navigation'
@@ -10,7 +9,6 @@ import SearchResults from './search-results'
 export interface SearchContainerProps {
   _searchKey: string
   posts: BlogPostCard[]
-  activeCategory?: BlogCategory
   availableCategories: BlogCategory[]
 }
 
@@ -25,11 +23,12 @@ export type Search =
 export default function SearchContainer({
   _searchKey,
   posts,
-  activeCategory,
   availableCategories
 }) {
   const router = useRouter()
   const searchParams = useSearchParams()
+
+  const activeCategory = searchParams.get('tag')
 
   const search = useSearch({
     _searchKey,
@@ -38,14 +37,10 @@ export default function SearchContainer({
     limit: 20
   })
 
-  const debouncedOnQueryChange = useDebouncedCallback((query: string) => {
-    search.onQueryChange(query)
-  }, 150)
-
   useEffect(() => {
     const query = searchParams.get('searchQuery') || ''
-    debouncedOnQueryChange(query)
-  }, [searchParams, debouncedOnQueryChange])
+    search.onQueryChange(query)
+  }, [searchParams])
 
   const handleSearchChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -87,10 +82,13 @@ export default function SearchContainer({
   )
 
   return (
-    <div className='border border-border bg-surface'>
+    <div
+      id='search-container'
+      style={{
+        opacity: 0
+      }}
+      className='border border-border bg-surface'>
       <BlogFilters
-        activeQuery={searchParams.get('searchQuery')}
-        activeCategory={activeCategory}
         availableCategories={availableCategories}
         clearQuery={clearQuery}
         handleCategoryChange={handleCategoryChange}

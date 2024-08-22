@@ -9,11 +9,10 @@ import {BASEHUB_REVALIDATE_TIME} from '@/lib/basehub/constants'
 import {BlogCategory, blogpostCardFragment} from '@/lib/basehub/fragments/blog'
 import {basehub} from 'basehub'
 import type {Metadata} from 'next'
-import {BlogPreviewList} from './components/blog-preview-list'
 import SearchContainer from './components/blog-search/search-container'
 import BlogHeading from './components/heading'
 
-// export const dynamic = 'force-static'
+export const dynamic = 'force-static'
 
 export const revalidate = BASEHUB_REVALIDATE_TIME
 
@@ -105,12 +104,6 @@ export default async function BlogPage({
             []
           )
 
-          const filteredPosts = selectedTag
-            ? posts.items.filter(post =>
-                post.categories.includes(selectedTag as BlogCategory)
-              )
-            : posts.items
-
           return (
             <div className='relative'>
               <PageView _analyticsKey={blog._analyticsKey} />
@@ -126,15 +119,14 @@ export default async function BlogPage({
 
                   <SearchContainer
                     _searchKey={blogPost._searchKey}
-                    posts={filteredPosts}
-                    activeCategory={selectedTag}
+                    posts={posts.items}
                     availableCategories={availableCategories}
                   />
                 </div>
 
                 <span className='bg-lines col-span-1 hidden h-full 2xl:block' />
 
-                <BlogPreviewList posts={filteredPosts} />
+                {/* <BlogPreviewList posts={filteredPosts} /> */}
               </div>
             </div>
           )
