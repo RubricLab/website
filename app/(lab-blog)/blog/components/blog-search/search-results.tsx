@@ -1,18 +1,29 @@
 'use client'
 
 import {BlogPostCard} from '@/lib/basehub/fragments/blog'
+import {SearchResult} from 'basehub/react-search'
+import {usePreviewStore} from '../preview-store'
 import {BlogpostCard} from './blogpost-card'
-import {usePreviewStore} from './preview-store'
 
 export interface SearchResultsProps {
+  searchResult?: SearchResult
   posts: BlogPostCard[]
 }
 
-export default function SearchResults({posts}: SearchResultsProps) {
-  const [firstPost, ...remainingPosts] = posts
-
+export default function SearchResults({
+  posts,
+  searchResult
+}: SearchResultsProps) {
   const {selectedPost, setSelectedPost, clearSelectedPost} = usePreviewStore()
 
+  const resultsIds = searchResult?.hits.reduce((acc, hit) => {
+    acc.push(hit.document._id)
+    return acc
+  }, [] as string[])
+
+  const filteredPosts = posts.filter(post => resultsIds.includes(post._id))
+
+  const [firstPost, ...remainingPosts] = posts
   return (
     <>
       <span className='bg-lines block w-full border-b border-border h-em-[48]' />

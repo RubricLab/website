@@ -9,7 +9,6 @@ import {useSearchHits} from '@/context/search-hits-context'
 import {type AuthorFragment} from '@/lib/basehub/fragments'
 import {getArticleSlugFromSlugPath} from '@/lib/basehub/utils'
 
-import {Tag} from '@/common/ui/tag'
 import {Avatar} from '../avatar'
 import {AvatarsGroup} from '../avatars-group'
 
@@ -17,6 +16,7 @@ export function SearchContent({_searchKey}: {_searchKey: string}) {
   const search = useSearch({
     _searchKey,
     queryBy: ['_title', 'body', 'description', 'categories', 'authors'],
+    filterBy: `categories:`,
     limit: 20
   })
 
@@ -51,29 +51,6 @@ export function SearchContent({_searchKey}: {_searchKey: string}) {
         onOpenChange={setOpen}>
         <Popover.Anchor asChild>
           {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-          <label
-            className={clsx(
-              'focus-within-ring transition-colors-shadow relative flex w-full cursor-text items-center border-b border-border pr-em-[72] pl-em-[24] py-em-[16] focus-within:ring'
-            )}>
-            <SearchBox.Input
-              asChild
-              className='outline-none outline-0'
-              onFocus={() => {
-                search.query && setOpen(true)
-              }}>
-              <input
-                className='grow bg-transparent uppercase !outline-none placeholder:uppercase placeholder:text-text-tertiary focus-visible:outline-none'
-                placeholder='Search'
-                type='text'
-              />
-            </SearchBox.Input>
-            <Tag
-              size='sm'
-              intent='secondary'
-              className='absolute right-em-[16]'>
-              {'⌘ + F'}
-            </Tag>
-          </label>
         </Popover.Anchor>
 
         <Popover.Portal>
@@ -85,7 +62,7 @@ export function SearchContent({_searchKey}: {_searchKey: string}) {
             onOpenAutoFocus={e => {
               e.preventDefault()
             }}>
-            <div className='border-surface-tertiary bg-surface-primary dark:border-dark-surface-tertiary dark:bg-dark-surface-primary relative mx-5 min-h-20 w-[calc(100vw_-_2.5rem)] scroll-py-2 overflow-y-auto overscroll-y-contain rounded-xl border p-2 shadow-md md:mx-0 md:max-h-[320px] md:w-[550px]'>
+            <div className='bg-surface-primary dark:border-dark-surface-tertiary dark:bg-dark-surface-primary relative mx-5 min-h-20 w-[calc(100vw_-_2.5rem)] scroll-py-2 overflow-y-auto overscroll-y-contain rounded-xl border border-surface-tertiary p-2 shadow-md md:mx-0 md:max-h-[320px] md:w-[550px]'>
               <SearchBox.Empty asChild>
                 <div className='text-dark-text-tertiary absolute left-1/2 top-1/2 w-fit max-w-full -translate-x-1/2 -translate-y-1/2 items-center overflow-hidden text-ellipsis whitespace-nowrap px-2 py-1'>
                   No results for{' '}
@@ -96,9 +73,9 @@ export function SearchContent({_searchKey}: {_searchKey: string}) {
               </SearchBox.Empty>
 
               <SearchBox.Placeholder className='space-y-2'>
-                <div className='bg-surface-tertiary dark:bg-dark-surface-secondary box-content h-[88px] animate-pulse rounded-md px-4 py-3' />
-                <div className='bg-surface-tertiary dark:bg-dark-surface-secondary box-content h-[88px] animate-pulse rounded-md px-4 py-3' />
-                <div className='bg-surface-tertiary dark:bg-dark-surface-secondary box-content h-[88px] animate-pulse rounded-md px-4 py-3' />
+                <div className='dark:bg-dark-surface-secondary box-content h-[88px] animate-pulse rounded-md bg-surface-tertiary px-4 py-3' />
+                <div className='dark:bg-dark-surface-secondary box-content h-[88px] animate-pulse rounded-md bg-surface-tertiary px-4 py-3' />
+                <div className='dark:bg-dark-surface-secondary box-content h-[88px] animate-pulse rounded-md bg-surface-tertiary px-4 py-3' />
               </SearchBox.Placeholder>
 
               <HitList hits={search.result?.hits ?? []} />

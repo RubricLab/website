@@ -1,8 +1,6 @@
 import {draftMode} from 'next/headers'
 
-import {SearchContent as Search} from '@/common/search'
-import {SearchHitsProvider} from '@/context/search-hits-context'
-import {avatarFragment, type AvatarFragment} from '@/lib/basehub/fragments'
+import {avatarFragment} from '@/lib/basehub/fragments'
 import {Pump} from 'basehub/react-pump'
 
 import BackgroundGrid from '@/common/lab-blog-layout/background-grid'
@@ -11,10 +9,8 @@ import {BASEHUB_REVALIDATE_TIME} from '@/lib/basehub/constants'
 import {BlogCategory, blogpostCardFragment} from '@/lib/basehub/fragments/blog'
 import {basehub} from 'basehub'
 import type {Metadata} from 'next'
-import {notFound} from 'next/navigation'
 import {BlogPreviewList} from './components/blog-preview-list'
-import SearchResults from './components/search-results'
-import TagsFilter from './components/tags-filter'
+import SearchContainer from './components/blog-search/search-container'
 
 // export const dynamic = 'force-static'
 
@@ -114,8 +110,6 @@ export default async function BlogPage({
               )
             : posts.items
 
-          if (posts.items.length === 0) notFound()
-
           return (
             <div className='relative'>
               <PageView _analyticsKey={blog._analyticsKey} />
@@ -130,28 +124,13 @@ export default async function BlogPage({
                       {blog.subtitle}
                     </p>
                   </div>
-                  <div className='border border-border bg-surface'>
-                    <div className='sticky top-header z-20 bg-surface'>
-                      <SearchHitsProvider
-                        authorsAvatars={authors.items.reduce(
-                          (acc: Record<string, AvatarFragment>, author) => {
-                            acc[author._id] = author.image
 
-                            return acc
-                          },
-                          {}
-                        )}>
-                        <Search _searchKey={blogPost._searchKey} />
-                      </SearchHitsProvider>
-
-                      <TagsFilter
-                        activeCategory={selectedTag}
-                        availableCategories={availableCategories}
-                      />
-                    </div>
-
-                    <SearchResults posts={filteredPosts} />
-                  </div>
+                  <SearchContainer
+                    _searchKey={blogPost._searchKey}
+                    posts={filteredPosts}
+                    activeCategory={selectedTag}
+                    availableCategories={availableCategories}
+                  />
                 </div>
 
                 <span className='bg-lines col-span-1 hidden h-full 2xl:block' />
