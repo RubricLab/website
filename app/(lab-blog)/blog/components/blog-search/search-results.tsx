@@ -128,6 +128,7 @@ export default function SearchResults({posts, search}: SearchResultsProps) {
             data-post-id={firstPost._id}
             active={selectedPost?._id === firstPost._id}
             onMouseEnter={() => setSelectedPost(firstPost)}
+            onMouseLeave={() => clearSelectedPost(firstPost)}
             type='inline-card'
             {...firstPost}
           />
@@ -147,6 +148,7 @@ export default function SearchResults({posts, search}: SearchResultsProps) {
             data-post-id={post._id}
             active={selectedPost?._id === post._id}
             onMouseEnter={() => setSelectedPost(post)}
+            onMouseLeave={() => clearSelectedPost(post)}
             className='focus:z-10'
             key={post._id}
             {...post}
