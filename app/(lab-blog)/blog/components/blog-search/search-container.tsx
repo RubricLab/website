@@ -52,8 +52,6 @@ export default function SearchContainer({
     })
   }
 
-  console.log(search)
-
   return (
     <div className='border border-border bg-surface'>
       <BlogFilters

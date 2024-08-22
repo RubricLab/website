@@ -1,8 +1,11 @@
 'use client'
 
+import {Button} from '@/common/ui/button'
 import {BlogPostCard} from '@/lib/basehub/fragments/blog'
+import {useRouter} from 'next/navigation'
 import {usePreviewStore} from '../preview-store'
 import {BlogpostCard} from './blogpost-card'
+import SearchEmptyStateIllustration from './empty-state'
 import {Search} from './search-container'
 
 export interface SearchResultsProps {
@@ -11,6 +14,8 @@ export interface SearchResultsProps {
 }
 
 export default function SearchResults({posts, search}: SearchResultsProps) {
+  const router = useRouter()
+
   const {selectedPost, setSelectedPost, clearSelectedPost} = usePreviewStore()
 
   let filteredPosts = posts
@@ -22,11 +27,24 @@ export default function SearchResults({posts, search}: SearchResultsProps) {
 
   if (filteredPosts.length === 0 && search.result)
     return (
-      <div className='flex h-64 items-center justify-center'>
-        <p className='text-lg text-gray-500'>
-          No results found for {search.query}
-        </p>
-      </div>
+      <>
+        <span className='bg-lines block w-full border-b border-border h-em-[48]' />
+
+        <div className='flex flex-col items-center justify-center py-em-[32] gap-em-[12]'>
+          <p className='uppercase text-text-tertiary text-em-[14/16]'>
+            No results found{' '}
+            {search.query.length > 0 && <> for «{search.query}»</>}
+          </p>
+          <SearchEmptyStateIllustration className='text-border w-em-[200]' />
+          <Button
+            onClick={() => router.push('/blog')}
+            variant='ghost'
+            className='text-text-secondary underline underline-offset-[0.3em]'>
+            Reset filters
+          </Button>
+        </div>
+        <span className='bg-lines block w-full border-t border-border h-em-[48]' />
+      </>
     )
 
   const [firstPost, ...remainingPosts] = filteredPosts
