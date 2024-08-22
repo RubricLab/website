@@ -4,10 +4,17 @@ import {useTrackDragInertia} from '@/hooks/use-track-drag'
 import {useWheel} from '@/hooks/use-wheel'
 import {BlogPostCard} from '@/lib/basehub/fragments/blog'
 import cn from '@/lib/utils/cn'
-import {mod} from '@/lib/utils/math'
+import {clamp, mod} from '@/lib/utils/math'
 import gsap from 'gsap'
 import {useControls} from 'leva'
-import {CSSProperties, useCallback, useEffect, useRef, useState} from 'react'
+import {
+	CSSProperties,
+	useCallback,
+	useEffect,
+	useMemo,
+	useRef,
+	useState
+} from 'react'
 import {BlogPostPreview} from './blogpost-preview'
 import {usePreviewStore} from './preview-store'
 
@@ -15,38 +22,24 @@ interface BlogPreviewList {
 	posts: BlogPostCard[]
 }
 
-const opacityEaseIn = gsap.parseEase('power2.in')
-const opacityEaseOut = gsap.parseEase('power4.in')
-const opacityAngleRemapIn = gsap.utils.mapRange(Math.PI, Math.PI * 1.5, 0, 1)
-const opacityAngleRemapOut = gsap.utils.mapRange(
-	Math.PI * 1.5,
-	Math.PI * 2,
-	1,
-	0
-)
-
-const opacity = (angle: number) => {
-	if (angle >= Math.PI && angle <= Math.PI * 1.5)
-		return opacityEaseIn(opacityAngleRemapIn(angle))
-
-	if (angle > Math.PI * 1.5 && angle <= Math.PI * 2)
-		return opacityEaseOut(opacityAngleRemapOut(angle))
-
-	return 0
-}
-
 export const BlogPreviewList = ({posts}: BlogPreviewList) => {
 	const {selectedPost} = usePreviewStore()
-	const {radius, stepFactor, debug, backface, affectOpacity} = useControls({
+	const {
+		radius,
+		angleStep: ANGLE_STEP,
+		debug,
+		backface,
+		affectOpacity
+	} = useControls({
 		radius: {
 			value: 350,
 			min: 1,
 			max: 1000
 		},
-		stepFactor: {
-			value: 1,
-			min: 0.1,
-			max: 1
+		angleStep: {
+			value: 25,
+			min: 5,
+			max: 90
 		},
 		affectOpacity: true,
 		backface: true,
@@ -54,20 +47,46 @@ export const BlogPreviewList = ({posts}: BlogPreviewList) => {
 	})
 
 	const DISPLAY_LENGTH = posts.length
-	const ANGLE_STEP = (360 / DISPLAY_LENGTH) * stepFactor
 	const ANGLE_STEP_RAD = ANGLE_STEP * (Math.PI / 180)
-	const INITIAL_OFFSET = -Math.PI / 2
+	const INITIAL_OFFSET = Math.PI / 2
 
 	const wheel = useRef(0)
 	const listRef = useRef<HTMLDivElement>(null)
 	const [, setActiveIndex] = useState(0)
 	const hasInteracted = useRef(false)
 
+	const opacity = useMemo(() => {
+		const opacityEaseIn = gsap.parseEase('none')
+		const opacityEaseOut = gsap.parseEase('power1.in')
+		const opacityAngleRemapIn = gsap.utils.mapRange(Math.PI, Math.PI * 1.5, 0, 1)
+		const opacityAngleRemapOut = gsap.utils.mapRange(
+			Math.PI * 1.5,
+			Math.PI * 1.5 + ANGLE_STEP_RAD,
+			0,
+			1
+		)
+
+		const opacity = (angle: number) => {
+			if (angle >= Math.PI && angle <= Math.PI * 1.5)
+				return opacityEaseIn(opacityAngleRemapIn(angle))
+
+			if (angle > Math.PI * 1.5 && angle <= Math.PI * 2)
+				return 1 - opacityEaseOut(opacityAngleRemapOut(angle))
+
+			return 0
+		}
+
+		return opacity
+	}, [ANGLE_STEP_RAD])
+
 	const getItemProps = useCallback(
 		(idx, _radOffset = INITIAL_OFFSET) => {
 			const anglePos = ANGLE_STEP * idx
 			const anglePosRad = anglePos * (Math.PI / 180)
-			const angleRad = mod(anglePosRad + _radOffset, Math.PI * 2)
+			const angleRad = mod(
+				-clamp(anglePosRad + _radOffset, 0, Math.PI),
+				Math.PI * 2
+			)
 			const angleDeg = angleRad * (180 / Math.PI)
 
 			const x = 0
@@ -95,7 +114,7 @@ export const BlogPreviewList = ({posts}: BlogPreviewList) => {
 	)
 
 	const getAngularStepFromIndex = useCallback(
-		(idx: number) => idx * ANGLE_STEP_RAD + INITIAL_OFFSET,
+		(idx: number) => idx * -ANGLE_STEP_RAD + INITIAL_OFFSET,
 		[ANGLE_STEP_RAD, INITIAL_OFFSET]
 	)
 
@@ -137,35 +156,36 @@ export const BlogPreviewList = ({posts}: BlogPreviewList) => {
 		}
 	})
 
-	const {listeners} = useTrackDragInertia({
-		onMotion: ({deltaY}) => {
-			wheel.current += deltaY / 200
+	const updateRadOffset = useCallback(
+		({deltaY}: {deltaY: number}) => {
+			wheel.current = clamp(
+				wheel.current + deltaY / 200,
+				0,
+				ANGLE_STEP_RAD * (DISPLAY_LENGTH - 1)
+			)
 
-			const {activeRad} = getActiveAngularStep(wheel.current)
+			const {activeRad} = getActiveAngularStep(-wheel.current)
 
 			radOffset.target.current = activeRad
 
 			hasInteracted.current = true
 		},
+		[ANGLE_STEP_RAD]
+	)
+
+	const {listeners} = useTrackDragInertia({
+		onMotion: updateRadOffset,
 		weight: 0.98
 	})
 
-	useWheel(({deltaY}) => {
-		wheel.current += deltaY / 200
-		const {activeRad} = getActiveAngularStep(wheel.current)
-
-		radOffset.target.current = activeRad
-
-		hasInteracted.current = true
-	}, listRef)
+	useWheel(updateRadOffset, listRef)
 
 	useEffect(() => {
 		if (!selectedPost) return
 		const selectedPostIdx = posts.findIndex(p => p._id === selectedPost._id)
 
 		const activeIndexRad = getAngularStepFromIndex(selectedPostIdx)
-		wheel.current = activeIndexRad
-
+		
 		radOffset.target.current = activeIndexRad
 	}, [
 		ANGLE_STEP_RAD,
