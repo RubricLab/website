@@ -38,7 +38,7 @@ export default function BlogFilters({
           onClick={clearQuery}
           className={`absolute right-em-[24]
             ${activeQuery ? 'cursor-pointer' : 'pointer-events-none'}`}>
-          {activeQuery ? 'DELETE' : '⌘ + F'}
+          {activeQuery ? 'DELETE' : '⌘ + K'}
         </Tag>
       </label>
       <div className='flex items-center border-b border-border px-em-[24] py-em-[16] gap-em-[12]'>

@@ -37,13 +37,11 @@ export default function BlogHeading({
         charsClass: 'opacity-0'
       })
 
-      console.log(spllitedTitle, spllitedSubtitle)
-
       tl.current
         .fromTo(
           spllitedTitle.chars,
           {
-            filter: 'blur(4px)',
+            filter: 'blur(12px)',
             opacity: 0
           },
           {
