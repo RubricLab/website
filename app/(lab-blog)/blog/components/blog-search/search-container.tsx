@@ -1,6 +1,6 @@
 'use client'
 import {BlogCategory, BlogPostCard} from '@/lib/basehub/fragments/blog'
-import {useSearch} from 'basehub/react-search'
+import {UseSearchResult, useSearch} from 'basehub/react-search'
 import {useRouter, useSearchParams} from 'next/navigation'
 import BlogFilters from './blog-filters'
 import SearchResults from './search-results'
@@ -11,6 +11,14 @@ export interface SearchContainerProps {
   activeCategory?: BlogCategory
   availableCategories: BlogCategory[]
 }
+
+export type Search =
+  | ({
+      valid: true
+    } & UseSearchResult<Record<string, unknown>>)
+  | ({
+      valid: false
+    } & Partial<UseSearchResult<Record<string, unknown>>>)
 
 export default function SearchContainer({
   _searchKey,
@@ -27,8 +35,6 @@ export default function SearchContainer({
     filterBy: activeCategory ? `categories:${activeCategory}` : undefined,
     limit: 20
   })
-
-  console.log(activeCategory)
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     search.onQueryChange(event.target.value)
@@ -59,7 +65,7 @@ export default function SearchContainer({
 
       <SearchResults
         posts={posts}
-        searchResult={search.result}
+        search={search}
       />
     </div>
   )
