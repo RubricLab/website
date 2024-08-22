@@ -2,13 +2,13 @@
 import {BlogCategory, BlogPostCard} from '@/lib/basehub/fragments/blog'
 import {UseSearchResult, useSearch} from 'basehub/react-search'
 import {useRouter, useSearchParams} from 'next/navigation'
+import {useCallback, useEffect} from 'react'
 import BlogFilters from './blog-filters'
 import SearchResults from './search-results'
 
 export interface SearchContainerProps {
   _searchKey: string
   posts: BlogPostCard[]
-  activeCategory?: BlogCategory
   availableCategories: BlogCategory[]
 }
 
@@ -23,11 +23,12 @@ export type Search =
 export default function SearchContainer({
   _searchKey,
   posts,
-  activeCategory,
   availableCategories
 }) {
   const router = useRouter()
   const searchParams = useSearchParams()
+
+  const activeCategory = searchParams.get('tag')
 
   const search = useSearch({
     _searchKey,
@@ -36,27 +37,60 @@ export default function SearchContainer({
     limit: 20
   })
 
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    search.onQueryChange(event.target.value)
-  }
+  useEffect(() => {
+    const query = searchParams.get('searchQuery') || ''
+    search.onQueryChange(query)
+  }, [searchParams])
 
-  const handleCategoryChange = (category: BlogCategory) => {
+  const handleSearchChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const newSearchParams = new URLSearchParams(searchParams)
+      const query = event.target.value
+
+      !query || query === ''
+        ? newSearchParams.delete('searchQuery')
+        : newSearchParams.set('searchQuery', query)
+
+      router.replace(`/blog?${newSearchParams.toString()}`, {
+        scroll: false
+      })
+    },
+    [searchParams, router]
+  )
+
+  const clearQuery = useCallback(() => {
     const newSearchParams = new URLSearchParams(searchParams)
-
-    category === activeCategory
-      ? newSearchParams.delete('tag')
-      : newSearchParams.set('tag', category)
-
+    newSearchParams.delete('searchQuery')
     router.replace(`/blog?${newSearchParams.toString()}`, {
       scroll: false
     })
-  }
+  }, [searchParams, router])
+
+  const handleCategoryChange = useCallback(
+    (category: BlogCategory | null) => {
+      const newSearchParams = new URLSearchParams(searchParams)
+
+      !category || category === activeCategory
+        ? newSearchParams.delete('tag')
+        : newSearchParams.set('tag', category)
+
+      router.replace(`/blog?${newSearchParams.toString()}`, {
+        scroll: false
+      })
+    },
+    [searchParams, router, activeCategory]
+  )
 
   return (
-    <div className='border border-border bg-surface'>
+    <div
+      id='search-container'
+      style={{
+        opacity: 0
+      }}
+      className='border border-border bg-surface'>
       <BlogFilters
-        activeCategory={activeCategory}
         availableCategories={availableCategories}
+        clearQuery={clearQuery}
         handleCategoryChange={handleCategoryChange}
         handleSearchChange={handleSearchChange}
       />

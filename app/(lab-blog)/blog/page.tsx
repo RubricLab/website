@@ -11,8 +11,9 @@ import {basehub} from 'basehub'
 import type {Metadata} from 'next'
 import {BlogPreviewList} from './components/blog-preview-list'
 import SearchContainer from './components/blog-search/search-container'
+import BlogHeading from './components/heading'
 
-// export const dynamic = 'force-static'
+export const dynamic = 'force-static'
 
 export const revalidate = BASEHUB_REVALIDATE_TIME
 
@@ -104,38 +105,29 @@ export default async function BlogPage({
             []
           )
 
-          const filteredPosts = selectedTag
-            ? posts.items.filter(post =>
-                post.categories.includes(selectedTag as BlogCategory)
-              )
-            : posts.items
-
           return (
             <div className='relative'>
               <PageView _analyticsKey={blog._analyticsKey} />
 
               <div className='grid max-h-fold grid-cols-12'>
                 <div className='sticky top-0 col-span-6 2xl:col-span-5'>
-                  <div className='px-em-[12] py-em-[56]'>
-                    <h2 className=' whitespace-nowrap uppercase text-text-secondary text-em-[72/16]'>
-                      {blog.mainTitle}
-                    </h2>
-                    <p className='uppercase text-text-tertiary text-em-[16/16]'>
-                      {blog.subtitle}
-                    </p>
-                  </div>
+                  <BlogHeading
+                    blog={{
+                      title: blog.mainTitle,
+                      subtitle: blog.subtitle
+                    }}
+                  />
 
                   <SearchContainer
                     _searchKey={blogPost._searchKey}
-                    posts={filteredPosts}
-                    activeCategory={selectedTag}
+                    posts={posts.items}
                     availableCategories={availableCategories}
                   />
                 </div>
 
                 <span className='bg-lines col-span-1 hidden h-full 2xl:block' />
 
-                <BlogPreviewList posts={filteredPosts} />
+                <BlogPreviewList posts={posts.items} />
               </div>
             </div>
           )

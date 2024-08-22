@@ -52,8 +52,8 @@ const tailwindConfig: Config = {
         control: {
           DEFAULT: 'rgb(var(--color-control) / <alpha-value>)'
         },
-        error: {
-          DEFAULT: 'rgb(var(--color-error) / <alpha-value>)'
+        destructive: {
+          DEFAULT: '#873225'
         },
         success: {
           DEFAULT: 'rgb(var(--color-success) / <alpha-value>)'
