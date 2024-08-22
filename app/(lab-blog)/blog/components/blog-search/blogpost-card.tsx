@@ -51,6 +51,7 @@ export function BlogpostCard({
             {categories.map(category => (
               <Tag
                 size='sm'
+                className='transition-none'
                 intent={active ? 'contrast' : 'default'}
                 key={category}>
                 {category}
@@ -102,6 +103,7 @@ export function BlogpostCard({
               {categories.map(category => (
                 <Tag
                   size='sm'
+                  className='transition-none'
                   intent={active ? 'contrast' : 'default'}
                   key={category}>
                   {category}
