@@ -7,15 +7,16 @@ import cn from '@/lib/utils/cn'
 import {mod} from '@/lib/utils/math'
 import gsap from 'gsap'
 import {useControls} from 'leva'
-import {useCallback, useRef, useState} from 'react'
+import {CSSProperties, useCallback, useEffect, useRef, useState} from 'react'
 import {BlogPostPreview} from './blogpost-preview'
+import {usePreviewStore} from './preview-store'
 
 interface BlogPreviewList {
 	posts: BlogPostCard[]
 }
 
 const opacityEaseIn = gsap.parseEase('power2.in')
-const opacityEaseOut = gsap.parseEase('power2.in')
+const opacityEaseOut = gsap.parseEase('power4.in')
 const opacityAngleRemapIn = gsap.utils.mapRange(Math.PI, Math.PI * 1.5, 0, 1)
 const opacityAngleRemapOut = gsap.utils.mapRange(
 	Math.PI * 1.5,
@@ -23,6 +24,7 @@ const opacityAngleRemapOut = gsap.utils.mapRange(
 	1,
 	0
 )
+
 const opacity = (angle: number) => {
 	if (angle >= Math.PI && angle <= Math.PI * 1.5)
 		return opacityEaseIn(opacityAngleRemapIn(angle))
@@ -34,6 +36,7 @@ const opacity = (angle: number) => {
 }
 
 export const BlogPreviewList = ({posts}: BlogPreviewList) => {
+	const {selectedPost} = usePreviewStore()
 	const {radius, stepFactor, debug, backface, affectOpacity} = useControls({
 		radius: {
 			value: 350,
@@ -47,17 +50,18 @@ export const BlogPreviewList = ({posts}: BlogPreviewList) => {
 		},
 		affectOpacity: true,
 		backface: true,
-		debug: true
+		debug: false
 	})
-
-	const listRef = useRef<HTMLDivElement>(null)
-	const [activeIndex, setActiveIndex] = useState(0)
-	const hasInteracted = useRef(false)
 
 	const DISPLAY_LENGTH = posts.length
 	const ANGLE_STEP = (360 / DISPLAY_LENGTH) * stepFactor
 	const ANGLE_STEP_RAD = ANGLE_STEP * (Math.PI / 180)
 	const INITIAL_OFFSET = -Math.PI / 2
+
+	const wheel = useRef(0)
+	const listRef = useRef<HTMLDivElement>(null)
+	const [, setActiveIndex] = useState(0)
+	const hasInteracted = useRef(false)
 
 	const getItemProps = useCallback(
 		(idx, _radOffset = INITIAL_OFFSET) => {
@@ -82,20 +86,30 @@ export const BlogPreviewList = ({posts}: BlogPreviewList) => {
 				style: {
 					transform: `translate3d(${x}px, ${y}px, ${z}px) rotateX(${rotate}rad)`,
 					zIndex: Math.round(z).toString(),
+					pointerEvents: angleRad >= Math.PI * 1.7 ? 'none' : 'auto',
 					opacity: affectOpacity ? opacity(angleRad) : 1
-				}
+				} satisfies CSSProperties
 			}
 		},
 		[ANGLE_STEP, INITIAL_OFFSET, radius, affectOpacity]
 	)
 
+	const getAngularStepFromIndex = useCallback(
+		(idx: number) => idx * ANGLE_STEP_RAD + INITIAL_OFFSET,
+		[ANGLE_STEP_RAD, INITIAL_OFFSET]
+	)
+
 	const getActiveAngularStep = useCallback(
 		(radOffset: number) => {
-			return (
-				Math.round(mod(radOffset, 2 * Math.PI) / ANGLE_STEP_RAD) % DISPLAY_LENGTH
-			)
+			const activeStep = Math.round(radOffset / ANGLE_STEP_RAD)
+
+			return {
+				activeStep,
+				activeStepLooped: mod(activeStep, DISPLAY_LENGTH),
+				activeRad: activeStep * ANGLE_STEP_RAD + INITIAL_OFFSET
+			}
 		},
-		[ANGLE_STEP_RAD, DISPLAY_LENGTH]
+		[ANGLE_STEP_RAD, DISPLAY_LENGTH, INITIAL_OFFSET]
 	)
 
 	const radOffset = useLerpRef(INITIAL_OFFSET, {
@@ -108,88 +122,60 @@ export const BlogPreviewList = ({posts}: BlogPreviewList) => {
 
 			items.forEach((item, idx) => {
 				const {style, attrs} = getItemProps(idx, _radOffset)
+
 				item.style.transform = style.transform
 				item.style.zIndex = style.zIndex
 				item.style.opacity = style.opacity.toString()
+				item.style.pointerEvents = style.pointerEvents
 
 				Object.entries(attrs).forEach(([key, value]) => {
 					item.setAttribute(key, value.toString())
 				})
 			})
 
-			const offsetDebugger =
-				document.querySelector<HTMLElement>('#offset-debugger')
-
-			if (offsetDebugger)
-				offsetDebugger.style.transform = `rotate(${
-					radOffset.target.current * (180 / Math.PI)
-				}deg)`
-
-			setActiveIndex(getActiveAngularStep(_radOffset))
+			setActiveIndex(getActiveAngularStep(_radOffset).activeStepLooped)
 		}
 	})
 
 	const {listeners} = useTrackDragInertia({
 		onMotion: ({deltaY}) => {
-			radOffset.target.current = radOffset.target.current + deltaY / 200
+			wheel.current += deltaY / 200
+
+			const {activeRad} = getActiveAngularStep(wheel.current)
+
+			radOffset.target.current = activeRad
+
 			hasInteracted.current = true
 		},
 		weight: 0.98
 	})
 
 	useWheel(({deltaY}) => {
-		if (!open) return
-		radOffset.target.current = radOffset.target.current + deltaY / 200
+		wheel.current += deltaY / 200
+		const {activeRad} = getActiveAngularStep(wheel.current)
+
+		radOffset.target.current = activeRad
+
 		hasInteracted.current = true
 	}, listRef)
 
-	// useEffect(() => {
-	// 	if (!listRef.current) return
+	useEffect(() => {
+		if (!selectedPost) return
+		const selectedPostIdx = posts.findIndex(p => p._id === selectedPost._id)
 
-	// 	const listElm = listRef.current
-	// 	const childElements = Array.from(listRef.current.children) as HTMLDivElement[]
+		const activeIndexRad = getAngularStepFromIndex(selectedPostIdx)
+		wheel.current = activeIndexRad
 
-	// 	const radius = 300 // adjust the radius as needed
-	// 	const angleIncrement = (2 * Math.PI) / childElements.length
-
-	// 	let ticker = 0
-
-	// 	const animateElements = () => {
-	// 		childElements.forEach((child, index) => {
-	// 			const angle = mod(index * angleIncrement + ticker, Math.PI * 2)
-	// 			const y = radius * Math.cos(angle) + radius
-	// 			const z = radius * Math.sin(angle) // translate center of circle -radius on z
-	// 			const x = 0
-	// 			const opacity = Math.sin(angle - Math.PI / 2) * 0.5 + 0.5
-
-	// 			index === 0 && console.log({angle, opacity})
-
-	// 			// Calculate the rotation angle to match the tangent of the imaginary circle
-	// 			const rotationAngle = angle - Math.PI
-
-	// 			child.style.transform = `translate3d(${x}px, ${y}px, ${z}px) rotateX(${rotationAngle}rad)`
-	// 			child.style.zIndex = Math.round(z).toString() // set z-index based on z coordinate
-	// 			child.style.opacity = opacity.toString() // fade out elements as they move away from the center
-	// 		})
-
-	// 		// requestAnimationFrame(animateElements)
-	// 	}
-
-	// 	animateElements()
-
-	// 	const handleWheel = (event: WheelEvent) => {
-	// 		ticker -= event.deltaY * 0.001 // adjust the speed of animation based on wheel delta
-
-	// 		event.preventDefault()
-	// 		animateElements()
-	// 	}
-
-	// 	listRef.current.addEventListener('wheel', handleWheel)
-
-	// 	return () => {
-	// 		listElm?.removeEventListener('wheel', handleWheel)
-	// 	}
-	// }, [])
+		radOffset.target.current = activeIndexRad
+	}, [
+		ANGLE_STEP_RAD,
+		INITIAL_OFFSET,
+		getActiveAngularStep,
+		getAngularStepFromIndex,
+		posts,
+		radOffset.target,
+		selectedPost
+	])
 
 	return (
 		/* @ts-ignore */

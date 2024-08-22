@@ -110,6 +110,7 @@ export const useTrackDragInertia = ({
 
   useEffect(() => {
     if (isInertia) {
+
       const applyInertia = () => {
         const { velocityX, velocityY } = internals.current
         internals.current.velocityX *= weight
