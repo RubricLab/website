@@ -9,6 +9,7 @@ import {BASEHUB_REVALIDATE_TIME} from '@/lib/basehub/constants'
 import {BlogCategory, blogpostCardFragment} from '@/lib/basehub/fragments/blog'
 import {basehub} from 'basehub'
 import type {Metadata} from 'next'
+import {BlogPreviewList} from './components/blog-preview-list'
 import SearchContainer from './components/blog-search/search-container'
 import BlogHeading from './components/heading'
 
@@ -126,7 +127,7 @@ export default async function BlogPage({
 
                 <span className='bg-lines col-span-1 hidden h-full 2xl:block' />
 
-                {/* <BlogPreviewList posts={filteredPosts} /> */}
+                <BlogPreviewList posts={posts.items} />
               </div>
             </div>
           )
