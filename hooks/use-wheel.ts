@@ -11,14 +11,17 @@ export const useWheel = (
     event: WheelEvent
     deltaY: number
     deltaX: number
-  }) => void
+  }) => void,
+  elm: React.RefObject<HTMLElement>
 ) => {
   const onChangeRef = useRef(onChange)
 
   onChangeRef.current = onChange
 
   useEffect(() => {
+    const trgt = elm.current || window
     const handleWheel = (event: WheelEvent) => {
+      event.preventDefault()
       onChangeRef.current?.({
         event,
         deltaY: event.deltaY,
@@ -26,10 +29,10 @@ export const useWheel = (
       })
     }
 
-    window.addEventListener('wheel', handleWheel)
+    trgt.addEventListener('wheel', handleWheel)
 
     return () => {
-      window.removeEventListener('wheel', handleWheel)
+      trgt.removeEventListener('wheel', handleWheel)
     }
-  }, [])
+  }, [elm])
 }

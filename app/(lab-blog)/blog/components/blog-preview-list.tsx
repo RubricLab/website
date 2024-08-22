@@ -141,7 +141,7 @@ export const BlogPreviewList = ({posts}: BlogPreviewList) => {
 		if (!open) return
 		radOffset.target.current = radOffset.target.current + deltaY / 200
 		hasInteracted.current = true
-	})
+	}, listRef)
 
 	// useEffect(() => {
 	// 	if (!listRef.current) return
@@ -190,8 +190,6 @@ export const BlogPreviewList = ({posts}: BlogPreviewList) => {
 	// 		listElm?.removeEventListener('wheel', handleWheel)
 	// 	}
 	// }, [])
-
-	console.log(activeIndex)
 
 	return (
 		/* @ts-ignore */
