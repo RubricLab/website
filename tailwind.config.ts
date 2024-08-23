@@ -31,6 +31,11 @@ const tailwindConfig: Config = {
       'neue-bit': ['var(--font-neue-bit)']
     },
     extend: {
+      zIndex: {
+        header: '999',
+        menu: '998',
+        overlay: '997'
+      },
       colors: {
         transparent: 'transparent',
         shades,

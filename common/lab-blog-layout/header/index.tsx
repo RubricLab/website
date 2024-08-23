@@ -2,8 +2,10 @@
 import Link, {LinkProps} from 'next/link'
 import {usePathname} from 'next/navigation'
 import LabLogo from './lab-logo'
+import {MobileMenu, MobileMenuToggle} from './mobile-menu'
+import {MenuOverlay} from './overlay'
 
-const links = [
+export const navLinks = [
   {
     title: 'Showcase',
     href: '/lab'
@@ -14,35 +16,54 @@ const links = [
   }
 ]
 
+export const socialLinks = [
+  {
+    title: 'GitHub',
+    href: 'https://github.com/RubricLab'
+  },
+  {
+    title: 'Follow on X',
+    href: 'https://x.com/RubricLabs'
+  },
+  {
+    title: 'LinkedIn',
+    href: 'https://linkedin.com/company/RubricLabs'
+  }
+]
+
 const Header = () => {
   const pathname = usePathname()
 
   return (
-    <header className='fixed left-0 right-0 top-0 z-[999] w-full border-b border-border bg-surface px-sides text-text'>
-      <div className='grid h-header grid-cols-12'>
-        <div className='col-span-3 flex items-center border-l border-r border-border p-em-[12] md:items-end'>
-          <LabLogo className='text-surface-contrast h-em-[18] md:h-em-[24]' />
-        </div>
-        <>
-          {links.map((link, index) => (
+    <>
+      <header className='z-header fixed left-0 right-0 top-0 w-full border-b border-border bg-surface px-sides text-text'>
+        <div className='grid h-header grid-cols-12'>
+          <div className='col-span-3 flex items-center border-l border-r border-border p-em-[12] md:items-end'>
+            <LabLogo className='text-surface-contrast h-em-[18] md:h-em-[24]' />
+          </div>
+          <>
+            {navLinks.map((link, index) => (
+              <HeaderLink
+                isActive={pathname.startsWith(link.href)}
+                className='order-1 col-span-2 hidden place-items-end md:grid lg:-order-none lg:col-span-1'
+                key={index}
+                href={link.href}>
+                {link.title}
+              </HeaderLink>
+            ))}
             <HeaderLink
-              isActive={pathname.startsWith(link.href)}
-              className='hidden w-col-1 place-items-end md:grid'
-              key={index}
-              href={link.href}>
-              {link.title}
+              className='order-1 col-span-3 hidden place-items-end md:grid lg:-order-none lg:col-span-2'
+              href='/'>
+              GO BACK TO RUBRIC
             </HeaderLink>
-          ))}
-          <HeaderLink
-            className='hidden w-col-2 place-items-end md:grid'
-            href='/'>
-            GO BACK TO RUBRIC
-          </HeaderLink>
-        </>
-        <div className='col-span-5 hidden border-r border-border md:block' />
-        <button className='col-[7/span_6] flex items-center justify-end border-l border-r border-border p-em-[12] md:hidden'></button>
-      </div>
-    </header>
+          </>
+          <div className='col-span-2 hidden border-r border-border md:block lg:col-span-5' />
+          <MobileMenuToggle />
+        </div>
+      </header>
+      <MobileMenu />
+      <MenuOverlay />
+    </>
   )
 }
 

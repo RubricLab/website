@@ -7,7 +7,7 @@ import {useGSAP} from '@gsap/react'
 import gsap from 'gsap'
 import {CSSProperties, useEffect, useRef} from 'react'
 
-const backgroundGradient = `repeating-linear-gradient(
+export const backgroundGradient = `repeating-linear-gradient(
 								to bottom,
 								transparent 0px 0.75em,
 								rgb(var(--color-border) / 0.5) 0.75em 1.5em
