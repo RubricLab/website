@@ -1,6 +1,12 @@
 import {PerspectiveCamera, shaderMaterial} from '@react-three/drei'
-import {Canvas, extend} from '@react-three/fiber'
-import {Bloom, EffectComposer, Noise, SMAA, Vignette} from '@react-three/postprocessing'
+import {Canvas, extend, useFrame, useThree} from '@react-three/fiber'
+import {
+	Bloom,
+	EffectComposer,
+	Noise,
+	SMAA,
+	Vignette
+} from '@react-three/postprocessing'
 import gsap from 'gsap'
 import {folder, useControls} from 'leva'
 import {
@@ -414,7 +420,74 @@ const Scene = ({activeIdx}: {activeIdx: number}) => {
 	)
 }
 
-const v = new THREE.Vector3()
+const v3 = new THREE.Vector3()
+
+
+const cameraMovementTarget = new THREE.Vector2()
+
+const Camera = () => {
+	const {domElement} = useThree(s => s.gl)
+	const [hovering, setHovering] = useState(false)
+	const cameraRef = useRef<THREE.PerspectiveCamera>()
+	const ctrls = useControls({
+		camera: folder({
+			fov: {
+				value: 45,
+				min: 10,
+				max: 100,
+				step: 1
+			}
+		})
+	})
+
+	useEffect(() => {
+		const handleMouseEnter = () => setHovering(true)
+		const handleMouseLeave = () => setHovering(false)
+
+		domElement.addEventListener('mouseenter', handleMouseEnter)
+		domElement.addEventListener('mouseleave', handleMouseLeave)
+
+		return () => {
+			domElement.removeEventListener('mouseenter', handleMouseEnter)
+			domElement.removeEventListener('mouseleave', handleMouseLeave)
+		}
+	}, [domElement])
+
+	useFrame(state => {
+		if (cameraRef.current) {
+			const {pointer} = state
+			const radius = 12
+
+			if (hovering) cameraMovementTarget.copy(pointer)
+			else {
+				cameraMovementTarget.x = 0
+				cameraMovementTarget.y = 0
+			}
+
+			const phi = (Math.PI + Math.PI / 5) * (0.5 - cameraMovementTarget.y * 0.025)
+			const theta = Math.PI / 2.5 + Math.PI * 2 * -cameraMovementTarget.x * 0.025
+
+			const targetX = radius * Math.sin(phi) * Math.cos(theta)
+			const targetY = radius * Math.cos(phi)
+			const targetZ = radius * Math.sin(phi) * Math.sin(theta)
+
+			v3.set(targetX, targetY, targetZ)
+			cameraRef.current.position.lerp(v3, 0.05)
+			cameraRef.current.lookAt(0, 0, 0)
+		}
+	})
+
+	return (
+		<PerspectiveCamera
+			makeDefault
+			position={[5, -4, 12]}
+			fov={ctrls.fov}
+			near={1}
+			far={100}
+			ref={cameraRef}
+		/>
+	)
+}
 
 function LabWebGL({activeProject}: {activeProject: number}) {
 	const ctrls = useControls({
@@ -440,14 +513,6 @@ function LabWebGL({activeProject}: {activeProject: number}) {
 			max: 2,
 			step: 0.01
 		},
-		camera: folder({
-			fov: {
-				value: 45,
-				min: 10,
-				max: 100,
-				step: 1
-			}
-		}),
 		helpers: false,
 		bloom: folder({
 			radius: {
@@ -487,16 +552,7 @@ function LabWebGL({activeProject}: {activeProject: number}) {
 				attach='background'
 				args={['#000']}
 			/>
-			<PerspectiveCamera
-				makeDefault
-				position={[5, -4, 12]}
-				fov={ctrls.fov}
-				near={1}
-				far={100}
-				ref={r => {
-					r?.lookAt(v.set(0, 0, 0))
-				}}
-			/>
+			<Camera />
 
 			{ctrls.helpers && (
 				<>
