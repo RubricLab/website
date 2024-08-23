@@ -1,11 +1,11 @@
 'use client'
-import {useAppStore} from '@/context/use-app-store'
 import Link, {LinkProps} from 'next/link'
 import {usePathname} from 'next/navigation'
 import LabLogo from './lab-logo'
+import {MobileMenu, MobileMenuToggle} from './mobile-menu'
 import {MenuOverlay} from './overlay'
 
-const links = [
+export const navLinks = [
   {
     title: 'Showcase',
     href: '/lab'
@@ -16,14 +16,23 @@ const links = [
   }
 ]
 
+export const socialLinks = [
+  {
+    title: 'GitHub',
+    href: 'https://github.com/RubricLab'
+  },
+  {
+    title: 'Follow on X',
+    href: 'https://x.com/RubricLabs'
+  },
+  {
+    title: 'LinkedIn',
+    href: 'https://linkedin.com/company/RubricLabs'
+  }
+]
+
 const Header = () => {
   const pathname = usePathname()
-
-  const [menuOpen, setMenuOpen, toggleMenuOpen] = useAppStore(s => [
-    s.menuOpen,
-    s.setMenuOpen,
-    s.toggleMenuOpen
-  ])
 
   return (
     <>
@@ -33,7 +42,7 @@ const Header = () => {
             <LabLogo className='text-surface-contrast h-em-[18] md:h-em-[24]' />
           </div>
           <>
-            {links.map((link, index) => (
+            {navLinks.map((link, index) => (
               <HeaderLink
                 isActive={pathname.startsWith(link.href)}
                 className='hidden w-col-1 place-items-end md:grid'
@@ -49,11 +58,10 @@ const Header = () => {
             </HeaderLink>
           </>
           <div className='col-span-5 hidden border-r border-border md:block' />
-          <button
-            onClick={toggleMenuOpen}
-            className='col-[7/span_6] flex items-center justify-end border-l border-r border-border p-em-[12] md:hidden'></button>
+          <MobileMenuToggle />
         </div>
       </header>
+      <MobileMenu />
       <MenuOverlay />
     </>
   )
