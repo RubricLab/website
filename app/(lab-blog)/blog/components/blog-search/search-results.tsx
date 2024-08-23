@@ -139,7 +139,7 @@ export default function SearchResults({posts, search}: SearchResultsProps) {
       )}
       <span
         data-divider
-        className='bg-lines block w-full border-b border-border h-em-[32]'
+        className='bg-lines block w-full h-em-[32]'
       />
 
       <div className='flex flex-col'>

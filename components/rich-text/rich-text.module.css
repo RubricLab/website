@@ -13,5 +13,5 @@
 
 .rich-text li p:first-child strong {
   /* Add your desired styles here, for example: */
-  @apply font-mono font-semibold uppercase text-text text-em-[20/16];
+  @apply font-mono font-semibold uppercase text-text text-em-[16/16];
 }

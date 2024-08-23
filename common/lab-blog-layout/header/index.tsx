@@ -18,26 +18,29 @@ const Header = () => {
   const pathname = usePathname()
 
   return (
-    <header className='dark:text-dark-text fixed left-0 right-0 top-0 z-[999] w-full border-b border-border bg-surface px-sides text-text'>
+    <header className='fixed left-0 right-0 top-0 z-[999] w-full border-b border-border bg-surface px-sides text-text'>
       <div className='grid h-header grid-cols-12'>
-        <div className='col-span-3 flex items-end border-l border-r border-border p-em-[12]'>
-          <LabLogo className='text-surface-contrast h-em-[24]' />
+        <div className='col-span-3 flex items-center border-l border-r border-border p-em-[12] md:items-end'>
+          <LabLogo className='text-surface-contrast h-em-[18] md:h-em-[24]' />
         </div>
-        {links.map((link, index) => (
+        <>
+          {links.map((link, index) => (
+            <HeaderLink
+              isActive={pathname.startsWith(link.href)}
+              className='hidden w-col-1 place-items-end md:grid'
+              key={index}
+              href={link.href}>
+              {link.title}
+            </HeaderLink>
+          ))}
           <HeaderLink
-            isActive={pathname.startsWith(link.href)}
-            className='col-span-1 grid place-items-end'
-            key={index}
-            href={link.href}>
-            {link.title}
+            className='hidden w-col-2 place-items-end md:grid'
+            href='/'>
+            GO BACK TO RUBRIC
           </HeaderLink>
-        ))}
-        <HeaderLink
-          className='col-span-2 grid place-items-end'
-          href='/'>
-          GO BACK TO RUBRIC
-        </HeaderLink>
-        <div className='col-span-5 border-r border-border' />
+        </>
+        <div className='col-span-5 hidden border-r border-border md:block' />
+        <button className='col-[7/span_6] flex items-center justify-end border-l border-r border-border p-em-[12] md:hidden'></button>
       </div>
     </header>
   )
