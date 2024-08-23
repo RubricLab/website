@@ -166,17 +166,18 @@ export function MobileMenu() {
     // containerRef.current.style.visibility = menuOpen ? 'hidden' : 'visible'
     openTween.current?.kill()
 
+    if (menuOpen) containerRef.current.style.visibility = 'visible'
+
     openTween.current = gsap.to(containerRef.current, {
       '--clip-progress': menuOpen ? 0 : 1,
       duration: 0.4,
       ease: 'power3.out',
-
       onComplete: () => {
         if (!containerRef.current) return
         if (!menuOpen) {
           tl.current.seek(0)
+          containerRef.current.style.visibility = 'hidden'
         }
-        // containerRef.current.style.visibility = menuOpen ? 'visible' : 'hidden'
       }
     })
 
