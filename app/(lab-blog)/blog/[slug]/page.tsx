@@ -111,7 +111,7 @@ export default async function BlogPostPage({
       <BackgroundGrid
         data={{
           sm: {columnCount: 4},
-          md: {columnCount: 4},
+          md: {columnCount: 12, highlightColumns: [0, 11]},
           lg: {columnCount: 12, highlightColumns: [1, 10]},
           xl: {columnCount: 12, highlightColumns: [1, 10]},
           '2xl': {columnCount: 12, highlightColumns: [1, 10]}
@@ -174,15 +174,21 @@ export default async function BlogPostPage({
           if (!blogpost) return notFound()
 
           return (
-            <div className='mx-auto w-[calc(var(--col-width)*8+2px)] -translate-x-px border border-border bg-surface mb-em-[64]'>
+            <div className='relative mx-auto w-full border border-border bg-surface mb-em-[64] md:w-[calc(var(--col-width)*10+2px)] md:-translate-x-px lg:w-[calc(var(--col-width)*8+2px)]'>
               <PageView _analyticsKey={blogpost._analyticsKey} />
 
-              <div className='bg-lines flex w-full items-center px-em-[16] h-em-[64]'>
-                <Button variant='ghost'>Back to Blog</Button>
+              <div className='bg-lines flex w-full items-center h-em-[64]'>
+                <Button
+                  size='sm'
+                  variant='secondary'
+                  className='h-full border-0 border-r bg-surface hover:bg-surface-tertiary md:w-[calc(var(--col-width)*2+1px)]'>
+                  {' '}
+                  Back to Blog
+                </Button>
               </div>
 
-              <div className='grid grid-cols-2 border-b border-t border-border mb-em-[64]'>
-                <div className='flex flex-col justify-between border-r border-border p-em-[32] gap-em-[16]'>
+              <div className='grid grid-cols-1 border-b border-t border-border mb-em-[64] md:grid-cols-2'>
+                <div className='flex flex-col justify-between border-b border-border p-em-[24] gap-em-[16] md:border-b-0 md:border-r 2xl:p-em-[32]'>
                   <div className='flex'>
                     {blogpost.categories.map(category => (
                       <span
@@ -192,7 +198,7 @@ export default async function BlogPostPage({
                       </span>
                     ))}
                   </div>
-                  <h1 className='text-balance font-medium uppercase text-em-[32/16] lg:text-em-[36/16] 2xl:text-em-[40/16]'>
+                  <h1 className='text-balance font-medium uppercase text-em-[32/16] lg:text-em-[34/16] 2xl:text-em-[40/16]'>
                     {blogpost._title}
                   </h1>
                   <div className='flex items-center gap-em-[16]'>
@@ -222,7 +228,7 @@ export default async function BlogPostPage({
                 />
               </div>
 
-              <div className='flex justify-center'>
+              <div className='flex justify-center px-sides md:px-col-1'>
                 <div className={cx(richTextClasses)}>
                   <RichText
                     blocks={blogpost.body.json.blocks}

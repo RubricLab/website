@@ -35,16 +35,17 @@
 
 :root {
   /* viewport scaling */
-  --base-viewport: 780;
+  --base-viewport: 480;
   --base-size: 16;
   --dynamic-base-size: calc(var(--base-size) / var(--base-viewport) * 100vw);
 
   /* spacing */
   --header-height: calc(64 / var(--base-size) * 1em);
-  --spacing-sides: 1.5rem;
+  --spacing-sides: 0.75rem;
   --col-count: 12;
   --col-width: calc((100vw - (var(--spacing-sides) * 2)) / var(--col-count));
   --1px-em: calc(1px / var(--base-size) * 1em);
+
   /* base colors */
 
   --white: 255 255 255;
@@ -72,7 +73,6 @@
   --color-surface-tertiary: var(--shade-700);
   --color-surface-contrast: var(--white);
   --color-border: var(--shade-800);
-  /* --color-border-secondary: var(--shade-900); */
   --color-control: var(--white);
 }
 
@@ -88,6 +88,19 @@
   --color-border: var(--shade-300);
   /* --color-border-secondary: var(--shade-200); */
   --color-control: var(--black);
+}
+
+@screen sm {
+  :root {
+    --base-viewport: 768;
+  }
+}
+
+@screen md {
+  :root {
+    --spacing-sides: 1.5rem;
+    --base-viewport: 1024;
+  }
 }
 
 @screen lg {
