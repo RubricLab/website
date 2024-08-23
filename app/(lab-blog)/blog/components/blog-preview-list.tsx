@@ -15,7 +15,7 @@ import {
 	useRef,
 	useState
 } from 'react'
-import {BlogPostPreview} from './blogpost-preview'
+import {BlogPostPreview, BlogPostPreviewProps} from './blogpost-preview'
 import {usePreviewStore} from './preview-store'
 
 interface BlogPreviewList {
@@ -185,7 +185,7 @@ export const BlogPreviewList = ({posts}: BlogPreviewList) => {
 		const selectedPostIdx = posts.findIndex(p => p._id === selectedPost._id)
 
 		const activeIndexRad = getAngularStepFromIndex(selectedPostIdx)
-		
+
 		radOffset.target.current = activeIndexRad
 
 		// Update the wheel value
@@ -223,7 +223,12 @@ export const BlogPreviewList = ({posts}: BlogPreviewList) => {
 					}}
 					className='absolute'
 					key={p._id}>
-					<BlogPostPreview {...p} />
+					<BlogPostPreview
+						flap={
+							['left', 'center', 'right'][idx % 3] as BlogPostPreviewProps['flap']
+						}
+						{...p}
+					/>
 				</div>
 			))}
 		</div>
