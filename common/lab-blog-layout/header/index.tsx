@@ -1,7 +1,9 @@
 'use client'
+import {useAppStore} from '@/context/use-app-store'
 import Link, {LinkProps} from 'next/link'
 import {usePathname} from 'next/navigation'
 import LabLogo from './lab-logo'
+import {MenuOverlay} from './overlay'
 
 const links = [
   {
@@ -17,32 +19,43 @@ const links = [
 const Header = () => {
   const pathname = usePathname()
 
+  const [menuOpen, setMenuOpen, toggleMenuOpen] = useAppStore(s => [
+    s.menuOpen,
+    s.setMenuOpen,
+    s.toggleMenuOpen
+  ])
+
   return (
-    <header className='fixed left-0 right-0 top-0 z-[999] w-full border-b border-border bg-surface px-sides text-text'>
-      <div className='grid h-header grid-cols-12'>
-        <div className='col-span-3 flex items-center border-l border-r border-border p-em-[12] md:items-end'>
-          <LabLogo className='text-surface-contrast h-em-[18] md:h-em-[24]' />
-        </div>
-        <>
-          {links.map((link, index) => (
+    <>
+      <header className='z-header fixed left-0 right-0 top-0 w-full border-b border-border bg-surface px-sides text-text'>
+        <div className='grid h-header grid-cols-12'>
+          <div className='col-span-3 flex items-center border-l border-r border-border p-em-[12] md:items-end'>
+            <LabLogo className='text-surface-contrast h-em-[18] md:h-em-[24]' />
+          </div>
+          <>
+            {links.map((link, index) => (
+              <HeaderLink
+                isActive={pathname.startsWith(link.href)}
+                className='hidden w-col-1 place-items-end md:grid'
+                key={index}
+                href={link.href}>
+                {link.title}
+              </HeaderLink>
+            ))}
             <HeaderLink
-              isActive={pathname.startsWith(link.href)}
-              className='hidden w-col-1 place-items-end md:grid'
-              key={index}
-              href={link.href}>
-              {link.title}
+              className='hidden w-col-2 place-items-end md:grid'
+              href='/'>
+              GO BACK TO RUBRIC
             </HeaderLink>
-          ))}
-          <HeaderLink
-            className='hidden w-col-2 place-items-end md:grid'
-            href='/'>
-            GO BACK TO RUBRIC
-          </HeaderLink>
-        </>
-        <div className='col-span-5 hidden border-r border-border md:block' />
-        <button className='col-[7/span_6] flex items-center justify-end border-l border-r border-border p-em-[12] md:hidden'></button>
-      </div>
-    </header>
+          </>
+          <div className='col-span-5 hidden border-r border-border md:block' />
+          <button
+            onClick={toggleMenuOpen}
+            className='col-[7/span_6] flex items-center justify-end border-l border-r border-border p-em-[12] md:hidden'></button>
+        </div>
+      </header>
+      <MenuOverlay />
+    </>
   )
 }
 

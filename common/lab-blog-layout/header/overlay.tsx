@@ -10,7 +10,7 @@ export const MenuOverlay = () => {
       onClick={() => {
         setMenuOpen(false)
       }}
-      className={`transition-in-out z-overlay bg-soul/10 fixed inset-0 transition-opacity md:hidden
+      className={`transition-in-out z-overlay bg-soul/10 fixed inset-0 bg-surface/80 backdrop-blur-[2px] transition-[opacity,backdrop-filter] duration-300 md:hidden
         ${menuOpen ? 'pointer-events-all cursor-pointer opacity-100' : 'pointer-events-none opacity-0'}
     `}
     />
