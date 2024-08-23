@@ -234,7 +234,7 @@ const ProgressStatus = () => {
 			className={cn(
 				'fixed bottom-0 left-0 flex w-full border-t border-border bg-black px-sides transition-[height]',
 				{
-					'h-em-[20] text-em-[10/16]': isShrunk,
+					'h-em-[32] text-em-[12/16]': isShrunk,
 					'h-em-[40]': !isShrunk
 				}
 			)}
