@@ -1,5 +1,7 @@
-import {fragmentOn} from 'basehub'
-import {authorFragment, darkLightImageFragment} from '../fragments'
+import { fragmentOn } from 'basehub'
+import { authorFragment, darkLightImageFragment } from '../fragments'
+import { FaqItemComponentFragment, richTextCalloutComponentFragment } from '@/components/rich-text'
+import { codeSnippetFragment } from '@/components/code-snippet'
 
 export const blogpostCardFragment = fragmentOn('BlogPostComponent', {
   _id: true,
@@ -9,26 +11,25 @@ export const blogpostCardFragment = fragmentOn('BlogPostComponent', {
   publishedAt: true,
   authors: authorFragment,
   image: darkLightImageFragment,
-  categories: true
-})
-
-export const blogpostPreviewFragment = fragmentOn('BlogPostComponent', {
-  _id: true,
-  _title: true,
-  _slug: true,
-  description: true,
-  publishedAt: true,
-  authors: authorFragment,
-  image: darkLightImageFragment,
   categories: true,
   body: {
-    markdown: true
+    plainText: true,
+    json: {
+      __typename: true,
+      blocks: {
+        __typename: true,
+        on_FaqItemComponent: FaqItemComponentFragment,
+        on_RichTextCalloutComponent:
+          richTextCalloutComponentFragment,
+        on_CodeSnippetComponent: codeSnippetFragment
+      },
+      content: 1,
+      toc: 1
+    },
   }
 })
 
 export type BlogpostCardFragment = fragmentOn.infer<typeof blogpostCardFragment>
-
-export type BlogpostPreviewFragment = fragmentOn.infer<typeof blogpostPreviewFragment>
 
 export type BlogPostCard = {
   type?: 'card' | 'list' | 'inline-card'
