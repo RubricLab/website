@@ -45,19 +45,19 @@ const Header = () => {
             {navLinks.map((link, index) => (
               <HeaderLink
                 isActive={pathname.startsWith(link.href)}
-                className='hidden w-col-1 place-items-end md:grid'
+                className='order-1 col-span-2 hidden place-items-end md:grid lg:-order-none lg:col-span-1'
                 key={index}
                 href={link.href}>
                 {link.title}
               </HeaderLink>
             ))}
             <HeaderLink
-              className='hidden w-col-2 place-items-end md:grid'
+              className='order-1 col-span-3 hidden place-items-end md:grid lg:-order-none lg:col-span-2'
               href='/'>
               GO BACK TO RUBRIC
             </HeaderLink>
           </>
-          <div className='col-span-5 hidden border-r border-border md:block' />
+          <div className='col-span-2 hidden border-r border-border md:block lg:col-span-5' />
           <MobileMenuToggle />
         </div>
       </header>

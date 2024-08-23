@@ -194,7 +194,7 @@ export function MobileMenu() {
           pointerEvents: menuOpen ? 'auto' : 'none'
         } as CSSProperties
       }
-      className='z-menu fixed left-0 right-0 top-header flex border-b border-border bg-surface px-sides'>
+      className='z-menu fixed left-0 right-0 top-header flex border-b border-border bg-surface px-sides md:hidden'>
       <div className='flex w-full flex-col border-x border-border px-sides py-em-[12]'>
         <p className='uppercase text-text-tertiary text-em-[14/16]'>
           SITEMAP.TS
