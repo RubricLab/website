@@ -11,8 +11,7 @@ export const usePreviewStore = create<PreviewStore>((set, get) => ({
   selectedPost: null,
   setSelectedPost: post => set({ selectedPost: post }),
   clearSelectedPost: (post) => {
-    if (get().selectedPost._id === post._id) {
+    if (get().selectedPost._id === post._id)
       set({ selectedPost: null })
-    }
   }
 }))
