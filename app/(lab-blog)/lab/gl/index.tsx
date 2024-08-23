@@ -1,6 +1,6 @@
 import {PerspectiveCamera, shaderMaterial} from '@react-three/drei'
 import {Canvas, extend} from '@react-three/fiber'
-import {Bloom, EffectComposer, Noise, SMAA} from '@react-three/postprocessing'
+import {Bloom, EffectComposer, Noise, SMAA, Vignette} from '@react-three/postprocessing'
 import gsap from 'gsap'
 import {folder, useControls} from 'leva'
 import {
@@ -83,6 +83,11 @@ extend({MeshEdgesMaterial})
 const logos = [
 	[
 		[1, 0, 1],
+		[1, 1, 0],
+		[1, 0, 0]
+	],
+	[
+		[1, 0, 1],
 		[0, 1, 0],
 		[1, 0, 1]
 	],
@@ -95,18 +100,27 @@ const logos = [
 		[0, 1, 1],
 		[1, 0, 1],
 		[1, 1, 0]
-	],
-	[
-		[1, 0, 1],
-		[1, 1, 0],
-		[1, 0, 0]
 	]
 ]
 
-const Scene = () => {
+const clone = (arr: any) => {
+	return JSON.parse(JSON.stringify(arr))
+}
+
+const initialLogoGridState = clone(logos[0])
+	.flat()
+	.map(v => ({v}))
+const initialLogoGridBloomState = clone(initialLogoGridState)
+
+const Scene = ({activeIdx}: {activeIdx: number}) => {
 	const refPrevLogoPattern = useRef<number[][]>()
 	const refPatternFromZValues = useRef<{v: number}[]>()
+
+	const refLogoGridState = useRef<{v: number}[]>(initialLogoGridState)
+	const refLogoGridBloomState = useRef<{v: number}[]>(initialLogoGridBloomState)
+
 	const outlinesRef = useRef<THREE.InstancedMesh>(null)
+
 	const [baseColor, setColor] = useState(() => new THREE.Color('#ffffff'))
 	const [activeColor, setActiveColor] = useState(
 		() => new THREE.Color('#939393')
@@ -170,20 +184,15 @@ const Scene = () => {
 		y: Math.floor(grid.height / 2)
 	}
 	const length = grid.width * grid.height
-	const logoPattern = logos[ctrls.pattern]
+	const logoPattern = logos[activeIdx]
 
 	const bloomFactorBuffer = useMemo(
 		() => new Float32Array(length).map(() => 0),
 		[length]
 	)
-	const faceColorsBuffer = useMemo(
-		() => new Float32Array(length * 3).fill(1),
-		[length]
-	)
 
 	const getCenteredGridMappedValues = useCallback(
 		(idx: number) => {
-			const logoPattern = logos[ctrls.pattern]
 			const logoGridSize = logoPattern.length
 			const centerOffset = Math.floor(logoGridSize / 2)
 
@@ -195,7 +204,7 @@ const Scene = () => {
 
 			return {x, y, gridX, gridY, id}
 		},
-		[ctrls.pattern, grid.width, gridCenter.x, gridCenter.y]
+		[grid.width, gridCenter.x, gridCenter.y, logoPattern]
 	)
 
 	useLayoutEffect(() => {
@@ -243,8 +252,8 @@ const Scene = () => {
 		).flat()
 		const currentLogoGridSize = logoPattern.length
 
-		const fromZValues = currentLogoPattern.map(() => ({v: 0}))
-		const fromBloomValues = currentLogoPattern.map(() => ({v: 0}))
+		const fromZValues = refLogoGridState.current
+		const fromBloomValues = refLogoGridBloomState.current
 
 		const inStaggerConfig: gsap.StaggerVars = {
 			each: 0.1,
@@ -253,58 +262,36 @@ const Scene = () => {
 			from: ctrls.gridfrom
 		}
 
-		const timeline = gsap.timeline({})
+		const timeline = gsap.timeline()
 
-		if (refPrevLogoPattern.current) {
-			const prevLogoPattern =
-				(
-					JSON.parse(
-						JSON.stringify(refPrevLogoPattern.current)
-					) as typeof logoPattern
-				)?.flat() || []
-			const prevLogoGridSize = refPrevLogoPattern.current.length
+		/* first hide everything if there's a prev logo */
+		if (refPrevLogoPattern.current)
+			timeline.to(fromZValues, {
+				duration: 0.5,
+				v: 0,
+				ease: 'power2.out',
+				stagger: inStaggerConfig,
+				onUpdate: () => {
+					fromZValues.forEach((value, index) => {
+						if (!ref.current) return
 
-			const outStaggerConfig: gsap.StaggerVars = {
-				...inStaggerConfig,
-				grid: [prevLogoGridSize, prevLogoGridSize]
-			}
-			const outFromZValues = refPatternFromZValues.current
+						const {id} = getCenteredGridMappedValues(index)
 
-			timeline.to(
-				outFromZValues,
-				{
-					duration: 1.5,
-					v: 0,
-					ease: 'power2.inOut',
-					stagger: outStaggerConfig,
-					onUpdate: () => {
-						outFromZValues.forEach((value, index) => {
-							if (!ref.current) return
+						ref.current.getMatrixAt(id, o.matrix)
+						o.matrix.decompose(o.position, o.quaternion, o.scale)
+						o.position.setZ(value.v * 0.9)
+						o.updateMatrix()
+						ref.current.setMatrixAt(id, o.matrix)
 
-							const {id} = getCenteredGridMappedValues(index)
-
-							ref.current.getMatrixAt(id, o.matrix)
-
-							o.matrix.decompose(o.position, o.quaternion, o.scale)
-
-							o.position.setZ(value.v * 0.9)
-
-							o.updateMatrix()
-
-							ref.current.setMatrixAt(id, o.matrix)
-
-							if (prevLogoPattern[index] === 1) {
-								ref.current.setColorAt(id, c.copy(baseColor).lerp(activeColor, value.v))
-								ref.current.instanceColor!.needsUpdate = true
-							}
-
-							ref.current.instanceMatrix.needsUpdate = true
-						})
-					}
-				},
-				0
-			)
-		}
+						ref.current.setColorAt(
+							id,
+							c.copy(activeColor).lerp(baseColor, 1 - value.v)
+						)
+						ref.current.instanceColor!.needsUpdate = true
+						ref.current.instanceMatrix.needsUpdate = true
+					})
+				}
+			})
 
 		timeline.to(fromBloomValues, {
 			duration: 2,
@@ -326,7 +313,7 @@ const Scene = () => {
 		timeline.to(
 			fromZValues,
 			{
-				duration: 1.5,
+				duration: 0.75,
 				v: (index: number) => {
 					return currentLogoPattern[index]
 				},
@@ -348,11 +335,15 @@ const Scene = () => {
 
 						ref.current.setMatrixAt(id, o.matrix)
 
-						if (currentLogoPattern[index] === 1) {
+						if (currentLogoPattern[index] === 1)
 							ref.current.setColorAt(id, c.copy(baseColor).lerp(activeColor, value.v))
-							ref.current.instanceColor!.needsUpdate = true
-						}
+						else if (currentLogoPattern[index] === 0)
+							ref.current.setColorAt(
+								id,
+								c.copy(activeColor).lerp(baseColor, 1 - value.v)
+							)
 
+						ref.current.instanceColor!.needsUpdate = true
 						ref.current.instanceMatrix.needsUpdate = true
 					})
 				}
@@ -371,7 +362,6 @@ const Scene = () => {
 		baseColor,
 		bloomFactorBuffer,
 		ctrls.gridfrom,
-		ctrls.pattern,
 		getCenteredGridMappedValues,
 		grid.width,
 		gridCenter.x,
@@ -426,7 +416,7 @@ const Scene = () => {
 
 const v = new THREE.Vector3()
 
-function LabWebGL() {
+function LabWebGL({activeProject}: {activeProject: number}) {
 	const ctrls = useControls({
 		ambientLight: {
 			value: 0.1,
@@ -461,7 +451,7 @@ function LabWebGL() {
 		helpers: false,
 		bloom: folder({
 			radius: {
-				value: 0.7,
+				value: 0.6,
 				min: 0,
 				max: 1,
 				step: 0.01
@@ -515,7 +505,7 @@ function LabWebGL() {
 				</>
 			)}
 
-			<Scene />
+			<Scene activeIdx={activeProject} />
 
 			<EffectComposer
 				multisampling={0}
@@ -529,6 +519,11 @@ function LabWebGL() {
 					mipmapBlur={ctrls.mipmap}
 				/>
 				<Noise opacity={0.05} />
+				<Vignette
+					offset={0.5}
+					darkness={0.7}
+					eskil={false}
+				/>
 				<SMAA />
 			</EffectComposer>
 		</Canvas>

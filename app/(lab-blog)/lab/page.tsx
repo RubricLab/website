@@ -137,10 +137,20 @@ const ProjectContent = ({id}: {id: string}) => (
 	</div>
 )
 
-const ProgressSlot = ({targetId, name}: {targetId: string; name: string}) => {
+const ProgressSlot = ({
+	targetId,
+	name,
+	onActiveChange
+}: {
+	targetId: string
+	name: string
+	onActiveChange: (active: boolean) => void
+}) => {
 	const ref = useRef<HTMLDivElement>(null)
 
 	useEffect(() => {
+		let slotActive = false
+
 		const handleScroll = () => {
 			if (!ref.current) return
 
@@ -153,10 +163,19 @@ const ProgressSlot = ({targetId, name}: {targetId: string; name: string}) => {
 			const projectsSectionBottom =
 				projectsSectionTop + projectsSection.offsetHeight
 
+			// Create a variable to track if the slot is active
+			const _slotActive =
+				scrollPosition >= projectsSectionTop &&
+				scrollPosition <= projectsSectionBottom
 			const scrollPercentage =
 				(scrollPosition - projectsSectionTop) /
 				(projectsSectionBottom - projectsSectionTop)
 			const scale = Math.max(0, Math.min(1, scrollPercentage))
+
+			if (_slotActive != slotActive) {
+				onActiveChange(_slotActive)
+				slotActive = _slotActive
+			}
 
 			ref.current.style.transform = `translateX(${-(1 - scale) * 100}%)`
 		}
@@ -166,7 +185,7 @@ const ProgressSlot = ({targetId, name}: {targetId: string; name: string}) => {
 		return () => {
 			window.removeEventListener('scroll', handleScroll)
 		}
-	}, [targetId])
+	}, [targetId, name, onActiveChange])
 
 	return (
 		<button
@@ -189,7 +208,11 @@ const ProgressSlot = ({targetId, name}: {targetId: string; name: string}) => {
 	)
 }
 
-const ProgressStatus = () => {
+const ProgressStatus = ({
+	onActiveChange
+}: {
+	onActiveChange: (idx: number) => void
+}) => {
 	const [isShrunk, setIsShrunk] = useState(false)
 
 	useEffect(() => {
@@ -198,9 +221,6 @@ const ProgressStatus = () => {
 		const handleScroll = () => {
 			setIsShrunk(true)
 			clearTimeout(timeoutId)
-			// timeoutId = setTimeout(() => {
-			// 	setIsShrunk(false)
-			// }, 2000)
 		}
 
 		window.addEventListener('scroll', handleScroll)
@@ -246,14 +266,23 @@ const ProgressStatus = () => {
 				<ProgressSlot
 					targetId='project-1'
 					name='project-1'
+					onActiveChange={v => {
+						v && onActiveChange(0)
+					}}
 				/>
 				<ProgressSlot
 					targetId='project-2'
 					name='project-2'
+					onActiveChange={v => {
+						v && onActiveChange(1)
+					}}
 				/>
 				<ProgressSlot
 					targetId='project-3'
 					name='project-3'
+					onActiveChange={v => {
+						v && onActiveChange(2)
+					}}
 				/>
 			</div>
 		</div>
@@ -261,6 +290,7 @@ const ProgressStatus = () => {
 }
 
 export default function LabPage() {
+	const [activeProject, setActiveProject] = useState(0)
 	const [asideCanvasVisible, setAsideCanvasVisible] = useState(false)
 
 	useEffect(() => {
@@ -309,11 +339,11 @@ export default function LabPage() {
 							'translate-x-[0.5vw] opacity-0': !asideCanvasVisible
 						}
 					)}>
-					<LabWebGL />
+					<LabWebGL activeProject={activeProject} />
 				</div>
 			</section>
 
-			<ProgressStatus />
+			<ProgressStatus onActiveChange={idx => setActiveProject(idx)} />
 		</>
 	)
 }
