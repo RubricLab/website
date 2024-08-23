@@ -40,7 +40,7 @@
   --dynamic-base-size: calc(var(--base-size) / var(--base-viewport) * 100vw);
 
   /* spacing */
-  --header-height: calc(64 / var(--base-size) * 1em);
+  --header-height: calc(48 / var(--base-size) * 1em);
   --spacing-sides: 0.75rem;
   --col-count: 12;
   --col-width: calc((100vw - (var(--spacing-sides) * 2)) / var(--col-count));
@@ -92,6 +92,7 @@
 
 @screen sm {
   :root {
+    --header-height: calc(64 / var(--base-size) * 1em);
     --base-viewport: 768;
   }
 }

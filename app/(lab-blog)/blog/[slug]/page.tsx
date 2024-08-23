@@ -181,7 +181,7 @@ export default async function BlogPostPage({
                 <Button
                   size='sm'
                   variant='secondary'
-                  className='h-full border-0 border-r bg-surface hover:bg-surface-tertiary md:w-[calc(var(--col-width)*2+1px)]'>
+                  className='h-full w-col-6 border-0 border-r bg-surface hover:bg-surface-tertiary md:w-[calc(var(--col-width)*2+1px)]'>
                   {' '}
                   Back to Blog
                 </Button>
@@ -198,7 +198,7 @@ export default async function BlogPostPage({
                       </span>
                     ))}
                   </div>
-                  <h1 className='text-balance font-medium uppercase text-em-[32/16] lg:text-em-[34/16] 2xl:text-em-[40/16]'>
+                  <h1 className='text-pretty font-medium uppercase text-em-[32/16] lg:text-em-[34/16] 2xl:text-em-[40/16]'>
                     {blogpost._title}
                   </h1>
                   <div className='flex items-center gap-em-[16]'>
