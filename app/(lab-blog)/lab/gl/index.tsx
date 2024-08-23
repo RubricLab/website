@@ -1,10 +1,6 @@
-import {
-	OrbitControls,
-	PerspectiveCamera,
-	shaderMaterial
-} from '@react-three/drei'
+import {PerspectiveCamera, shaderMaterial} from '@react-three/drei'
 import {Canvas, extend} from '@react-three/fiber'
-import {Bloom, EffectComposer, SMAA} from '@react-three/postprocessing'
+import {Bloom, EffectComposer, Noise, SMAA} from '@react-three/postprocessing'
 import gsap from 'gsap'
 import {folder, useControls} from 'leva'
 import {
@@ -22,9 +18,9 @@ const c = new THREE.Color()
 
 const MeshEdgesMaterial = shaderMaterial(
 	{
-		color: new THREE.Color('red'),
+		color: new THREE.Color('white'),
 		size: new THREE.Vector3(1, 1, 1),
-		thickness: 0.01,
+		thickness: 0.02,
 		smoothness: 0.2,
 		bloomFactor: 0
 	},
@@ -48,6 +44,7 @@ const MeshEdgesMaterial = shaderMaterial(
   uniform float bloomFactor;
   uniform float thickness;
   uniform float smoothness;
+
   void main() {
     vec3 d = abs(vPosition) - (size * 0.5);
     float a = smoothstep(thickness, thickness + smoothness, min(min(length(d.xy), length(d.yz)), length(d.xz)));
@@ -55,33 +52,50 @@ const MeshEdgesMaterial = shaderMaterial(
   }`
 )
 
+const patchBasicMaterialBloomFactor = shader => {
+	shader.uniforms.bloomFactor = {value: 0}
+	shader.vertexShader = shader.vertexShader.replace(
+		'#include <common>',
+		`#include <common>
+	attribute float bloomFactor;
+	varying float vBloomFactor;`
+	)
+	shader.vertexShader = shader.vertexShader.replace(
+		'#include <begin_vertex>',
+		`#include <begin_vertex>
+	vBloomFactor = bloomFactor;`
+	)
+	shader.fragmentShader = shader.fragmentShader.replace(
+		'#include <common>',
+		`#include <common>
+	uniform float bloomFactor;
+	varying float vBloomFactor;`
+	)
+	shader.fragmentShader = shader.fragmentShader.replace(
+		'#include <color_fragment>',
+		`#include <color_fragment>
+	diffuseColor.rgb *= (1.0 + bloomFactor + vBloomFactor);`
+	)
+}
+
 extend({MeshEdgesMaterial})
 
 const logos = [
 	[
-		/* grid of 1 and 0 */
-		[0, 0, 0, 0, 0],
-		[0, 1, 0, 1, 0],
-		[0, 0, 1, 0, 0],
-		[0, 1, 0, 1, 0],
-		[0, 0, 0, 0, 0]
+		[1, 0, 1],
+		[0, 1, 0],
+		[1, 0, 1]
 	],
 	[
-		/* grid of 1 and 0 */
-		[0, 0, 0, 0, 0],
-		[0, 1, 1, 1, 0],
-		[0, 1, 0, 1, 0],
-		[0, 1, 1, 1, 0],
-		[0, 0, 0, 0, 0]
+		[1, 1, 1],
+		[1, 0, 1],
+		[1, 1, 1]
 	],
 	[
-		[0, 0, 0, 0, 0],
-		[0, 0, 1, 1, 0],
-		[0, 1, 0, 1, 0],
-		[0, 1, 1, 0, 0],
-		[0, 0, 0, 0, 0]
+		[0, 1, 1],
+		[1, 0, 1],
+		[1, 1, 0]
 	],
-	/* generate a 3x3 grid with  */
 	[
 		[1, 0, 1],
 		[1, 1, 0],
@@ -90,6 +104,8 @@ const logos = [
 ]
 
 const Scene = () => {
+	const refPrevLogoPattern = useRef<number[][]>()
+	const refPatternFromZValues = useRef<{v: number}[]>()
 	const outlinesRef = useRef<THREE.InstancedMesh>(null)
 	const [baseColor, setColor] = useState(() => new THREE.Color('#ffffff'))
 	const [activeColor, setActiveColor] = useState(
@@ -113,7 +129,7 @@ const Scene = () => {
 			}
 		},
 		borderColor: {
-			value: '#ffffff',
+			value: '#474747',
 			onChange: (value: string) => {
 				setBorderColor(borderColor.clone().set(value))
 			}
@@ -129,7 +145,7 @@ const Scene = () => {
 			}
 		},
 		activeColor: {
-			value: '#000',
+			value: '#fff',
 			onChange: (value: string) => {
 				setActiveColor(activeColor.clone().set(value))
 			}
@@ -222,30 +238,81 @@ const Scene = () => {
 	useEffect(() => {
 		if (!ref.current) return
 
-		const logoPatternCopy = JSON.parse(
-			JSON.stringify(logoPattern)
-		) as typeof logoPattern
-		const logoGridSize = logoPattern.length
-		const toValues = logoPatternCopy.flat()
-		const fromZValues = toValues.map(() => ({v: 0}))
-		const fromBloomValues = toValues.map(() => ({v: 0}))
+		const currentLogoPattern = (
+			JSON.parse(JSON.stringify(logoPattern)) as typeof logoPattern
+		).flat()
+		const currentLogoGridSize = logoPattern.length
 
-		const staggerConfig: gsap.StaggerVars = {
+		const fromZValues = currentLogoPattern.map(() => ({v: 0}))
+		const fromBloomValues = currentLogoPattern.map(() => ({v: 0}))
+
+		const inStaggerConfig: gsap.StaggerVars = {
 			each: 0.1,
-			grid: [logoGridSize, logoGridSize],
+			grid: [currentLogoGridSize, currentLogoGridSize],
 			/* @ts-ignore */
 			from: ctrls.gridfrom
 		}
 
-		const timeline = gsap.timeline({repeat: -1, repeatDelay: 1, yoyo: true})
+		const timeline = gsap.timeline({})
+
+		if (refPrevLogoPattern.current) {
+			const prevLogoPattern =
+				(
+					JSON.parse(
+						JSON.stringify(refPrevLogoPattern.current)
+					) as typeof logoPattern
+				)?.flat() || []
+			const prevLogoGridSize = refPrevLogoPattern.current.length
+
+			const outStaggerConfig: gsap.StaggerVars = {
+				...inStaggerConfig,
+				grid: [prevLogoGridSize, prevLogoGridSize]
+			}
+			const outFromZValues = refPatternFromZValues.current
+
+			timeline.to(
+				outFromZValues,
+				{
+					duration: 1.5,
+					v: 0,
+					ease: 'power2.inOut',
+					stagger: outStaggerConfig,
+					onUpdate: () => {
+						outFromZValues.forEach((value, index) => {
+							if (!ref.current) return
+
+							const {id} = getCenteredGridMappedValues(index)
+
+							ref.current.getMatrixAt(id, o.matrix)
+
+							o.matrix.decompose(o.position, o.quaternion, o.scale)
+
+							o.position.setZ(value.v * 0.9)
+
+							o.updateMatrix()
+
+							ref.current.setMatrixAt(id, o.matrix)
+
+							if (prevLogoPattern[index] === 1) {
+								ref.current.setColorAt(id, c.copy(baseColor).lerp(activeColor, value.v))
+								ref.current.instanceColor!.needsUpdate = true
+							}
+
+							ref.current.instanceMatrix.needsUpdate = true
+						})
+					}
+				},
+				0
+			)
+		}
 
 		timeline.to(fromBloomValues, {
 			duration: 2,
 			v: (index: number) => {
-				return toValues[index]
+				return currentLogoPattern[index]
 			},
 			ease: 'power4.in',
-			stagger: staggerConfig,
+			stagger: inStaggerConfig,
 			onUpdate: () => {
 				fromBloomValues.forEach((value, index) => {
 					if (!ref.current) return
@@ -261,10 +328,10 @@ const Scene = () => {
 			{
 				duration: 1.5,
 				v: (index: number) => {
-					return toValues[index]
+					return currentLogoPattern[index]
 				},
 				ease: 'power2.inOut',
-				stagger: staggerConfig,
+				stagger: inStaggerConfig,
 				onUpdate: () => {
 					fromZValues.forEach((value, index) => {
 						if (!ref.current) return
@@ -281,7 +348,7 @@ const Scene = () => {
 
 						ref.current.setMatrixAt(id, o.matrix)
 
-						if (toValues[index] === 1) {
+						if (currentLogoPattern[index] === 1) {
 							ref.current.setColorAt(id, c.copy(baseColor).lerp(activeColor, value.v))
 							ref.current.instanceColor!.needsUpdate = true
 						}
@@ -294,7 +361,9 @@ const Scene = () => {
 		)
 
 		return () => {
-			timeline.revert()
+			refPrevLogoPattern.current = logoPattern
+			refPatternFromZValues.current = fromZValues
+			// timeline.revert()
 			timeline.kill()
 		}
 	}, [
@@ -329,6 +398,7 @@ const Scene = () => {
 				</boxGeometry>
 				<meshBasicMaterial
 					color='white'
+					onBeforeCompile={patchBasicMaterialBloomFactor}
 					toneMapped={false}
 				/>
 			</instancedMesh>
@@ -342,16 +412,19 @@ const Scene = () => {
 					transparent
 					polygonOffset
 					polygonOffsetFactor={-1}
+					dithering
 					size={[boxSize, boxSize, boxSize]}
 					bloomFactor={ctrls.activeBloomFactor}
 					color={borderColor}
-					thickness={0.01}
+					thickness={0.0125}
 					smoothness={0}
 				/>
 			</instancedMesh>
 		</group>
 	)
 }
+
+const v = new THREE.Vector3()
 
 function LabWebGL() {
 	const ctrls = useControls({
@@ -388,13 +461,13 @@ function LabWebGL() {
 		helpers: false,
 		bloom: folder({
 			radius: {
-				value: 0.5,
+				value: 0.7,
 				min: 0,
 				max: 1,
 				step: 0.01
 			},
 			intensity: {
-				value: 1.6,
+				value: 0.4,
 				min: 0,
 				max: 2,
 				step: 0.01
@@ -426,25 +499,13 @@ function LabWebGL() {
 			/>
 			<PerspectiveCamera
 				makeDefault
-				position={[3, -4, 9]}
+				position={[5, -4, 12]}
 				fov={ctrls.fov}
 				near={1}
 				far={100}
-			/>
-			<OrbitControls makeDefault />
-
-			<ambientLight intensity={ctrls.ambientLight} />
-			<pointLight
-				color='white'
-				decay={1.56}
-				position={[-5, 5, 7]}
-				intensity={4}
-			/>
-			<pointLight
-				color='white'
-				decay={1.56}
-				position={[5, -5, 7]}
-				intensity={10}
+				ref={r => {
+					r?.lookAt(v.set(0, 0, 0))
+				}}
 			/>
 
 			{ctrls.helpers && (
@@ -456,8 +517,10 @@ function LabWebGL() {
 
 			<Scene />
 
-			{/* @ts-ignore */}
-			<EffectComposer disableNormalPass>
+			<EffectComposer
+				multisampling={0}
+				/* @ts-ignore */
+				disableNormalPass>
 				<Bloom
 					luminanceThreshold={1}
 					intensity={ctrls.intensity}
@@ -465,7 +528,8 @@ function LabWebGL() {
 					radius={ctrls.radius}
 					mipmapBlur={ctrls.mipmap}
 				/>
-        <SMAA />
+				<Noise opacity={0.05} />
+				<SMAA />
 			</EffectComposer>
 		</Canvas>
 	)

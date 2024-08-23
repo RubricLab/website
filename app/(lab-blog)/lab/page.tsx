@@ -192,8 +192,6 @@ const ProgressSlot = ({targetId, name}: {targetId: string; name: string}) => {
 const ProgressStatus = () => {
 	const [isShrunk, setIsShrunk] = useState(false)
 
-	console.log({isShrunk})
-
 	useEffect(() => {
 		let timeoutId: NodeJS.Timeout
 
@@ -306,9 +304,9 @@ export default function LabPage() {
 				</div>
 				<div
 					className={cn(
-						'fixed right-sides top-header h-fold w-[calc(var(--col-width)*5+1px)] border-l border-r border-border bg-black transition-opacity duration-300 ease-out',
+						'fixed right-sides top-header h-fold w-[calc(var(--col-width)*5+1px)] border-l border-r border-border bg-black transition-[opacity,transform] duration-500 ease-out',
 						{
-							'opacity-0': !asideCanvasVisible
+							'translate-x-[0.5vw] opacity-0': !asideCanvasVisible
 						}
 					)}>
 					<LabWebGL />
