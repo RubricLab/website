@@ -6,6 +6,7 @@ import {notFound} from 'next/navigation'
 import {Author} from '@/common/avatar'
 import {DarkLightImage} from '@/common/dark-light-image'
 import BackgroundGrid from '@/common/lab-blog-layout/background-grid'
+import {Button} from '@/common/ui/button'
 import {CodeSnippet, codeSnippetFragment} from '@/components/code-snippet'
 import {PageView} from '@/components/page-view'
 import {
@@ -173,10 +174,14 @@ export default async function BlogPostPage({
           if (!blogpost) return notFound()
 
           return (
-            <div className='mx-auto w-[calc(var(--col-width)*8+2px)] -translate-x-px border border-border bg-surface'>
+            <div className='mx-auto w-[calc(var(--col-width)*8+2px)] -translate-x-px border border-border bg-surface mb-em-[64]'>
               <PageView _analyticsKey={blogpost._analyticsKey} />
 
-              <div className='grid grid-cols-2 border-b border-t border-border my-em-[64]'>
+              <div className='bg-lines flex w-full items-center px-em-[16] h-em-[64]'>
+                <Button variant='ghost'>Back to Blog</Button>
+              </div>
+
+              <div className='grid grid-cols-2 border-b border-t border-border mb-em-[64]'>
                 <div className='flex flex-col justify-between border-r border-border p-em-[32] gap-em-[16]'>
                   <div className='flex'>
                     {blogpost.categories.map(category => (
@@ -187,7 +192,7 @@ export default async function BlogPostPage({
                       </span>
                     ))}
                   </div>
-                  <h1 className='font-medium uppercase text-em-[52/16] 2xl:text-em-[64/16]'>
+                  <h1 className='text-balance font-medium uppercase text-em-[32/16] lg:text-em-[36/16] 2xl:text-em-[40/16]'>
                     {blogpost._title}
                   </h1>
                   <div className='flex items-center gap-em-[16]'>
@@ -230,6 +235,7 @@ export default async function BlogPostPage({
                   </RichText>
                 </div>
               </div>
+              <span className='bg-lines flex w-full border-t border-border mt-em-[64] h-em-[64]' />
             </div>
           )
         }}

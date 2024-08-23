@@ -10,10 +10,10 @@ import s from './rich-text.module.css'
 export const richTextClasses = clsx(
   'prose prose-neutral max-w-prose text-start',
   'prose-p:text-text/80 prose-p:text-blog-body prose-p:font-sans',
-  'prose-h1:text-4xl prose-h1:font-medium prose-h1:text-text-primary dark:prose-h1:text-dark-text-primary',
+  'prose-h1:text-em-[36/16] prose-h1:font-medium prose-h1:text-text prose-h1:uppercase',
   'prose-h2:text-em-[32/16] prose-h2:font-semibold prose-h2:text-text prose-h2:uppercase',
   'prose-h3:text-em-[24/16] prose-h3:font-semibold prose-h3:text-text prose-h3:uppercase',
-  'prose-h4:text-2xl prose-h4:font-medium prose-h4:uppercase',
+  'prose-h4:text-em-[20/16] prose-h4:font-medium prose-h4:uppercase prose-h4:text-text',
   'prose-blockquote:border-border prose-blockquote:font-medium prose-blockquote:pl-em-[20] prose-blockquote:text-em-[24/16] prose-blockquote:text-text prose-blockquote:border-l-em-[2/16]',
   '[&_blockquote>p]:before:[content:""] prose-blockquote:[&_blockquote>p]:after:[content:""]',
   'prose-strong:font-semibold prose-strong:text-text',
