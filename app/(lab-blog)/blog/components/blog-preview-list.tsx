@@ -42,7 +42,7 @@ export const BlogPreviewList = ({posts}: BlogPreviewList) => {
 			max: 90
 		},
 		affectOpacity: true,
-		backface: true,
+		backface: false,
 		debug: false
 	})
 
@@ -110,7 +110,7 @@ export const BlogPreviewList = ({posts}: BlogPreviewList) => {
 				} satisfies CSSProperties
 			}
 		},
-		[ANGLE_STEP, INITIAL_OFFSET, radius, affectOpacity]
+		[INITIAL_OFFSET, ANGLE_STEP, radius, affectOpacity, opacity]
 	)
 
 	const getAngularStepFromIndex = useCallback(
@@ -170,7 +170,7 @@ export const BlogPreviewList = ({posts}: BlogPreviewList) => {
 
 			hasInteracted.current = true
 		},
-		[ANGLE_STEP_RAD]
+		[ANGLE_STEP_RAD, DISPLAY_LENGTH, getActiveAngularStep, radOffset.target]
 	)
 
 	const {listeners} = useTrackDragInertia({
@@ -194,15 +194,7 @@ export const BlogPreviewList = ({posts}: BlogPreviewList) => {
 			0,
 			ANGLE_STEP_RAD * (DISPLAY_LENGTH - 1)
 		)
-	}, [
-		ANGLE_STEP_RAD,
-		INITIAL_OFFSET,
-		getActiveAngularStep,
-		getAngularStepFromIndex,
-		posts,
-		radOffset.target,
-		selectedPost
-	])
+	}, [ANGLE_STEP_RAD, DISPLAY_LENGTH, INITIAL_OFFSET, getActiveAngularStep, getAngularStepFromIndex, posts, radOffset.target, selectedPost])
 
 	return (
 		/* @ts-ignore */

@@ -11,25 +11,27 @@ import Link from 'next/link'
 import {Fragment} from 'react'
 
 export interface BlogPostPreviewProps extends BlogPostCard {
-  flap: 'left' | 'right' | 'center'
+	flap: 'left' | 'right' | 'center'
 }
 
 const tabsidesClassNames =
 	'block absolute h-[111%] bg-surface -translate-y-px w-em-[20/16] border-border'
 
 export const BlogPostPreview = (props: BlogPostPreviewProps) => {
-	const {publishedAt, authors, categories, _slug, image, _title, body, flap} = props
+	const {publishedAt, authors, categories, _slug, image, _title, body, flap} =
+		props
 
 	const filenameFormat = _slug.split('-').slice(0, 3).join('_') + '.md'
 
 	return (
-		<div className='isolate max-w-em-[808/16] text-em-[12/16] 2xl:text-em-[16/16]'>
+		<div className='isolate max-w-em-[808/16] text-em-[12/16] 2xl:text-em-[14/16]'>
 			{/* file name */}
-			<div className={cn('flex relative gap-x-em-[16/16]', {
-        'justify-start pl-em-[16/16]': flap === 'left',
-        'flex-row-reverse pr-em-[16/16]': flap === 'right',
-        'flex-col items-center': flap === 'center'
-      })}>
+			<div
+				className={cn('relative flex gap-x-em-[16/16]', {
+					'justify-start pl-em-[16/16]': flap === 'left',
+					'flex-row-reverse pr-em-[16/16]': flap === 'right',
+					'flex-col items-center': flap === 'center'
+				})}>
 				<div className='relative z-10 border-t border-border bg-surface text-shades-800 pt-em-[12/16] px-em-[16/16] h-em-[44/16]'>
 					<span
 						className={cn(
@@ -49,7 +51,7 @@ export const BlogPostPreview = (props: BlogPostPreviewProps) => {
 			</div>
 			<div className='just relative z-10 flex aspect-[808/555] w-full flex-col justify-between border border-t-0 border-border bg-surface text-shades-400'>
 				<div className='grid grid-cols-2 border-b border-border'>
-					<div className='uppercase border-r border-border p-em-[32/16]'>
+					<div className='border-r border-border uppercase p-em-[32/16]'>
 						<div className='flex gap-em-[12/16]'>
 							{categories.map(category => (
 								<Tag
@@ -72,7 +74,7 @@ export const BlogPostPreview = (props: BlogPostPreviewProps) => {
 									</Fragment>
 								))}
 							</p>
-							<span className='flex-1 w-full h-px bg-current' />
+							<span className='h-px w-full flex-1 bg-current' />
 							<span>{formatDate(publishedAt)}</span>
 						</div>
 					</div>
@@ -81,7 +83,7 @@ export const BlogPostPreview = (props: BlogPostPreviewProps) => {
 							{...image}
 							priority
 							withPlaceholder
-							className='object-cover w-full h-full bg-surface'
+							className='h-full w-full bg-surface object-cover'
 							height={324}
 							width={576}
 						/>
@@ -91,8 +93,7 @@ export const BlogPostPreview = (props: BlogPostPreviewProps) => {
 				<p
 					/* vertical mask */
 					style={{
-						maskImage:
-							'linear-gradient(to bottom, black 0%, black 60%, transparent)'
+						maskImage: 'linear-gradient(to bottom, black 0%, black 60%, transparent)'
 					}}
 					className={cx(
 						'flex-1 overflow-hidden p-em-[48/20]',
@@ -111,6 +112,7 @@ export const BlogPostPreview = (props: BlogPostPreviewProps) => {
 				</p>
 
 				<Button
+					tabIndex={-1}
 					asChild
 					variant='secondary'
 					className='w-full border-0 border-t'
