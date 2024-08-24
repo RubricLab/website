@@ -12,19 +12,33 @@ import {Fragment} from 'react'
 
 export interface BlogPostPreviewProps extends BlogPostCard {
 	flap: 'left' | 'right' | 'center'
+	active?: boolean
 }
 
 const tabsidesClassNames =
 	'block absolute h-[111%] bg-surface -translate-y-px w-em-[20/16] border-border'
 
 export const BlogPostPreview = (props: BlogPostPreviewProps) => {
-	const {publishedAt, authors, categories, _slug, image, _title, body, flap} =
-		props
+	const {
+		publishedAt,
+		authors,
+		categories,
+		_slug,
+		image,
+		_title,
+		body,
+		flap,
+		active = false
+	} = props
 
 	const filenameFormat = _slug.split('-').slice(0, 3).join('_') + '.md'
 
 	return (
-		<div className='isolate max-w-em-[808/16] text-em-[12/16] 2xl:text-em-[14/16]'>
+		<div
+			style={{
+				filter: active ? 'grayscale(0)' : 'grayscale(1)'
+			}}
+			className='isolate transition-[filter] duration-1000 max-w-em-[808/16] text-em-[12/16] 2xl:text-em-[14/16]'>
 			{/* file name */}
 			<div
 				className={cn('relative flex gap-x-em-[16/16]', {
@@ -100,15 +114,6 @@ export const BlogPostPreview = (props: BlogPostPreviewProps) => {
 						'min-h-0 font-sans text-em-[20/16]'
 					)}>
 					{body.plainText}
-					{/* <RichText
-							blocks={body.json.blocks}
-							components={{
-								...richTextBaseComponents,
-								RichTextCalloutComponent: RichTextCalloutComponent,
-								CodeSnippetComponent: CodeSnippet
-							}}>
-							{body.json.content}
-						</RichText> */}
 				</p>
 
 				<Button
