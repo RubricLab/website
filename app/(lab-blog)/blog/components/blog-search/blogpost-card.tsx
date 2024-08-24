@@ -47,14 +47,14 @@ export function BlogpostCard({
       return (
         <Link
           key={_id}
-          className={`focus-ring first:jsutify-items-start grid w-full
-            grid-cols-[calc(var(--col-width)*2),repeat(2,1fr),6.5em] items-center justify-items-end border-t
-            border-border text-base uppercase transition-shadow ease-out px-em-[12] py-em-[20] text-em-[16/16] gap-em-[16] 
+          className={`focus-ring first:jsutify-items-start grid w-full grid-cols-[calc(var(--col-width)*var(--col-card-count)),repeat(2,1fr),6.5em] items-center
+            justify-items-end border-t border-border text-base
+            uppercase transition-shadow ease-out px-em-[12] py-em-[20] text-em-[16/16] gap-em-[16] [--col-card-count:2] md:[--col-card-count:4] lg:[--col-card-count:2]
             ${active ? 'bg-surface-contrast text-text-contrast' : 'bg-surface text-text'}
             ${className}`}
           href={`/blog/${_slug}`}
           {...restProps}>
-          <h3 className='relative col-span-4 justify-self-start text-balance pr-4 font-medium md:col-span-1 md:line-clamp-2 md:max-w-col-2'>
+          <h3 className='relative col-span-4 justify-self-start text-balance font-medium md:col-span-1 md:line-clamp-2 lg:pr-em-[12]'>
             {_title}
           </h3>
           <div className='col-span-2 justify-self-start md:col-span-1 md:justify-self-auto'>
@@ -104,7 +104,7 @@ export function BlogpostCard({
             <div className='flex gap-em-[12]'>
               <BlogpostCardTags categories={categories} />
             </div>
-            <h3 className='text-em-[24/16]'>{_title}</h3>
+            <h3 className='text-balance text-em-[24/16]'>{_title}</h3>
 
             <div className='flex items-center justify-between'>
               <p className=''>

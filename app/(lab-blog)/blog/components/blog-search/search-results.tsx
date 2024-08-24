@@ -132,7 +132,7 @@ export default function SearchResults({posts, search}: SearchResultsProps) {
             type='inline-card'
             {...firstPost}
           />
-          <span className='pointer-events-none absolute -left-sides flex w-sides select-none justify-center text-em-[13/16]'>
+          <span className='pointer-events-none absolute -left-sides hidden w-sides select-none justify-center text-em-[13/16] lg:flex'>
             <span className='writing-vertical relative block -rotate-180'>
               LATEST_POST
             </span>
