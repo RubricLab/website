@@ -214,7 +214,7 @@ export default async function BlogPostPage({
                     <span className='h-px bg-border w-em-[64]' />
 
                     <div className='flex divide-x divide-border text-text-tertiary'>
-                      <p className='uppercase pr-em-[8] text-em-[22/16]'>
+                      <p className='uppercase pr-em-[8] text-em-[18/16]'>
                         {formatDate(blogpost.publishedAt)}
                       </p>
                     </div>

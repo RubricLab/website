@@ -1,5 +1,6 @@
 'use client'
 
+import gsap from 'gsap'
 import Image, {StaticImageData} from 'next/image'
 import {useEffect, useRef, useState} from 'react'
 
@@ -8,6 +9,7 @@ import BackgroundGrid from '@/common/lab-blog-layout/background-grid'
 import cn from '@/lib/utils/cn'
 import RubricLabSampleImage from '@/public/images/rubric-lab-sample.png'
 
+import {useGSAP} from '@gsap/react'
 import {GridPulseAnimation} from './components/grid-pulse-animation'
 import LabWebGL from './gl'
 
@@ -23,7 +25,7 @@ const ContentBox = ({
 		<div
 			{...rest}
 			className={cn(
-				'relative max-w-[49ch] overflow-hidden border border-border bg-black uppercase px-em-[24] py-em-[32] text-em-[14/16] 2xl:text-em-[16/16]',
+				'content-box relative max-w-[49ch] overflow-hidden border border-border bg-black uppercase px-em-[24] py-em-[32] text-em-[14/16] 2xl:text-em-[16/16]',
 				rest.className
 			)}>
 			<div
@@ -58,13 +60,15 @@ const FooterSlot = ({
 		{...rest}
 		className={cn('mt-em-[32]', rest.className)}>
 		{slot.type === 'image' ? (
-			<Image
-				className='border border-border'
-				src={slot.src}
-				width={slot.width}
-				height={slot.height}
-				alt={slot.alt}
-			/>
+			<div className='slot-image-container overflow-hidden border border-border'>
+				<Image
+					className='slot-image'
+					src={slot.src}
+					width={slot.width}
+					height={slot.height}
+					alt={slot.alt}
+				/>
+			</div>
 		) : null}
 		<div className='flex items-center justify-end pt-em-[16] gap-x-em-[16]'>
 			{ctas.map((cta, idx) => (
@@ -81,61 +85,94 @@ const FooterSlot = ({
 	</div>
 )
 
-const ProjectContent = ({id}: {id: string}) => (
-	<div
-		id={id}
-		className='pr-em-[48] pl-em-[24]'>
-		<article className='uppercase'>
-			<h3 className='text-em-[72/16] 2xl:text-em-[96/16]'>Maige</h3>
-			<p className='text-[#B3B3B3] mt-em-[14] text-em-[28/16] 2xl:text-em-[40/16]'>
-				Your Intelligent Codebase Copilot
-			</p>
-			<div className='mt-em-[24] text-em-[22/16] 2xl:text-em-[28/16]'>
-				<span className='border border-border px-em-[14] py-em-[4]'>ai</span>
-			</div>
-		</article>
+const ProjectContent = ({id}: {id: string}) => {
+	const contentRef = useRef<HTMLDivElement>()
 
-		<div className='flex flex-col mt-em-[56] space-y-em-[-32]'>
-			<ContentBox
-				title='WHY A CLI?'
-				paragraph='Analyze, refactor, and optimize your codebase effortlessly through intuitive language-driven operations.'
-			/>
-			<ContentBox
-				className='ml-auto'
-				title='WHAT DID WE LEARN?'
-				paragraph='Harness the power of AI to streamline your development process. Interact with your code using plain English commands, making complex tasks accessible to developers of all levels.'
-			/>
-			<ContentBox
-				title='WHAT DID WE LEARN?'
-				paragraph='Harness the power of AI to streamline your development process. Interact with your code using plain English commands, making complex tasks accessible to developers of all levels.'
-			/>
-			<ContentBox
-				className='ml-auto'
-				title='WHY A CLI?'
-				paragraph='Analyze, refactor, and optimize your codebase effortlessly through intuitive language-driven operations.'
+	useGSAP(
+		() => {
+			if (!contentRef.current) return
+			const root = gsap.utils.selector(contentRef.current)
+
+			const contentBoxes = root('.content-box')
+			const contentImageSlot = root('.slot-image-container .slot-image')
+			const contentImageSlotContainer = root('.slot-image-container')
+
+			gsap.effects.parallax(contentBoxes, {
+				speed: idx => {
+					if (idx === 0) return 0
+
+					return idx % 2 === 0 ? -0.1 : -0.5
+				}
+			})
+
+			gsap.effects.imageParallax(contentImageSlot, {
+				amount: 0.2,
+				trigger: contentImageSlotContainer
+			})
+		},
+		{
+			revertOnUpdate: true,
+			scope: contentRef.current
+		}
+	)
+
+	return (
+		<div
+			id={id}
+			className='pr-em-[48] pl-em-[24]'
+			ref={contentRef}>
+			<article className='uppercase'>
+				<h3 className='text-em-[72/16] 2xl:text-em-[96/16]'>Maige</h3>
+				<p className='text-[#B3B3B3] mt-em-[14] text-em-[28/16] 2xl:text-em-[40/16]'>
+					Your Intelligent Codebase Copilot
+				</p>
+				<div className='mt-em-[24] text-em-[22/16] 2xl:text-em-[28/16]'>
+					<span className='border border-border px-em-[14] py-em-[4]'>ai</span>
+				</div>
+			</article>
+
+			<div className='flex flex-col mt-em-[56] space-y-em-[-32]'>
+				<ContentBox
+					title='WHY A CLI?'
+					paragraph='Analyze, refactor, and optimize your codebase effortlessly through intuitive language-driven operations.'
+				/>
+				<ContentBox
+					className='ml-auto'
+					title='WHAT DID WE LEARN?'
+					paragraph='Harness the power of AI to streamline your development process. Interact with your code using plain English commands, making complex tasks accessible to developers of all levels.'
+				/>
+				<ContentBox
+					title='WHAT DID WE LEARN?'
+					paragraph='Harness the power of AI to streamline your development process. Interact with your code using plain English commands, making complex tasks accessible to developers of all levels.'
+				/>
+				<ContentBox
+					className='ml-auto'
+					title='WHY A CLI?'
+					paragraph='Analyze, refactor, and optimize your codebase effortlessly through intuitive language-driven operations.'
+				/>
+			</div>
+
+			<FooterSlot
+				className='footer-slot mx-auto w-[65%] mt-em-[56]'
+				slot={{
+					type: 'image',
+					...RubricLabSampleImage,
+					alt: 'Rubric Lab Sample'
+				}}
+				ctas={[
+					{
+						variant: 'secondary',
+						children: 'Clone the repo'
+					},
+					{
+						variant: 'primary',
+						children: 'See the video'
+					}
+				]}
 			/>
 		</div>
-
-		<FooterSlot
-			className='mx-auto w-[65%] mt-em-[56]'
-			slot={{
-				type: 'image',
-				...RubricLabSampleImage,
-				alt: 'Rubric Lab Sample'
-			}}
-			ctas={[
-				{
-					variant: 'secondary',
-					children: 'Clone the repo'
-				},
-				{
-					variant: 'primary',
-					children: 'See the video'
-				}
-			]}
-		/>
-	</div>
-)
+	)
+}
 
 const ProgressSlot = ({
 	targetId,

@@ -1,16 +1,19 @@
 'use client'
 import {useLerpRef} from '@/hooks/use-lerp-ref'
+import {useMeasure} from '@/hooks/use-measure'
 import {useTrackDragInertia} from '@/hooks/use-track-drag'
 import {useWheel} from '@/hooks/use-wheel'
 import {BlogPostCard} from '@/lib/basehub/fragments/blog'
 import cn from '@/lib/utils/cn'
 import {clamp, mod} from '@/lib/utils/math'
+import {useGSAP} from '@gsap/react'
 import gsap from 'gsap'
 import {useControls} from 'leva'
 import {
   CSSProperties,
   useCallback,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState
@@ -20,30 +23,27 @@ import {usePreviewStore} from './preview-store'
 
 interface BlogPreviewList {
   posts: BlogPostCard[]
-  className?: string
 }
 
-export const BlogPreviewList = ({posts, className}: BlogPreviewList) => {
+export const BlogPreviewList = ({posts}: BlogPreviewList) => {
   const {selectedPost} = usePreviewStore()
+  const [firstPreviewBoundsRef, firstPreviewBounds] = useMeasure({
+    /* ignore transformations */
+    offsetSize: true
+  })
   const {
-    radius,
     angleStep: ANGLE_STEP,
     debug,
     backface,
     affectOpacity
   } = useControls({
-    radius: {
-      value: 350,
-      min: 1,
-      max: 1000
-    },
     angleStep: {
-      value: 25,
+      value: 39.4,
       min: 5,
       max: 90
     },
     affectOpacity: true,
-    backface: true,
+    backface: false,
     debug: false
   })
 
@@ -51,9 +51,11 @@ export const BlogPreviewList = ({posts, className}: BlogPreviewList) => {
   const ANGLE_STEP_RAD = ANGLE_STEP * (Math.PI / 180)
   const INITIAL_OFFSET = Math.PI / 2
 
+  const [ready, setReady] = useState(false)
+  const [radius, setRadius] = useState(0)
   const wheel = useRef(0)
   const listRef = useRef<HTMLDivElement>(null)
-  const [, setActiveIndex] = useState(0)
+  const [activeStep, setActiveStep] = useState(0)
   const hasInteracted = useRef(false)
 
   const opacity = useMemo(() => {
@@ -86,11 +88,11 @@ export const BlogPreviewList = ({posts, className}: BlogPreviewList) => {
   }, [ANGLE_STEP_RAD])
 
   const getItemProps = useCallback(
-    (idx, _radOffset = INITIAL_OFFSET) => {
+    (idx, _radOffset = 0) => {
       const anglePos = ANGLE_STEP * idx
       const anglePosRad = anglePos * (Math.PI / 180)
       const angleRad = mod(
-        -clamp(anglePosRad + _radOffset, 0, Math.PI),
+        -clamp(anglePosRad + _radOffset + INITIAL_OFFSET, 0, Math.PI),
         Math.PI * 2
       )
       const angleDeg = angleRad * (180 / Math.PI)
@@ -111,17 +113,16 @@ export const BlogPreviewList = ({posts, className}: BlogPreviewList) => {
         style: {
           transform: `translate3d(${x}px, ${y}px, ${z}px) rotateX(${rotate}rad)`,
           zIndex: Math.round(z).toString(),
-          pointerEvents: angleRad >= Math.PI * 1.7 ? 'none' : 'auto',
           opacity: affectOpacity ? opacity(angleRad) : 1
         } satisfies CSSProperties
       }
     },
-    [ANGLE_STEP, INITIAL_OFFSET, radius, affectOpacity]
+    [ANGLE_STEP, INITIAL_OFFSET, radius, affectOpacity, opacity]
   )
 
   const getAngularStepFromIndex = useCallback(
-    (idx: number) => idx * -ANGLE_STEP_RAD + INITIAL_OFFSET,
-    [ANGLE_STEP_RAD, INITIAL_OFFSET]
+    (idx: number) => idx * -ANGLE_STEP_RAD,
+    [ANGLE_STEP_RAD]
   )
 
   const getActiveAngularStep = useCallback(
@@ -130,14 +131,13 @@ export const BlogPreviewList = ({posts, className}: BlogPreviewList) => {
 
       return {
         activeStep,
-        activeStepLooped: mod(activeStep, DISPLAY_LENGTH),
-        activeRad: activeStep * ANGLE_STEP_RAD + INITIAL_OFFSET
+        activeRad: activeStep * ANGLE_STEP_RAD
       }
     },
-    [ANGLE_STEP_RAD, DISPLAY_LENGTH, INITIAL_OFFSET]
+    [ANGLE_STEP_RAD]
   )
 
-  const radOffset = useLerpRef(INITIAL_OFFSET, {
+  const radOffset = useLerpRef(0, {
     lerp: 0.24,
     onTick: () => {
       if (!listRef.current) return
@@ -151,14 +151,13 @@ export const BlogPreviewList = ({posts, className}: BlogPreviewList) => {
         item.style.transform = style.transform
         item.style.zIndex = style.zIndex
         item.style.opacity = style.opacity.toString()
-        item.style.pointerEvents = style.pointerEvents
 
         Object.entries(attrs).forEach(([key, value]) => {
           item.setAttribute(key, value.toString())
         })
       })
 
-      setActiveIndex(getActiveAngularStep(_radOffset).activeStepLooped)
+      setActiveStep(Math.abs(getActiveAngularStep(_radOffset).activeStep))
     }
   })
 
@@ -176,7 +175,7 @@ export const BlogPreviewList = ({posts, className}: BlogPreviewList) => {
 
       hasInteracted.current = true
     },
-    [ANGLE_STEP_RAD]
+    [ANGLE_STEP_RAD, DISPLAY_LENGTH, getActiveAngularStep, radOffset.target]
   )
 
   const {listeners} = useTrackDragInertia({
@@ -202,7 +201,7 @@ export const BlogPreviewList = ({posts, className}: BlogPreviewList) => {
     )
   }, [
     ANGLE_STEP_RAD,
-    INITIAL_OFFSET,
+    DISPLAY_LENGTH,
     getActiveAngularStep,
     getAngularStepFromIndex,
     posts,
@@ -210,14 +209,46 @@ export const BlogPreviewList = ({posts, className}: BlogPreviewList) => {
     selectedPost
   ])
 
+  useLayoutEffect(() => {
+    setRadius(firstPreviewBounds.height * 0.8)
+    setReady(true)
+  }, [firstPreviewBounds.height])
+
+  useGSAP(
+    () => {
+      if (!ready) return
+      gsap.fromTo(
+        radOffset.target,
+        {
+          current: Math.PI / 4
+        },
+        {
+          current: 0,
+          ease: 'power3.inOut',
+          duration: 1
+        }
+      )
+    },
+    {
+      scope: listRef,
+      dependencies: [ready]
+    }
+  )
+
   return (
     /* @ts-ignore */
     <div
       {...listeners}
+      style={
+        {
+          '--radius': radius,
+          perspective: radius * 5.6
+        } as CSSProperties
+      }
       className={cn(
-        'fixed right-sides top-header flex h-fold items-center justify-center [perspective:2500px]',
+        'fixed right-sides top-header hidden h-fold items-center justify-center transition-opacity duration-700 ease-in lg:flex',
         debug ? 'w-col-12 bg-black' : 'w-col-6',
-        className
+        {'opacity-0': !ready}
       )}
       ref={listRef}>
       {posts.map((p, idx) => (
@@ -226,11 +257,14 @@ export const BlogPreviewList = ({posts, className}: BlogPreviewList) => {
             background: idx === 0 && debug ? 'red' : 'transparent',
             backfaceVisibility: backface ? 'visible' : 'hidden',
             transformStyle: 'preserve-3d',
+            pointerEvents: activeStep === idx ? 'auto' : 'none',
             ...getItemProps(idx).style
           }}
           className='absolute'
+          ref={idx === 0 ? firstPreviewBoundsRef : undefined}
           key={p._id}>
           <BlogPostPreview
+            active={activeStep === idx}
             flap={
               ['left', 'center', 'right'][
                 idx % 3

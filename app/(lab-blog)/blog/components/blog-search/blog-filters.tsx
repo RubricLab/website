@@ -1,8 +1,10 @@
 'use client'
 import {Tag} from '@/common/ui/tag'
+import { useMousetrap } from '@/hooks/use-mousetrap'
 import {BlogCategory} from '@/lib/basehub/fragments/blog'
 import clsx from 'clsx'
 import {useSearchParams} from 'next/navigation'
+import { useRef } from 'react'
 
 export type BlogFiltersProps = {
   handleCategoryChange: (category: BlogCategory) => void
@@ -17,10 +19,20 @@ export default function BlogFilters({
   clearQuery,
   availableCategories
 }: BlogFiltersProps) {
+  const searchInputRef = useRef<HTMLInputElement>()
   const searchParams = useSearchParams()
 
   const query = searchParams.get('searchQuery')
   const tag = searchParams.get('tag')
+
+  useMousetrap([
+    {
+      keys: ['command+k', 'ctrl+k'],
+      callback: () => {
+        searchInputRef.current.focus()
+      }
+    }
+  ])
 
   return (
     <div className='sticky top-header z-20 bg-surface'>
@@ -34,6 +46,7 @@ export default function BlogFilters({
           className='grow bg-transparent uppercase !outline-none outline-0 placeholder:uppercase placeholder:text-text-tertiary focus-visible:outline-none'
           placeholder='Search'
           type='text'
+          ref={searchInputRef}
         />
         <Tag
           size='sm'

@@ -16,6 +16,11 @@
     background-size: 1em 1em;
   }
 
+  .writing-vertical {
+    writing-mode: vertical-rl;
+    
+  }
+
   .focus-ring {
     @apply ring-offset-0 ring-offset-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-control focus-visible:ring-offset-2;
   }

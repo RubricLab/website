@@ -422,7 +422,6 @@ const Scene = ({activeIdx}: {activeIdx: number}) => {
 
 const v3 = new THREE.Vector3()
 
-
 const cameraMovementTarget = new THREE.Vector2()
 
 const Camera = () => {
@@ -457,6 +456,7 @@ const Camera = () => {
 		if (cameraRef.current) {
 			const {pointer} = state
 			const radius = 12
+			const lerp = hovering ? 0.05 : 0.025
 
 			if (hovering) cameraMovementTarget.copy(pointer)
 			else {
@@ -472,7 +472,7 @@ const Camera = () => {
 			const targetZ = radius * Math.sin(phi) * Math.sin(theta)
 
 			v3.set(targetX, targetY, targetZ)
-			cameraRef.current.position.lerp(v3, 0.05)
+			cameraRef.current.position.lerp(v3, lerp)
 			cameraRef.current.lookAt(0, 0, 0)
 		}
 	})
