@@ -88,7 +88,7 @@ export default function BlogHeading({
         opacity: 0
       }}
       className='px-em-[12] py-em-[56]'>
-      <h2 className=' whitespace-nowrap uppercase text-text-secondary text-em-[72/16]'>
+      <h2 className=' whitespace-nowrap uppercase text-text-secondary text-em-[48/16] md:text-em-[72/16]'>
         {title}
       </h2>
       <p className='uppercase text-text-tertiary text-em-[16/16]'>{subtitle}</p>

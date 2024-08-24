@@ -1,10 +1,10 @@
 'use client'
 import {Tag} from '@/common/ui/tag'
-import { useMousetrap } from '@/hooks/use-mousetrap'
+import {useMousetrap} from '@/hooks/use-mousetrap'
 import {BlogCategory} from '@/lib/basehub/fragments/blog'
 import clsx from 'clsx'
 import {useSearchParams} from 'next/navigation'
-import { useRef } from 'react'
+import {useRef} from 'react'
 
 export type BlogFiltersProps = {
   handleCategoryChange: (category: BlogCategory) => void
@@ -52,32 +52,34 @@ export default function BlogFilters({
           size='sm'
           intent={query ? 'danger' : 'secondary'}
           onClick={clearQuery}
-          className={`absolute right-em-[24]
+          className={`absolute hidden right-em-[24] md:block
             ${query ? 'cursor-pointer' : 'pointer-events-none'}`}>
           {query ? 'DELETE' : '⌘ + K'}
         </Tag>
       </label>
-      <div className='flex items-center border-b border-border px-em-[24] py-em-[16] gap-em-[12]'>
-        <span className='uppercase text-text-tertiary'>Tags: </span>
-        {availableCategories.map(category => (
-          <Tag
-            key={category}
-            tabIndex={0}
-            onClick={() => handleCategoryChange(category)}
-            className='cursor-pointer'
-            intent={
-              !tag ? 'default' : category === tag ? 'active' : 'secondary'
-            }>
-            {category}
-          </Tag>
-        ))}
+      <div className='flex items-start border-b border-border px-em-[24] py-em-[16] gap-em-[12]'>
+        <div className='flex flex-wrap items-center gap-em-[12]'>
+          <span className='uppercase text-text-tertiary'>Tags: </span>
+          {availableCategories.map(category => (
+            <Tag
+              key={category}
+              tabIndex={0}
+              onClick={() => handleCategoryChange(category)}
+              className='cursor-pointer'
+              intent={
+                !tag ? 'default' : category === tag ? 'active' : 'secondary'
+              }>
+              {category}
+            </Tag>
+          ))}
+        </div>
         <Tag
           tabIndex={tag ? 0 : undefined}
           onClick={() => handleCategoryChange(null)}
-          className={`ml-auto cursor-pointer transition-[opacity,filter] ${
+          className={`cursor-pointer transition-[opacity,filter] ${
             tag
-              ? 'pointer-events-auto opacity-100'
-              : 'pointer-events-none opacity-10 grayscale'
+              ? 'pointer-events-auto flex opacity-100'
+              : 'pointer-events-none hidden opacity-10 grayscale'
           }`}
           intent='danger'>
           Clear
