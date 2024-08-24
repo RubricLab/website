@@ -38,13 +38,7 @@ export const generateMetadata = async (): Promise<Metadata | undefined> => {
   }
 }
 
-export default async function BlogPage({
-  searchParams
-}: {
-  searchParams: {tag?: string}
-}) {
-  const selectedTag = searchParams.tag as BlogCategory
-
+export default async function BlogPage() {
   return (
     <>
       <BackgroundGrid
@@ -91,8 +85,7 @@ export default async function BlogPage({
         {async ([
           {
             _componentInstances: {blogPost},
-            site: {blog},
-            collections: {authors}
+            site: {blog}
           }
         ]) => {
           'use server'
