@@ -65,8 +65,8 @@ export default function BlogFilters({
           onClick={() => handleCategoryChange(null)}
           className={`cursor-pointer transition-[opacity,filter] ${
             tag
-              ? 'pointer-events-auto opacity-100'
-              : 'pointer-events-none opacity-10 grayscale'
+              ? 'pointer-events-auto flex opacity-100'
+              : 'pointer-events-none hidden opacity-10 grayscale'
           }`}
           intent='danger'>
           Clear
