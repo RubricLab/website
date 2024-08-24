@@ -8,6 +8,8 @@ export interface AppStore {
   menuOpen: boolean
   setMenuOpen: (menuOpen: boolean) => void
   toggleMenuOpen: () => void
+  closeMenu: () => void
+  openMenu: () => void
 }
 
 const isDebug = () => {
@@ -21,9 +23,15 @@ const isDebug = () => {
 export const useAppStore = create<AppStore>(set => {
   return ({
     debug: isDebug(),
+
+    /* loading stuff */
     loaded: false,
     setLoaded: loaded => set({ loaded }),
+
+    /* mobile menu */
     menuOpen: false,
+    openMenu: () => set({ menuOpen: true }),
+    closeMenu: () => set({ menuOpen: false }),
     setMenuOpen: menuOpen => set({ menuOpen }),
     toggleMenuOpen: () => set(state => ({ menuOpen: !state.menuOpen }))
   })

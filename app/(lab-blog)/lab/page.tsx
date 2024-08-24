@@ -12,6 +12,7 @@ import RubricLabSampleImage from '@/public/images/rubric-lab-sample.png'
 import {useGSAP} from '@gsap/react'
 import {GridPulseAnimation} from './components/grid-pulse-animation'
 import LabWebGL from './gl'
+import { Button, ButtonProps } from '@/common/ui/button'
 
 const ContentBox = ({
 	title,
@@ -54,7 +55,7 @@ const FooterSlot = ({
 		type: 'image'
 		alt: string
 	} & StaticImageData
-	ctas: {children: string; variant: 'primary' | 'secondary'}[]
+	ctas: ButtonProps[]
 } & Omit<React.HTMLAttributes<HTMLDivElement>, 'slot'>) => (
 	<div
 		{...rest}
@@ -72,14 +73,7 @@ const FooterSlot = ({
 		) : null}
 		<div className='flex items-center justify-end pt-em-[16] gap-x-em-[16]'>
 			{ctas.map((cta, idx) => (
-				<button
-					className={cn('uppercase px-em-[18] h-em-[49] text-em-[14/16]', {
-						'bg-surface-contrast text-surface': cta.variant === 'primary',
-						'border border-border bg-black': cta.variant === 'secondary'
-					})}
-					key={idx}>
-					{cta.children}
-				</button>
+				<Button {...cta} size='lg' key={idx} />
 			))}
 		</div>
 	</div>
@@ -165,7 +159,7 @@ const ProjectContent = ({id}: {id: string}) => {
 						children: 'Clone the repo'
 					},
 					{
-						variant: 'primary',
+						variant: 'default',
 						children: 'See the video'
 					}
 				]}
@@ -364,14 +358,14 @@ export default function LabPage() {
 			<section
 				id='projects'
 				className='relative grid grid-cols-12 items-start pb-em-[39]'>
-				<div className='col-[1/8] flex flex-col pb-em-[56] space-y-em-[220]'>
+				<div className='col-[1/-1] lg:col-[1/8] flex flex-col pb-em-[56] space-y-em-[220]'>
 					<ProjectContent id='project-1' />
 					<ProjectContent id='project-2' />
 					<ProjectContent id='project-3' />
 				</div>
 				<div
 					className={cn(
-						'fixed right-sides top-header h-fold w-[calc(var(--col-width)*5+1px)] border-l border-r border-border bg-black transition-[opacity,transform] duration-500 ease-out',
+						'fixed lg:block hidden right-sides top-header h-fold w-[calc(var(--col-width)*5+1px)] border-l border-r border-border bg-black transition-[opacity,transform] duration-500 ease-out',
 						{
 							'translate-x-[0.5vw] opacity-0': !asideCanvasVisible
 						}
