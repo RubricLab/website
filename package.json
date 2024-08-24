@@ -32,6 +32,7 @@
 		"loops": "^0.1.1",
 		"lucide-react": "^0.292.0",
 		"maath": "^0.10.8",
+		"mousetrap": "^1.6.5",
 		"next": "^14.0.2",
 		"next-plausible": "^3.11.3",
 		"next-sanity": "^6.0.1",
