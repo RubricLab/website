@@ -5,6 +5,7 @@ import PlausibleProvider from 'next-plausible'
 import {Providers} from './providers'
 
 import Header from '@/common/lab-blog-layout/header'
+import { Leva } from '@/common/lab-blog-layout/leva'
 import {GsapSetup} from '@/lib/gsap'
 import './styles.css'
 
@@ -29,6 +30,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
           <div className='relative'>
             <main className='pt-header'>{children}</main>
           </div>
+          <Leva />
         </Providers>
       </body>
     </html>
