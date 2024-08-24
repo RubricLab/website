@@ -1,10 +1,10 @@
 'use client'
 import {Tag} from '@/common/ui/tag'
-import { useMousetrap } from '@/hooks/use-mousetrap'
+import {useMousetrap} from '@/hooks/use-mousetrap'
 import {BlogCategory} from '@/lib/basehub/fragments/blog'
 import clsx from 'clsx'
 import {useSearchParams} from 'next/navigation'
-import { useRef } from 'react'
+import {useRef} from 'react'
 
 export type BlogFiltersProps = {
   handleCategoryChange: (category: BlogCategory) => void
@@ -52,7 +52,7 @@ export default function BlogFilters({
           size='sm'
           intent={query ? 'danger' : 'secondary'}
           onClick={clearQuery}
-          className={`absolute right-em-[24]
+          className={`absolute hidden right-em-[24] md:block
             ${query ? 'cursor-pointer' : 'pointer-events-none'}`}>
           {query ? 'DELETE' : '⌘ + K'}
         </Tag>
