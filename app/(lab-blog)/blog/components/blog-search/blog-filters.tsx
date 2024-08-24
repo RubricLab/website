@@ -44,24 +44,26 @@ export default function BlogFilters({
           {query ? 'DELETE' : '⌘ + K'}
         </Tag>
       </label>
-      <div className='flex items-center border-b border-border px-em-[24] py-em-[16] gap-em-[12]'>
-        <span className='uppercase text-text-tertiary'>Tags: </span>
-        {availableCategories.map(category => (
-          <Tag
-            key={category}
-            tabIndex={0}
-            onClick={() => handleCategoryChange(category)}
-            className='cursor-pointer'
-            intent={
-              !tag ? 'default' : category === tag ? 'active' : 'secondary'
-            }>
-            {category}
-          </Tag>
-        ))}
+      <div className='flex items-start border-b border-border px-em-[24] py-em-[16] gap-em-[12]'>
+        <div className='flex flex-wrap items-center gap-em-[12]'>
+          <span className='uppercase text-text-tertiary'>Tags: </span>
+          {availableCategories.map(category => (
+            <Tag
+              key={category}
+              tabIndex={0}
+              onClick={() => handleCategoryChange(category)}
+              className='cursor-pointer'
+              intent={
+                !tag ? 'default' : category === tag ? 'active' : 'secondary'
+              }>
+              {category}
+            </Tag>
+          ))}
+        </div>
         <Tag
           tabIndex={tag ? 0 : undefined}
           onClick={() => handleCategoryChange(null)}
-          className={`ml-auto cursor-pointer transition-[opacity,filter] ${
+          className={`cursor-pointer transition-[opacity,filter] ${
             tag
               ? 'pointer-events-auto opacity-100'
               : 'pointer-events-none opacity-10 grayscale'

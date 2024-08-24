@@ -26,9 +26,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
         <GsapSetup />
         <Providers>
           <Header />
-          <div className='relative'>
-            <main className='pt-header'>{children}</main>
-          </div>
+          <main className='pt-header'>{children}</main>
         </Providers>
       </body>
     </html>

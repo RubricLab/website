@@ -22,6 +22,7 @@ import {formatDate} from '@/lib/utils/dates'
 import {basehub} from 'basehub'
 import {Pump} from 'basehub/react-pump'
 import {cx} from 'class-variance-authority'
+import Link from 'next/link'
 
 export const dynamic = 'force-static'
 
@@ -179,11 +180,11 @@ export default async function BlogPostPage({
 
               <div className='bg-lines flex w-full items-center h-em-[64]'>
                 <Button
+                  asChild
                   size='sm'
-                  variant='secondary'
-                  className='h-full w-col-6 border-0 border-r bg-surface hover:bg-surface-tertiary md:w-[calc(var(--col-width)*2+1px)]'>
-                  {' '}
-                  Back to Blog
+                  className='h-full w-col-6 border-0 border-r bg-surface hover:bg-surface-tertiary md:w-[calc(var(--col-width)*2+1px)]'
+                  variant='secondary'>
+                  <Link href='/blog'>Back to Blog</Link>
                 </Button>
               </div>
 

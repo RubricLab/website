@@ -26,7 +26,7 @@ export const $tag = cva(
   }
 )
 
-type TagProps<C extends keyof JSX.IntrinsicElements> = VariantProps<
+export type TagProps<C extends keyof JSX.IntrinsicElements> = VariantProps<
   typeof $tag
 > &
   JSX.IntrinsicElements[C]

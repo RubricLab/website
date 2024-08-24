@@ -132,7 +132,7 @@ export default function SearchResults({posts, search}: SearchResultsProps) {
             type='inline-card'
             {...firstPost}
           />
-          <span className='pointer-events-none absolute -left-sides origin-top-left -rotate-90 select-none text-em-[16/16]'>
+          <span className='pointer-events-none absolute -left-sides hidden origin-top-left -rotate-90 select-none text-em-[16/16] md:block'>
             <span className='relative block -translate-x-1/2'>LATEST_POST</span>
           </span>
         </div>
