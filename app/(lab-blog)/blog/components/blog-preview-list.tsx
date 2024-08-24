@@ -6,6 +6,7 @@ import {useWheel} from '@/hooks/use-wheel'
 import {BlogPostCard} from '@/lib/basehub/fragments/blog'
 import cn from '@/lib/utils/cn'
 import {clamp, mod} from '@/lib/utils/math'
+import {useGSAP} from '@gsap/react'
 import gsap from 'gsap'
 import {useControls} from 'leva'
 import {
@@ -50,6 +51,7 @@ export const BlogPreviewList = ({posts}: BlogPreviewList) => {
 	const ANGLE_STEP_RAD = ANGLE_STEP * (Math.PI / 180)
 	const INITIAL_OFFSET = Math.PI / 2
 
+	const [ready, setReady] = useState(false)
 	const [radius, setRadius] = useState(0)
 	const wheel = useRef(0)
 	const listRef = useRef<HTMLDivElement>(null)
@@ -204,7 +206,29 @@ export const BlogPreviewList = ({posts}: BlogPreviewList) => {
 
 	useLayoutEffect(() => {
 		setRadius(firstPreviewBounds.height * 0.8)
+		setReady(true)
 	}, [firstPreviewBounds.height])
+
+	useGSAP(
+		() => {
+			if (!ready) return
+			gsap.fromTo(
+				radOffset.target,
+				{
+					current: Math.PI / 4
+				},
+				{
+					current: 0,
+					ease: 'power3.inOut',
+					duration: 1
+				}
+			)
+		},
+		{
+			scope: listRef,
+			dependencies: [ready]
+		}
+	)
 
 	return (
 		/* @ts-ignore */
@@ -217,9 +241,9 @@ export const BlogPreviewList = ({posts}: BlogPreviewList) => {
 				} as CSSProperties
 			}
 			className={cn(
-				'fixed right-sides top-header flex h-fold items-center justify-center',
+				'fixed right-sides top-header flex h-fold items-center justify-center transition-opacity duration-700 ease-in',
 				debug ? 'w-col-12 bg-black' : 'w-col-6',
-				{'opacity-0': !radius}
+				{'opacity-0': !ready}
 			)}
 			ref={listRef}>
 			{posts.map((p, idx) => (
