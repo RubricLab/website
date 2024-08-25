@@ -5,6 +5,7 @@ import {Pump} from 'basehub/react-pump'
 import BackgroundGrid from '@/common/lab-blog-layout/background-grid'
 import {PageView} from '@/components/page-view'
 import {BASEHUB_REVALIDATE_TIME} from '@/lib/basehub/constants'
+import {darkLightImageFragment} from '@/lib/basehub/fragments'
 import {metadataOverridesFragment} from '@/lib/basehub/fragments/metadata'
 import {basehub} from 'basehub'
 import type {Metadata} from 'next'
@@ -40,9 +41,9 @@ export default async function BlogPage() {
         data={{
           sm: {columnCount: 4},
           md: {columnCount: 4},
-          lg: {columnCount: 12, highlightColumns: [7, 9, 11]},
-          xl: {columnCount: 12, highlightColumns: [7, 9, 11]},
-          '2xl': {columnCount: 12, highlightColumns: [7, 9, 11]}
+          lg: {columnCount: 12},
+          xl: {columnCount: 12},
+          '2xl': {columnCount: 12}
         }}
       />
       <Pump
@@ -57,7 +58,16 @@ export default async function BlogPage() {
                 hero: {
                   preTitle: true,
                   mainTitle: true,
-                  description: true
+                  description: true,
+                  exploreText: true,
+                  exploreCta: true,
+                  values: {
+                    items: {
+                      _title: true,
+                      description: true,
+                      valueImage: darkLightImageFragment
+                    }
+                  }
                 }
               }
             }
@@ -74,7 +84,18 @@ export default async function BlogPage() {
             <>
               <PageView _analyticsKey={lab._analyticsKey} />
 
-              <LabHero {...lab.hero} />
+              <LabHero
+                {...lab.hero}
+                explore={{
+                  title: lab.hero.exploreText,
+                  ctaLabel: lab.hero.exploreCta
+                }}
+                values={lab.hero.values.items.map(item => ({
+                  title: item._title,
+                  description: item.description,
+                  image: item.valueImage
+                }))}
+              />
 
               <LabShowcase />
             </>
