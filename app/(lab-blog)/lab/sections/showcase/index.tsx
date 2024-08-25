@@ -356,11 +356,6 @@ export default function LabShowcase() {
           '2xl': {columnCount: 12, highlightColumns: [7, 9, 11]}
         }}
       />
-      <section className='relative -mt-header flex h-screen items-center justify-center'>
-        <h1 className='uppercase text-em-[72/16]'>
-          <span className='opacity-20'>Rubric</span>/Lab
-        </h1>
-      </section>
 
       <section
         id='projects'
