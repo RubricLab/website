@@ -8,7 +8,7 @@ import Image from 'next/image'
 import s from './rich-text.module.css'
 
 export const richTextClasses = clsx(
-  'prose prose-neutral max-w-prose text-start',
+  'prose prose-neutral max-w-prose text-start mx-auto',
   'prose-p:text-text/80 prose-p:text-blog-body prose-p:font-sans',
   'prose-h1:text-em-[36/16] prose-h1:font-medium prose-h1:text-text prose-h1:uppercase',
   'prose-h2:text-em-[32/16] prose-h2:font-semibold prose-h2:text-text prose-h2:uppercase',
@@ -19,7 +19,7 @@ export const richTextClasses = clsx(
   'prose-strong:font-semibold prose-strong:text-text',
   'prose-a:outline-control prose-a:font-semibold prose-a:text-text prose-a:no-underline hover:prose-a:underline prose-a:underline-offset-[0.25em] prose-a:decoration-control/50',
   'prose-pre:pl-0',
-  'prose-li:mt-em-[20] prose-li:mb-em-[24]',
+  'prose-li:mt-em-[20] prose-li:mb-em-[24] prose-li:list-inside',
   s['rich-text']
 )
 

@@ -229,7 +229,7 @@ export default async function BlogPostPage({
                 />
               </div>
 
-              <div className='flex justify-center px-sides md:px-col-1'>
+              <div className='px-sides md:px-col-1'>
                 <div className={cx(richTextClasses)}>
                   <RichText
                     blocks={blogpost.body.json.blocks}
