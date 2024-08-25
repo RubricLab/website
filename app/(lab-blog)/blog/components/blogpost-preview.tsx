@@ -120,8 +120,8 @@ export const BlogPostPreview = (props: BlogPostPreviewProps) => {
 					tabIndex={-1}
 					asChild
 					variant='secondary'
-					className='w-full border-0 border-t'
-					size='lg'>
+					className='w-full border-0 border-t !py-em-[16/20] text-em-[20/16]'
+					size='md'>
 					<Link href={`/blog/${_slug}`}>Read the full post</Link>
 				</Button>
 			</div>

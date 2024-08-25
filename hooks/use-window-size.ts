@@ -1,4 +1,6 @@
-import {useEffect, useState} from 'react'
+import { useEffect, useState } from 'react'
+import { RESIZE_DEBOUNCE } from '@/lib/utils/constants'
+import debounce from 'debounce'
 
 interface WindowSize {
   width: number | undefined
@@ -20,13 +22,15 @@ function useWindowSize(): WindowSize {
         })
     }
 
-    window.addEventListener('resize', handleResize)
+    const debouncedHandleResize = debounce(handleResize, RESIZE_DEBOUNCE)
+
+    window.addEventListener('resize', debouncedHandleResize, { passive: true })
 
     // Call handler right away so state gets updated with initial window size
     handleResize()
 
     // Remove event listener on cleanup
-    return () => window.removeEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', debouncedHandleResize)
   }, []) // Empty array ensures that effect is only run on mount and unmount
 
   return windowSize

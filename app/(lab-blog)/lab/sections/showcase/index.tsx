@@ -4,9 +4,13 @@ import gsap from 'gsap'
 import Image, {StaticImageData} from 'next/image'
 import {useEffect, useRef, useState} from 'react'
 
+import BackgroundGrid from '@/common/lab-blog-layout/background-grid'
+
 import cn from '@/lib/utils/cn'
 import RubricLabSampleImage from '@/public/images/rubric-lab-sample.png'
 
+import {Button, ButtonProps} from '@/common/ui/button'
+import {useBreakpoint} from '@/hooks/use-breakpoint'
 import {useGSAP} from '@gsap/react'
 import {GridPulseAnimation} from '../../components/grid-pulse-animation'
 import LabWebGL from '../../gl'
@@ -52,7 +56,7 @@ const FooterSlot = ({
     type: 'image'
     alt: string
   } & StaticImageData
-  ctas: {children: string; variant: 'primary' | 'secondary'}[]
+  ctas: ButtonProps[]
 } & Omit<React.HTMLAttributes<HTMLDivElement>, 'slot'>) => (
   <div
     {...rest}
@@ -70,14 +74,11 @@ const FooterSlot = ({
     ) : null}
     <div className='flex items-center justify-end pt-em-[16] gap-x-em-[16]'>
       {ctas.map((cta, idx) => (
-        <button
-          className={cn('uppercase px-em-[18] h-em-[49] text-em-[14/16]', {
-            'bg-surface-contrast text-surface': cta.variant === 'primary',
-            'border border-border bg-black': cta.variant === 'secondary'
-          })}
-          key={idx}>
-          {cta.children}
-        </button>
+        <Button
+          {...cta}
+          size='lg'
+          key={idx}
+        />
       ))}
     </div>
   </div>
@@ -85,10 +86,11 @@ const FooterSlot = ({
 
 const ProjectContent = ({id}: {id: string}) => {
   const contentRef = useRef<HTMLDivElement>()
+  const sm = useBreakpoint('sm')
 
   useGSAP(
     () => {
-      if (!contentRef.current) return
+      if (!contentRef.current || !sm) return
       const root = gsap.utils.selector(contentRef.current)
 
       const contentBoxes = root('.content-box')
@@ -109,6 +111,7 @@ const ProjectContent = ({id}: {id: string}) => {
       })
     },
     {
+      dependencies: [sm],
       revertOnUpdate: true,
       scope: contentRef.current
     }
@@ -117,7 +120,7 @@ const ProjectContent = ({id}: {id: string}) => {
   return (
     <div
       id={id}
-      className='pr-em-[48] pl-em-[24]'
+      className='px-em-[24] lg:pr-em-[48] lg:pl-em-[24]'
       ref={contentRef}>
       <article className='uppercase'>
         <h3 className='text-em-[72/16] 2xl:text-em-[96/16]'>Maige</h3>
@@ -129,7 +132,7 @@ const ProjectContent = ({id}: {id: string}) => {
         </div>
       </article>
 
-      <div className='flex flex-col mt-em-[56] space-y-em-[-32]'>
+      <div className='flex flex-col mt-em-[56] space-y-em-[24] md:space-y-em-[-32]'>
         <ContentBox
           title='WHY A CLI?'
           paragraph='Analyze, refactor, and optimize your codebase effortlessly through intuitive language-driven operations.'
@@ -151,7 +154,7 @@ const ProjectContent = ({id}: {id: string}) => {
       </div>
 
       <FooterSlot
-        className='footer-slot mx-auto w-[65%] mt-em-[56]'
+        className='footer-slot mx-auto w-full mt-em-[56] sm:w-[80%] md:w-[65%]'
         slot={{
           type: 'image',
           ...RubricLabSampleImage,
@@ -163,7 +166,7 @@ const ProjectContent = ({id}: {id: string}) => {
             children: 'Clone the repo'
           },
           {
-            variant: 'primary',
+            variant: 'default',
             children: 'See the video'
           }
         ]}
@@ -248,7 +251,7 @@ const ProgressStatus = ({
 }: {
   onActiveChange: (idx: number) => void
 }) => {
-  const [isShrunk, setIsShrunk] = useState(false)
+  const [isShrunk, setIsShrunk] = useState(true)
 
   useEffect(() => {
     let timeoutId: NodeJS.Timeout
@@ -344,17 +347,32 @@ export default function LabShowcase() {
 
   return (
     <>
+      <BackgroundGrid
+        data={{
+          sm: {columnCount: 4},
+          md: {columnCount: 4},
+          lg: {columnCount: 12, highlightColumns: [7, 9, 11]},
+          xl: {columnCount: 12, highlightColumns: [7, 9, 11]},
+          '2xl': {columnCount: 12, highlightColumns: [7, 9, 11]}
+        }}
+      />
+      <section className='relative -mt-header flex h-screen items-center justify-center'>
+        <h1 className='uppercase text-em-[72/16]'>
+          <span className='opacity-20'>Rubric</span>/Lab
+        </h1>
+      </section>
+
       <section
         id='projects'
         className='relative grid grid-cols-12 items-start pb-em-[39]'>
-        <div className='col-[1/8] flex flex-col pb-em-[56] space-y-em-[220]'>
+        <div className='col-[1/-1] flex flex-col pb-em-[56] space-y-em-[220] lg:col-[1/8]'>
           <ProjectContent id='project-1' />
           <ProjectContent id='project-2' />
           <ProjectContent id='project-3' />
         </div>
         <div
           className={cn(
-            'fixed right-sides top-header h-fold w-[calc(var(--col-width)*5+1px)] border-l border-r border-border bg-black transition-[opacity,transform] duration-500 ease-out',
+            'fixed right-sides top-header hidden h-fold w-[calc(var(--col-width)*5+1px)] border-l border-r border-border bg-black transition-[opacity,transform] duration-500 ease-out lg:block',
             {
               'translate-x-[0.5vw] opacity-0': !asideCanvasVisible
             }

@@ -26,7 +26,7 @@
   }
 
   .focus-within-ring {
-    @apply ring-offset-0 ring-offset-surface focus-within:outline-none focus-within:ring-2 focus-within:ring-control focus-within:ring-offset-2;
+    @apply ring-offset-0 ring-offset-surface tab-focus-within:outline-none tab-focus-within:ring-2 tab-focus-within:ring-control tab-focus-within:ring-offset-2;
   }
 
   .transition-colors-shadow {
