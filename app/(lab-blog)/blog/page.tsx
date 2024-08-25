@@ -111,7 +111,7 @@ export default async function BlogPage({
 							<PageView _analyticsKey={blog._analyticsKey} />
 
 							<div className='relative grid max-h-fold grid-cols-12'>
-								<div className='sticky top-0 col-span-12 lg:col-span-6 2xl:col-span-5'>
+								<div className='sticky top-0 col-span-12 pb-em-[24] lg:col-span-6 2xl:col-span-5'>
 									<BlogHeading
 										blog={{
 											title: blog.mainTitle,
