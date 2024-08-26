@@ -36,7 +36,7 @@ const Header = () => {
 
   return (
     <>
-      <header className='z-header fixed left-0 right-0 top-0 w-full border-b border-border bg-surface px-sides text-text'>
+      <header id='header' className='z-header fixed left-0 right-0 top-0 w-full border-b border-border bg-surface px-sides text-text'>
         <div className='grid h-header grid-cols-12'>
           <div className='col-span-3 flex items-center border-l border-r border-border p-em-[12] md:items-end'>
             <LabLogo className='text-surface-contrast h-em-[18] md:h-em-[24]' />
