@@ -270,6 +270,7 @@ export default function LabHero({
 							priority
 							src={satellite}
 							alt='Background'
+							quality={100}
 							className='h-full w-full object-contain object-bottom opacity-0'
 						/>
 					</picture>
@@ -279,6 +280,7 @@ export default function LabHero({
 							id='astronaut'
 							priority
 							src={astronaut}
+							quality={100}
 							alt='Background'
 							className='h-full w-full object-contain object-bottom opacity-0'
 						/>
