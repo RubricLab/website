@@ -84,13 +84,19 @@ gsap.registerEffect({
 			direction?: 'vertical' | 'horizontal'
 			start?: string
 			end?: string
+      markers?: boolean
+      trigger?: gsap.DOMTarget,
+      extra?: gsap.TweenVars
 		}
 	) => {
 		const {
 			speed = 1,
 			direction = 'vertical',
 			start = 'top bottom',
-			end = 'bottom top'
+			end = 'bottom top',
+      markers = false,
+      extra,
+      trigger
 		} = config
 
 		const targetsArr = [targets].flat().map((t, idx) => {
@@ -103,11 +109,13 @@ gsap.registerEffect({
 				x,
 				ease: 'none',
 				scrollTrigger: {
-					trigger: t,
+					trigger: trigger || t,
 					start: start,
 					end: end,
-					scrub: true
-				}
+					scrub: true,
+          markers
+				},
+        ...extra
 			})
 		})
 

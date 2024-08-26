@@ -61,14 +61,17 @@ const FooterSlot = ({
 		  } & StaticImageData)
 		| {
 				type: 'video'
+				width: number
+				height: number
+				url: string
 		  }
 	ctas: {label: string; href: string; variant: ButtonProps['variant']}[]
 } & Omit<React.HTMLAttributes<HTMLDivElement>, 'slot'>) => (
 	<div
 		{...rest}
 		className={cn('mt-em-[32]', rest.className)}>
-		{slot.type === 'image' ? (
-			<div className='slot-image-container overflow-hidden border border-border'>
+		<div className='slot-image-container overflow-hidden border border-border'>
+			{slot.type === 'image' ? (
 				<Image
 					className='slot-image'
 					src={slot.src}
@@ -76,8 +79,19 @@ const FooterSlot = ({
 					height={slot.height}
 					alt={slot.alt}
 				/>
-			</div>
-		) : null}
+			) : (
+				<video
+					className='w-full'
+					autoPlay
+					muted
+					style={{
+						aspectRatio: slot.width / slot.height
+					}}
+					playsInline
+					src={slot.url}
+				/>
+			)}
+		</div>
 		<div className='flex items-center justify-end pt-em-[16] gap-x-em-[16]'>
 			{ctas.map((cta, idx) => (
 				<Button
@@ -167,7 +181,10 @@ const ProjectContent = (props: LabProjectFragment) => {
 								blurDataURL: props.footerMedia.image.blurDataURL
 							}
 						: {
-								type: 'video'
+								type: 'video',
+								url: props.footerMedia.video.url,
+								height: props.footerMedia.video.height,
+								width: props.footerMedia.video.width
 							}
 				}
 				ctas={props.ctas.items.map(cta => ({
@@ -364,7 +381,7 @@ export default function LabShowcase({showcase}: LabShowcaseProps) {
 		<>
 			<section
 				id='projects'
-				className='relative grid grid-cols-12 items-start pb-em-[39]'>
+				className='relative grid grid-cols-12 items-start pt-[calc(25vh)] pb-em-[39]'>
 				<div className='col-[1/-1] flex flex-col pb-em-[56] space-y-em-[220] lg:col-[1/8]'>
 					{showcase.map(project => (
 						<ProjectContent

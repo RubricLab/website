@@ -9,6 +9,10 @@ import gsap from 'gsap'
 import SplitText from 'gsap/dist/SplitText'
 import {CSSProperties, useEffect, useRef, useState} from 'react'
 
+import Image from 'next/image'
+import satellite from '../../../../../public/images/lab/SATELLITE_ascii_2 2.png'
+import astronaut from '../../../../../public/images/lab/astronauta_ascii4 1.png'
+
 const SCROLL_DURATION_SCREENS = 3.5
 
 export type ValuesSliderItem = {
@@ -115,6 +119,11 @@ export default function LabHero({
 					},
 					0.6
 				)
+				.to(['#astronaut', '#satellite'], {
+					opacity: 1,
+					duration: 3,
+					ease: 'power1.out'
+				})
 		},
 		{
 			revertOnUpdate: true,
@@ -144,15 +153,40 @@ export default function LabHero({
 			const distanceToCenter = heroExploreContainerBounds.height / 2 - relativeTop
 			const centerToCenter = distanceToCenter - heroExploreContentBounds.height / 2
 
+			const scrollTriggerStart = `top ${headerHeight + topBounds.height}px`
+
 			gsap.to('#hero-explore-content', {
 				y: centerToCenter,
 				ease: 'power2.out',
 				scrollTrigger: {
 					trigger: '#hero-explore',
-					start: `top ${headerHeight + topBounds.height}px`,
+					start: scrollTriggerStart,
 					end: 'center center',
-					scrub: true
-					// markers: true
+					scrub: 0.25
+				}
+			})
+
+			gsap.effects.parallax('#astronaut', {
+				trigger: '#hero-explore',
+				start: scrollTriggerStart,
+				speed: 0.5,
+				/* extra */
+				extra: {
+					rotate: '15deg',
+					x: '-20%',
+					scale: 1.5
+				}
+			})
+
+			gsap.effects.parallax('#satellite', {
+				trigger: '#hero-explore',
+				start: scrollTriggerStart,
+				speed: -0.5,
+				/* extra */
+				extra: {
+					// rotate: '-15deg',
+					x: '-40%'
+					// scale: 1.5
 				}
 			})
 		},
@@ -227,16 +261,27 @@ export default function LabHero({
 
 				<div
 					id='hero-explore'
-					className='relative z-10 flex h-fold shrink-0 flex-col items-center justify-end border-y border-border bg-surface p-em-[48]'
+					className='relative z-10 flex h-fold shrink-0 flex-col items-center justify-end overflow-hidden border-y border-border bg-surface p-em-[48]'
 					ref={heroExploreContainerRef}>
-					{/* <picture className='absolute bottom-0 left-0 h-full w-full'>
-            <Image
-              priority
-              src={spaceBackground}
-              alt='Background'
-              className='h-full w-full object-contain object-bottom opacity-50'
-            />
-          </picture> */}
+					<picture className='absolute bottom-0 left-0 h-full w-full translate-y-[20%]'>
+						<Image
+							id='satellite'
+							priority
+							src={satellite}
+							alt='Background'
+							className='h-full w-full object-contain object-bottom opacity-0'
+						/>
+					</picture>
+
+					<picture className='absolute bottom-0 left-0 h-full w-full translate-y-[10%]'>
+						<Image
+							id='astronaut'
+							priority
+							src={astronaut}
+							alt='Background'
+							className='h-full w-full object-contain object-bottom opacity-0'
+						/>
+					</picture>
 
 					<div className='absolute -top-px right-0 w-sides translate-x-full border-t border-border' />
 					<div className='absolute -top-px left-0 w-sides -translate-x-full border-t border-border' />
