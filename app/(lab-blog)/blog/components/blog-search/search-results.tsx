@@ -42,7 +42,7 @@ export default function SearchResults({posts, search}: SearchResultsProps) {
     gsap.timeline({
       paused: true,
       defaults: {
-        duration: 1,
+        duration: 0.8,
         ease: 'power3.out'
       }
     })
@@ -75,10 +75,14 @@ export default function SearchResults({posts, search}: SearchResultsProps) {
           filter: 'blur(0px)',
           opacity: 1
         })
-        .to([dividers, posts], {
-          '--clip-progress': 0,
-          stagger: 0.2
-        })
+        .to(
+          [dividers, posts],
+          {
+            '--clip-progress': 0,
+            stagger: 0.2
+          },
+          0.5
+        )
     },
     {
       scope: containerRef,

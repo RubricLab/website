@@ -362,12 +362,6 @@ export default function LabShowcase({showcase}: LabShowcaseProps) {
 
 	return (
 		<>
-			<section className='relative -mt-header flex h-screen items-center justify-center'>
-				<h1 className='uppercase text-em-[72/16]'>
-					<span className='opacity-20'>Rubric</span>/Lab
-				</h1>
-			</section>
-
 			<section
 				id='projects'
 				className='relative grid grid-cols-12 items-start pb-em-[39]'>

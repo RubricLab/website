@@ -1,10 +1,9 @@
 import config from '@rubriclab/tailwind-config'
 import typography from '@tailwindcss/typography'
-import { Config } from 'tailwindcss'
-import toemPlugin from 'toem-tailwind-plugin'
-import { shades } from './lib/utils/colors'
+import {Config} from 'tailwindcss'
 import plugin from 'tailwindcss/plugin'
-
+import toemPlugin from 'toem-tailwind-plugin'
+import {shades} from './lib/utils/colors'
 
 const generateColumnValues = count => {
   return Object.fromEntries(
@@ -70,7 +69,7 @@ const tailwindConfig: Config = {
         ...columnConfig,
         sides: 'var(--spacing-sides)',
         header: 'var(--header-height)',
-        fold: 'calc(100vh - var(--header-height))'
+        fold: 'var(--fold-height)'
       },
       fontSize: {
         'blog-body': [
@@ -83,12 +82,12 @@ const tailwindConfig: Config = {
       },
       keyframes: {
         'accordion-down': {
-          from: { height: '0' },
-          to: { height: 'var(--radix-accordion-content-height)' }
+          from: {height: '0'},
+          to: {height: 'var(--radix-accordion-content-height)'}
         },
         'accordion-up': {
-          from: { height: 'var(--radix-accordion-content-height)' },
-          to: { height: '0' }
+          from: {height: 'var(--radix-accordion-content-height)'},
+          to: {height: '0'}
         }
       },
       animation: {
@@ -104,7 +103,7 @@ const tailwindConfig: Config = {
       defaultBase: 16 /* Default value is: 16 */,
       autoBase: true /* Default value is: true */
     }),
-    plugin(function ({ addVariant }) {
+    plugin(function ({addVariant}) {
       addVariant('tab-focus-within', ':is(.user-is-tabbing &):focus-within')
     })
   ]

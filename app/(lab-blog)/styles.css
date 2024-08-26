@@ -18,7 +18,6 @@
 
   .writing-vertical {
     writing-mode: vertical-rl;
-    
   }
 
   .focus-ring {
@@ -46,6 +45,8 @@
 
   /* spacing */
   --header-height: calc(48 / var(--base-size) * 1em);
+  --svh: 100svh;
+  --fold-height: calc(var(--svh, 100vh) - var(--header-height));
   --spacing-sides: 0.75rem;
   --col-count: 12;
   --col-width: calc((100vw - (var(--spacing-sides) * 2)) / var(--col-count));
