@@ -58,7 +58,10 @@ export function BlogpostCard({
             {_title}
           </h3>
           <div className='col-span-2 justify-self-start md:col-span-1 md:justify-self-auto'>
-            <BlogpostCardTags categories={categories} />
+            <BlogpostCardTags
+              active={active}
+              categories={categories}
+            />
           </div>
           <p className='opacity-60'>
             {formatDate(publishedAt, {
@@ -102,7 +105,10 @@ export function BlogpostCard({
           </picture>
           <div className='flex grow flex-col justify-between uppercase px-em-[12]  py-em-[20] text-em-[16/16] gap-em-[16] '>
             <div className='flex gap-em-[12]'>
-              <BlogpostCardTags categories={categories} />
+              <BlogpostCardTags
+                active={active}
+                categories={categories}
+              />
             </div>
             <h3 className='text-balance text-em-[24/16]'>{_title}</h3>
 
@@ -128,7 +134,13 @@ export function BlogpostCard({
   }
 }
 
-const BlogpostCardTags = ({categories}: {categories: string[]}) => {
+const BlogpostCardTags = ({
+  active,
+  categories
+}: {
+  active: boolean
+  categories: string[]
+}) => {
   const firstTag = categories[0]
   const needsTagTooltip = categories.length > 1
 
@@ -137,7 +149,7 @@ const BlogpostCardTags = ({categories}: {categories: string[]}) => {
       <Tag
         size='sm'
         className='transition-none'
-        intent='default'>
+        intent={active ? 'contrast' : 'default'}>
         {firstTag}
       </Tag>
       {needsTagTooltip && (
@@ -145,7 +157,7 @@ const BlogpostCardTags = ({categories}: {categories: string[]}) => {
           <Tag
             size='sm'
             className='transition-none'
-            intent='default'>
+            intent={active ? 'contrast' : 'default'}>
             +{categories.length - 1}
           </Tag>
         </CustomTooltip>
