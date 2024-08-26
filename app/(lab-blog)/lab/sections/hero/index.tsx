@@ -8,7 +8,7 @@ import {DarkLightImageFragment} from '@/lib/basehub/fragments'
 import {useGSAP} from '@gsap/react'
 import gsap from 'gsap'
 import SplitText from 'gsap/dist/SplitText'
-import {CSSProperties, useEffect, useRef, useState} from 'react'
+import {useEffect, useRef, useState} from 'react'
 
 const SCROLL_DURATION_SCREENS = 3.5
 
@@ -194,14 +194,7 @@ export default function LabHero({
         <div
           id='hero-top'
           ref={topRef}
-          style={
-            {
-              '--clip-progress': 1,
-              clipPath:
-                'polygon(0% 0%, 100% 0%, 100% calc(var(--clip-progress) * 100%), 0% calc(var(--clip-progress) * 100%))'
-            } as CSSProperties
-          }
-          className='sticky top-header flex grid-cols-12 flex-col lg:grid'>
+          className='sticky top-header grid h-fold grid-cols-1 lg:h-auto lg:grid-cols-12'>
           <div className='col-span-6 border-b border-border lg:border-r lg:border-transparent'>
             <div className='flex flex-col bg-surface p-em-[24] gap-em-[24] lg:p-em-[32] lg:gap-em-[36] 2xl:p-em-[48]'>
               <h1
@@ -231,11 +224,6 @@ export default function LabHero({
           id='hero-explore'
           className='relative z-10 flex h-fold shrink-0 flex-col items-center justify-end border-y border-border bg-surface p-em-[32] 2xl:p-em-[48]'
           ref={heroExploreContainerRef}>
-          {/* <div className='absolute -top-px right-0 w-sides translate-x-full border-t border-border' /> */}
-          {/* <div className='absolute -top-px left-0 w-sides -translate-x-full border-t border-border' /> */}
-          {/* <div className='absolute -bottom-px right-0 w-sides translate-x-full border-b border-border' /> */}
-          {/* <div className='absolute -bottom-px left-0 w-sides -translate-x-full border-b border-border' /> */}
-
           <div
             id='hero-explore-content'
             className='flex flex-col items-center gap-em-[24] lg:gap-em-[32] 2xl:gap-em-[40]'>
@@ -263,21 +251,20 @@ export default function LabHero({
   )
 }
 
-const SLIDE_DURATION = 5000
+const SLIDE_DURATION = 5000 // 5 seconds
 
 const ValuesSlider = ({
   values,
-  slideDuration
+  slideDuration = SLIDE_DURATION
 }: {
   values: ValuesSliderItem[]
   slideDuration?: number
 }) => {
   const progressRef = useRef(null)
-  const progressTl = useRef(
-    gsap.timeline({
-      paused: true
-    })
-  )
+  const progressTl = useRef(gsap.timeline({paused: true}))
+  const imageRef = useRef(null)
+  const titleRef = useRef(null)
+  const descriptionRef = useRef(null)
 
   const [activeSlide, setActiveSlide] = useState(0)
   const [isHovering, setIsHovering] = useState(false)
@@ -293,15 +280,52 @@ const ValuesSlider = ({
           scaleX: 0,
           opacity: 1,
           transformOrigin: 'right',
-          duration: slideDuration || SLIDE_DURATION / 1000,
+          duration: slideDuration / 1000,
           ease: 'none'
         }
       )
     },
-    {
-      revertOnUpdate: true
-    }
+    {revertOnUpdate: true}
   )
+
+  const animateContent = (direction: 'in' | 'out') => {
+    const tl = gsap.timeline()
+
+    const elements = [
+      imageRef.current,
+      titleRef.current,
+      descriptionRef.current
+    ]
+
+    if (direction === 'out')
+      tl.to(elements, {
+        opacity: 0,
+        yPercent: -20,
+        filter: 'blur(4px)',
+        transformOrigin: 'bottom left',
+        duration: 0.3,
+        stagger: 0.1
+      })
+    else
+      tl.fromTo(
+        elements,
+        {
+          opacity: 0,
+          yPercent: 20,
+          filter: 'blur(6px)',
+          transformOrigin: 'bottom left'
+        },
+        {
+          opacity: 1,
+          yPercent: 0,
+          filter: 'blur(0px)',
+          duration: 0.3,
+          stagger: 0.1
+        }
+      )
+
+    return tl
+  }
 
   const handleMouseEnter = () => {
     setIsHovering(true)
@@ -317,10 +341,14 @@ const ValuesSlider = ({
     if (isHovering) return
 
     const timeoutId = setTimeout(() => {
-      progressTl.current.restart()
+      const outTl = animateContent('out')
 
-      setActiveSlide(prevSlide => (prevSlide + 1) % values.length)
-    }, slideDuration || SLIDE_DURATION)
+      outTl.eventCallback('onComplete', () => {
+        setActiveSlide(prevSlide => (prevSlide + 1) % values.length)
+        progressTl.current.restart()
+        animateContent('in')
+      })
+    }, slideDuration)
 
     return () => {
       clearTimeout(timeoutId)
@@ -329,39 +357,45 @@ const ValuesSlider = ({
 
   return (
     <div
-      className='relative col-span-5 flex aspect-[2] w-full flex-col items-end justify-center overflow-clip bg-surface-contrast/[0.05] px-em-[24] lg:aspect-auto'
+      className='relative col-span-5 flex aspect-[2] w-full overflow-hidden bg-surface-contrast/[0.05] lg:aspect-auto lg:px-em-[24]'
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}>
-      <div className='absolute left-0 flex h-full w-1/2 flex-col items-start justify-center pl-em-[12] lg:right-0 lg:items-end lg:pl-0 lg:pr-em-[12]'>
-        <h4 className='text-start font-medium uppercase text-text-tertiary text-em-[28/16] md:text-em-[40/16] lg:text-end lg:text-em-[32/16] 2xl:text-em-[48/16]'>
-          Our values
-        </h4>
-        <p className='text-start font-medium uppercase text-text/95 text-em-[18/16] md:text-em-[24/16] lg:text-end lg:text-em-[20/16] 2xl:text-em-[24/16]'>
-          {values[activeSlide].title}
-        </p>
-
-        <p className='text-pretty text-start font-medium uppercase text-text-secondary mt-em-[12] text-em-[14/16] md:text-em-[20/16] lg:hidden lg:text-end'>
-          {values[activeSlide].description}
-        </p>
-      </div>
-
-      <div className='absolute right-0 aspect-square h-full w-1/2 lg:left-0'>
-        <DarkLightImage
-          {...values[activeSlide].image}
-          className='h-full w-full object-contain'
-          priority
-        />
+      <div className='relative h-full w-full'>
+        <div
+          ref={imageRef}
+          className='absolute right-0 aspect-square h-full w-1/2 lg:left-0'>
+          <DarkLightImage
+            {...values[activeSlide].image}
+            className='h-full w-full object-contain'
+            priority
+          />
+        </div>
+        <div className='absolute left-0 flex h-full w-1/2 flex-col items-start justify-center pl-em-[12] lg:left-auto lg:right-0 lg:items-end lg:pl-0 lg:pr-em-[12]'>
+          <h4 className='text-start font-medium uppercase text-text-tertiary text-em-[28/16] md:text-em-[40/16] lg:text-end lg:text-em-[32/16] 2xl:text-em-[48/16]'>
+            Our values
+          </h4>
+          <h5
+            ref={titleRef}
+            id='value-title'
+            className='text-start font-medium uppercase text-text/95 text-em-[18/16] md:text-em-[24/16] lg:text-end lg:text-em-[20/16] 2xl:text-em-[24/16]'>
+            {values[activeSlide].title}
+          </h5>
+          <p
+            ref={descriptionRef}
+            id='value-description'
+            className='text-pretty text-start font-medium uppercase text-text-secondary mt-em-[12] text-em-[14/16] md:text-em-[20/16] lg:hidden lg:text-end'>
+            {values[activeSlide].description}
+          </p>
+        </div>
       </div>
 
       <div
         id='values-progress'
         className='absolute bottom-0 left-0 w-full border-t border-border bg-surface-contrast/[0.05] h-em-[12]'>
         <span
-          style={{
-            opacity: 0
-          }}
           ref={progressRef}
           className='absolute left-0 block h-full w-full bg-surface-contrast/5'
+          style={{opacity: 0}}
         />
       </div>
     </div>
