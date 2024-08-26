@@ -13,6 +13,7 @@ import SplitText from 'gsap/dist/SplitText'
 import {useEffect, useLayoutEffect, useRef, useState} from 'react'
 
 import Image from 'next/image'
+import {CSSProperties} from 'styled-components'
 import satellite from '../../../../../public/images/lab/SATELLITE_ascii_2 2.png'
 import astronaut from '../../../../../public/images/lab/astronauta_ascii4 1.png'
 
@@ -132,6 +133,21 @@ export default function LabHero({
             ease: 'power1.out'
           },
           '<'
+        )
+        .fromTo(
+          '#hero-values',
+          {
+            '--clip-progress': 1,
+            filter: 'blur(4px)',
+            opacity: 0
+          },
+          {
+            opacity: 1,
+            filter: 'blur(0px)',
+            '--clip-progress': 0,
+            duration: 2
+          },
+          1.5
         )
     },
     {
@@ -381,7 +397,8 @@ const ValuesSlider = ({
           yPercent: 0,
           filter: 'blur(0px)',
           duration: 0.3,
-          stagger: 0.1
+          stagger: 0.1,
+          ease: 'power3.out'
         }
       )
 
@@ -419,6 +436,13 @@ const ValuesSlider = ({
   return (
     <>
       <div
+        style={
+          {
+            '--clip-progress': 1,
+            clipPath: 'inset(0 0 calc(var(--clip-progress) * 100%) 0)'
+          } as CSSProperties
+        }
+        id='hero-values'
         className='relative col-span-5 flex w-full flex-col overflow-hidden bg-surface-contrast/[0.05] lg:aspect-auto lg:px-em-[24]'
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}>
@@ -447,7 +471,7 @@ const ValuesSlider = ({
 
         <div
           ref={descriptionRef}
-          className='border-border bg-surface-secondary px-em-[12] py-em-[24] mb-em-[12] lg:hidden'>
+          className='border-border bg-surface-secondary px-em-[12] py-em-[24] mb-em-[12] h-em-[140] lg:hidden'>
           <p className='text-pretty text-start font-medium uppercase text-text-secondary'>
             {values[activeSlide].description}
           </p>
@@ -494,21 +518,24 @@ const ValuesTooltip: React.FC<ValuesTooltipProps> = ({
     if (!isDesktop || !tooltipRef.current || !isHovering) return
 
     if (tweenRef.current) tweenRef.current.kill()
+    const tooltipHeight = tooltipRef.current.getBoundingClientRect().height
 
     tweenRef.current = gsap.to(tooltipRef.current, {
       x: x - tooltipRef.current.offsetWidth / 2,
-      y: y - tooltipRef.current.offsetHeight * 2,
+      y: y - tooltipHeight,
       opacity: isHovering ? 1 : 0,
       duration: 0.5,
       ease: 'power3.out'
     })
-  }, [isDesktop, isHovering, x, y])
+  }, [isDesktop, isHovering, x, y, content])
 
   useLayoutEffect(() => {
+    const tooltipHeight = tooltipRef.current.getBoundingClientRect().height
+
     if (isHovering) {
       gsap.set(tooltipRef.current, {
         x: x - tooltipRef.current.offsetWidth / 2,
-        y: y - tooltipRef.current.offsetHeight * 2
+        y: y - tooltipHeight
       })
       gsap.to(tooltipRef.current, {
         opacity: 1,
@@ -521,7 +548,7 @@ const ValuesTooltip: React.FC<ValuesTooltipProps> = ({
         duration: 0.5,
         ease: 'power3.out'
       })
-  }, [isHovering])
+  }, [isHovering, content])
 
   return (
     <div
@@ -529,8 +556,8 @@ const ValuesTooltip: React.FC<ValuesTooltipProps> = ({
       style={{
         opacity: 0
       }}
-      className='pointer-events-none fixed z-50 max-w-col-2 border-border bg-surface-secondary p-em-[12]'>
-      <p className='text-pretty text-start font-medium uppercase text-text-secondary'>
+      className='pointer-events-none fixed left-0 top-0 z-50 max-w-col-3 border-border bg-surface-secondary p-em-[12] 2xl:max-w-col-2'>
+      <p className='text-pretty text-start font-medium uppercase text-text-secondary text-em-[16/16] 2xl:text-em-[18/16]'>
         {content}
       </p>
     </div>
