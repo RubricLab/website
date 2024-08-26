@@ -2,13 +2,15 @@
 import {DarkLightImage} from '@/common/dark-light-image'
 import ArrowDownIcon from '@/common/icons/arrow-down'
 import {Button} from '@/common/ui/button'
+import {useBreakpoint} from '@/hooks/use-breakpoint'
 import {useLoaded} from '@/hooks/use-loaded'
 import {useMeasure} from '@/hooks/use-measure'
+import useMousePosition from '@/hooks/use-mouse-position'
 import {DarkLightImageFragment} from '@/lib/basehub/fragments'
 import {useGSAP} from '@gsap/react'
 import gsap from 'gsap'
 import SplitText from 'gsap/dist/SplitText'
-import {useEffect, useRef, useState} from 'react'
+import {useEffect, useLayoutEffect, useRef, useState} from 'react'
 
 const SCROLL_DURATION_SCREENS = 3.5
 
@@ -187,7 +189,7 @@ export default function LabHero({
   return (
     <div
       ref={containerRef}
-      className='relative'>
+      className='relative z-30'>
       <section
         ref={sectionRef}
         className=' flex flex-col px-px'>
@@ -268,6 +270,7 @@ const ValuesSlider = ({
 
   const [activeSlide, setActiveSlide] = useState(0)
   const [isHovering, setIsHovering] = useState(false)
+  const isDesktop = useBreakpoint('lg')
 
   useGSAP(
     () => {
@@ -300,7 +303,7 @@ const ValuesSlider = ({
     if (direction === 'out')
       tl.to(elements, {
         opacity: 0,
-        yPercent: -20,
+        yPercent: -5,
         filter: 'blur(4px)',
         transformOrigin: 'bottom left',
         duration: 0.3,
@@ -311,7 +314,7 @@ const ValuesSlider = ({
         elements,
         {
           opacity: 0,
-          yPercent: 20,
+          yPercent: 5,
           filter: 'blur(6px)',
           transformOrigin: 'bottom left'
         },
@@ -356,48 +359,123 @@ const ValuesSlider = ({
   }, [isHovering, activeSlide, slideDuration, values.length])
 
   return (
-    <div
-      className='relative col-span-5 flex aspect-[2] w-full overflow-hidden bg-surface-contrast/[0.05] lg:aspect-auto lg:px-em-[24]'
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}>
-      <div className='relative h-full w-full'>
-        <div
-          ref={imageRef}
-          className='absolute right-0 aspect-square h-full w-1/2 lg:left-0'>
-          <DarkLightImage
-            {...values[activeSlide].image}
-            className='h-full w-full object-contain'
-            priority
-          />
+    <>
+      <div
+        className='relative col-span-5 flex w-full overflow-hidden bg-surface-contrast/[0.05] lg:aspect-auto lg:px-em-[24]'
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}>
+        <div className='relative h-full w-full'>
+          <div
+            ref={imageRef}
+            className='absolute right-0 aspect-square h-full w-1/2 lg:left-0'>
+            <DarkLightImage
+              {...values[activeSlide].image}
+              className='h-full w-full object-contain'
+              priority
+            />
+          </div>
+          <div className='absolute left-0 flex h-full w-1/2 flex-col items-start justify-center pl-em-[12] lg:left-auto lg:right-0 lg:items-end lg:pl-0 lg:pr-em-[12]'>
+            <h4 className='text-start font-medium uppercase text-text-tertiary text-em-[28/16] md:text-em-[40/16] lg:text-end lg:text-em-[32/16] 2xl:text-em-[48/16]'>
+              Our values
+            </h4>
+            <h5
+              ref={titleRef}
+              id='value-title'
+              className='line-clamp-2 h-[3em] overflow-hidden text-start font-medium uppercase text-text/95 text-em-[18/16] md:text-em-[24/16] lg:text-end lg:text-em-[20/16] 2xl:text-em-[24/16]'>
+              {values[activeSlide].title}
+            </h5>
+
+            <div
+              ref={descriptionRef}
+              className=' max-w-col-2 border-border bg-surface-secondary p-em-[12] lg:hidden'>
+              <p className='text-pretty text-start font-medium uppercase text-text-secondary'>
+                {values[activeSlide].description}
+              </p>
+            </div>
+          </div>
         </div>
-        <div className='absolute left-0 flex h-full w-1/2 flex-col items-start justify-center pl-em-[12] lg:left-auto lg:right-0 lg:items-end lg:pl-0 lg:pr-em-[12]'>
-          <h4 className='text-start font-medium uppercase text-text-tertiary text-em-[28/16] md:text-em-[40/16] lg:text-end lg:text-em-[32/16] 2xl:text-em-[48/16]'>
-            Our values
-          </h4>
-          <h5
-            ref={titleRef}
-            id='value-title'
-            className='text-start font-medium uppercase text-text/95 text-em-[18/16] md:text-em-[24/16] lg:text-end lg:text-em-[20/16] 2xl:text-em-[24/16]'>
-            {values[activeSlide].title}
-          </h5>
-          <p
-            ref={descriptionRef}
-            id='value-description'
-            className='text-pretty text-start font-medium uppercase text-text-secondary mt-em-[12] text-em-[14/16] md:text-em-[20/16] lg:hidden lg:text-end'>
-            {values[activeSlide].description}
-          </p>
+
+        <div
+          id='values-progress'
+          className='absolute bottom-0 left-0 w-full border-t border-border bg-surface-contrast/[0.05] h-em-[12]'>
+          <span
+            ref={progressRef}
+            className='absolute left-0 block h-full w-full bg-surface-contrast/5'
+            style={{opacity: 0}}
+          />
         </div>
       </div>
 
-      <div
-        id='values-progress'
-        className='absolute bottom-0 left-0 w-full border-t border-border bg-surface-contrast/[0.05] h-em-[12]'>
-        <span
-          ref={progressRef}
-          className='absolute left-0 block h-full w-full bg-surface-contrast/5'
-          style={{opacity: 0}}
-        />
-      </div>
+      <ValuesTooltip
+        content={values[activeSlide].description}
+        isDesktop={isDesktop}
+        isHovering={isHovering}
+      />
+    </>
+  )
+}
+
+interface ValuesTooltipProps {
+  content: string
+  isDesktop: boolean
+  isHovering: boolean
+}
+
+const ValuesTooltip: React.FC<ValuesTooltipProps> = ({
+  content,
+  isDesktop,
+  isHovering
+}) => {
+  const tooltipRef = useRef<HTMLDivElement>(null)
+  const tweenRef = useRef<gsap.core.Tween | null>(null)
+
+  const {x, y} = useMousePosition({
+    disabled: !isDesktop
+  })
+
+  useEffect(() => {
+    if (!isDesktop || !tooltipRef.current || !isHovering) return
+
+    if (tweenRef.current) tweenRef.current.kill()
+
+    tweenRef.current = gsap.to(tooltipRef.current, {
+      x: x - tooltipRef.current.offsetWidth / 2,
+      y: y - tooltipRef.current.offsetHeight * 2,
+      opacity: isHovering ? 1 : 0,
+      duration: 0.5,
+      ease: 'power3.out'
+    })
+  }, [isDesktop, isHovering, x, y])
+
+  useLayoutEffect(() => {
+    if (isHovering) {
+      gsap.set(tooltipRef.current, {
+        x: x - tooltipRef.current.offsetWidth / 2,
+        y: y - tooltipRef.current.offsetHeight * 2
+      })
+      gsap.to(tooltipRef.current, {
+        opacity: 1,
+        duration: 0.5,
+        ease: 'power3.out'
+      })
+    } else
+      gsap.to(tooltipRef.current, {
+        opacity: 0,
+        duration: 0.5,
+        ease: 'power3.out'
+      })
+  }, [isHovering])
+
+  return (
+    <div
+      ref={tooltipRef}
+      style={{
+        opacity: 0
+      }}
+      className='pointer-events-none fixed z-50 max-w-col-2 border-border bg-surface-secondary p-em-[12]'>
+      <p className='text-pretty text-start font-medium uppercase text-text-secondary'>
+        {content}
+      </p>
     </div>
   )
 }
