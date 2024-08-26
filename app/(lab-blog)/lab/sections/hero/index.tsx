@@ -13,7 +13,6 @@ import SplitText from 'gsap/dist/SplitText'
 import {useEffect, useLayoutEffect, useRef, useState} from 'react'
 
 import Image from 'next/image'
-import {CSSProperties} from 'styled-components'
 import satellite from '../../../../../public/images/lab/SATELLITE_ascii_2 2.png'
 import astronaut from '../../../../../public/images/lab/astronauta_ascii4 1.png'
 
@@ -137,15 +136,12 @@ export default function LabHero({
         .fromTo(
           '#hero-values',
           {
-            '--clip-progress': 1,
             filter: 'blur(4px)',
             opacity: 0
           },
           {
             opacity: 1,
-            filter: 'blur(0px)',
-            '--clip-progress': 0,
-            duration: 2
+            filter: 'blur(0px)'
           },
           1.5
         )
@@ -436,12 +432,9 @@ const ValuesSlider = ({
   return (
     <>
       <div
-        style={
-          {
-            '--clip-progress': 1,
-            clipPath: 'inset(0 0 calc(var(--clip-progress) * 100%) 0)'
-          } as CSSProperties
-        }
+        style={{
+          opacity: 0
+        }}
         id='hero-values'
         className='relative col-span-5 flex w-full flex-col overflow-hidden bg-surface-contrast/[0.05] lg:aspect-auto lg:px-em-[24]'
         onMouseEnter={handleMouseEnter}
