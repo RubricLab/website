@@ -321,8 +321,9 @@ const ProgressStatus = ({
 
 	return (
 		<div
+			id='progress-bar'
 			className={cn(
-				'fixed bottom-0 left-0 flex w-full border-t border-border bg-black px-sides transition-[height]',
+				'fixed bottom-0 left-0 flex w-full border-t border-border bg-black px-sides opacity-0 transition-[height]',
 				{
 					'h-em-[32] text-em-[12/16]': isShrunk,
 					'h-em-[40]': !isShrunk
@@ -377,6 +378,57 @@ export default function LabShowcase({showcase}: LabShowcaseProps) {
 		}
 	}, [])
 
+	useGSAP(() => {
+		gsap.fromTo(
+			'#progress-bar',
+			{
+				y: '100%',
+				opacity: 0
+			},
+			{
+				y: '0%',
+				opacity: 1,
+				scrollTrigger: {
+					trigger: '#projects',
+					start: 'top center',
+					end: 'top+=5% center',
+					scrub: true
+				}
+			}
+		)
+
+		const stConfig: ScrollTrigger.Vars = {
+			trigger: '#projects',
+			start: 'top center',
+			end: 'top+=5% center',
+			scrub: true
+		}
+
+		gsap.fromTo(
+			'#progress-bar',
+			{
+				y: '100%',
+				opacity: 0
+			},
+			{
+				y: '0%',
+				opacity: 1,
+				scrollTrigger: stConfig
+			}
+		)
+
+		gsap.fromTo(
+			'#aside-webgl',
+			{
+				opacity: 0
+			},
+			{
+				opacity: 1,
+				scrollTrigger: stConfig
+			}
+		)
+	}, [])
+
 	return (
 		<>
 			<section
@@ -391,11 +443,9 @@ export default function LabShowcase({showcase}: LabShowcaseProps) {
 					))}
 				</div>
 				<div
+					id='aside-webgl'
 					className={cn(
-						'fixed right-sides top-header hidden h-fold w-[calc(var(--col-width)*5+1px)] border-l border-r border-border bg-black transition-[opacity,transform] duration-500 ease-out lg:block',
-						{
-							'translate-x-[0.5vw] opacity-0': !asideCanvasVisible
-						}
+						'fixed right-sides top-header hidden h-fold w-[calc(var(--col-width)*5+1px)] border-l border-r border-border bg-black opacity-0 lg:block'
 					)}>
 					{lg && <LabWebGL activeSlug={activeProject._slug} />}
 				</div>

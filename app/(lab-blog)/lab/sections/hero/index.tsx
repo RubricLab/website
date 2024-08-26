@@ -10,11 +10,10 @@ import gsap from 'gsap'
 import SplitText from 'gsap/dist/SplitText'
 import {CSSProperties, useEffect, useRef, useState} from 'react'
 
+import {useBreakpoint} from '@/hooks/use-breakpoint'
 import Image from 'next/image'
 import satellite from '../../../../../public/images/lab/SATELLITE_ascii_2 2.png'
 import astronaut from '../../../../../public/images/lab/astronauta_ascii4 1.png'
-
-const SCROLL_DURATION_SCREENS = 3.5
 
 export type ValuesSliderItem = {
 	title: string
@@ -142,10 +141,11 @@ export default function LabHero({
 	)
 
 	const [heroExploreContainerRef, heroExploreContainerBounds] = useMeasure()
+	const lg = useBreakpoint('lg')
 
 	useGSAP(
 		() => {
-			if (!topBounds.height || !heroExploreContainerBounds.height) return
+			if (!topBounds.height || !heroExploreContainerBounds.height || !lg) return
 
 			gsap.set('#hero-explore', {
 				paddingBottom: `calc(48 / var(--toem-base, 16) * 1em + ${topBounds.height}px)`
@@ -203,6 +203,7 @@ export default function LabHero({
 			scope: containerRef,
 			revertOnUpdate: true,
 			dependencies: [
+        lg,
 				heroExploreContainerBounds.top,
 				heroExploreContainerBounds.height,
 				topBounds.height
@@ -264,7 +265,7 @@ export default function LabHero({
 					id='hero-explore'
 					className='relative z-10 flex h-fold shrink-0 flex-col items-center justify-end overflow-hidden border-y border-border bg-surface p-em-[48]'
 					ref={heroExploreContainerRef}>
-					<picture className='absolute bottom-0 left-0 h-full w-full translate-y-[20%]'>
+					<picture className='absolute bottom-0 left-0 h-full w-full translate-y-[20%] opacity-50'>
 						<Image
 							id='satellite'
 							priority
@@ -275,7 +276,7 @@ export default function LabHero({
 						/>
 					</picture>
 
-					<picture className='absolute bottom-0 left-0 h-full w-full translate-y-[10%]'>
+					<picture className='absolute bottom-0 left-0 h-full w-full translate-y-[10%] opacity-50'>
 						<Image
 							id='astronaut'
 							priority
