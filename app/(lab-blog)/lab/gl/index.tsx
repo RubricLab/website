@@ -86,39 +86,38 @@ const patchBasicMaterialBloomFactor = shader => {
 
 extend({MeshEdgesMaterial})
 
-const logos = [
-	[
+const noLogo = [
+	[0, 0, 0],
+	[0, 0, 0],
+	[0, 0, 0]
+]
+const logos = {
+	maige: [
 		[1, 0, 1],
 		[1, 1, 0],
 		[1, 0, 0]
 	],
-	[
+	'maige-1': [
 		[1, 0, 1],
 		[0, 1, 0],
 		[1, 0, 1]
 	],
-	[
-		[1, 1, 1],
-		[1, 0, 1],
-		[1, 1, 1]
-	],
-	[
+	'maige-2': [
 		[0, 1, 1],
 		[1, 0, 1],
 		[1, 1, 0]
 	]
-]
-
+}
 const clone = (arr: any) => {
 	return JSON.parse(JSON.stringify(arr))
 }
 
-const initialLogoGridState = clone(logos[0])
+const initialLogoGridState = clone(noLogo)
 	.flat()
 	.map(v => ({v}))
 const initialLogoGridBloomState = clone(initialLogoGridState)
 
-const Scene = ({activeIdx}: {activeIdx: number}) => {
+const Scene = ({activeLogo}: {activeLogo: number[][]}) => {
 	const refPrevLogoPattern = useRef<number[][]>()
 	const refPatternFromZValues = useRef<{v: number}[]>()
 
@@ -190,7 +189,7 @@ const Scene = ({activeIdx}: {activeIdx: number}) => {
 		y: Math.floor(grid.height / 2)
 	}
 	const length = grid.width * grid.height
-	const logoPattern = logos[activeIdx]
+	const logoPattern = activeLogo ?? noLogo
 
 	const bloomFactorBuffer = useMemo(
 		() => new Float32Array(length).map(() => 0),
@@ -253,9 +252,7 @@ const Scene = ({activeIdx}: {activeIdx: number}) => {
 	useEffect(() => {
 		if (!ref.current) return
 
-		const currentLogoPattern = (
-			JSON.parse(JSON.stringify(logoPattern)) as typeof logoPattern
-		).flat()
+		const currentLogoPattern = clone(logoPattern).flat()
 		const currentLogoGridSize = logoPattern.length
 
 		const fromZValues = refLogoGridState.current
@@ -489,7 +486,7 @@ const Camera = () => {
 	)
 }
 
-function LabWebGL({activeProject}: {activeProject: number}) {
+function LabWebGL({activeSlug}: {activeSlug: string}) {
 	const ctrls = useControls({
 		ambientLight: {
 			value: 0.1,
@@ -561,7 +558,7 @@ function LabWebGL({activeProject}: {activeProject: number}) {
 				</>
 			)}
 
-			<Scene activeIdx={activeProject} />
+			<Scene activeLogo={logos[activeSlug]} />
 
 			<EffectComposer
 				multisampling={0}

@@ -2,16 +2,20 @@
 
 import gsap from 'gsap'
 import Image, {StaticImageData} from 'next/image'
-import {useEffect, useRef, useState} from 'react'
+import {useEffect, useMemo, useRef, useState} from 'react'
 
 import cn from '@/lib/utils/cn'
-import RubricLabSampleImage from '@/public/images/rubric-lab-sample.png'
 
 import {Button, ButtonProps} from '@/common/ui/button'
 import {useBreakpoint} from '@/hooks/use-breakpoint'
+import useWindowSize from '@/hooks/use-window-size'
+import {LabProjectFragment} from '@/lib/basehub/fragments/lab'
 import {useGSAP} from '@gsap/react'
+import dynamic from 'next/dynamic'
+import Link from 'next/link'
 import {GridPulseAnimation} from '../../components/grid-pulse-animation'
-import LabWebGL from '../../gl'
+
+const LabWebGL = dynamic(() => import('../../gl'))
 
 const ContentBox = ({
 	title,
@@ -50,11 +54,15 @@ const FooterSlot = ({
 	ctas,
 	...rest
 }: {
-	slot: {
-		type: 'image'
-		alt: string
-	} & StaticImageData
-	ctas: ButtonProps[]
+	slot:
+		| ({
+				type: 'image'
+				alt: string
+		  } & StaticImageData)
+		| {
+				type: 'video'
+		  }
+	ctas: {label: string; href: string; variant: ButtonProps['variant']}[]
 } & Omit<React.HTMLAttributes<HTMLDivElement>, 'slot'>) => (
 	<div
 		{...rest}
@@ -76,13 +84,16 @@ const FooterSlot = ({
 					{...cta}
 					size='lg'
 					key={idx}
-				/>
+					variant={cta.variant}
+					asChild>
+					<Link href={cta.href}>{cta.label}</Link>
+				</Button>
 			))}
 		</div>
 	</div>
 )
 
-const ProjectContent = ({id}: {id: string}) => {
+const ProjectContent = (props: LabProjectFragment) => {
 	const contentRef = useRef<HTMLDivElement>()
 	const sm = useBreakpoint('sm')
 
@@ -117,57 +128,56 @@ const ProjectContent = ({id}: {id: string}) => {
 
 	return (
 		<div
-			id={id}
+			id={props._id}
 			className='px-em-[24] lg:pr-em-[48] lg:pl-em-[24]'
 			ref={contentRef}>
 			<article className='uppercase'>
-				<h3 className='text-em-[72/16] 2xl:text-em-[96/16]'>Maige</h3>
+				<h3 className='text-em-[72/16] 2xl:text-em-[96/16]'>{props._title}</h3>
 				<p className='text-[#B3B3B3] mt-em-[14] text-em-[28/16] 2xl:text-em-[40/16]'>
-					Your Intelligent Codebase Copilot
+					{props.description}
 				</p>
-				<div className='mt-em-[24] text-em-[22/16] 2xl:text-em-[28/16]'>
+				{/* <div className='mt-em-[24] text-em-[22/16] 2xl:text-em-[28/16]'>
 					<span className='border border-border px-em-[14] py-em-[4]'>ai</span>
-				</div>
+				</div> */}
 			</article>
 
 			<div className='flex flex-col mt-em-[56] space-y-em-[24] md:space-y-em-[-32]'>
-				<ContentBox
-					title='WHY A CLI?'
-					paragraph='Analyze, refactor, and optimize your codebase effortlessly through intuitive language-driven operations.'
-				/>
-				<ContentBox
-					className='ml-auto'
-					title='WHAT DID WE LEARN?'
-					paragraph='Harness the power of AI to streamline your development process. Interact with your code using plain English commands, making complex tasks accessible to developers of all levels.'
-				/>
-				<ContentBox
-					title='WHAT DID WE LEARN?'
-					paragraph='Harness the power of AI to streamline your development process. Interact with your code using plain English commands, making complex tasks accessible to developers of all levels.'
-				/>
-				<ContentBox
-					className='ml-auto'
-					title='WHY A CLI?'
-					paragraph='Analyze, refactor, and optimize your codebase effortlessly through intuitive language-driven operations.'
-				/>
+				{props.qa.items.map((qa, idx) => {
+					return (
+						<ContentBox
+							key={qa._id}
+							className={idx % 2 === 1 ? 'ml-auto' : undefined}
+							title={qa.question}
+							paragraph={qa.answer}
+						/>
+					)
+				})}
 			</div>
 
 			<FooterSlot
 				className='footer-slot mx-auto w-full mt-em-[56] sm:w-[80%] md:w-[65%]'
-				slot={{
-					type: 'image',
-					...RubricLabSampleImage,
-					alt: 'Rubric Lab Sample'
-				}}
-				ctas={[
-					{
-						variant: 'secondary',
-						children: 'Clone the repo'
-					},
-					{
-						variant: 'default',
-						children: 'See the video'
-					}
-				]}
+				slot={
+					'image' in props.footerMedia
+						? {
+								type: 'image',
+								alt: props.footerMedia.image.alt,
+								src: props.footerMedia.image.url,
+								width: props.footerMedia.image.width,
+								height: props.footerMedia.image.height,
+								blurDataURL: props.footerMedia.image.blurDataURL
+							}
+						: {
+								type: 'video'
+							}
+				}
+				ctas={props.ctas.items.map(cta => ({
+					variant:
+						(cta.type === 'primary' && 'default') ||
+						(cta.type === 'secondary' && 'secondary') ||
+						'outline',
+					href: cta.href,
+					label: cta.label
+				}))}
 			/>
 		</div>
 	)
@@ -182,30 +192,35 @@ const ProgressSlot = ({
 	name: string
 	onActiveChange: (active: boolean) => void
 }) => {
+	const w = useWindowSize()
 	const ref = useRef<HTMLDivElement>(null)
 
 	useEffect(() => {
 		let slotActive = false
+		const targetSection = document.getElementById(targetId)
 
-		const handleScroll = () => {
+		if (!targetSection) return
+
+		const update = () => {
 			if (!ref.current) return
 
 			const scrollPosition = window.scrollY
-			const projectsSection = document.getElementById(targetId)
+			let sectionBounds = targetSection.getBoundingClientRect()
 
-			if (!projectsSection) return
-
-			const projectsSectionTop = projectsSection.offsetTop
-			const projectsSectionBottom =
-				projectsSectionTop + projectsSection.offsetHeight
-
-			// Create a variable to track if the slot is active
+			/* 
+				0% - the bottom of the screen reaches the target section top
+				100% - the bottom of the screen reaches the target section end
+			*/
+			const distanceFromSectionToPageTop = sectionBounds.top + scrollPosition
 			const _slotActive =
-				scrollPosition >= projectsSectionTop &&
-				scrollPosition <= projectsSectionBottom
+				scrollPosition + w.height > distanceFromSectionToPageTop &&
+				scrollPosition + w.height <
+					distanceFromSectionToPageTop + sectionBounds.height
+
 			const scrollPercentage =
-				(scrollPosition - projectsSectionTop) /
-				(projectsSectionBottom - projectsSectionTop)
+				(scrollPosition + w.height - distanceFromSectionToPageTop) /
+				sectionBounds.height
+
 			const scale = Math.max(0, Math.min(1, scrollPercentage))
 
 			if (_slotActive != slotActive) {
@@ -216,12 +231,14 @@ const ProgressSlot = ({
 			ref.current.style.transform = `translateX(${-(1 - scale) * 100}%)`
 		}
 
-		window.addEventListener('scroll', handleScroll)
+		update()
+
+		window.addEventListener('scroll', update)
 
 		return () => {
-			window.removeEventListener('scroll', handleScroll)
+			window.removeEventListener('scroll', update)
 		}
-	}, [targetId, name, onActiveChange])
+	}, [targetId, name, onActiveChange, w.height, w.width])
 
 	return (
 		<button
@@ -245,9 +262,11 @@ const ProgressSlot = ({
 }
 
 const ProgressStatus = ({
+	targets,
 	onActiveChange
 }: {
-	onActiveChange: (idx: number) => void
+	targets: {id: string; label: string}[]
+	onActiveChange: (idx: string) => void
 }) => {
 	const [isShrunk, setIsShrunk] = useState(true)
 
@@ -299,35 +318,33 @@ const ProgressStatus = ({
 			{/* extra boundary for mouse enter */}
 			<div className='absolute left-0 top-0 w-full -translate-y-full h-em-[20]' />
 			<div className='relative flex w-full overflow-hidden border-x border-border'>
-				<ProgressSlot
-					targetId='project-1'
-					name='project-1'
-					onActiveChange={v => {
-						v && onActiveChange(0)
-					}}
-				/>
-				<ProgressSlot
-					targetId='project-2'
-					name='project-2'
-					onActiveChange={v => {
-						v && onActiveChange(1)
-					}}
-				/>
-				<ProgressSlot
-					targetId='project-3'
-					name='project-3'
-					onActiveChange={v => {
-						v && onActiveChange(2)
-					}}
-				/>
+				{targets.map(t => (
+					<ProgressSlot
+						targetId={t.id}
+						name={t.label}
+						onActiveChange={v => {
+							v && onActiveChange(t.id)
+						}}
+						key={t.id}
+					/>
+				))}
 			</div>
 		</div>
 	)
 }
 
-export default function LabShowcase() {
-	const [activeProject, setActiveProject] = useState(0)
+type LabShowcaseProps = {
+	showcase: LabProjectFragment[]
+}
+
+export default function LabShowcase({showcase}: LabShowcaseProps) {
+	const [activeProjectId, setActiveProjectId] = useState(showcase[0]._id)
 	const [asideCanvasVisible, setAsideCanvasVisible] = useState(false)
+	const lg = useBreakpoint('lg')
+
+	const activeProject = useMemo(() => {
+		return showcase.find(p => p._id === activeProjectId)
+	}, [activeProjectId, showcase])
 
 	useEffect(() => {
 		const handleScroll = () => {
@@ -355,9 +372,12 @@ export default function LabShowcase() {
 				id='projects'
 				className='relative grid grid-cols-12 items-start pb-em-[39]'>
 				<div className='col-[1/-1] flex flex-col pb-em-[56] space-y-em-[220] lg:col-[1/8]'>
-					<ProjectContent id='project-1' />
-					<ProjectContent id='project-2' />
-					<ProjectContent id='project-3' />
+					{showcase.map(project => (
+						<ProjectContent
+							{...project}
+							key={project._id}
+						/>
+					))}
 				</div>
 				<div
 					className={cn(
@@ -366,11 +386,14 @@ export default function LabShowcase() {
 							'translate-x-[0.5vw] opacity-0': !asideCanvasVisible
 						}
 					)}>
-					<LabWebGL activeProject={activeProject} />
+					{lg && <LabWebGL activeSlug={activeProject._slug} />}
 				</div>
 			</section>
 
-			<ProgressStatus onActiveChange={idx => setActiveProject(idx)} />
+			<ProgressStatus
+				targets={showcase.map(p => ({id: p._id, label: p._title}))}
+				onActiveChange={idx => setActiveProjectId(idx)}
+			/>
 		</>
 	)
 }
