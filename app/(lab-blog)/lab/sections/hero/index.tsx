@@ -153,13 +153,18 @@ export default function LabHero({
           0
         )
         .to(heroExploreContent, {
-          yPercent: -20
+          yPercent: -50,
+          duration: 2
         })
-        .to(heroExplore, {
-          yPercent: -20,
-          opacity: 0,
-          filter: 'blur(24px)'
-        })
+        .to(
+          heroExplore,
+          {
+            yPercent: -20,
+            opacity: 0,
+            filter: 'blur(24px)'
+          },
+          '>-1'
+        )
     },
     {
       revertOnUpdate: true,
@@ -231,6 +236,7 @@ export default function LabHero({
           className='relative flex h-fold shrink-0 flex-col items-center justify-end border-t border-border bg-surface p-em-[48]'>
           <picture className='absolute bottom-0 left-0 h-full w-full'>
             <Image
+              priority
               src={spaceBackground}
               alt='Background'
               className='h-full w-full object-contain object-bottom opacity-50'
