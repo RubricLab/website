@@ -1,4 +1,5 @@
 'use client'
+import {DarkLightImage} from '@/common/dark-light-image'
 import ArrowDownIcon from '@/common/icons/arrow-down'
 import {Button} from '@/common/ui/button'
 import {useLoaded} from '@/hooks/use-loaded'
@@ -98,7 +99,7 @@ export default function LabHero({
 						opacity: 1,
 						duration: 1.5,
 						stagger: 0.05,
-						ease: 'back.out'
+						ease: 'power2.inOut'
 					},
 					0.25
 				)
@@ -106,24 +107,32 @@ export default function LabHero({
 					[spllitedExploreText.words, exploreCta],
 					{
 						opacity: 0,
-						filter: 'blur(12px)',
+						filter: 'blur(4px)',
+						rotate: 2,
 						yPercent: 50
 					},
 					{
 						opacity: 1,
 						filter: 'blur(0px)',
 						yPercent: 0,
-						duration: 2,
-						stagger: 0.05,
-						ease: 'power4.in'
+						rotate: 0,
+						duration: 3.5,
+						stagger: {
+							amount: 1
+						},
+						ease: 'power3.out'
 					},
 					0.6
 				)
-				.to(['#astronaut', '#satellite'], {
-					opacity: 1,
-					duration: 3,
-					ease: 'power1.out'
-				})
+				.to(
+					['#astronaut', '#satellite'],
+					{
+						opacity: 1,
+						duration: 3,
+						ease: 'power1.out'
+					},
+					'<'
+				)
 		},
 		{
 			revertOnUpdate: true,
@@ -191,6 +200,7 @@ export default function LabHero({
 			})
 		},
 		{
+			scope: containerRef,
 			revertOnUpdate: true,
 			dependencies: [
 				heroExploreContainerBounds.top,
@@ -210,12 +220,7 @@ export default function LabHero({
 	return (
 		<div
 			ref={containerRef}
-			className='relative'
-			style={
-				{
-					'--scroll-duration': `calc(${SCROLL_DURATION_SCREENS} * var(--fold-height))`
-				} as CSSProperties
-			}>
+			className='relative'>
 			<section
 				ref={sectionRef}
 				className=' flex flex-col px-px'>
@@ -229,33 +234,29 @@ export default function LabHero({
 								'polygon(0% 0%, 100% 0%, 100% calc(var(--clip-progress) * 100%), 0% calc(var(--clip-progress) * 100%))'
 						} as CSSProperties
 					}
-					className='sticky top-header grid grid-cols-12'>
-					<div className='col-span-6 border-r border-transparent'>
-						<div className=' flex flex-col bg-surface p-em-[48] gap-em-[36]'>
+					className='sticky top-header flex grid-cols-12 flex-col lg:grid'>
+					<div className='col-span-6 border-b border-border lg:border-r lg:border-transparent'>
+						<div className='flex flex-col bg-surface p-em-[24] gap-em-[24] lg:p-em-[32] lg:gap-em-[36] 2xl:p-em-[48]'>
 							<h1
 								data-hero-text
-								style={
-									{
-										// opacity: 0
-									}
-								}
-								className='uppercase text-em-[72/16]'>
+								style={{
+									opacity: 0
+								}}
+								className='font-medium uppercase text-em-[48/16] lg:text-em-[64/16] 2xl:text-em-[72/16]'>
 								{preTitle && <span className='opacity-50'>{preTitle}</span>}
 								<span className='text-text'>{mainTitle}</span>
 							</h1>
 							<p
 								data-hero-description
-								style={
-									{
-										// opacity: 0
-									}
-								}
-								className='text-balance uppercase text-text-secondary text-em-[18/16]'>
+								style={{
+									opacity: 0
+								}}
+								className='text-balance uppercase text-text-secondary text-em-[16/16] md:max-w-col-8 lg:max-w-none 2xl:text-em-[18/16]'>
 								{description}
 							</p>
 						</div>
 					</div>
-					<span className='bg-lines col-span-1 h-full w-full' />
+					<span className='bg-lines order-1 col-span-1 w-full border-t border-border h-em-[48] lg:order-none lg:h-full lg:border-none' />
 					<ValuesSlider values={values} />
 				</div>
 
@@ -283,30 +284,21 @@ export default function LabHero({
 						/>
 					</picture>
 
-					<div className='absolute -top-px right-0 w-sides translate-x-full border-t border-border' />
-					<div className='absolute -top-px left-0 w-sides -translate-x-full border-t border-border' />
-					<div className='absolute -bottom-px right-0 w-sides translate-x-full border-b border-border' />
-					<div className='absolute -bottom-px left-0 w-sides -translate-x-full border-b border-border' />
-
 					<div
 						id='hero-explore-content'
-						className='flex flex-col items-center gap-em-[40]'>
+						className='flex flex-col items-center gap-em-[24] lg:gap-em-[32] 2xl:gap-em-[40]'>
 						<h2
-							style={
-								{
-									// opacity: 0
-								}
-							}
+							style={{
+								opacity: 0
+							}}
 							id='explore-text'
-							className='text-center font-medium uppercase text-em-[32/16] lg:max-w-col-8 2xl:max-w-col-6'>
+							className='text-center font-semibold uppercase text-em-[18/16] md:font-medium md:text-em-[24/16] lg:max-w-col-8 lg:text-em-[32/16] 2xl:max-w-col-6'>
 							{explore.title}
 						</h2>
 						<Button
-							style={
-								{
-									// opacity: 0
-								}
-							}
+							style={{
+								opacity: 0
+							}}
 							id='explore-cta'
 							size='lg'>
 							{explore.ctaLabel}
@@ -385,15 +377,29 @@ const ValuesSlider = ({
 
 	return (
 		<div
-			className='relative col-span-5 flex flex-col items-end justify-center bg-surface-contrast/[0.05] px-em-[24]'
+			className='relative col-span-5 flex aspect-[2] w-full flex-col items-end justify-center overflow-clip bg-surface-contrast/[0.05] px-em-[24] lg:aspect-auto'
 			onMouseEnter={handleMouseEnter}
 			onMouseLeave={handleMouseLeave}>
-			<h4 className='font-medium uppercase text-text-secondary text-em-[48/16]'>
-				Our values
-			</h4>
-			<p className='font-medium uppercase text-text-tertiary text-em-[24/16]'>
-				{values[activeSlide].title}
-			</p>
+			<div className='absolute left-0 flex h-full w-1/2 flex-col items-start justify-center pl-em-[12] lg:right-0 lg:items-end lg:pl-0 lg:pr-em-[12]'>
+				<h4 className='text-start font-medium uppercase text-text-tertiary text-em-[28/16] md:text-em-[40/16] lg:text-end lg:text-em-[32/16] 2xl:text-em-[48/16]'>
+					Our values
+				</h4>
+				<p className='text-start font-medium uppercase text-text/95 text-em-[18/16] md:text-em-[24/16] lg:text-end lg:text-em-[20/16] 2xl:text-em-[24/16]'>
+					{values[activeSlide].title}
+				</p>
+
+				<p className='text-pretty text-start font-medium uppercase text-text-secondary mt-em-[12] text-em-[14/16] md:text-em-[20/16] lg:hidden lg:text-end'>
+					{values[activeSlide].description}
+				</p>
+			</div>
+
+			<div className='absolute right-0 aspect-square h-full w-1/2 lg:left-0'>
+				<DarkLightImage
+					{...values[activeSlide].image}
+					className='h-full w-full object-contain'
+					priority
+				/>
+			</div>
 
 			<div
 				id='values-progress'
