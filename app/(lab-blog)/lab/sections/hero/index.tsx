@@ -12,7 +12,9 @@ import gsap from 'gsap'
 import SplitText from 'gsap/dist/SplitText'
 import {useEffect, useLayoutEffect, useRef, useState} from 'react'
 
-const SCROLL_DURATION_SCREENS = 3.5
+import Image from 'next/image'
+import satellite from '../../../../../public/images/lab/SATELLITE_ascii_2 2.png'
+import astronaut from '../../../../../public/images/lab/astronauta_ascii4 1.png'
 
 export type ValuesSliderItem = {
   title: string
@@ -122,6 +124,15 @@ export default function LabHero({
           },
           0.6
         )
+        .to(
+          ['#astronaut', '#satellite'],
+          {
+            opacity: 1,
+            duration: 3,
+            ease: 'power1.out'
+          },
+          '<'
+        )
     },
     {
       revertOnUpdate: true,
@@ -131,10 +142,11 @@ export default function LabHero({
   )
 
   const [heroExploreContainerRef, heroExploreContainerBounds] = useMeasure()
+  const lg = useBreakpoint('lg')
 
   useGSAP(
     () => {
-      if (!topBounds.height || !heroExploreContainerBounds.height) return
+      if (!topBounds.height || !heroExploreContainerBounds.height || !lg) return
 
       gsap.set('#hero-explore', {
         paddingBottom: `calc(48 / var(--toem-base, 16) * 1em + ${topBounds.height}px)`
@@ -153,25 +165,48 @@ export default function LabHero({
       const centerToCenter =
         distanceToCenter - heroExploreContentBounds.height / 2
 
-      scrollTl.current = gsap
-        .timeline({
-          scrollTrigger: {
-            trigger: '#hero-explore',
-            start: `top ${headerHeight + topBounds.height}px`,
-            end: 'center center',
-            scrub: true,
-            markers: true
-          }
-        })
-        .to('#hero-explore-content', {
-          y: centerToCenter,
-          ease: 'power2.out'
-        })
+      const scrollTriggerStart = `top ${headerHeight + topBounds.height}px`
+
+      gsap.to('#hero-explore-content', {
+        y: centerToCenter,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '#hero-explore',
+          start: scrollTriggerStart,
+          end: 'center center',
+          scrub: 0.25
+        }
+      })
+
+      gsap.effects.parallax('#astronaut', {
+        trigger: '#hero-explore',
+        start: scrollTriggerStart,
+        speed: 0.5,
+        /* extra */
+        extra: {
+          rotate: '15deg',
+          x: '-20%',
+          scale: 1.5
+        }
+      })
+
+      gsap.effects.parallax('#satellite', {
+        trigger: '#hero-explore',
+        start: scrollTriggerStart,
+        speed: -0.5,
+        /* extra */
+        extra: {
+          // rotate: '-15deg',
+          x: '-40%'
+          // scale: 1.5
+        }
+      })
     },
     {
       scope: containerRef,
       revertOnUpdate: true,
       dependencies: [
+        lg,
         heroExploreContainerBounds.top,
         heroExploreContainerBounds.height,
         topBounds.height
@@ -196,8 +231,8 @@ export default function LabHero({
         <div
           id='hero-top'
           ref={topRef}
-          className='sticky top-header grid h-fold grid-cols-1 lg:h-auto lg:grid-cols-12'>
-          <div className='col-span-6 border-b border-border lg:border-r lg:border-transparent'>
+          className='top-header grid h-fold grid-cols-1 grid-rows-[repeat(2,_minmax(0,1fr))_max-content] lg:sticky lg:h-auto lg:grid-cols-12 lg:grid-rows-none'>
+          <div className='lg:boder-b-0 border-b border-border bg-surface lg:col-span-6 lg:border-r-[2px] lg:border-transparent lg:bg-transparent'>
             <div className='flex flex-col bg-surface p-em-[24] gap-em-[24] lg:p-em-[32] lg:gap-em-[36] 2xl:p-em-[48]'>
               <h1
                 data-hero-text
@@ -218,14 +253,37 @@ export default function LabHero({
               </p>
             </div>
           </div>
-          <span className='bg-lines order-1 col-span-1 w-full border-t border-border h-em-[48] lg:order-none lg:h-full lg:border-none' />
+          <span className='bg-lines w-full border-t border-border h-em-[48] lg:h-full lg:border-none' />
           <ValuesSlider values={values} />
+          <span className='bg-lines w-full border-t border-border h-em-[72] lg:hidden' />
         </div>
 
         <div
           id='hero-explore'
-          className='relative z-10 flex h-fold shrink-0 flex-col items-center justify-end border-y border-border bg-surface p-em-[32] 2xl:p-em-[48]'
+          className='relative z-10 flex h-fold shrink-0 flex-col items-center justify-center overflow-hidden border-y border-border bg-surface p-em-[48] lg:justify-end'
           ref={heroExploreContainerRef}>
+          <picture className='absolute bottom-0 left-0 h-full w-full translate-y-[20%] opacity-50'>
+            <Image
+              id='satellite'
+              priority
+              src={satellite}
+              alt='Background'
+              quality={100}
+              className='h-full w-full object-contain object-bottom opacity-0'
+            />
+          </picture>
+
+          <picture className='absolute bottom-0 left-0 h-full w-full translate-y-[10%] opacity-50'>
+            <Image
+              id='astronaut'
+              priority
+              src={astronaut}
+              quality={100}
+              alt='Background'
+              className='h-full w-full object-contain object-bottom opacity-0'
+            />
+          </picture>
+
           <div
             id='hero-explore-content'
             className='flex flex-col items-center gap-em-[24] lg:gap-em-[32] 2xl:gap-em-[40]'>
@@ -332,12 +390,12 @@ const ValuesSlider = ({
 
   const handleMouseEnter = () => {
     setIsHovering(true)
-    progressTl.current.pause()
+    if (isDesktop) progressTl.current.pause()
   }
 
   const handleMouseLeave = () => {
     setIsHovering(false)
-    progressTl.current.play()
+    if (isDesktop) progressTl.current.play()
   }
 
   useEffect(() => {
@@ -361,7 +419,7 @@ const ValuesSlider = ({
   return (
     <>
       <div
-        className='relative col-span-5 flex w-full overflow-hidden bg-surface-contrast/[0.05] lg:aspect-auto lg:px-em-[24]'
+        className='relative col-span-5 flex w-full flex-col overflow-hidden bg-surface-contrast/[0.05] lg:aspect-auto lg:px-em-[24]'
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}>
         <div className='relative h-full w-full'>
@@ -381,26 +439,25 @@ const ValuesSlider = ({
             <h5
               ref={titleRef}
               id='value-title'
-              className='line-clamp-2 h-[3em] overflow-hidden text-start font-medium uppercase text-text/95 text-em-[18/16] md:text-em-[24/16] lg:text-end lg:text-em-[20/16] 2xl:text-em-[24/16]'>
+              className='line-clamp-2 h-[4em] overflow-hidden text-start font-medium uppercase text-text/95 text-em-[24/16] lg:h-[3em] lg:text-end lg:text-em-[20/16] 2xl:text-em-[24/16]'>
               {values[activeSlide].title}
             </h5>
-
-            <div
-              ref={descriptionRef}
-              className=' max-w-col-2 border-border bg-surface-secondary p-em-[12] lg:hidden'>
-              <p className='text-pretty text-start font-medium uppercase text-text-secondary'>
-                {values[activeSlide].description}
-              </p>
-            </div>
           </div>
         </div>
 
+        <div
+          ref={descriptionRef}
+          className='border-border bg-surface-secondary px-em-[12] py-em-[24] mb-em-[12] lg:hidden'>
+          <p className='text-pretty text-start font-medium uppercase text-text-secondary'>
+            {values[activeSlide].description}
+          </p>
+        </div>
         <div
           id='values-progress'
           className='absolute bottom-0 left-0 w-full border-t border-border bg-surface-contrast/[0.05] h-em-[12]'>
           <span
             ref={progressRef}
-            className='absolute left-0 block h-full w-full bg-surface-contrast/5'
+            className='absolute left-0 block h-full w-full bg-surface-contrast/10'
             style={{opacity: 0}}
           />
         </div>
