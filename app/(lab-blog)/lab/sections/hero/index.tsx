@@ -134,8 +134,7 @@ export default function LabHero({
             trigger: containerRef.current,
             start: 'top top',
             end: 'bottom bottom',
-            scrub: 1.2,
-            markers: true
+            scrub: 1.2
           }
         })
         .to(heroTop, {

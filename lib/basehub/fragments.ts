@@ -63,6 +63,16 @@ export const optimizedImageFragment = fragmentOn("BlockImage", {
 export type OptimizedImageFragment = fragmentOn.infer<typeof optimizedImageFragment>;
 
 /* -------------------------------------------------------------------------- */
+/*                                    Video                                   */
+/* -------------------------------------------------------------------------- */
+
+export const videoFragment = fragmentOn('BlockVideo', {
+  url: true,
+  width: true,
+  height: true
+})
+
+/* -------------------------------------------------------------------------- */
 /*                                    Quote                                   */
 /* -------------------------------------------------------------------------- */
 
