@@ -281,7 +281,7 @@ export default function LabHero({
           id='hero-explore'
           className='relative z-10 flex h-fold shrink-0 flex-col items-center justify-center overflow-hidden border-y border-border bg-surface p-em-[48] lg:justify-end'
           ref={heroExploreContainerRef}>
-          <picture className='absolute left-0 top-0 w-full translate-x-[-40%] opacity-50 max-lg:translate-y-[-20%] lg:bottom-0 lg:w-1/2'>
+          <picture className='absolute left-0 top-0 w-full translate-x-[-40%] opacity-50 invert dark:invert-0 max-lg:translate-y-[-20%] lg:bottom-0 lg:w-1/2'>
             <Image
               id='satellite'
               priority
@@ -306,7 +306,7 @@ export default function LabHero({
 						/>
 					</picture> */}
 
-          <picture className='absolute right-[30%] top-[60%] hidden w-1/4 translate-x-[25%] opacity-50 lg:block'>
+          <picture className='absolute right-[30%] top-[60%] hidden w-1/4 translate-x-[25%] opacity-50 invert dark:invert-0 lg:block'>
             <Image
               id='mac'
               priority
@@ -317,7 +317,7 @@ export default function LabHero({
             />
           </picture>
 
-          <picture className='absolute bottom-0 right-0 w-full translate-x-[35%] opacity-50 max-lg:translate-y-[40%] lg:w-1/2 lg:translate-x-[25%]'>
+          <picture className='absolute bottom-0 right-0 w-full translate-x-[35%] opacity-50 invert dark:invert-0 max-lg:translate-y-[40%] lg:w-1/2 lg:translate-x-[25%]'>
             <Image
               id='astronaut'
               priority
