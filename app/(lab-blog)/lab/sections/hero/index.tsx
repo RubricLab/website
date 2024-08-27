@@ -285,7 +285,7 @@ export default function LabHero({
 							id='satellite'
 							priority
 							src={satellite}
-							alt='satellite'
+							alt='satellite' 
 							quality={100}
 							style={{
 								transformOrigin: '60% 40%'
@@ -294,7 +294,7 @@ export default function LabHero({
 						/>
 					</picture>
 
-					<picture className='absolute top-[5%] opacity-50 max-lg:right-0 max-lg:w-1/2 max-lg:translate-x-1/2 max-lg:rotate-180 lg:left-[0%] lg:w-1/4 lg:translate-y-[-20%]'>
+					{/* <picture className='absolute top-[5%] opacity-50 max-lg:right-0 max-lg:w-1/2 max-lg:translate-x-1/2 max-lg:rotate-180 lg:left-[0%] lg:w-1/4 lg:translate-y-[-20%]'>
 						<Image
 							id='moon'
 							priority
@@ -303,7 +303,7 @@ export default function LabHero({
 							quality={100}
 							className='h-full w-full object-contain object-bottom opacity-0'
 						/>
-					</picture>
+					</picture> */}
 
 					<picture className='absolute right-[30%] top-[60%] hidden w-1/4 translate-x-[25%] opacity-50 lg:block'>
 						<Image
