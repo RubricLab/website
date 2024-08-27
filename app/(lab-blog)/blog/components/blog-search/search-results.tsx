@@ -1,12 +1,10 @@
-'use client'
-
 import {Button} from '@/common/ui/button'
 import {useLoaded} from '@/hooks/use-loaded'
 import {BlogCategory, BlogPostCard} from '@/lib/basehub/fragments/blog'
 import {useGSAP} from '@gsap/react'
 import gsap from 'gsap'
 import {useRouter, useSearchParams} from 'next/navigation'
-import {useEffect, useRef} from 'react'
+import {useEffect, useRef, useState} from 'react'
 import {usePreviewStore} from '../preview-store'
 import {BlogpostCard} from './blogpost-card'
 import SearchEmptyStateIllustration from './empty-state'
@@ -17,26 +15,15 @@ export interface SearchResultsProps {
   posts: BlogPostCard[]
 }
 
+const DEBOUNCE_TIMEOUT = 100
+
 export default function SearchResults({posts, search}: SearchResultsProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
-
   const tag = searchParams.get('tag')
-
   const {selectedPost, setSelectedPost, clearSelectedPost} = usePreviewStore()
-
-  let filteredPosts = posts
-
-  if (search.result) {
-    const resultsIds = search.result.hits.map(hit => hit.document._id)
-    filteredPosts = posts.filter(post => resultsIds.includes(post._id))
-  }
-
-  if (tag)
-    filteredPosts = filteredPosts.filter(post =>
-      post.categories.includes(tag as BlogCategory)
-    )
-
+  const [localSelectedPost, setLocalSelectedPost] =
+    useState<BlogPostCard | null>(null)
   const loaded = useLoaded()
   const tl = useRef(
     gsap.timeline({
@@ -47,13 +34,24 @@ export default function SearchResults({posts, search}: SearchResultsProps) {
       }
     })
   )
-
   const containerRef = useRef<HTMLDivElement>(null)
+  const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+
+  let filteredPosts = posts
+
+  if (search?.result) {
+    const resultsIds = search.result.hits.map(hit => hit.document._id)
+    filteredPosts = posts.filter(post => resultsIds.includes(post._id))
+  }
+
+  if (tag)
+    filteredPosts = filteredPosts.filter(post =>
+      post.categories.includes(tag as BlogCategory)
+    )
 
   useGSAP(
     () => {
       const container = containerRef.current
-
       if (!container) return
       const mainContainer = document.querySelector('#search-container')
       const posts = container.querySelectorAll('[data-post-id]')
@@ -92,18 +90,36 @@ export default function SearchResults({posts, search}: SearchResultsProps) {
 
   useEffect(() => {
     if (!loaded) return
-
     tl.current.play()
   }, [loaded])
 
-  if (filteredPosts.length === 0 && search.result)
+  const handleMouseEnter = (post: BlogPostCard) => {
+    setLocalSelectedPost(post)
+
+    if (debounceTimeoutRef.current) clearTimeout(debounceTimeoutRef.current)
+
+    debounceTimeoutRef.current = setTimeout(() => {
+      setSelectedPost(post)
+    }, DEBOUNCE_TIMEOUT)
+  }
+
+  const handleMouseLeave = (post: BlogPostCard) => {
+    setLocalSelectedPost(null)
+
+    if (debounceTimeoutRef.current) clearTimeout(debounceTimeoutRef.current)
+
+    debounceTimeoutRef.current = setTimeout(() => {
+      clearSelectedPost(post)
+    }, DEBOUNCE_TIMEOUT)
+  }
+
+  if (filteredPosts.length === 0 && search?.result)
     return (
       <>
         <span className='bg-lines block w-full border-b border-border h-em-[48]' />
-
         <div className='flex flex-col items-center justify-center py-em-[32] gap-em-[12]'>
           <p className='uppercase text-text-tertiary text-em-[14/16]'>
-            No results found{' '}
+            No results found
             {search.query.length > 0 && <> for «{search.query}»</>}
           </p>
           <SearchEmptyStateIllustration className='text-border w-em-[200]' />
@@ -130,9 +146,9 @@ export default function SearchResults({posts, search}: SearchResultsProps) {
         <div className='relative flex items-center'>
           <BlogpostCard
             data-post-id={firstPost._id}
-            active={selectedPost?._id === firstPost._id}
-            onMouseEnter={() => setSelectedPost(firstPost)}
-            onMouseLeave={() => clearSelectedPost(firstPost)}
+            active={localSelectedPost?._id === firstPost._id}
+            onMouseEnter={() => handleMouseEnter(firstPost)}
+            onMouseLeave={() => handleMouseLeave(firstPost)}
             type='inline-card'
             {...firstPost}
           />
@@ -147,14 +163,13 @@ export default function SearchResults({posts, search}: SearchResultsProps) {
         data-divider
         className='bg-lines block w-full h-em-[32]'
       />
-
       <div className='flex flex-col'>
         {remainingPosts.map(post => (
           <BlogpostCard
             data-post-id={post._id}
-            active={selectedPost?._id === post._id}
-            onMouseEnter={() => setSelectedPost(post)}
-            onMouseLeave={() => clearSelectedPost(post)}
+            active={localSelectedPost?._id === post._id}
+            onMouseEnter={() => handleMouseEnter(post)}
+            onMouseLeave={() => handleMouseLeave(post)}
             className='focus:z-10'
             key={post._id}
             {...post}
@@ -164,3 +179,4 @@ export default function SearchResults({posts, search}: SearchResultsProps) {
     </div>
   )
 }
+
