@@ -81,6 +81,7 @@ const FooterSlot = ({
         />
       ) : (
         <video
+          loop
           className='w-full'
           autoPlay
           muted
