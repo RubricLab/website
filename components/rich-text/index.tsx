@@ -19,7 +19,7 @@ export const richTextClasses = clsx(
   'prose-strong:font-semibold prose-strong:text-text',
   'prose-a:outline-control prose-a:font-semibold prose-a:text-text prose-a:no-underline hover:prose-a:underline prose-a:underline-offset-[0.25em] prose-a:decoration-control/50',
   'prose-pre:pl-0',
-  'prose-li:mt-em-[20] prose-li:mb-em-[24] prose-li:list-inside',
+  'prose-li:mt-em-[20] prose-li:mb-em-[24]',
   s['rich-text']
 )
 

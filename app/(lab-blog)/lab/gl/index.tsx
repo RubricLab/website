@@ -148,7 +148,7 @@ const Scene = ({activeLogo}: {activeLogo: number[][]}) => {
 			}
 		},
 		borderColor: {
-			value: '#474747',
+			value: '#242424',
 			onChange: (value: string) => {
 				setBorderColor(borderColor.clone().set(value))
 			}
