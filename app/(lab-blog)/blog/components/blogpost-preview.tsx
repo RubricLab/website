@@ -33,7 +33,7 @@ export const BlogPostPreview = (props: BlogPostPreviewProps) => {
   const filenameFormat = _slug.split('-').slice(0, 3).join('_') + '.md'
 
   const getTitleClasses = () => {
-    if (_title.length > 50) return 'text-em-[20/16] 2xl:text-em-[24/16]'
+    if (_title.length > 50) return 'text-em-[22/16] 2xl:text-em-[24/16]'
     else if (_title.length > 30) return 'text-em-[24/16] 2xl:text-em-[32/16]'
     else return 'text-em-[32/16] 2xl:text-em-[40/16]'
   }
