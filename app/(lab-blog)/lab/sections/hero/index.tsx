@@ -126,7 +126,7 @@ export default function LabHero({
 					0.6
 				)
 				.to(
-					['#astronaut', '#satellite'],
+					['#astronaut', '#satellite', '#mac'],
 					{
 						opacity: 1,
 						duration: 3,
@@ -250,7 +250,7 @@ export default function LabHero({
 					ref={topRef}
 					className='top-header grid h-fold grid-cols-1 grid-rows-[repeat(2,_minmax(0,1fr))_max-content] lg:sticky lg:h-auto lg:grid-cols-12 lg:grid-rows-none'>
 					<div className='lg:boder-b-0 border-b border-border bg-surface lg:col-span-6 lg:border-r-[2px] lg:border-transparent lg:bg-transparent'>
-						<div className='flex flex-col bg-surface p-em-[24] gap-em-[24] lg:p-em-[32] lg:gap-em-[36] 2xl:p-em-[48]'>
+						<div className='flex flex-col h-full bg-surface justify-center p-em-[24] gap-em-[24] lg:p-em-[32] lg:gap-em-[36] 2xl:p-em-[48]'>
 							<h1
 								data-hero-text
 								style={{
@@ -279,7 +279,7 @@ export default function LabHero({
 					id='hero-explore'
 					className='relative z-10 flex h-fold shrink-0 flex-col items-center justify-center overflow-hidden border-y border-border bg-surface p-em-[48] lg:justify-end'
 					ref={heroExploreContainerRef}>
-					<picture className='absolute bottom-0 left-0 w-1/2 translate-x-[-25%] opacity-75'>
+					<picture className='absolute top-0 max-lg:translate-y-[-20%] lg:bottom-0 left-0 w-full lg:w-1/2 translate-x-[-40%] opacity-75'>
 						<Image
 							id='satellite'
 							priority
@@ -293,18 +293,18 @@ export default function LabHero({
 						/>
 					</picture>
 
-					<picture className='absolute right-[30%] top-[60%] w-1/4 translate-x-[25%] opacity-75'>
+					<picture className='absolute hidden lg:block right-[30%] top-[60%] w-1/4 translate-x-[25%] opacity-75'>
 						<Image
 							id='mac'
 							priority
 							src={mac}
 							quality={100}
 							alt='mac'
-							className='h-full w-full object-contain object-bottom'
+							className='h-full w-full object-contain object-bottom opacity-0'
 						/>
 					</picture>
 
-					<picture className='absolute bottom-0 right-0 w-1/2 translate-x-[25%] opacity-75'>
+					<picture className='absolute bottom-0 right-0 w-full max-lg:translate-y-[40%] lg:w-1/2 translate-x-[35%] lg:translate-x-[25%] opacity-75'>
 						<Image
 							id='astronaut'
 							priority
