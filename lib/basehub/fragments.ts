@@ -1,19 +1,6 @@
 import { fragmentOn } from "basehub";
 
 /* -------------------------------------------------------------------------- */
-/*                                   Heading                                  */
-/* -------------------------------------------------------------------------- */
-
-export const headingFragment = fragmentOn("HeadingComponent", {
-  title: true,
-  subtitle: true,
-  tag: true,
-  align: true,
-});
-
-export type HeadingFragment = fragmentOn.infer<typeof headingFragment>;
-
-/* -------------------------------------------------------------------------- */
 /*                                   Avatar                                   */
 /* -------------------------------------------------------------------------- */
 
@@ -71,33 +58,6 @@ export const videoFragment = fragmentOn('BlockVideo', {
   width: true,
   height: true
 })
-
-/* -------------------------------------------------------------------------- */
-/*                                    Quote                                   */
-/* -------------------------------------------------------------------------- */
-
-export const quoteFragment = fragmentOn("QuoteComponent", {
-  _id: true,
-  author: {
-    _id: true,
-    _title: true,
-    image: {
-      url: true,
-      alt: true,
-    },
-    company: {
-      _title: true,
-      image: {
-        url: true,
-        alt: true,
-      },
-    },
-    role: true,
-  },
-  quote: true,
-});
-
-export type QuoteFragment = fragmentOn.infer<typeof quoteFragment>;
 
 /* -------------------------------------------------------------------------- */
 /*                                   Button                                   */
