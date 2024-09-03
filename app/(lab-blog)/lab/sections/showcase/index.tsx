@@ -11,6 +11,7 @@ import {useBreakpoint} from '@/hooks/use-breakpoint'
 import useWindowSize from '@/hooks/use-window-size'
 import {LabProjectFragment} from '@/lib/basehub/fragments/lab'
 import {useGSAP} from '@gsap/react'
+import {ErrorBoundary} from 'next/dist/client/components/error-boundary'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import {GridPulseAnimation} from '../../components/grid-pulse-animation'
@@ -144,7 +145,7 @@ const ProjectContent = (props: LabProjectFragment) => {
 	return (
 		<div
 			id={props._id}
-			className='px-em-[24] scroll-mt-[10vh] lg:pr-em-[48] lg:pl-em-[24]'
+			className='scroll-mt-[10vh] px-em-[24] lg:pr-em-[48] lg:pl-em-[24]'
 			ref={contentRef}>
 			<article className='uppercase'>
 				<h3 className='text-em-[56] md:text-em-[72/16] 2xl:text-em-[96/16]'>
@@ -269,7 +270,7 @@ const ProgressSlot = ({
 
 				projectsSection.scrollIntoView({
 					behavior: 'smooth',
-					block: 'start',
+					block: 'start'
 				})
 			}}
 			className='relative flex flex-1 items-center overflow-hidden border-r border-border uppercase transition-[padding_font-size] px-em-[24/16] last:border-r-0'>
@@ -443,7 +444,81 @@ export default function LabShowcase({showcase}: LabShowcaseProps) {
 					className={cn(
 						'fixed right-sides top-header hidden h-fold w-[calc(var(--col-width)*5+1px)] border-l border-r border-border bg-black opacity-0 lg:block'
 					)}>
-					{lg && <LabWebGL activeSlug={activeProject._slug} />}
+					{lg && (
+						<ErrorBoundary
+							errorComponent={e => {
+								return (
+									<div className='flex h-full w-full flex-col items-center justify-center gap-y-em-[32] pb-em-[32]'>
+										<svg
+											width='25%'
+											viewBox='0 0 1356 1278'
+											fill='none'
+											xmlns='http://www.w3.org/2000/svg'>
+											<path
+												d='M316.1 305V179L845.1 34L1345.1 289V1078L659.1 1267L160.1 1014L161.1 385L316.1 305Z'
+												stroke='currentColor'
+												stroke-width='8'
+												stroke-miterlimit='10'
+											/>
+											<path
+												d='M659.1 1267V479L1345.1 289'
+												stroke='currentColor'
+												stroke-width='8'
+												stroke-miterlimit='10'
+											/>
+											<path
+												d='M659.1 486L303.1 298'
+												stroke='currentColor'
+												stroke-width='8'
+												stroke-miterlimit='10'
+												stroke-linejoin='round'
+											/>
+											<path
+												d='M161.1 385L318.1 464L321.1 307L461.1 251L348.1 195L316.1 179M439.1 532L364.1 566'
+												stroke='currentColor'
+												stroke-width='8'
+												stroke-miterlimit='10'
+											/>
+											<path
+												d='M460.1 595L415.1 462L319.1 411M559.1 152L571.1 203L498.1 190L399.1 220M234.1 422V516M77.8 12L210.3 36.6L274.7 121.5L209.5 256.5L76.5 232.1L12 147.6L77.8 12Z'
+												stroke='currentColor'
+												stroke-width='8'
+												stroke-miterlimit='10'
+											/>
+											<path
+												d='M76.5 232.1L141.6 97.3L274.7 121.5'
+												stroke='currentColor'
+												stroke-width='8'
+												stroke-miterlimit='10'
+											/>
+											<path
+												d='M141.101 98.5L77.801 12'
+												stroke='currentColor'
+												stroke-width='8'
+												stroke-miterlimit='10'
+												stroke-linejoin='round'
+											/>
+											<path
+												d='M1054 884.301L1002 897.301V578L1054 566V884.301Z'
+												stroke='currentColor'
+												stroke-width='8'
+												stroke-miterlimit='10'
+											/>
+											<path
+												d='M1054 986.5L1002 999.5V943L1054 931V986.5Z'
+												stroke='currentColor'
+												stroke-width='8'
+												stroke-miterlimit='10'
+											/>
+										</svg>
+
+										<p>{e.error.message}</p>
+									</div>
+								)
+							}}>
+							<LabWebGL activeSlug={activeProject._slug} />
+						</ErrorBoundary>
+					)}
 				</div>
 			</section>
 
