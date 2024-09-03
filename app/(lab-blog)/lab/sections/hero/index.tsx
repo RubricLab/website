@@ -246,13 +246,14 @@ export default function LabHero({
       className='relative z-30'>
       <section
         ref={sectionRef}
-        className=' flex flex-col px-px'>
+        className='flex flex-col px-px'>
         <div
           id='hero-top'
           ref={topRef}
-          className='top-header grid grid-cols-1 grid-rows-[repeat(2,_minmax(0,1fr))_max-content] lg:sticky lg:h-auto lg:grid-cols-12 lg:grid-rows-none'>
+          className='top-header grid grid-cols-1 grid-rows-[repeat(2,_minmax(0,1fr))_max-content] lg:sticky lg:h-auto lg:grid-cols-12 lg:grid-rows-none'
+          >
           <div className='lg:boder-b-0 border-b border-border bg-surface lg:col-span-6 lg:border-r-[2px] lg:border-transparent lg:bg-transparent'>
-            <div className='flex h-full flex-col justify-center bg-surface px-em-[24] py-em-[48] gap-em-[24] lg:p-em-[32] lg:gap-em-[36] 2xl:p-em-[48]'>
+            <div className='flex flex-col justify-center bg-surface px-em-[24] py-em-[48] gap-em-[24] lg:p-em-[32] lg:gap-em-[36] 2xl:p-em-[48]'>
               <h1
                 data-hero-text
                 style={{
@@ -272,7 +273,7 @@ export default function LabHero({
               </p>
             </div>
           </div>
-          <span className='bg-lines w-full border-t border-border h-em-[48] lg:h-full lg:border-none' />
+          <span className='bg-lines w-full border-t border-border h-em-[48] lg:h-auto lg:border-none' />
           <ValuesSlider values={values} />
           <span className='bg-lines w-full border-t border-border h-em-[72] lg:hidden' />
         </div>

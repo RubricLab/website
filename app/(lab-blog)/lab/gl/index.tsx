@@ -91,23 +91,30 @@ const noLogo = [
 	[0, 0, 0],
 	[0, 0, 0]
 ]
+
 const logos = {
-	maige: [
+	'create-rubric-app': [
 		[1, 0, 1],
 		[1, 1, 0],
 		[1, 0, 0]
 	],
-	'maige-1': [
+	'maige': [
 		[1, 0, 1],
-		[0, 1, 0],
-		[1, 0, 1]
+		[1, 1, 1],
+		[0, 1, 0]
 	],
-	'maige-2': [
+	'ros': [
 		[0, 1, 1],
 		[1, 0, 1],
 		[1, 1, 0]
+	],
+	'infrastructure-packages': [
+		[1, 0, 1],
+		[0, 1, 0],
+		[1, 0, 1]
 	]
 }
+
 const clone = (arr: any) => {
 	return JSON.parse(JSON.stringify(arr))
 }
