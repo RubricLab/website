@@ -144,7 +144,7 @@ const ProjectContent = (props: LabProjectFragment) => {
 	return (
 		<div
 			id={props._id}
-			className='px-em-[24] lg:pr-em-[48] lg:pl-em-[24]'
+			className='px-em-[24] scroll-mt-[10vh] lg:pr-em-[48] lg:pl-em-[24]'
 			ref={contentRef}>
 			<article className='uppercase'>
 				<h3 className='text-em-[56] md:text-em-[72/16] 2xl:text-em-[96/16]'>
@@ -267,9 +267,9 @@ const ProgressSlot = ({
 				const projectsSection = document.getElementById(targetId)
 				if (!projectsSection) return
 
-				window.scrollTo({
-					top: projectsSection.offsetTop + window.innerHeight * 0.85,
-					behavior: 'smooth'
+				projectsSection.scrollIntoView({
+					behavior: 'smooth',
+					block: 'start',
 				})
 			}}
 			className='relative flex flex-1 items-center overflow-hidden border-r border-border uppercase transition-[padding_font-size] px-em-[24/16] last:border-r-0'>
@@ -277,7 +277,9 @@ const ProgressSlot = ({
 				className='absolute left-0 top-0 h-full w-full -translate-x-full bg-white/5'
 				ref={ref}
 			/>
-			{name}
+			<span className='inline-block w-full max-w-max overflow-hidden text-ellipsis whitespace-nowrap'>
+				{name}
+			</span>
 		</button>
 	)
 }
@@ -290,6 +292,7 @@ const ProgressStatus = ({
 	onActiveChange: (idx: string) => void
 }) => {
 	const [isShrunk, setIsShrunk] = useState(true)
+	const lg = useBreakpoint('lg')
 
 	useEffect(() => {
 		let timeoutId: NodeJS.Timeout
@@ -308,18 +311,22 @@ const ProgressStatus = ({
 	}, [])
 
 	const handleMouseEnter = () => {
+		if (!lg) return
 		setIsShrunk(false)
 	}
 
 	const handleMouseLeave = () => {
+		if (!lg) return
 		setIsShrunk(true)
 	}
 
 	const handleFocus = () => {
+		if (!lg) return
 		setIsShrunk(false)
 	}
 
 	const handleBlur = () => {
+		if (!lg) return
 		setIsShrunk(true)
 	}
 
