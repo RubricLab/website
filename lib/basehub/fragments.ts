@@ -79,3 +79,18 @@ export const darkLightImageFragment = fragmentOn("DarkLightImageComponent", {
 });
 
 export type DarkLightImageFragment = fragmentOn.infer<typeof darkLightImageFragment>;
+
+/* -------------------------------------------------------------------------- */
+/*                                  Actions                                   */
+/* -------------------------------------------------------------------------- */
+
+export const actionsFragment = fragmentOn("ActionsComponent", {
+  _id: true,
+  __typename: true,
+  size: true,
+  actions: {
+    on_ButtonComponent: {
+      ...buttonFragment
+    }
+  }
+});

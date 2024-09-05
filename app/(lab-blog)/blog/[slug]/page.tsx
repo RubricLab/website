@@ -17,12 +17,13 @@ import {
   richTextClasses
 } from '@/components/rich-text'
 import {BASEHUB_REVALIDATE_TIME} from '@/lib/basehub/constants'
-import {authorFragment, darkLightImageFragment} from '@/lib/basehub/fragments'
+import {actionsFragment, authorFragment, darkLightImageFragment} from '@/lib/basehub/fragments'
 import {formatDate} from '@/lib/utils/dates'
 import {basehub} from 'basehub'
 import {Pump} from 'basehub/react-pump'
 import {cx} from 'class-variance-authority'
 import Link from 'next/link'
+import { Actions } from '@/components/actions'
 
 export const dynamic = 'force-static'
 
@@ -150,7 +151,8 @@ export default async function BlogPostPage({
                           on_FaqItemComponent: FaqItemComponentFragment,
                           on_RichTextCalloutComponent:
                             richTextCalloutComponentFragment,
-                          on_CodeSnippetComponent: codeSnippetFragment
+                          on_CodeSnippetComponent: codeSnippetFragment,
+                          on_ActionsComponent: actionsFragment
                         },
                         content: 1,
                         toc: 1
@@ -236,7 +238,8 @@ export default async function BlogPostPage({
                     components={{
                       ...richTextBaseComponents,
                       RichTextCalloutComponent: RichTextCalloutComponent,
-                      CodeSnippetComponent: CodeSnippet
+                      CodeSnippetComponent: CodeSnippet,
+                      ActionsComponent: Actions
                     }}>
                     {blogpost.body.json.content}
                   </RichText>

@@ -190,10 +190,7 @@ const ProjectContent = (props: LabProjectFragment) => {
 								}
 					}
 					ctas={props.ctas.items.map(cta => ({
-						variant:
-							(cta.type === 'primary' && 'default') ||
-							(cta.type === 'secondary' && 'secondary') ||
-							'outline',
+						variant: cta.type,
 						href: cta.href,
 						label: cta.label
 					}))}
@@ -448,7 +445,7 @@ export default function LabShowcase({showcase}: LabShowcaseProps) {
 						<ErrorBoundary
 							errorComponent={e => {
 								return (
-									<div className='flex h-full w-full flex-col items-center justify-center gap-y-em-[32] pb-em-[32]'>
+									<div className='flex h-full w-full flex-col items-center justify-center pb-em-[32] gap-y-em-[32]'>
 										<svg
 											width='25%'
 											viewBox='0 0 1356 1278'
