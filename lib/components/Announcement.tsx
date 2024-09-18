@@ -20,13 +20,13 @@ const history = [
 		target: '_blank',
 		href: 'https://year-in-code.com',
 		date: new Date('12/19/2023')
+	},
+	{
+		title: 'Check out our blog w/ Neon',
+		target: '_blank',
+		href: 'https://neon.tech/blog/rubric-labs-can-make-your-ai-dreams-come-true',
+		date: new Date('09/18/2023')
 	}
-	// {
-	// 	title: 'Maige',
-	// 	target: '_blank',
-	// 	href: 'https://maige.app',
-	// 	date: new Date('02/19/2024')
-	// }
 ]
 
 export default function Announcement() {
