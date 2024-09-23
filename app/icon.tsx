@@ -14,60 +14,22 @@ export default async function Icon() {
 			<svg
 				width='32'
 				height='32'
-				viewBox='0 0 32 32'
+				viewBox='0 0 64 64'
 				fill='none'
 				xmlns='http://www.w3.org/2000/svg'>
-				<g clipPath='url(#frame)'>
-					<rect
-						width='32'
-						height='32'
-						fill='black'
-					/>
-					<rect
-						x='4'
-						y='20'
-						width='8'
-						height='8'
-						fill='white'
-					/>
-					<rect
-						x='4'
-						y='12'
-						width='8'
-						height='8'
-						fill='white'
-					/>
-					<rect
-						x='4'
-						y='4'
-						width='8'
-						height='8'
-						fill='white'
-					/>
-					<rect
-						x='12'
-						y='12'
-						width='8'
-						height='8'
-						fill='white'
-					/>
-					<rect
-						x='20'
-						y='4'
-						width='8'
-						height='8'
-						fill='white'
-					/>
-				</g>
-				<defs>
-					<clipPath id='frame'>
-						<rect
-							width='32'
-							height='32'
-							fill='white'
-						/>
-					</clipPath>
-				</defs>
+				<rect
+					width='64'
+					height='64'
+					fill='black'
+				/>
+				<path
+					d='M12.7998 12.7998H25.5998V25.5998H38.3998V38.3998H25.5998V51.1998H12.7998V12.7998Z'
+					fill='white'
+				/>
+				<path
+					d='M38.3998 25.5998V12.7998H51.1998V25.5998H38.3998Z'
+					fill='white'
+				/>
 			</svg>
 		),
 		{...size}

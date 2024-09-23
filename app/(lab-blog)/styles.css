@@ -1,0 +1,166 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .bg-lines {
+    background-image: linear-gradient(
+      45deg,
+      transparent 0%,
+      transparent 49%,
+      rgb(var(--color-border) / 0.5) 49%,
+      rgb(var(--color-border) / 0.5) 51%,
+      transparent 51%,
+      transparent 100%
+    );
+    background-size: 1em 1em;
+  }
+
+  .writing-vertical {
+    writing-mode: vertical-rl;
+  }
+
+  .focus-ring {
+    @apply ring-offset-0 ring-offset-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-control focus-visible:ring-offset-2;
+  }
+
+  .focus-within-ring {
+    @apply ring-offset-0 ring-offset-surface tab-focus-within:outline-none tab-focus-within:ring-2 tab-focus-within:ring-control tab-focus-within:ring-offset-2;
+  }
+
+  .transition-colors-shadow {
+    transition:
+      color 0.5s,
+      background-color 0.5s,
+      border-color 0.5s,
+      box-shadow 0.25s;
+  }
+}
+
+:root {
+  /* viewport scaling */
+  --base-viewport: 480;
+  --base-size: 16;
+  --dynamic-base-size: calc(var(--base-size) / var(--base-viewport) * 100vw);
+
+  /* spacing */
+  --header-height: calc(48 / var(--base-size) * 1em);
+  --svh: 100svh;
+  --fold-height: calc(var(--svh, 100vh) - var(--header-height));
+  --spacing-sides: 0.75rem;
+  --col-count: 12;
+  --col-width: calc((100vw - (var(--spacing-sides) * 2)) / var(--col-count));
+  --1px-em: calc(1px / var(--base-size) * 1em);
+
+  /* base colors */
+
+  --white: 255 255 255;
+  --black: 0 0 0;
+
+  --shade-50: 246 246 246;
+  --shade-100: 231 231 231;
+  --shade-200: 209 209 209;
+  --shade-300: 176 176 176;
+  --shade-400: 136 136 136;
+  --shade-500: 109 109 109;
+  --shade-600: 93 93 93;
+  --shade-700: 79 79 79;
+  --shade-800: 71 71 71;
+  --shade-900: 61 61 61;
+  --shade-950: 38 38 38;
+
+  /* colors variables */
+  --color-text: var(--white);
+  --color-text-secondary: var(--shade-300);
+  --color-text-tertiary: var(--shade-500);
+  --color-text-contrast: var(--shade-950);
+  --color-surface: var(--black);
+  --color-surface-secondary: var(--shade-900);
+  --color-surface-tertiary: var(--shade-700);
+  --color-surface-contrast: var(--white);
+  --color-border: var(--shade-800);
+  --color-control: var(--white);
+}
+
+:root:not(html.dark) {
+  --color-text: var(--black);
+  --color-text-secondary: var(--shade-800);
+  --color-text-tertiary: var(--shade-600);
+  --color-text-contrast: var(--shade-100);
+  --color-surface: var(--white);
+  --color-surface-secondary: var(--shade-100);
+  --color-surface-tertiary: var(--shade-200);
+  --color-surface-contrast: var(--black);
+  --color-border: var(--shade-300);
+  /* --color-border-secondary: var(--shade-200); */
+  --color-control: var(--black);
+}
+
+@screen sm {
+  :root {
+    --header-height: calc(64 / var(--base-size) * 1em);
+    --base-viewport: 768;
+  }
+}
+
+@screen md {
+  :root {
+    --spacing-sides: 1.5rem;
+    --base-viewport: 1024;
+  }
+}
+
+@screen lg {
+  :root {
+    --base-viewport: 1512;
+  }
+}
+
+@screen 2xl {
+  :root {
+    --base-viewport: 1920;
+  }
+}
+
+html {
+  font-size: var(--dynamic-base-size);
+  text-rendering: geometricprecision;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: normal;
+  color: theme('colors.text.DEFAULT');
+  /* overflow-x: clip;
+  width: 100%;
+  max-width: 100vw; */
+  background-color: theme('colors.surface.DEFAULT');
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+*::selection {
+  color: theme('colors.text.contrast');
+  background-color: theme('colors.surface.contrast');
+}
+
+*:focus-visible {
+  outline-color: theme('colors.control.DEFAULT');
+}
+
+.no-scrollbar {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+html.dark .shiki,
+html.dark .shiki span {
+  color: var(--shiki-dark) !important;
+  /* Optional, if you also want font styles */
+  font-style: var(--shiki-dark-font-style) !important;
+  font-weight: var(--shiki-dark-font-weight) !important;
+  text-decoration: var(--shiki-dark-text-decoration) !important;
+}
