@@ -207,8 +207,8 @@ export function MobileMenu() {
       }
       className='fixed left-0 right-0 top-header z-menu flex border-b border-border bg-surface px-sides md:hidden'>
       <div className='flex w-full flex-col border-x border-border px-sides py-em-[12]'>
-        <p className='uppercase text-text-tertiary text-em-[14/16]'>
-          SITEMAP.TS
+        <p className='text-text-tertiary text-em-[14/16]'>
+          sitemap.ts
         </p>
 
         <nav className='relative flex flex-col pt-em-[24] gap-em-[16]'>
@@ -233,7 +233,7 @@ export function MobileMenu() {
               <Link
                 href={link.href}
                 onClick={closeMenu}
-                className='font-medium uppercase text-text text-em-[32/16]'>
+                className='font-medium text-text text-em-[32/16]'>
                 {link.title}
               </Link>
             </div>
@@ -250,8 +250,8 @@ export function MobileMenu() {
               href={'/'}
               onClick={closeMenu}
               aria-label='Go to the Rubric Labs website'
-              className='font-medium uppercase text-text-tertiary text-em-[24/16]'>
-              BACK TO RUBRIC.COM
+              className='font-medium text-text-tertiary text-em-[24/16]'>
+              Back to RubricLabs.com
             </Link>
           </div>
         </nav>
@@ -265,7 +265,7 @@ export function MobileMenu() {
               <Link
                 href={link.href}
                 aria-label='Go to the Rubric Labs website'
-                className='font-medium uppercase text-text-tertiary text-em-[14/16]'>
+                className='font-medium text-text-tertiary text-em-[14/16]'>
                 {link.title}
               </Link>
             </div>

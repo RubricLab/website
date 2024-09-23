@@ -30,7 +30,7 @@ const ContentBox = ({
 		<div
 			{...rest}
 			className={cn(
-				'content-box relative max-w-[49ch] overflow-hidden border border-border bg-surface uppercase px-em-[24] py-em-[32] text-em-[14/16] 2xl:text-em-[16/16]',
+				'content-box relative max-w-[49ch] overflow-hidden border border-border bg-surface px-em-[24] py-em-[32] text-em-[14/16] 2xl:text-em-[16/16]',
 				rest.className
 			)}>
 			<div
@@ -147,7 +147,7 @@ const ProjectContent = (props: LabProjectFragment) => {
 			id={props._id}
 			className='scroll-mt-[10vh] px-em-[24] lg:pr-em-[48] lg:pl-em-[24]'
 			ref={contentRef}>
-			<article className='uppercase'>
+			<article className=''>
 				<h3 className='text-em-[56] md:text-em-[72/16] 2xl:text-em-[96/16]'>
 					{props._title}
 				</h3>
@@ -270,7 +270,7 @@ const ProgressSlot = ({
 					block: 'start'
 				})
 			}}
-			className='relative flex flex-1 items-center overflow-hidden border-r border-border uppercase transition-[padding_font-size] px-em-[24/16] last:border-r-0'>
+			className='relative flex flex-1 items-center overflow-hidden border-r border-border transition-[padding_font-size] px-em-[24/16] last:border-r-0'>
 			<div
 				className='absolute left-0 top-0 h-full w-full -translate-x-full bg-white/5'
 				ref={ref}

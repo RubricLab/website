@@ -43,7 +43,7 @@ export default function BlogFilters({
         <input
           defaultValue={query}
           onChange={handleSearchChange}
-          className='grow bg-transparent uppercase outline-0 placeholder:uppercase placeholder:text-text-tertiary focus-visible:outline-none max-md:text-[max(1em,16px)]'
+          className='grow bg-transparent outline-0 placeholder:text-text-tertiary focus-visible:outline-none max-md:text-[max(1em,16px)]'
           placeholder='Search'
           type='text'
           ref={searchInputRef}
@@ -67,7 +67,7 @@ export default function BlogFilters({
       </label>
       <div className='flex items-start justify-between border-b border-border px-em-[24] py-em-[16] gap-em-[12]'>
         <div className='flex flex-wrap items-center gap-em-[12]'>
-          <span className='uppercase text-text-tertiary'>Tags: </span>
+          <span className='text-text-tertiary'>Tags: </span>
           {availableCategories.map(category => (
             <Tag
               key={category}

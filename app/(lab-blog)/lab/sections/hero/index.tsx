@@ -259,7 +259,7 @@ export default function LabHero({
                 style={{
                   opacity: 0
                 }}
-                className='font-medium uppercase text-em-[48/16] lg:text-em-[64/16] 2xl:text-em-[72/16]'>
+                className='font-medium text-em-[48/16] lg:text-em-[64/16] 2xl:text-em-[72/16]'>
                 {preTitle && <span className='opacity-50'>{preTitle}</span>}
                 <span className='text-text'>{mainTitle}</span>
               </h1>
@@ -268,7 +268,7 @@ export default function LabHero({
                 style={{
                   opacity: 0
                 }}
-                className='text-balance uppercase text-text-secondary text-em-[16/16] md:max-w-col-8 lg:max-w-none 2xl:text-em-[18/16]'>
+                className='text-balance text-text-secondary text-em-[16/16] md:max-w-col-8 lg:max-w-none 2xl:text-em-[18/16]'>
                 {description}
               </p>
             </div>
@@ -337,7 +337,7 @@ export default function LabHero({
                 opacity: 0
               }}
               id='explore-text'
-              className='text-center font-semibold uppercase text-em-[18/16] md:font-medium md:text-em-[24/16] lg:max-w-col-8 lg:text-em-[32/16] 2xl:max-w-col-6'>
+              className='text-center font-semibold text-em-[18/16] md:font-medium md:text-em-[24/16] lg:max-w-col-8 lg:text-em-[32/16] 2xl:max-w-col-6'>
               {explore.title}
             </h2>
             <Button
@@ -483,13 +483,13 @@ const ValuesSlider = ({
             />
           </div>
           <div className='absolute left-0 flex h-full w-1/2 flex-col items-start justify-center pl-em-[12] lg:left-auto lg:right-0 lg:items-end lg:pl-0 lg:pr-em-[12]'>
-            <h4 className='text-start font-medium uppercase text-text-tertiary text-em-[28/16] md:text-em-[40/16] lg:text-end lg:text-em-[32/16] 2xl:text-em-[48/16]'>
+            <h4 className='text-start font-medium text-text-tertiary text-em-[28/16] md:text-em-[40/16] lg:text-end lg:text-em-[32/16] 2xl:text-em-[48/16]'>
               Our values
             </h4>
             <h5
               ref={titleRef}
               id='value-title'
-              className='line-clamp-2 h-[4em] overflow-hidden text-start font-medium uppercase text-text/95 text-em-[24/16] lg:h-[3em] lg:text-end lg:text-em-[20/16] 2xl:text-em-[24/16]'>
+              className='line-clamp-2 h-[4em] overflow-hidden text-start font-medium text-text/95 text-em-[24/16] lg:h-[3em] lg:text-end lg:text-em-[20/16] 2xl:text-em-[24/16]'>
               {values[activeSlide].title}
             </h5>
           </div>
@@ -498,7 +498,7 @@ const ValuesSlider = ({
         <div
           ref={descriptionRef}
           className='border-border bg-surface-secondary px-em-[12] py-em-[24] mb-em-[12] h-em-[140] lg:hidden'>
-          <p className='text-pretty text-start font-medium uppercase text-text-secondary'>
+          <p className='text-pretty text-start font-medium text-text-secondary'>
             {values[activeSlide].description}
           </p>
         </div>
@@ -583,7 +583,7 @@ const ValuesTooltip: React.FC<ValuesTooltipProps> = ({
         opacity: 0
       }}
       className='pointer-events-none fixed left-0 top-0 z-50 max-w-col-3 border-border bg-surface-secondary p-em-[12] 2xl:max-w-col-2'>
-      <p className='text-pretty text-start font-medium uppercase text-text-secondary text-em-[16/16] 2xl:text-em-[18/16]'>
+      <p className='text-pretty text-start font-medium text-text-secondary text-em-[16/16] 2xl:text-em-[18/16]'>
         {content}
       </p>
     </div>

@@ -70,7 +70,7 @@ export const BlogPostPreview = (props: BlogPostPreviewProps) => {
       </div>
       <div className='just relative z-10 flex aspect-[808/555] w-full flex-col justify-between border border-t-0 border-border bg-surface text-shades-400'>
         <div className='grid grid-cols-2 border-b border-border'>
-          <div className='flex flex-col justify-between border-r border-border uppercase p-em-[24/16] 2xl:p-em-[32/16]'>
+          <div className='flex flex-col justify-between border-r border-border p-em-[24/16] 2xl:p-em-[32/16]'>
             <div className='flex gap-em-[12/16]'>
               {categories.map(category => (
                 <Tag
@@ -89,7 +89,7 @@ export const BlogPostPreview = (props: BlogPostPreviewProps) => {
             </p>
             <div className='flex items-center gap-x-em-[16/16]'>
               <p>
-                <span className='uppercase text-text-tertiary'>by: </span>
+                <span className='text-text-tertiary'>by: </span>
                 {authors.map((author, index) => (
                   <Fragment key={author._id}>
                     {index > 0 && ', '}

@@ -35,7 +35,7 @@ export default async function Post({params}: PostProps) {
 			</div>
 			<div className='max-w-xl space-y-10'>
 				<div>
-					<div className='font-bold uppercase leading-3'>Customer Story</div>
+					<div className='font-bold leading-3'>Customer Story</div>
 					<h1>{title}</h1>
 				</div>
 				<div className='flex flex-col gap-4'>
