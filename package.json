@@ -45,6 +45,7 @@
 		"react-dom": "^18.2.0",
 		"react-use-measure": "^2.1.1",
 		"sanity": "^3.19.3",
+		"sharp": "^0.33.5",
 		"shiki": "^1.13.0",
 		"sonner": "^1.2.0",
 		"styled-components": "^6.1.1",
