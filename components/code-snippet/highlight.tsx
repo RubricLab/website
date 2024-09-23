@@ -59,8 +59,7 @@ export const Highlighter = async ({
 		]
 	})
 
-	// @ts-expect-error - `toJsxRuntime` is not typed
-	const content = toJsxRuntime(hast, {
+	const content = toJsxRuntime(hast as any, {
 		...production,
 		components
 	})
