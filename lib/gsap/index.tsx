@@ -1,10 +1,10 @@
 'use client'
 import {useGSAP} from '@gsap/react'
 import gsap from 'gsap'
-import DrawSVGPlugin from 'gsap/dist/DrawSVGPlugin'
-import ScrollTrigger from 'gsap/dist/ScrollTrigger'
-import SplitText from 'gsap/dist/SplitText'
-import TextPlugin from 'gsap/dist/TextPlugin'
+import DrawSVGPlugin from 'gsap/DrawSVGPlugin'
+import ScrollTrigger from 'gsap/ScrollTrigger'
+import SplitText from 'gsap/SplitText'
+import TextPlugin from 'gsap/TextPlugin'
 
 export function GsapSetup() {
 	if (typeof window !== 'undefined')
@@ -21,58 +21,61 @@ export function GsapSetup() {
 
 /* gsap effects */
 gsap.registerEffect({
-  name: 'imageParallax',
-  effect: (target: HTMLElement, {
-    direction = 'y',
-    trigger,
-    amount = 0.2,
-    noScale = false,
-    centered = true,
-    markers,
-    ease = 'none',
-    start = 'top bottom',
-    end = 'bottom top'
-  }: {
-    direction: 'x' | 'y',
-    trigger?: HTMLElement,
-    amount: number, /* from 0 to Infinity */
-    markers?: boolean,
-    centered?: boolean,
-    noScale?: boolean,
-    ease?: gsap.TweenVars['ease']
-    start: ScrollTrigger.Vars['start']
-    end: ScrollTrigger.Vars['end']
-  }) => {
-    /* 
+	name: 'imageParallax',
+	effect: (
+		target: HTMLElement,
+		{
+			direction = 'y',
+			trigger,
+			amount = 0.2,
+			noScale = false,
+			centered = true,
+			markers,
+			ease = 'none',
+			start = 'top bottom',
+			end = 'bottom top'
+		}: {
+			direction: 'x' | 'y'
+			trigger?: HTMLElement
+			amount: number /* from 0 to Infinity */
+			markers?: boolean
+			centered?: boolean
+			noScale?: boolean
+			ease?: gsap.TweenVars['ease']
+			start: ScrollTrigger.Vars['start']
+			end: ScrollTrigger.Vars['end']
+		}
+	) => {
+		/* 
       1. Scale the image inside it's container
       2. Move the image inside it's container relative to the scale amount
     */
 
-    const amountPef = amount * 100
-    const halfAmountPerc = amountPef / 2
-    const scale = noScale ? 1 : 1 + amount
+		const amountPef = amount * 100
+		const halfAmountPerc = amountPef / 2
+		const scale = noScale ? 1 : 1 + amount
 
-    return gsap.fromTo(
-      target,
-      {
-        scale,
-        [direction]: (centered ? halfAmountPerc : amountPef) * -1 + '%',
-      },
-      {
-        [direction]: (centered ? halfAmountPerc : 0) + '%',
-        // force3d: true,
-        ease,
-        overwrite: 'auto',
-        scrollTrigger: {
-          trigger: trigger ?? target,
-          start: start,
-          end: end,
-          scrub: true,
-          markers
-        }
-      }
-    )
-  }
+		return gsap.fromTo(
+			target,
+			{
+				scale,
+				[direction]: (centered ? halfAmountPerc : amountPef) * -1 + '%'
+			},
+			{
+				[direction]: (centered ? halfAmountPerc : 0) + '%',
+				// force3d: true,
+				ease,
+				overwrite: 'auto',
+				scrollTrigger: {
+					trigger: trigger ?? target,
+					start: start,
+					end: end,
+					scrub: true,
+					markers
+				}
+			}
+		)
+	}
 })
 
 gsap.registerEffect({
@@ -84,9 +87,9 @@ gsap.registerEffect({
 			direction?: 'vertical' | 'horizontal'
 			start?: string
 			end?: string
-      markers?: boolean
-      trigger?: gsap.DOMTarget,
-      extra?: gsap.TweenVars
+			markers?: boolean
+			trigger?: gsap.DOMTarget
+			extra?: gsap.TweenVars
 		}
 	) => {
 		const {
@@ -94,9 +97,9 @@ gsap.registerEffect({
 			direction = 'vertical',
 			start = 'top bottom',
 			end = 'bottom top',
-      markers = false,
-      extra,
-      trigger
+			markers = false,
+			extra,
+			trigger
 		} = config
 
 		const targetsArr = [targets].flat().map((t, idx) => {
@@ -113,9 +116,9 @@ gsap.registerEffect({
 					start: start,
 					end: end,
 					scrub: true,
-          markers
+					markers
 				},
-        ...extra
+				...extra
 			})
 		})
 

@@ -3,7 +3,7 @@
 import {useLoaded} from '@/hooks/use-loaded'
 import {useGSAP} from '@gsap/react'
 import gsap from 'gsap'
-import SplitText from 'gsap/dist/SplitText'
+import SplitText from 'gsap/SplitText'
 import {useEffect, useRef} from 'react'
 
 export interface BlogIndexHeadingProps {

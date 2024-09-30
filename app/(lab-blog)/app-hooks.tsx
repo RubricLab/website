@@ -1,6 +1,6 @@
 'use client'
 
-import ScrollTrigger from 'gsap/dist/ScrollTrigger'
+import ScrollTrigger from 'gsap/ScrollTrigger'
 import {useEffect} from 'react'
 
 export const AppHooks = () => {
