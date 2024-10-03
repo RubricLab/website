@@ -1,4 +1,4 @@
-import { cva, type VariantProps } from 'class-variance-authority'
+import { type VariantProps, cva } from 'class-variance-authority'
 import { forwardRef } from 'react'
 
 export const $tag = cva('flex border focus-ring transition-colors-shadow', {

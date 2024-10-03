@@ -1,7 +1,7 @@
+import { codeSnippetFragment } from '@/components/code-snippet'
+import { FaqItemComponentFragment, richTextCalloutComponentFragment } from '@/components/rich-text'
 import { fragmentOn } from 'basehub'
 import { authorFragment, darkLightImageFragment } from '../fragments'
-import { FaqItemComponentFragment, richTextCalloutComponentFragment } from '@/components/rich-text'
-import { codeSnippetFragment } from '@/components/code-snippet'
 
 export const blogpostCardFragment = fragmentOn('BlogPostComponent', {
 	_id: true,

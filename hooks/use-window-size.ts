@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react'
 import { RESIZE_DEBOUNCE } from '@/lib/utils/constants'
 import debounce from 'debounce'
+import { useEffect, useState } from 'react'
 
 interface WindowSize {
 	width: number | undefined
