@@ -1,4 +1,4 @@
-import {toast} from '~/components/Toast'
+import { toast } from '~/components/Toast'
 
 // Copy to clipboard
 export default function copyToClipboard(input: string) {

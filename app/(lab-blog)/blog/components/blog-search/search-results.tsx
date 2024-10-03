@@ -1,14 +1,14 @@
-import {Button} from '@/common/ui/button'
-import {useLoaded} from '@/hooks/use-loaded'
-import {BlogCategory, BlogPostCard} from '@/lib/basehub/fragments/blog'
-import {useGSAP} from '@gsap/react'
+import { Button } from '@/common/ui/button'
+import { useLoaded } from '@/hooks/use-loaded'
+import type { BlogCategory, BlogPostCard } from '@/lib/basehub/fragments/blog'
+import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
-import {useRouter, useSearchParams} from 'next/navigation'
-import {useEffect, useRef, useState} from 'react'
-import {usePreviewStore} from '../preview-store'
-import {BlogpostCard} from './blogpost-card'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { useEffect, useRef, useState } from 'react'
+import { usePreviewStore } from '../preview-store'
+import { BlogpostCard } from './blogpost-card'
 import SearchEmptyStateIllustration from './empty-state'
-import {Search} from './search-container'
+import type { Search } from './search-container'
 
 export interface SearchResultsProps {
 	search?: Search
@@ -17,13 +17,12 @@ export interface SearchResultsProps {
 
 const DEBOUNCE_TIMEOUT = 100
 
-export default function SearchResults({posts, search}: SearchResultsProps) {
+export default function SearchResults({ posts, search }: SearchResultsProps) {
 	const router = useRouter()
 	const searchParams = useSearchParams()
 	const tag = searchParams.get('tag')
-	const {selectedPost, setSelectedPost, clearSelectedPost} = usePreviewStore()
-	const [localSelectedPost, setLocalSelectedPost] =
-		useState<BlogPostCard | null>(null)
+	const { setSelectedPost, clearSelectedPost } = usePreviewStore()
+	const [localSelectedPost, setLocalSelectedPost] = useState<BlogPostCard | null>(null)
 	const loaded = useLoaded()
 	const tl = useRef(
 		gsap.timeline({
@@ -45,9 +44,7 @@ export default function SearchResults({posts, search}: SearchResultsProps) {
 	}
 
 	if (tag)
-		filteredPosts = filteredPosts.filter(post =>
-			post.categories.includes(tag as BlogCategory)
-		)
+		filteredPosts = filteredPosts.filter(post => post.categories.includes(tag as BlogCategory))
 
 	useGSAP(
 		() => {
@@ -98,6 +95,7 @@ export default function SearchResults({posts, search}: SearchResultsProps) {
 
 		if (debounceTimeoutRef.current) clearTimeout(debounceTimeoutRef.current)
 
+		// @ts-ignore
 		debounceTimeoutRef.current = setTimeout(() => {
 			setSelectedPost(post)
 		}, DEBOUNCE_TIMEOUT)
@@ -107,7 +105,7 @@ export default function SearchResults({posts, search}: SearchResultsProps) {
 		setLocalSelectedPost(null)
 
 		if (debounceTimeoutRef.current) clearTimeout(debounceTimeoutRef.current)
-
+		// @ts-ignore
 		debounceTimeoutRef.current = setTimeout(() => {
 			clearSelectedPost(post)
 		}, DEBOUNCE_TIMEOUT)
@@ -116,21 +114,23 @@ export default function SearchResults({posts, search}: SearchResultsProps) {
 	if (filteredPosts.length === 0 && search?.result)
 		return (
 			<>
-				<span className='bg-lines block w-full border-b border-border h-em-[48]' />
-				<div className='flex flex-col items-center justify-center py-em-[32] gap-em-[12]'>
-					<p className='text-text-tertiary text-em-[14/16]'>
+				<span className="block h-em-[48] w-full border-border border-b bg-lines" />
+				<div className="flex flex-col items-center justify-center gap-em-[12] py-em-[32]">
+					<p className="text-em-[14/16] text-text-tertiary">
 						No results found
+						{/* @ts-ignore */}
 						{search.query.length > 0 && <> for «{search.query}»</>}
 					</p>
-					<SearchEmptyStateIllustration className='text-border w-em-[200]' />
+					<SearchEmptyStateIllustration className="w-em-[200] text-border" />
 					<Button
 						onClick={() => router.push('/blog')}
-						variant='ghost'
-						className='text-text-secondary underline underline-offset-[0.3em]'>
+						variant="ghost"
+						className="text-text-secondary underline underline-offset-[0.3em]"
+					>
 						Reset filters
 					</Button>
 				</div>
-				<span className='bg-lines block w-full border-t border-border h-em-[48]' />
+				<span className="block h-em-[48] w-full border-border border-t bg-lines" />
 			</>
 		)
 
@@ -138,39 +138,31 @@ export default function SearchResults({posts, search}: SearchResultsProps) {
 
 	return (
 		<div ref={containerRef}>
-			<span
-				data-divider
-				className='bg-lines block w-full border-b border-border h-em-[48]'
-			/>
+			<span data-divider className="block h-em-[48] w-full border-border border-b bg-lines" />
 			{firstPost && (
-				<div className='relative flex items-center'>
+				<div className="relative flex items-center">
 					<BlogpostCard
 						data-post-id={firstPost._id}
 						active={localSelectedPost?._id === firstPost._id}
 						onMouseEnter={() => handleMouseEnter(firstPost)}
 						onMouseLeave={() => handleMouseLeave(firstPost)}
-						type='inline-card'
+						type="inline-card"
 						{...firstPost}
 					/>
-					<span className='pointer-events-none absolute -left-sides hidden w-sides select-none justify-center text-em-[13/16] lg:flex'>
-						<span className='writing-vertical relative block -rotate-180'>
-							LATEST_POST
-						</span>
+					<span className="-left-sides pointer-events-none absolute hidden w-sides select-none justify-center text-em-[13/16] lg:flex">
+						<span className="writing-vertical -rotate-180 relative block">LATEST_POST</span>
 					</span>
 				</div>
 			)}
-			<span
-				data-divider
-				className='bg-lines block w-full h-em-[32]'
-			/>
-			<div className='flex flex-col'>
+			<span data-divider className="block h-em-[32] w-full bg-lines" />
+			<div className="flex flex-col">
 				{remainingPosts.map(post => (
 					<BlogpostCard
 						data-post-id={post._id}
 						active={localSelectedPost?._id === post._id}
 						onMouseEnter={() => handleMouseEnter(post)}
 						onMouseLeave={() => handleMouseLeave(post)}
-						className='focus:z-10'
+						className="focus:z-10"
 						key={post._id}
 						{...post}
 					/>

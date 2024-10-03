@@ -1,16 +1,16 @@
 'use client'
-import {DarkLightImage} from '@/common/dark-light-image'
+import { DarkLightImage } from '@/common/dark-light-image'
 import ArrowDownIcon from '@/common/icons/arrow-down'
-import {Button} from '@/common/ui/button'
-import {useBreakpoint} from '@/hooks/use-breakpoint'
-import {useLoaded} from '@/hooks/use-loaded'
-import {useMeasure} from '@/hooks/use-measure'
+import { Button } from '@/common/ui/button'
+import { useBreakpoint } from '@/hooks/use-breakpoint'
+import { useLoaded } from '@/hooks/use-loaded'
+import { useMeasure } from '@/hooks/use-measure'
 import useMousePosition from '@/hooks/use-mouse-position'
-import {DarkLightImageFragment} from '@/lib/basehub/fragments'
-import {useGSAP} from '@gsap/react'
+import type { DarkLightImageFragment } from '@/lib/basehub/fragments'
+import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
-import SplitText from 'gsap/SplitText'
-import {useEffect, useLayoutEffect, useRef, useState} from 'react'
+import SplitText from 'gsap/dist/SplitText'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 import astronaut from '@/public/images/lab/ASTRONAUT_STROKE.png'
 import mac from '@/public/images/lab/MAC_STROKE.png'
@@ -42,8 +42,7 @@ export default function LabHero({
 	values
 }: LabHeroProps) {
 	const loaded = useLoaded()
-	const tl = useRef(gsap.timeline({paused: true}))
-	const scrollTl = useRef<GSAPTimeline | null>(null)
+	const tl = useRef(gsap.timeline({ paused: true }))
 
 	const containerRef = useRef<HTMLDivElement>(null)
 	const sectionRef = useRef<HTMLDivElement>(null)
@@ -54,21 +53,21 @@ export default function LabHero({
 		() => {
 			const section = sectionRef.current
 			if (!sectionRef.current) return
-			const texts = section.querySelectorAll('[data-hero-text]')
+			const texts = section?.querySelectorAll('[data-hero-text]')
 
-			const description = section.querySelector('[data-hero-description]')
-			const exploreText = section.querySelector('#explore-text')
-			const exploreCta = section.querySelector('#explore-cta')
+			const description = section?.querySelector('[data-hero-description]')
+			const exploreText = section?.querySelector('#explore-text')
+			const exploreCta = section?.querySelector('#explore-cta')
 
-			const spllitedTexts = new SplitText(texts, {
+			const spllitedTexts = new SplitText(texts as gsap.DOMTarget, {
 				type: 'chars'
 			})
 
-			const spllitedDescription = new SplitText(description, {
+			const spllitedDescription = new SplitText(description as gsap.DOMTarget, {
 				type: 'words'
 			})
 
-			const spllitedExploreText = new SplitText(exploreText, {
+			const spllitedExploreText = new SplitText(exploreText as gsap.DOMTarget, {
 				type: 'words'
 			})
 
@@ -167,12 +166,10 @@ export default function LabHero({
 
 			const heroExploreContentBounds = document
 				.querySelector('#hero-explore-content')
-				.getBoundingClientRect()
-			const headerHeight =
-				document.querySelector('#header')?.getBoundingClientRect().height || 0
+				?.getBoundingClientRect() as DOMRect
+			const headerHeight = document.querySelector('#header')?.getBoundingClientRect().height || 0
 
-			const relativeTop =
-				heroExploreContentBounds.top - heroExploreContainerBounds.top
+			const relativeTop = heroExploreContentBounds.top - heroExploreContainerBounds.top
 			const distanceToCenter = heroExploreContainerBounds.height / 2 - relativeTop
 			const centerToCenter = distanceToCenter - heroExploreContentBounds.height / 2
 
@@ -239,57 +236,57 @@ export default function LabHero({
 	}, [loaded])
 
 	return (
-		<div
-			ref={containerRef}
-			className='relative z-30'>
-			<section
-				ref={sectionRef}
-				className='flex flex-col px-px'>
+		<div ref={containerRef} className="relative z-30">
+			<section ref={sectionRef} className="flex flex-col px-px">
 				<div
-					id='hero-top'
+					id="hero-top"
 					ref={topRef}
-					className='top-header grid grid-cols-1 grid-rows-[repeat(2,_minmax(0,1fr))_max-content] lg:sticky lg:h-auto lg:grid-cols-12 lg:grid-rows-none'>
-					<div className='lg:boder-b-0 border-b border-border bg-surface lg:col-span-6 lg:border-r-[2px] lg:border-transparent lg:bg-transparent'>
-						<div className='flex flex-col justify-center bg-surface px-em-[24] py-em-[48] gap-em-[24] lg:p-em-[32] lg:gap-em-[36] 2xl:p-em-[48]'>
+					className="top-header grid grid-cols-1 grid-rows-[repeat(2,_minmax(0,1fr))_max-content] lg:sticky lg:h-auto lg:grid-cols-12 lg:grid-rows-none"
+				>
+					<div className="lg:boder-b-0 border-border border-b bg-surface lg:col-span-6 lg:border-transparent lg:border-r-[2px] lg:bg-transparent">
+						<div className="flex flex-col justify-center gap-em-[24] bg-surface px-em-[24] py-em-[48] lg:gap-em-[36] lg:p-em-[32] 2xl:p-em-[48]">
 							<h1
 								data-hero-text
 								style={{
 									opacity: 0
 								}}
-								className='font-medium text-em-[48/16] lg:text-em-[64/16] 2xl:text-em-[72/16]'>
-								{preTitle && <span className='opacity-50'>{preTitle}</span>}
-								<span className='text-text'>{mainTitle}</span>
+								className="font-medium text-em-[48/16] lg:text-em-[64/16] 2xl:text-em-[72/16]"
+							>
+								{preTitle && <span className="opacity-50">{preTitle}</span>}
+								<span className="text-text">{mainTitle}</span>
 							</h1>
 							<p
 								data-hero-description
 								style={{
 									opacity: 0
 								}}
-								className='text-balance text-text-secondary text-em-[16/16] md:max-w-col-8 lg:max-w-none 2xl:text-em-[18/16]'>
+								className="text-balance text-em-[16/16] text-text-secondary md:max-w-col-8 lg:max-w-none 2xl:text-em-[18/16]"
+							>
 								{description}
 							</p>
 						</div>
 					</div>
-					<span className='bg-lines w-full border-t border-border h-em-[48] lg:h-auto lg:border-none' />
+					<span className="h-em-[48] w-full border-border border-t bg-lines lg:h-auto lg:border-none" />
 					<ValuesSlider values={values} />
-					<span className='bg-lines w-full border-t border-border h-em-[72] lg:hidden' />
+					<span className="h-em-[72] w-full border-border border-t bg-lines lg:hidden" />
 				</div>
 
 				<div
-					id='hero-explore'
-					className='relative z-10 flex h-fold shrink-0 flex-col items-center justify-center overflow-hidden border-y border-border bg-surface p-em-[48] lg:justify-end'
-					ref={heroExploreContainerRef}>
-					<picture className='absolute left-0 top-0 w-full translate-x-[-40%] opacity-50 invert dark:invert-0 max-lg:translate-y-[-20%] lg:bottom-0 lg:w-1/2'>
+					id="hero-explore"
+					className="relative z-10 flex h-fold shrink-0 flex-col items-center justify-center overflow-hidden border-border border-y bg-surface p-em-[48] lg:justify-end"
+					ref={heroExploreContainerRef}
+				>
+					<picture className="absolute top-0 left-0 w-full translate-x-[-40%] opacity-50 invert max-lg:translate-y-[-20%] lg:bottom-0 lg:w-1/2 dark:invert-0">
 						<Image
-							id='satellite'
+							id="satellite"
 							priority
 							src={satellite}
-							alt='satellite'
+							alt="satellite"
 							quality={100}
 							style={{
 								transformOrigin: '60% 40%'
 							}}
-							className='h-full w-full object-contain object-bottom opacity-0'
+							className="h-full w-full object-contain object-bottom opacity-0"
 						/>
 					</picture>
 
@@ -304,47 +301,50 @@ export default function LabHero({
 						/>
 					</picture> */}
 
-					<picture className='absolute right-[30%] top-[60%] hidden w-1/4 translate-x-[25%] opacity-50 invert dark:invert-0 lg:block'>
+					<picture className="absolute top-[60%] right-[30%] hidden w-1/4 translate-x-[25%] opacity-50 invert lg:block dark:invert-0">
 						<Image
-							id='mac'
+							id="mac"
 							priority
 							src={mac}
 							quality={100}
-							alt='mac'
-							className='h-full w-full object-contain object-bottom opacity-0'
+							alt="mac"
+							className="h-full w-full object-contain object-bottom opacity-0"
 						/>
 					</picture>
 
-					<picture className='absolute bottom-0 right-0 w-full translate-x-[35%] opacity-50 invert dark:invert-0 max-lg:translate-y-[40%] lg:w-1/2 lg:translate-x-[25%]'>
+					<picture className="absolute right-0 bottom-0 w-full translate-x-[35%] opacity-50 invert max-lg:translate-y-[40%] lg:w-1/2 lg:translate-x-[25%] dark:invert-0">
 						<Image
-							id='astronaut'
+							id="astronaut"
 							priority
 							src={astronaut}
 							quality={100}
-							alt='astronaut'
-							className='h-full w-full object-contain object-bottom opacity-0'
+							alt="astronaut"
+							className="h-full w-full object-contain object-bottom opacity-0"
 						/>
 					</picture>
 
 					<div
-						id='hero-explore-content'
-						className='flex flex-col items-center gap-em-[24] lg:gap-em-[32] 2xl:gap-em-[40]'>
+						id="hero-explore-content"
+						className="flex flex-col items-center gap-em-[24] lg:gap-em-[32] 2xl:gap-em-[40]"
+					>
 						<h2
 							style={{
 								opacity: 0
 							}}
-							id='explore-text'
-							className='text-center font-semibold text-em-[18/16] md:font-medium md:text-em-[24/16] lg:max-w-col-8 lg:text-em-[32/16] 2xl:max-w-col-6'>
+							id="explore-text"
+							className="text-center font-semibold text-em-[18/16] md:font-medium md:text-em-[24/16] lg:max-w-col-8 lg:text-em-[32/16] 2xl:max-w-col-6"
+						>
 							{explore.title}
 						</h2>
 						<Button
 							style={{
 								opacity: 0
 							}}
-							id='explore-cta'
-							size='lg'>
+							id="explore-cta"
+							size="lg"
+						>
 							{explore.ctaLabel}
-							<ArrowDownIcon className=' shrink-0 mb-em-[1] ml-em-[8] size-em-[16]' />
+							<ArrowDownIcon className=" mb-em-[1] ml-em-[8] size-em-[16] shrink-0" />
 						</Button>
 					</div>
 				</div>
@@ -363,7 +363,7 @@ const ValuesSlider = ({
 	slideDuration?: number
 }) => {
 	const progressRef = useRef(null)
-	const progressTl = useRef(gsap.timeline({paused: true}))
+	const progressTl = useRef(gsap.timeline({ paused: true }))
 	const imageRef = useRef(null)
 	const titleRef = useRef(null)
 	const descriptionRef = useRef(null)
@@ -378,7 +378,7 @@ const ValuesSlider = ({
 
 			progressTl.current.fromTo(
 				progressRef.current,
-				{scaleX: 1, opacity: 0},
+				{ scaleX: 1, opacity: 0 },
 				{
 					scaleX: 0,
 					opacity: 1,
@@ -388,10 +388,10 @@ const ValuesSlider = ({
 				}
 			)
 		},
-		{revertOnUpdate: true}
+		{ revertOnUpdate: true }
 	)
 
-	const animateContent = (direction: 'in' | 'out') => {
+	const animateContent = useCallback((direction: 'in' | 'out') => {
 		const tl = gsap.timeline()
 
 		const elements = [imageRef.current, titleRef.current, descriptionRef.current]
@@ -425,7 +425,7 @@ const ValuesSlider = ({
 			)
 
 		return tl
-	}
+	}, [])
 
 	const handleMouseEnter = () => {
 		setIsHovering(true)
@@ -453,7 +453,7 @@ const ValuesSlider = ({
 		return () => {
 			clearTimeout(timeoutId)
 		}
-	}, [isHovering, activeSlide, slideDuration, values.length])
+	}, [isHovering, slideDuration, values.length, animateContent])
 
 	return (
 		<>
@@ -461,53 +461,56 @@ const ValuesSlider = ({
 				style={{
 					opacity: 0
 				}}
-				id='hero-values'
-				className='relative col-span-5 flex w-full flex-col overflow-hidden bg-surface-contrast/[0.05] lg:aspect-auto lg:px-em-[24]'
+				id="hero-values"
+				className="relative col-span-5 flex w-full flex-col overflow-hidden bg-surface-contrast/[0.05] lg:aspect-auto lg:px-em-[24]"
 				onMouseEnter={handleMouseEnter}
-				onMouseLeave={handleMouseLeave}>
-				<div className='relative h-full w-full'>
-					<div
-						ref={imageRef}
-						className='absolute right-0 aspect-square h-full w-1/2 lg:left-0'>
+				onMouseLeave={handleMouseLeave}
+			>
+				<div className="relative h-full w-full">
+					<div ref={imageRef} className="absolute right-0 aspect-square h-full w-1/2 lg:left-0">
 						<DarkLightImage
-							{...values[activeSlide].image}
-							className='h-full w-full object-contain'
+							// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+							{...(values[activeSlide]?.image as any)}
+							className="h-full w-full object-contain"
 							priority
 						/>
 					</div>
-					<div className='absolute left-0 flex h-full w-1/2 flex-col items-start justify-center pl-em-[12] lg:left-auto lg:right-0 lg:items-end lg:pl-0 lg:pr-em-[12]'>
-						<h4 className='text-start font-medium text-text-tertiary text-em-[28/16] md:text-em-[40/16] lg:text-end lg:text-em-[32/16] 2xl:text-em-[48/16]'>
+					<div className="absolute left-0 flex h-full w-1/2 flex-col items-start justify-center pl-em-[12] lg:right-0 lg:left-auto lg:items-end lg:pr-em-[12] lg:pl-0">
+						<h4 className="text-start font-medium text-em-[28/16] text-text-tertiary md:text-em-[40/16] lg:text-end lg:text-em-[32/16] 2xl:text-em-[48/16]">
 							Our values
 						</h4>
 						<h5
 							ref={titleRef}
-							id='value-title'
-							className='line-clamp-2 h-[4em] overflow-hidden text-start font-medium text-text/95 text-em-[24/16] lg:h-[3em] lg:text-end lg:text-em-[20/16] 2xl:text-em-[24/16]'>
-							{values[activeSlide].title}
+							id="value-title"
+							className="line-clamp-2 h-[4em] overflow-hidden text-start font-medium text-em-[24/16] text-text/95 lg:h-[3em] lg:text-end lg:text-em-[20/16] 2xl:text-em-[24/16]"
+						>
+							{values[activeSlide]?.title}
 						</h5>
 					</div>
 				</div>
 
 				<div
 					ref={descriptionRef}
-					className='border-border bg-surface-secondary px-em-[12] py-em-[24] mb-em-[12] h-em-[140] lg:hidden'>
-					<p className='text-pretty text-start font-medium text-text-secondary'>
-						{values[activeSlide].description}
+					className="mb-em-[12] h-em-[140] border-border bg-surface-secondary px-em-[12] py-em-[24] lg:hidden"
+				>
+					<p className="text-pretty text-start font-medium text-text-secondary">
+						{values[activeSlide]?.description}
 					</p>
 				</div>
 				<div
-					id='values-progress'
-					className='absolute bottom-0 left-0 w-full border-t border-border bg-surface-contrast/[0.05] h-em-[12]'>
+					id="values-progress"
+					className="absolute bottom-0 left-0 h-em-[12] w-full border-border border-t bg-surface-contrast/[0.05]"
+				>
 					<span
 						ref={progressRef}
-						className='absolute left-0 block h-full w-full bg-surface-contrast/10'
-						style={{opacity: 0}}
+						className="absolute left-0 block h-full w-full bg-surface-contrast/10"
+						style={{ opacity: 0 }}
 					/>
 				</div>
 			</div>
 
 			<ValuesTooltip
-				content={values[activeSlide].description}
+				content={values[activeSlide]?.description || ''}
 				isDesktop={isDesktop}
 				isHovering={isHovering}
 			/>
@@ -521,15 +524,11 @@ interface ValuesTooltipProps {
 	isHovering: boolean
 }
 
-const ValuesTooltip: React.FC<ValuesTooltipProps> = ({
-	content,
-	isDesktop,
-	isHovering
-}) => {
+const ValuesTooltip: React.FC<ValuesTooltipProps> = ({ content, isDesktop, isHovering }) => {
 	const tooltipRef = useRef<HTMLDivElement>(null)
 	const tweenRef = useRef<gsap.core.Tween | null>(null)
 
-	const {x, y} = useMousePosition({
+	const { x, y } = useMousePosition({
 		disabled: !isDesktop
 	})
 
@@ -540,20 +539,20 @@ const ValuesTooltip: React.FC<ValuesTooltipProps> = ({
 		const tooltipHeight = tooltipRef.current.getBoundingClientRect().height
 
 		tweenRef.current = gsap.to(tooltipRef.current, {
-			x: x - tooltipRef.current.offsetWidth / 2,
+			x: x - (tooltipRef.current?.offsetWidth ?? 0) / 2,
 			y: y - tooltipHeight,
 			opacity: isHovering ? 1 : 0,
 			duration: 0.5,
 			ease: 'power3.out'
 		})
-	}, [isDesktop, isHovering, x, y, content])
+	}, [isDesktop, isHovering, x, y])
 
 	useLayoutEffect(() => {
-		const tooltipHeight = tooltipRef.current.getBoundingClientRect().height
+		const tooltipHeight = tooltipRef.current?.getBoundingClientRect().height || 0
 
 		if (isHovering) {
 			gsap.set(tooltipRef.current, {
-				x: x - tooltipRef.current.offsetWidth / 2,
+				x: x - (tooltipRef.current?.offsetWidth ?? 0) / 2,
 				y: y - tooltipHeight
 			})
 			gsap.to(tooltipRef.current, {
@@ -567,7 +566,7 @@ const ValuesTooltip: React.FC<ValuesTooltipProps> = ({
 				duration: 0.5,
 				ease: 'power3.out'
 			})
-	}, [isHovering, content])
+	}, [isHovering, x, y])
 
 	return (
 		<div
@@ -575,8 +574,9 @@ const ValuesTooltip: React.FC<ValuesTooltipProps> = ({
 			style={{
 				opacity: 0
 			}}
-			className='pointer-events-none fixed left-0 top-0 z-50 max-w-col-3 border-border bg-surface-secondary p-em-[12] 2xl:max-w-col-2'>
-			<p className='text-pretty text-start font-medium text-text-secondary text-em-[16/16] 2xl:text-em-[18/16]'>
+			className="pointer-events-none fixed top-0 left-0 z-50 max-w-col-3 border-border bg-surface-secondary p-em-[12] 2xl:max-w-col-2"
+		>
+			<p className="text-pretty text-start font-medium text-em-[16/16] text-text-secondary 2xl:text-em-[18/16]">
 				{content}
 			</p>
 		</div>

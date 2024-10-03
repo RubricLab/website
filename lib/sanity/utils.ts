@@ -1,6 +1,6 @@
-import {createClient, groq} from 'next-sanity'
-import env from '~/env.mjs'
-import {CaseStudy, Home, Newsletter, Post, Project} from '~/types/sanity'
+import env from '@/lib/env'
+import { createClient, groq } from 'next-sanity'
+import type { CaseStudy, Home, Newsletter, Post, Project } from '~/types/sanity'
 
 // Sanity client
 export const sanity = createClient({
@@ -80,7 +80,7 @@ export async function getPost(slug: string): Promise<Post> {
         "authorName": author->firstName,
         "authorTwitter": author->twitter,
     }`,
-		{slug}
+		{ slug }
 	)
 }
 
@@ -112,7 +112,7 @@ export async function getCaseStudy(slug: string): Promise<CaseStudy> {
             body,
             publishedAt,
         }`,
-		{slug}
+		{ slug }
 	)
 }
 
@@ -149,6 +149,6 @@ export async function getNewsletterPost(slug: string): Promise<Newsletter> {
         "authorTwitter": author->twitter,
         subscriberCount
     }`,
-		{slug}
+		{ slug }
 	)
 }

@@ -4,9 +4,9 @@ import {
 	transformerNotationHighlight,
 	transformerNotationWordHighlight
 } from '@shikijs/transformers'
-import {toJsxRuntime, type Components} from 'hast-util-to-jsx-runtime'
+import { type Components, toJsxRuntime } from 'hast-util-to-jsx-runtime'
 import * as prod from 'react/jsx-runtime'
-import {BundledTheme, codeToHast, type BundledLanguage} from 'shiki'
+import { type BundledLanguage, type BundledTheme, codeToHast } from 'shiki'
 
 type ComponentsToOverride = Pick<Components, 'pre' | 'code' | 'span'>
 
@@ -15,8 +15,7 @@ type LightDarkTheme = {
 	dark: BundledTheme
 }
 
-// @ts-expect-error - `toJsxRuntime` is not typed
-const production = {Fragment: prod.Fragment, jsx: prod.jsx, jsxs: prod.jsxs}
+const production = { Fragment: prod.Fragment, jsx: prod.jsx, jsxs: prod.jsxs }
 
 const themeConfig: LightDarkTheme = {
 	light: 'catppuccin-latte',
@@ -29,11 +28,7 @@ export interface HighlighterProps {
 	components?: Partial<ComponentsToOverride>
 }
 
-export const Highlighter = async ({
-	children,
-	lang,
-	components
-}: HighlighterProps) => {
+export const Highlighter = async ({ children, lang, components }: HighlighterProps) => {
 	const hast = await codeToHast(children, {
 		lang,
 		themes: themeConfig,
@@ -49,8 +44,8 @@ export const Highlighter = async ({
 						{
 							type: 'element',
 							tagName: 'span',
-							properties: {class: 'line-indicator'},
-							children: [{type: 'text', value: line.toString()}]
+							properties: { class: 'line-indicator' },
+							children: [{ type: 'text', value: line.toString() }]
 						},
 						...node.children
 					]
@@ -59,8 +54,10 @@ export const Highlighter = async ({
 		]
 	})
 
+	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	const content = toJsxRuntime(hast as any, {
-		...production,
+		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+		...(production as any),
 		components
 	})
 

@@ -1,12 +1,11 @@
-import {cva, type VariantProps} from 'class-variance-authority'
-import {forwardRef} from 'react'
+import { cva, type VariantProps } from 'class-variance-authority'
+import { forwardRef } from 'react'
 
 export const $tag = cva('flex border focus-ring transition-colors-shadow', {
 	variants: {
 		intent: {
 			default: 'border-border text-text-secondary',
-			secondary:
-				'border-text-tertiary bg-surface-contrast/5 text-text-tertiary opacity-60',
+			secondary: 'border-text-tertiary bg-surface-contrast/5 text-text-tertiary opacity-60',
 			active: 'border-text text-text',
 			danger: 'border-destructive bg-surface-contrast/5 text-destructive',
 
@@ -23,23 +22,11 @@ export const $tag = cva('flex border focus-ring transition-colors-shadow', {
 	}
 })
 
-export type TagProps<C extends keyof JSX.IntrinsicElements> = VariantProps<
-	typeof $tag
-> &
+export type TagProps<C extends keyof JSX.IntrinsicElements> = VariantProps<typeof $tag> &
 	JSX.IntrinsicElements[C]
 
 export const Tag = forwardRef<HTMLButtonElement, TagProps<'button'>>(
-	(
-		{
-			children,
-			className,
-			intent = 'default',
-			disabled = false,
-			size = 'md',
-			...props
-		},
-		ref
-	) => {
+	({ children, className, intent = 'default', disabled = false, size = 'md', ...props }, ref) => {
 		return (
 			<button
 				ref={ref}
@@ -49,7 +36,8 @@ export const Tag = forwardRef<HTMLButtonElement, TagProps<'button'>>(
 					size,
 					className
 				})}
-				{...props}>
+				{...props}
+			>
 				{children}
 			</button>
 		)

@@ -15,7 +15,7 @@ export const metadata = getMetadata({
 
 export default function Agency() {
 	return (
-		<div className='flex flex-col'>
+		<div className="flex flex-col">
 			<LandingHero />
 			<Projects />
 			<HowWeWork />

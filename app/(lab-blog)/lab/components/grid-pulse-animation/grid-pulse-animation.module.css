@@ -1,18 +1,18 @@
 .animate-cell {
-  --duration: 3s;
-  animation-name: pulse;
-  animation-duration: var(--duration);
-  animation-delay: calc(var(--idx) * (var(--duration) / 3));
-  animation-timing-function: cubic-bezier(0.4, 0, 0.6, 1);
-  animation-iteration-count: infinite;
+	--duration: 3s;
+	animation-name: pulse;
+	animation-duration: var(--duration);
+	animation-delay: calc(var(--idx) * (var(--duration) / 3));
+	animation-timing-function: cubic-bezier(0.4, 0, 0.6, 1);
+	animation-iteration-count: infinite;
 }
 
 @keyframes pulse {
-  0%,
-  100% {
-    background: rgb(255 255 255 / 0.1);
-  }
-  50% {
-    background: transparent;
-  }
+	0%,
+	100% {
+		background: rgb(255 255 255 / 0.1);
+	}
+	50% {
+		background: transparent;
+	}
 }

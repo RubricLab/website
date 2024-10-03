@@ -1,8 +1,8 @@
 'use server'
 
-import {z} from 'zod'
-import {ROS} from '~/constants/ros'
-import env from '~/env.mjs'
+import env from '@/lib/env'
+import { z } from 'zod'
+import { ROS } from '~/constants/ros'
 
 const schema = z.object({
 	message: z.string(),
@@ -12,10 +12,8 @@ const schema = z.object({
 })
 
 // Send contact request to Slack
-export default async function sendContactRequest(
-	prevState: any,
-	formData: FormData
-) {
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+export default async function sendContactRequest(_: any, formData: FormData) {
 	const parsed = schema.parse({
 		message: formData.get('message'),
 		email: formData.get('email'),
@@ -24,7 +22,7 @@ export default async function sendContactRequest(
 	})
 
 	if (!parsed.name || !parsed.email || !parsed.message)
-		return {message: `Missing required information`, type: 'error'}
+		return { message: 'Missing required information', type: 'error' }
 
 	try {
 		// Submit formData to Ros API
@@ -43,8 +41,7 @@ export default async function sendContactRequest(
 		})
 
 		// Return response
-		if (externalResponse.ok)
-			return {message: `Request submitted`, type: 'success'}
+		if (externalResponse.ok) return { message: 'Request submitted', type: 'success' }
 	} catch (err) {
 		if (err instanceof Error)
 			return {
@@ -56,4 +53,5 @@ export default async function sendContactRequest(
 			type: 'error'
 		}
 	}
+	return
 }

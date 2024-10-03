@@ -4,20 +4,23 @@ import * as React from 'react'
 type MousetrapParameters = Parameters<typeof mousetrap.bind>
 
 export type Traps = {
-  keys: MousetrapParameters['0']
-  callback: MousetrapParameters['1']
-  action?: MousetrapParameters['2']
+	keys: MousetrapParameters['0']
+	callback: MousetrapParameters['1']
+	action?: MousetrapParameters['2']
 }[]
 
 export const useMousetrap = (traps: Traps, bind = true) => {
-  React.useEffect(() => {
-    if (bind) {
-      traps.forEach(({ keys, callback, action }) =>
-        mousetrap.bind(keys, callback, action)
-      )
-      return () => {
-        traps.forEach(({ keys }) => mousetrap.unbind(keys))
-      }
-    }
-  }, [traps, bind])
+	React.useEffect(() => {
+		if (bind) {
+			for (const { keys, callback, action } of traps) {
+				mousetrap.bind(keys, callback, action)
+			}
+			return () => {
+				for (const { keys } of traps) {
+					mousetrap.unbind(keys)
+				}
+			}
+		}
+		return
+	}, [traps, bind])
 }

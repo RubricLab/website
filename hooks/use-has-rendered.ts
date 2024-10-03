@@ -1,11 +1,11 @@
-import * as React from "react";
+import * as React from 'react'
 
 export const useHasRendered = () => {
-  const [hasRendered, setHasRendered] = React.useState(false);
+	const [hasRendered, setHasRendered] = React.useState(false)
 
-  React.useEffect(() => {
-    setHasRendered(true);
-  }, []);
+	React.useEffect(() => {
+		setHasRendered(true)
+	}, [])
 
-  return hasRendered;
-};
+	return hasRendered
+}

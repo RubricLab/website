@@ -1,4 +1,4 @@
-import {createEnv} from '@t3-oss/env-nextjs'
+import { createEnv } from '@t3-oss/env-nextjs'
 import z from 'zod'
 
 export default createEnv({
@@ -20,6 +20,7 @@ export default createEnv({
 	runtimeEnv: {
 		LOOPS_API_KEY: process.env.LOOPS_API_KEY,
 		ROS_SECRET: process.env.ROS_SECRET,
+		NOTION_API_KEY: process.env.NOTION_API_KEY,
 		NEXT_PUBLIC_SANITY_API_VERSION: process.env.NEXT_PUBLIC_SANITY_API_VERSION,
 		NEXT_PUBLIC_SANITY_DATASET: process.env.NEXT_PUBLIC_SANITY_DATASET,
 		NEXT_PUBLIC_SANITY_PROJECT: process.env.NEXT_PUBLIC_SANITY_PROJECT
@@ -31,6 +32,7 @@ export default createEnv({
 	 */
 	server: {
 		LOOPS_API_KEY: z.string().min(1),
-		ROS_SECRET: z.string().min(1)
+		ROS_SECRET: z.string().min(1),
+		NOTION_API_KEY: z.string().min(1)
 	}
 })

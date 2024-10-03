@@ -6,10 +6,9 @@
 			"@/*": ["./*"],
 			"~/*": ["./lib/*"]
 		},
-		"plugins": [{"name": "next"}]
+		"plugins": [{ "name": "next" }]
 	},
-	"exclude": ["node_modules"],
-	"extends": "@rubriclab/typescript-config/nextjs",
+	"extends": "@rubriclab/config/tsconfig",
 	"include": [
 		"**/*.ts",
 		"**/*.tsx",
@@ -18,9 +17,8 @@
 		"./lib/**/*.ts",
 		"./lib/**/*.tsx",
 		".next/types/**/*.ts",
-		".next/types/**/*.ts",
-		"next-env.d.ts",
 		"next-env.d.ts",
 		"sanity.cli.ts"
-	]
+	],
+	"exclude": ["node_modules"]
 }

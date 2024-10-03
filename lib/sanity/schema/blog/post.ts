@@ -23,7 +23,7 @@ const post = {
 		{
 			name: 'author',
 			title: 'Author',
-			to: {type: 'author'},
+			to: { type: 'author' },
 			type: 'reference'
 		},
 		{
@@ -36,7 +36,7 @@ const post = {
 		},
 		{
 			name: 'categories',
-			of: [{to: {type: 'category'}, type: 'reference'}],
+			of: [{ to: { type: 'category' }, type: 'reference' }],
 			title: 'Categories',
 			type: 'array'
 		},
@@ -48,7 +48,7 @@ const post = {
 		{
 			name: 'body',
 			of: [
-				{type: 'block'},
+				{ type: 'block' },
 				{
 					type: 'image',
 					name: 'image',
@@ -57,7 +57,10 @@ const post = {
 							name: 'alt',
 							title: 'Alternative text',
 							type: 'string',
-							validation: r => r.required()
+							validation: (
+								// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+								r: any
+							) => r.required()
 						}
 					]
 				}
@@ -68,9 +71,10 @@ const post = {
 	],
 	name: 'post',
 	preview: {
-		prepare(selection) {
-			const {author} = selection
-			return {...selection, subtitle: author && `by ${author}`}
+		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+		prepare(selection: any) {
+			const { author } = selection
+			return { ...selection, subtitle: author && `by ${author}` }
 		},
 		select: {
 			author: 'author.firstName',

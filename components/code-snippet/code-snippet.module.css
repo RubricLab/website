@@ -1,54 +1,57 @@
 .code-snippet {
-  max-width: 100%;
-  overflow-x: auto; /* Change from hidden to auto */
+	max-width: 100%;
+	overflow-x: auto; /* Change from hidden to auto */
 }
 
 .code-snippet .header {
-  padding: var(--spacing-4);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.5em;
-  border-bottom: 1px solid theme('colors.border.DEFAULT');
+	padding: var(--spacing-4);
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0.5em;
+	/* biome-ignore lint/correctness/noUnknownFunction: <explanation> */
+	border-bottom: 1px solid theme("colors.border.DEFAULT");
 }
 
 .code-snippet .content {
-  overflow-x: auto;
-  background-color: rgb(var(--color-surface-secondary) / 0.06);
-  position: relative;
-  -webkit-overflow-scrolling: touch;
+	overflow-x: auto;
+	background-color: rgb(var(--color-surface-secondary) / 0.06);
+	position: relative;
+	-webkit-overflow-scrolling: touch;
 }
 
 .code-snippet .content ::-webkit-scrollbar {
-  display: none;
+	display: none;
 }
 
-.code-snippet .content :global(pre) {
-  margin: 0 !important;
-  font-size: var(--fontSize-sm) !important;
-  white-space: pre; /* Change from pre-wrap to pre */
-  word-break: normal; /* Change from break-all to normal */
-  background-color: var(--color-surface-secondary) !important;
-  outline-color: theme('colors.border.DEFAULT');
-  padding: 0;
-  min-width: max-content; /* Add this line */
+.code-snippet .content pre {
+	margin: 0 !important;
+	font-size: var(--fontSize-sm) !important;
+	white-space: pre;
+	word-break: normal;
+	background-color: var(--color-surface-secondary) !important;
+	/* biome-ignore lint/correctness/noUnknownFunction: <explanation> */
+	outline-color: theme("colors.border.DEFAULT");
+	padding: 0;
+	min-width: max-content; /* Add this line */
 }
 
-.code-snippet .content :global(pre) :global(span.line-indicator) {
-  display: inline-block;
-  pointer-events: none;
-  position: sticky;
-  left: 0;
-  background-color: rgb(var(--color-surface-secondary) / 0.1);
-  backdrop-filter: blur(2px);
-  color: theme('colors.text.tertiary');
-  user-select: none;
-  width: 2em;
-  text-align: end;
-  padding: 0 0.5em;
-  margin-right: 0.5em;
+.code-snippet .content pre span.line-indicator {
+	display: inline-block;
+	pointer-events: none;
+	position: sticky;
+	left: 0;
+	background-color: rgb(var(--color-surface-secondary) / 0.1);
+	backdrop-filter: blur(2px);
+	/* biome-ignore lint/correctness/noUnknownFunction: <explanation> */
+	color: theme("colors.text.tertiary");
+	user-select: none;
+	width: 2em;
+	text-align: end;
+	padding: 0 0.5em;
+	margin-right: 0.5em;
 }
 
-.code-snippet .content :global(pre) :global(span.line) {
-  margin-right: 0.5em;
+.code-snippet .content pre span.line {
+	margin-right: 0.5em;
 }

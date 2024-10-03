@@ -1,5 +1,5 @@
 'use client'
-import {useGSAP} from '@gsap/react'
+import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import DrawSVGPlugin from 'gsap/DrawSVGPlugin'
 import ScrollTrigger from 'gsap/ScrollTrigger'
@@ -8,13 +8,7 @@ import TextPlugin from 'gsap/TextPlugin'
 
 export function GsapSetup() {
 	if (typeof window !== 'undefined')
-		gsap.registerPlugin(
-			TextPlugin,
-			DrawSVGPlugin,
-			SplitText,
-			useGSAP,
-			ScrollTrigger
-		)
+		gsap.registerPlugin(TextPlugin, DrawSVGPlugin, SplitText, useGSAP, ScrollTrigger)
 
 	return null
 }
@@ -59,10 +53,10 @@ gsap.registerEffect({
 			target,
 			{
 				scale,
-				[direction]: (centered ? halfAmountPerc : amountPef) * -1 + '%'
+				[direction]: `${(centered ? halfAmountPerc : amountPef) * -1}%`
 			},
 			{
-				[direction]: (centered ? halfAmountPerc : 0) + '%',
+				[direction]: `${centered ? halfAmountPerc : 0}%`,
 				// force3d: true,
 				ease,
 				overwrite: 'auto',
@@ -72,7 +66,8 @@ gsap.registerEffect({
 					end: end,
 					scrub: true,
 					markers
-				}
+					// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+				} as any
 			}
 		)
 	}

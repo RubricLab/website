@@ -1,8 +1,7 @@
-import {Metadata} from 'next'
+import type { Metadata } from 'next'
 
 export const META = {
-	description:
-		'A lean team of developers & designers building AI-enabled software end-to-end.',
+	description: 'A lean team of developers & designers building AI-enabled software end-to-end.',
 	githubURL: 'https://github.com/RubricLab',
 	twitterURL: 'https://x.com/RubricLabs',
 	linkedinURL: 'https://linkedin.com/company/RubricLabs',

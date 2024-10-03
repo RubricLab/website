@@ -1,5 +1,5 @@
 'use server'
-import {z} from 'zod'
+import { z } from 'zod'
 import loops from '~/utils/loopsClient'
 
 const schema = z.object({
@@ -10,7 +10,8 @@ const schema = z.object({
 
 // Create subscriber in Loops
 export default async function addSubscriber(
-	prevState: any,
+	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	_: any,
 	formData: FormData
 ) {
 	const parsed = schema.parse({
@@ -21,7 +22,7 @@ export default async function addSubscriber(
 
 	// Get response
 	const response = await loops.createContact(parsed.email, {
-		company: parsed.company,
+		company: parsed.company || null,
 		firstName: parsed.name,
 		source: 'Website',
 		userGroup: 'Newsletter'
@@ -29,11 +30,14 @@ export default async function addSubscriber(
 
 	// Return response
 	if (response.success)
-		return {message: `Successfully subscribed ${parsed.email}`, type: 'success'}
-	else if ('message' in response)
+		return {
+			message: `Successfully subscribed ${parsed.email}`,
+			type: 'success'
+		}
+	if ('message' in response)
 		return {
 			message: response.message,
 			type: 'error'
 		}
-	else return {message: 'Unexpected error', type: 'error'}
+	return { message: 'Unexpected error', type: 'error' }
 }

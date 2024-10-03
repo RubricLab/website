@@ -15,8 +15,8 @@ const nextConfig = {
 				port: '',
 				protocol: 'https'
 			},
-			{hostname: 'assets.basehub.com'},
-			{hostname: 'basehub.earth'}
+			{ hostname: 'assets.basehub.com' },
+			{ hostname: 'basehub.earth' }
 		]
 	}
 }

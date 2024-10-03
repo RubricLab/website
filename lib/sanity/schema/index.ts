@@ -7,14 +7,6 @@ import newsletter from './newsletter'
 import project from './projects'
 
 // Global schemas array
-const schemas = [
-	project,
-	homePage,
-	author,
-	post,
-	category,
-	caseStudy,
-	newsletter
-]
+const schemas = [project, homePage, author, post, category, caseStudy, newsletter]
 
 export default schemas

@@ -6,15 +6,16 @@ export function hexToRgb(hex: string) {
 	if (!result) throw new Error('Invalid hex color')
 
 	return [
-		parseInt(result[1]!, 16),
-		parseInt(result[2]!, 16),
-		parseInt(result[3]!, 16)
+		// biome-ignore lint/style/noNonNullAssertion: <explanation>
+		Number.parseInt(result[1]!, 16),
+		// biome-ignore lint/style/noNonNullAssertion: <explanation>
+		Number.parseInt(result[2]!, 16),
+		// biome-ignore lint/style/noNonNullAssertion: <explanation>
+		Number.parseInt(result[3]!, 16)
 	].join(' ')
 }
 
-export const isTailwindColor = (
-	color: string
-): color is keyof typeof colors => {
+export const isTailwindColor = (color: string): color is keyof typeof colors => {
 	return Object.keys(colors).includes(color)
 }
 

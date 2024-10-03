@@ -1,7 +1,7 @@
-import {visionTool} from '@sanity/vision'
-import {defineConfig} from 'sanity'
-import {deskTool} from 'sanity/desk'
-import env from '~/env.mjs'
+import env from '@/lib/env'
+import { visionTool } from '@sanity/vision'
+import { defineConfig } from 'sanity'
+import { deskTool } from 'sanity/desk'
 import schemas from '~/sanity/schema'
 
 // Sanity config file
@@ -11,7 +11,7 @@ const config = defineConfig({
 	dataset: env.NEXT_PUBLIC_SANITY_DATASET,
 	plugins: [deskTool(), visionTool()],
 	projectId: env.NEXT_PUBLIC_SANITY_PROJECT,
-	schema: {types: schemas},
+	schema: { types: schemas },
 	title: 'Rubric CMS'
 })
 

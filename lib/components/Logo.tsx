@@ -2,7 +2,7 @@ export default function Logo() {
 	const block = 'h-10 w-10 bg-black'
 	const invisible = 'h-10 w-10 bg-transparent'
 	return (
-		<div className='grid grid-cols-3 grid-rows-3'>
+		<div className="grid grid-cols-3 grid-rows-3">
 			{/* First row */}
 			<span className={block} />
 			<span className={invisible} />

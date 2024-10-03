@@ -49,7 +49,7 @@ const author = {
 			of: [
 				{
 					lists: [],
-					styles: [{title: 'Normal', value: 'normal'}],
+					styles: [{ title: 'Normal', value: 'normal' }],
 					title: 'Block',
 					type: 'block'
 				}

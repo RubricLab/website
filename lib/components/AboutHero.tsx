@@ -1,5 +1,5 @@
 'use client'
-import {useEffect, useState} from 'react'
+import { useEffect, useState } from 'react'
 import Game from './game'
 
 export default function AboutHero() {
@@ -10,11 +10,8 @@ export default function AboutHero() {
 	}, [])
 
 	return (
-		<div className='flex min-h-screen flex-col items-center justify-center gap-5 p-8'>
-			<Game
-				running={start}
-				setRunning={setStart}
-			/>
+		<div className="flex min-h-screen flex-col items-center justify-center gap-5 p-8">
+			<Game running={start} setRunning={setStart} />
 		</div>
 	)
 }

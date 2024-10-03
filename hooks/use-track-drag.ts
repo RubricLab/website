@@ -1,28 +1,22 @@
 import { useEffect, useRef, useState } from 'react'
 
 const getPoint = (e: TouchEvent | DragEvent) => {
-  const point = { x: 0, y: 0 }
+	const point = { x: 0, y: 0 }
 
-  if (
-    e.type === 'touchmove' ||
-    e.type === 'touchstart' ||
-    e.type === 'touchend'
-  ) {
-    const _e = e as TouchEvent
-    const touch = _e.touches[0]
-    point.x = touch.clientX
-    point.y = touch.clientY
-  } else if (
-    e.type === 'mousemove' ||
-    e.type === 'mousedown' ||
-    e.type === 'mouseup'
-  ) {
-    const _e = e as DragEvent
-    point.x = _e.clientX
-    point.y = _e.clientY
-  }
+	if (e.type === 'touchmove' || e.type === 'touchstart' || e.type === 'touchend') {
+		const _e = e as TouchEvent
+		const touch = _e.touches[0]
+		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+		point.x = touch?.clientX as any
+		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+		point.y = touch?.clientY as any
+	} else if (e.type === 'mousemove' || e.type === 'mousedown' || e.type === 'mouseup') {
+		const _e = e as DragEvent
+		point.x = _e.clientX
+		point.y = _e.clientY
+	}
 
-  return point
+	return point
 }
 
 /*
@@ -35,115 +29,109 @@ const getPoint = (e: TouchEvent | DragEvent) => {
     - use Date.now() to calculate the time difference between frames and velocity
 */
 export const useTrackDragInertia = ({
-  onMotion,
-  weight = 0.95,
-  inertiaThreshold = 0.001
+	onMotion,
+	weight = 0.95,
+	inertiaThreshold = 0.001
 }: {
-  onMotion: (params: { deltaX: number; deltaY: number; }) => void
-  weight?: number
-  inertiaThreshold?: number
+	onMotion: (params: { deltaX: number; deltaY: number }) => void
+	weight?: number
+	inertiaThreshold?: number
 }) => {
-  const internals = useRef({
-    startX: 0,
-    startY: 0,
-    lastX: 0,
-    lastY: 0,
-    velocityX: 0,
-    velocityY: 0,
-    lastTime: 0
-  })
+	const internals = useRef({
+		startX: 0,
+		startY: 0,
+		lastX: 0,
+		lastY: 0,
+		velocityX: 0,
+		velocityY: 0,
+		lastTime: 0
+	})
 
-  const [isDragging, setIsDragging] = useState(false)
-  const [isInertia, setIsInertia] = useState(false)
+	const [isDragging, setIsDragging] = useState(false)
+	const [isInertia, setIsInertia] = useState(false)
 
-  const callbacks = useRef({ onMotion })
-  callbacks.current.onMotion = onMotion
+	const callbacks = useRef({ onMotion })
+	callbacks.current.onMotion = onMotion
 
-  const onMouseOrTouchMove = (e: DragEvent | TouchEvent) => {
-    if (!isDragging) return
+	const onMouseOrTouchMove = (e: DragEvent | TouchEvent) => {
+		if (!isDragging) return
 
-    const { lastX, lastY } = internals.current
-    const point = getPoint(e)
-    const now = Date.now()
-    const deltaTime = now - internals.current.lastTime
+		const { lastX, lastY } = internals.current
+		const point = getPoint(e)
+		const now = Date.now()
+		const deltaTime = now - internals.current.lastTime
 
-    const deltaX = point.x - lastX
-    const deltaY = point.y - lastY
+		const deltaX = point.x - lastX
+		const deltaY = point.y - lastY
 
-    internals.current.velocityX = deltaX / deltaTime
-    internals.current.velocityY = deltaY / deltaTime
+		internals.current.velocityX = deltaX / deltaTime
+		internals.current.velocityY = deltaY / deltaTime
 
-    if (
-      Math.abs(internals.current.velocityX) === Infinity ||
-      Math.abs(internals.current.velocityY) === Infinity
-    ) {
-      internals.current.velocityX = 0
-      internals.current.velocityY = 0
-    }
+		if (
+			Math.abs(internals.current.velocityX) === Number.POSITIVE_INFINITY ||
+			Math.abs(internals.current.velocityY) === Number.POSITIVE_INFINITY
+		) {
+			internals.current.velocityX = 0
+			internals.current.velocityY = 0
+		}
 
-    internals.current.lastX = point.x
-    internals.current.lastY = point.y
-    internals.current.lastTime = now
+		internals.current.lastX = point.x
+		internals.current.lastY = point.y
+		internals.current.lastTime = now
 
-    callbacks.current.onMotion({ deltaX, deltaY })
-  }
+		callbacks.current.onMotion({ deltaX, deltaY })
+	}
 
-  const onMouseOrTouchDown = (e: DragEvent | TouchEvent) => {
-    e.preventDefault()
+	const onMouseOrTouchDown = (e: DragEvent | TouchEvent) => {
+		e.preventDefault()
 
-    const point = getPoint(e)
+		const point = getPoint(e)
 
-    internals.current.startX = point.x
-    internals.current.startY = point.y
-    internals.current.lastX = point.x
-    internals.current.lastY = point.y
-    internals.current.lastTime = Date.now()
+		internals.current.startX = point.x
+		internals.current.startY = point.y
+		internals.current.lastX = point.x
+		internals.current.lastY = point.y
+		internals.current.lastTime = Date.now()
 
-    setIsDragging(true)
-    setIsInertia(false)
-  }
+		setIsDragging(true)
+		setIsInertia(false)
+	}
 
-  const onMouseOrTouchUp = () => {
-    setIsDragging(false)
-    setIsInertia(true)
-  }
+	const onMouseOrTouchUp = () => {
+		setIsDragging(false)
+		setIsInertia(true)
+	}
 
-  useEffect(() => {
-    if (isInertia) {
+	useEffect(() => {
+		if (isInertia) {
+			const applyInertia = () => {
+				const { velocityX, velocityY } = internals.current
+				internals.current.velocityX *= weight
+				internals.current.velocityY *= weight
 
-      const applyInertia = () => {
-        const { velocityX, velocityY } = internals.current
-        internals.current.velocityX *= weight
-        internals.current.velocityY *= weight
+				const deltaX = internals.current.velocityX
+				const deltaY = internals.current.velocityY
 
-        const deltaX = internals.current.velocityX
-        const deltaY = internals.current.velocityY
+				callbacks.current.onMotion({ deltaX, deltaY })
 
-        callbacks.current.onMotion({ deltaX, deltaY })
+				if (Math.abs(velocityX) > inertiaThreshold || Math.abs(velocityY) > inertiaThreshold)
+					requestAnimationFrame(applyInertia)
+				else setIsInertia(false)
+			}
 
-        if (
-          Math.abs(velocityX) > inertiaThreshold ||
-          Math.abs(velocityY) > inertiaThreshold
-        )
-          requestAnimationFrame(applyInertia)
-        else
-          setIsInertia(false)
+			requestAnimationFrame(applyInertia)
+		}
+	}, [inertiaThreshold, isInertia, weight])
 
-      }
-
-      requestAnimationFrame(applyInertia)
-    }
-  }, [inertiaThreshold, isInertia, weight])
-
-  return {
-    listeners: {
-      onMouseMove: onMouseOrTouchMove,
-      onMouseDown: onMouseOrTouchDown,
-      onMouseUp: onMouseOrTouchUp,
-      onTouchMove: onMouseOrTouchMove,
-      onTouchStart: onMouseOrTouchDown,
-      onTouchEnd: onMouseOrTouchUp
-    },
-    isDragging
-  }
+	return {
+		listeners: {
+			onMouseMove: onMouseOrTouchMove,
+			onMouseDown: onMouseOrTouchDown,
+			onMouseUp: onMouseOrTouchUp,
+			onTouchMove: onMouseOrTouchMove,
+			onTouchStart: onMouseOrTouchDown,
+			onTouchEnd: onMouseOrTouchUp
+		},
+		isDragging
+	}
 }

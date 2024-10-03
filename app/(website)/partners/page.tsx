@@ -1,5 +1,5 @@
 import Button from '~/components/Button'
-import {Card} from '~/components/Card'
+import { Card } from '~/components/Card'
 import getMetadata from '~/utils/getMetadata'
 
 export const metadata = getMetadata({
@@ -11,8 +11,7 @@ export const metadata = getMetadata({
 
 const partners = [
 	{
-		description:
-			'Vercel makes it easy for engineers to deploy and run web applications.',
+		description: 'Vercel makes it easy for engineers to deploy and run web applications.',
 		href: 'https://vercel.com/experts/rubric',
 		title: 'Vercel'
 	},
@@ -26,10 +25,10 @@ const partners = [
 
 const Partners = async () => {
 	return (
-		<div className='my-32 flex w-full flex-col items-center 2xl:justify-center'>
-			<div className='flex h-full w-full max-w-4xl flex-col gap-16 p-5'>
+		<div className="my-32 flex w-full flex-col items-center 2xl:justify-center">
+			<div className="flex h-full w-full max-w-4xl flex-col gap-16 p-5">
 				<h1>Partners</h1>
-				<div className='grid gap-5 sm:grid-cols-2'>
+				<div className="grid gap-5 sm:grid-cols-2">
 					{partners
 						.sort((a, b) => a.title.localeCompare(b.title)) // Sort alphabetically
 						.map(partner => (
@@ -41,11 +40,7 @@ const Partners = async () => {
 							/>
 						))}
 				</div>
-				<Button
-					body='Want to partner with us?'
-					href='/contact'
-					variant='light'
-				/>
+				<Button body="Want to partner with us?" href="/contact" variant="light" />
 			</div>
 		</div>
 	)

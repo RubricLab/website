@@ -1,15 +1,10 @@
-import {PerspectiveCamera, shaderMaterial} from '@react-three/drei'
-import {Canvas, extend, useFrame, useThree} from '@react-three/fiber'
-import {
-	Bloom,
-	EffectComposer,
-	Noise,
-	SMAA,
-	Vignette
-} from '@react-three/postprocessing'
+import { PerspectiveCamera, shaderMaterial } from '@react-three/drei'
+import { Canvas, extend, useFrame, useThree } from '@react-three/fiber'
+import { Bloom, EffectComposer, Noise, SMAA, Vignette } from '@react-three/postprocessing'
 import gsap from 'gsap'
-import {folder, useControls} from 'leva'
+import { folder, useControls } from 'leva'
 import {
+	type RefObject,
 	useCallback,
 	useEffect,
 	useLayoutEffect,
@@ -58,8 +53,12 @@ const MeshEdgesMaterial = shaderMaterial(
   }`
 )
 
-const patchBasicMaterialBloomFactor = shader => {
-	shader.uniforms.bloomFactor = {value: 0}
+const patchBasicMaterialBloomFactor = (shader: {
+	uniforms: { bloomFactor: { value: number } }
+	vertexShader: string
+	fragmentShader: string
+}) => {
+	shader.uniforms.bloomFactor = { value: 0 }
 	shader.vertexShader = shader.vertexShader.replace(
 		'#include <common>',
 		`#include <common>
@@ -84,7 +83,7 @@ const patchBasicMaterialBloomFactor = shader => {
 	)
 }
 
-extend({MeshEdgesMaterial})
+extend({ MeshEdgesMaterial })
 
 const noLogo = [
 	[0, 0, 0],
@@ -98,12 +97,12 @@ const logos = {
 		[1, 1, 0],
 		[1, 0, 0]
 	],
-	'maige': [
+	maige: [
 		[1, 0, 1],
 		[1, 1, 1],
 		[0, 1, 0]
 	],
-	'ros': [
+	ros: [
 		[0, 1, 1],
 		[1, 0, 1],
 		[1, 1, 0]
@@ -115,28 +114,28 @@ const logos = {
 	]
 }
 
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 const clone = (arr: any) => {
 	return JSON.parse(JSON.stringify(arr))
 }
 
 const initialLogoGridState = clone(noLogo)
 	.flat()
-	.map(v => ({v}))
+	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	.map((v: any) => ({ v }))
 const initialLogoGridBloomState = clone(initialLogoGridState)
 
-const Scene = ({activeLogo}: {activeLogo: number[][]}) => {
+const Scene = ({ activeLogo }: { activeLogo: number[][] }) => {
 	const refPrevLogoPattern = useRef<number[][]>()
-	const refPatternFromZValues = useRef<{v: number}[]>()
+	const refPatternFromZValues = useRef<{ v: number }[]>()
 
-	const refLogoGridState = useRef<{v: number}[]>(initialLogoGridState)
-	const refLogoGridBloomState = useRef<{v: number}[]>(initialLogoGridBloomState)
+	const refLogoGridState = useRef<{ v: number }[]>(initialLogoGridState)
+	const refLogoGridBloomState = useRef<{ v: number }[]>(initialLogoGridBloomState)
 
 	const outlinesRef = useRef<THREE.InstancedMesh>(null)
 
 	const [baseColor, setColor] = useState(() => new THREE.Color('#ffffff'))
-	const [activeColor, setActiveColor] = useState(
-		() => new THREE.Color('#939393')
-	)
+	const [activeColor, setActiveColor] = useState(() => new THREE.Color('#939393'))
 	const [borderColor, setBorderColor] = useState(() => new THREE.Color('red'))
 	const ctrls = useControls('wall', {
 		pattern: {
@@ -198,10 +197,7 @@ const Scene = ({activeLogo}: {activeLogo: number[][]}) => {
 	const length = grid.width * grid.height
 	const logoPattern = activeLogo ?? noLogo
 
-	const bloomFactorBuffer = useMemo(
-		() => new Float32Array(length).map(() => 0),
-		[length]
-	)
+	const bloomFactorBuffer = useMemo(() => new Float32Array(length).map(() => 0), [length])
 
 	const getCenteredGridMappedValues = useCallback(
 		(idx: number) => {
@@ -214,9 +210,9 @@ const Scene = ({activeLogo}: {activeLogo: number[][]}) => {
 			const gridY = gridCenter.y - centerOffset + y
 			const id = gridY * grid.width + gridX
 
-			return {x, y, gridX, gridY, id}
+			return { x, y, gridX, gridY, id }
 		},
-		[grid.width, gridCenter.x, gridCenter.y, logoPattern]
+		[gridCenter.x, gridCenter.y, logoPattern]
 	)
 
 	useLayoutEffect(() => {
@@ -229,11 +225,7 @@ const Scene = ({activeLogo}: {activeLogo: number[][]}) => {
 				const id = i++
 
 				// Apply centering offset here
-				o.position.set(
-					(x - grid.width / 2 + 0.5) * scale,
-					(y - grid.height / 2 + 0.5) * scale,
-					0
-				)
+				o.position.set((x - grid.width / 2 + 0.5) * scale, (y - grid.height / 2 + 0.5) * scale, 0)
 
 				o.updateMatrix()
 
@@ -246,15 +238,7 @@ const Scene = ({activeLogo}: {activeLogo: number[][]}) => {
 		// Re-use geometry + instance matrix
 		outlinesRef.current.geometry = ref.current.geometry
 		outlinesRef.current.instanceMatrix = ref.current.instanceMatrix
-	}, [
-		grid.width,
-		grid.height,
-		length,
-		gridCenter.x,
-		gridCenter.y,
-		baseColor,
-		scale
-	])
+	}, [baseColor])
 
 	useEffect(() => {
 		if (!ref.current) return
@@ -285,7 +269,7 @@ const Scene = ({activeLogo}: {activeLogo: number[][]}) => {
 					fromZValues.forEach((value, index) => {
 						if (!ref.current) return
 
-						const {id} = getCenteredGridMappedValues(index)
+						const { id } = getCenteredGridMappedValues(index)
 
 						ref.current.getMatrixAt(id, o.matrix)
 						o.matrix.decompose(o.position, o.quaternion, o.scale)
@@ -293,10 +277,8 @@ const Scene = ({activeLogo}: {activeLogo: number[][]}) => {
 						o.updateMatrix()
 						ref.current.setMatrixAt(id, o.matrix)
 
-						ref.current.setColorAt(
-							id,
-							c.copy(activeColor).lerp(baseColor, 1 - value.v)
-						)
+						ref.current.setColorAt(id, c.copy(activeColor).lerp(baseColor, 1 - value.v))
+						// biome-ignore lint/style/noNonNullAssertion: <explanation>
 						ref.current.instanceColor!.needsUpdate = true
 						ref.current.instanceMatrix.needsUpdate = true
 					})
@@ -313,9 +295,11 @@ const Scene = ({activeLogo}: {activeLogo: number[][]}) => {
 			onUpdate: () => {
 				fromBloomValues.forEach((value, index) => {
 					if (!ref.current) return
-					const {id} = getCenteredGridMappedValues(index)
+					const { id } = getCenteredGridMappedValues(index)
 					bloomFactorBuffer[id] = value.v
-					ref.current.geometry.attributes.bloomFactor.needsUpdate = true
+					if (ref.current?.geometry.attributes.bloomFactor) {
+						ref.current.geometry.attributes.bloomFactor.needsUpdate = true
+					}
 				})
 			}
 		})
@@ -333,7 +317,7 @@ const Scene = ({activeLogo}: {activeLogo: number[][]}) => {
 					fromZValues.forEach((value, index) => {
 						if (!ref.current) return
 
-						const {id} = getCenteredGridMappedValues(index)
+						const { id } = getCenteredGridMappedValues(index)
 
 						ref.current.getMatrixAt(id, o.matrix)
 
@@ -348,11 +332,9 @@ const Scene = ({activeLogo}: {activeLogo: number[][]}) => {
 						if (currentLogoPattern[index] === 1)
 							ref.current.setColorAt(id, c.copy(baseColor).lerp(activeColor, value.v))
 						else if (currentLogoPattern[index] === 0)
-							ref.current.setColorAt(
-								id,
-								c.copy(activeColor).lerp(baseColor, 1 - value.v)
-							)
+							ref.current.setColorAt(id, c.copy(activeColor).lerp(baseColor, 1 - value.v))
 
+						// biome-ignore lint/style/noNonNullAssertion: <explanation>
 						ref.current.instanceColor!.needsUpdate = true
 						ref.current.instanceMatrix.needsUpdate = true
 					})
@@ -373,39 +355,28 @@ const Scene = ({activeLogo}: {activeLogo: number[][]}) => {
 		bloomFactorBuffer,
 		ctrls.gridfrom,
 		getCenteredGridMappedValues,
-		grid.width,
-		gridCenter.x,
-		gridCenter.y,
 		logoPattern
 	])
 
 	return (
 		// Create a centered grid of boxes with the given width and height
 		<group>
-			<instancedMesh
-				scale={scale}
-				args={[undefined, undefined, length]}
-				ref={ref}>
+			<instancedMesh scale={scale} args={[undefined, undefined, length]} ref={ref}>
 				<boxGeometry args={[boxSize, boxSize, boxSize]}>
-					<instancedBufferAttribute
-						attach='attributes-bloomFactor'
-						args={[bloomFactorBuffer, 1]}
-					/>
+					<instancedBufferAttribute attach="attributes-bloomFactor" args={[bloomFactorBuffer, 1]} />
 					{/* <instancedBufferAttribute
             attach="attributes-color"
             args={[faceColorsBuffer, 3]}
           /> */}
 				</boxGeometry>
 				<meshBasicMaterial
-					color='white'
+					color="white"
+					// @ts-ignore
 					onBeforeCompile={patchBasicMaterialBloomFactor}
 					toneMapped={false}
 				/>
 			</instancedMesh>
-			<instancedMesh
-				scale={scale}
-				args={[undefined, undefined, length]}
-				ref={outlinesRef}>
+			<instancedMesh scale={scale} args={[undefined, undefined, length]} ref={outlinesRef}>
 				{/* @ts-ignore */}
 				<meshEdgesMaterial
 					toneMapped={false}
@@ -429,7 +400,7 @@ const v3 = new THREE.Vector3()
 const cameraMovementTarget = new THREE.Vector2()
 
 const Camera = () => {
-	const {domElement} = useThree(s => s.gl)
+	const { domElement } = useThree(s => s.gl)
 	const [hovering, setHovering] = useState(false)
 	const cameraRef = useRef<THREE.PerspectiveCamera>()
 	const ctrls = useControls({
@@ -458,7 +429,7 @@ const Camera = () => {
 
 	useFrame(state => {
 		if (cameraRef.current) {
-			const {pointer} = state
+			const { pointer } = state
 			const radius = 12
 			const lerp = hovering ? 0.05 : 0.025
 
@@ -488,12 +459,12 @@ const Camera = () => {
 			fov={ctrls.fov}
 			near={1}
 			far={100}
-			ref={cameraRef}
+			ref={cameraRef as RefObject<THREE.PerspectiveCamera>}
 		/>
 	)
 }
 
-function LabWebGL({activeSlug}: {activeSlug: string}) {
+function LabWebGL({ activeSlug }: { activeSlug: string }) {
 	const ctrls = useControls({
 		ambientLight: {
 			value: 0.1,
@@ -551,11 +522,9 @@ function LabWebGL({activeSlug}: {activeSlug: string}) {
 				outputColorSpace: 'srgb',
 				toneMappingExposure: ctrls.exposure
 			}}
-			dpr={[1, 2]}>
-			<color
-				attach='background'
-				args={['#000']}
-			/>
+			dpr={[1, 2]}
+		>
+			<color attach="background" args={['#000']} />
 			<Camera />
 
 			{ctrls.helpers && (
@@ -565,12 +534,13 @@ function LabWebGL({activeSlug}: {activeSlug: string}) {
 				</>
 			)}
 
-			<Scene activeLogo={logos[activeSlug]} />
+			<Scene activeLogo={logos[activeSlug as keyof typeof logos]} />
 
 			<EffectComposer
 				multisampling={0}
 				/* @ts-ignore */
-				disableNormalPass>
+				disableNormalPass
+			>
 				<Bloom
 					luminanceThreshold={1}
 					intensity={ctrls.intensity}
@@ -579,11 +549,7 @@ function LabWebGL({activeSlug}: {activeSlug: string}) {
 					mipmapBlur={ctrls.mipmap}
 				/>
 				<Noise opacity={0.05} />
-				<Vignette
-					offset={0.5}
-					darkness={0.7}
-					eskil={false}
-				/>
+				<Vignette offset={0.5} darkness={0.7} eskil={false} />
 				<SMAA />
 			</EffectComposer>
 		</Canvas>

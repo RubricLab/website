@@ -1,15 +1,15 @@
-import {RichText} from 'basehub/react-rich-text'
-import type {Metadata} from 'next'
-import {draftMode} from 'next/headers'
-import {notFound} from 'next/navigation'
+import { RichText } from 'basehub/react-rich-text'
+import type { Metadata } from 'next'
+import { draftMode } from 'next/headers'
+import { notFound } from 'next/navigation'
 
-import {Author} from '@/common/avatar'
-import {DarkLightImage} from '@/common/dark-light-image'
+import { Author } from '@/common/avatar'
+import { DarkLightImage } from '@/common/dark-light-image'
 import BackgroundGrid from '@/common/lab-blog-layout/background-grid'
-import {Button} from '@/common/ui/button'
-import {Actions} from '@/components/actions'
-import {CodeSnippet, codeSnippetFragment} from '@/components/code-snippet'
-import {PageView} from '@/components/page-view'
+import { Button } from '@/common/ui/button'
+import { Actions } from '@/components/actions'
+import { CodeSnippet, codeSnippetFragment } from '@/components/code-snippet'
+import { PageView } from '@/components/page-view'
 import {
 	FaqItemComponentFragment,
 	RichTextCalloutComponent,
@@ -17,16 +17,12 @@ import {
 	richTextCalloutComponentFragment,
 	richTextClasses
 } from '@/components/rich-text'
-import {BASEHUB_REVALIDATE_TIME} from '@/lib/basehub/constants'
-import {
-	actionsFragment,
-	authorFragment,
-	darkLightImageFragment
-} from '@/lib/basehub/fragments'
-import {formatDate} from '@/lib/utils/dates'
-import {basehub} from 'basehub'
-import {Pump} from 'basehub/react-pump'
-import {cx} from 'class-variance-authority'
+import { BASEHUB_REVALIDATE_TIME } from '@/lib/basehub/constants'
+import { actionsFragment, authorFragment, darkLightImageFragment } from '@/lib/basehub/fragments'
+import { formatDate } from '@/lib/utils/dates'
+import { basehub } from 'basehub'
+import { Pump } from 'basehub/react-pump'
+import { cx } from 'class-variance-authority'
 import Link from 'next/link'
 
 export const dynamic = 'force-static'
@@ -34,7 +30,7 @@ export const dynamic = 'force-static'
 export const revalidate = BASEHUB_REVALIDATE_TIME
 
 export const generateStaticParams = async () => {
-	const data = await basehub({cache: 'no-store'}).query({
+	const data = await basehub({ cache: 'no-store' }).query({
 		site: {
 			blog: {
 				posts: {
@@ -54,12 +50,12 @@ export const generateStaticParams = async () => {
 }
 
 export const generateMetadata = async ({
-	params: {slug}
+	params: { slug }
 }: {
-	params: {slug: string}
+	params: { slug: string }
 }): Promise<Metadata | undefined> => {
 	const data = await basehub({
-		next: {revalidate: BASEHUB_REVALIDATE_TIME}
+		next: { revalidate: BASEHUB_REVALIDATE_TIME }
 	}).query({
 		site: {
 			settings: {
@@ -72,12 +68,12 @@ export const generateMetadata = async ({
 				posts: {
 					__args: {
 						filter: {
-							_sys_slug: {eq: slug}
+							_sys_slug: { eq: slug }
 						},
 						first: 1
 					},
 					items: {
-						ogImage: {url: true},
+						ogImage: { url: true },
 						_id: true,
 						_title: true,
 						description: true
@@ -90,7 +86,7 @@ export const generateMetadata = async ({
 	const post = data.site.blog.posts.items[0]
 
 	if (!post) return undefined
-	const images = [{url: post.ogImage.url}]
+	const images = [{ url: post.ogImage.url }]
 
 	return {
 		title: post._title,
@@ -108,24 +104,24 @@ export const generateMetadata = async ({
 }
 
 export default async function BlogPostPage({
-	params: {slug}
+	params: { slug }
 }: {
-	params: {slug: string}
+	params: { slug: string }
 }) {
 	return (
 		<>
 			<BackgroundGrid
 				data={{
-					sm: {columnCount: 4},
-					md: {columnCount: 12, highlightColumns: [0, 11]},
-					lg: {columnCount: 12, highlightColumns: [1, 10]},
-					xl: {columnCount: 12, highlightColumns: [1, 10]},
-					'2xl': {columnCount: 12, highlightColumns: [1, 10]}
+					sm: { columnCount: 4 },
+					md: { columnCount: 12, highlightColumns: [0, 11] },
+					lg: { columnCount: 12, highlightColumns: [1, 10] },
+					xl: { columnCount: 12, highlightColumns: [1, 10] },
+					'2xl': { columnCount: 12, highlightColumns: [1, 10] }
 				}}
 			/>
 			<Pump
 				draft={draftMode().isEnabled}
-				next={{revalidate: BASEHUB_REVALIDATE_TIME}}
+				next={{ revalidate: BASEHUB_REVALIDATE_TIME }}
 				queries={[
 					{
 						site: {
@@ -166,11 +162,12 @@ export default async function BlogPostPage({
 							}
 						}
 					}
-				]}>
+				]}
+			>
 				{async ([
 					{
 						site: {
-							blog: {posts}
+							blog: { posts }
 						}
 					}
 				]) => {
@@ -180,48 +177,45 @@ export default async function BlogPostPage({
 					if (!blogpost) return notFound()
 
 					return (
-						<div className='relative mx-auto w-full border border-border bg-surface mb-em-[64] md:w-[calc(var(--col-width)*10+2px)] md:-translate-x-px lg:w-[calc(var(--col-width)*8+2px)]'>
+						<div className="md:-translate-x-px relative mx-auto mb-em-[64] w-full border border-border bg-surface md:w-[calc(var(--col-width)*10+2px)] lg:w-[calc(var(--col-width)*8+2px)]">
 							<PageView _analyticsKey={blogpost._analyticsKey} />
 
-							<div className='bg-lines flex w-full items-center h-em-[64]'>
+							<div className="flex h-em-[64] w-full items-center bg-lines">
 								<Button
 									asChild
-									size='sm'
-									className='h-full w-col-6 border-0 border-r bg-surface hover:bg-surface-tertiary md:w-[calc(var(--col-width)*2+1px)]'
-									variant='secondary'>
-									<Link href='/blog'>Back to Blog</Link>
+									size="sm"
+									className="h-full w-col-6 border-0 border-r bg-surface hover:bg-surface-tertiary md:w-[calc(var(--col-width)*2+1px)]"
+									variant="secondary"
+								>
+									<Link href="/blog">Back to Blog</Link>
 								</Button>
 							</div>
 
-							<div className='grid grid-cols-1 border-b border-t border-border mb-em-[64] md:grid-cols-2'>
-								<div className='flex flex-col justify-between border-b border-border p-em-[24] gap-em-[16] md:border-b-0 md:border-r 2xl:p-em-[32]'>
-									<div className='flex'>
+							<div className="mb-em-[64] grid grid-cols-1 border-border border-t border-b md:grid-cols-2">
+								<div className="flex flex-col justify-between gap-em-[16] border-border border-b p-em-[24] md:border-r md:border-b-0 2xl:p-em-[32]">
+									<div className="flex">
 										{blogpost.categories.map(category => (
 											<span
 												key={category}
-												className='mr-1 border border-border text-text-tertiary px-em-[8] py-em-[2] text-em-[14/16]'>
+												className="mr-1 border border-border px-em-[8] py-em-[2] text-em-[14/16] text-text-tertiary"
+											>
 												{category}
 											</span>
 										))}
 									</div>
-									<h1 className='text-pretty font-medium text-em-[32/16] lg:text-em-[34/16] 2xl:text-em-[40/16]'>
+									<h1 className="text-pretty font-medium text-em-[32/16] lg:text-em-[34/16] 2xl:text-em-[40/16]">
 										{blogpost._title}
 									</h1>
-									<div className='flex items-center gap-em-[16]'>
-										<div className='flex items-center justify-center space-x-[-1px] text-base'>
+									<div className="flex items-center gap-em-[16]">
+										<div className="flex items-center justify-center space-x-[-1px] text-base">
 											{blogpost.authors.map(author => (
-												<Author
-													key={author._id}
-													{...author}
-												/>
+												<Author key={author._id} {...author} />
 											))}
 										</div>
-										<span className='h-px bg-border w-em-[64]' />
+										<span className="h-px w-em-[64] bg-border" />
 
-										<div className='flex divide-x divide-border text-text-tertiary'>
-											<p className='pr-em-[8] text-em-[18/16]'>
-												{formatDate(blogpost.publishedAt)}
-											</p>
+										<div className="flex divide-x divide-border text-text-tertiary">
+											<p className="pr-em-[8] text-em-[18/16]">{formatDate(blogpost.publishedAt)}</p>
 										</div>
 									</div>
 								</div>
@@ -229,12 +223,12 @@ export default async function BlogPostPage({
 									{...blogpost.image}
 									priority
 									withPlaceholder
-									className='h-full max-h-[720px] w-full object-cover '
-									style={{aspectRatio: blogpost.image.light.aspectRatio}}
+									className="h-full max-h-[720px] w-full object-cover "
+									style={{ aspectRatio: blogpost.image.light.aspectRatio }}
 								/>
 							</div>
 
-							<div className='px-[calc(2*var(--spacing-sides))] md:px-col-1'>
+							<div className="px-[calc(2*var(--spacing-sides))] md:px-col-1">
 								<div className={cx(richTextClasses)}>
 									<RichText
 										blocks={blogpost.body.json.blocks}
@@ -243,12 +237,13 @@ export default async function BlogPostPage({
 											RichTextCalloutComponent: RichTextCalloutComponent,
 											CodeSnippetComponent: CodeSnippet,
 											ActionsComponent: Actions
-										}}>
+										}}
+									>
 										{blogpost.body.json.content}
 									</RichText>
 								</div>
 							</div>
-							<span className='bg-lines flex w-full border-t border-border mt-em-[64] h-em-[64]' />
+							<span className="mt-em-[64] flex h-em-[64] w-full border-border border-t bg-lines" />
 						</div>
 					)
 				}}

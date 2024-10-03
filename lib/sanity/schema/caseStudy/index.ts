@@ -7,7 +7,7 @@ const caseStudy = {
 		},
 		{
 			name: 'slug',
-			options: {source: 'name'},
+			options: { source: 'name' },
 			title: 'Slug',
 			type: 'slug'
 		},
@@ -25,7 +25,7 @@ const caseStudy = {
 				}
 			],
 			name: 'image',
-			options: {hotspot: true},
+			options: { hotspot: true },
 			title: 'Image',
 			type: 'image'
 		},
@@ -41,7 +41,7 @@ const caseStudy = {
 		},
 		{
 			name: 'body',
-			of: [{type: 'block'}],
+			of: [{ type: 'block' }],
 			title: 'Body',
 			type: 'array'
 		}

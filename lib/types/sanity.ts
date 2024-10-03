@@ -1,4 +1,4 @@
-import {PortableTextBlock} from 'sanity'
+import type { PortableTextBlock } from 'sanity'
 
 // Project
 export type Project = {
@@ -15,7 +15,7 @@ export type Project = {
 export type Home = {
 	_id: string
 	_createdAt: Date
-	hero: {title: string; subtitle: string; _type: string}
+	hero: { title: string; subtitle: string; _type: string }
 	desc: PortableTextBlock[]
 	team: Author[]
 }

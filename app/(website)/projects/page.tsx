@@ -1,7 +1,7 @@
 import Button from '~/components/Button'
-import {Card} from '~/components/Card'
-import {getProjects} from '~/sanity/utils'
-import {Project} from '~/types/sanity'
+import { Card } from '~/components/Card'
+import { getProjects } from '~/sanity/utils'
+import type { Project } from '~/types/sanity'
 import getMetadata from '~/utils/getMetadata'
 
 export const metadata = getMetadata({
@@ -17,25 +17,21 @@ const Projects = async () => {
 	const projects = await getProjects()
 
 	return (
-		<div className='my-32 flex w-full flex-col items-center 2xl:justify-center'>
-			<div className='flex h-full max-w-4xl flex-col gap-16 p-5'>
+		<div className="my-32 flex w-full flex-col items-center 2xl:justify-center">
+			<div className="flex h-full max-w-4xl flex-col gap-16 p-5">
 				<h1>Projects</h1>
-				<div className='grid grid-cols-1 gap-5 sm:grid-cols-2'>
+				<div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
 					{projects.map((project: Project) => (
 						<Card
-							body={project.content[0].children[0].text}
+							// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+							body={(project.content[0]?.children as any)[0].text as any}
 							key={project._id}
 							title={project.name}
 							url={project.url}
 						/>
 					))}
 				</div>
-				<Button
-					body='Want to be on the list?'
-					className='mt-20'
-					href='/contact'
-					variant='light'
-				/>
+				<Button body="Want to be on the list?" className="mt-20" href="/contact" variant="light" />
 			</div>
 		</div>
 	)

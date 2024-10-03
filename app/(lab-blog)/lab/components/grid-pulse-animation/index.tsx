@@ -1,5 +1,5 @@
 import cn from '@/lib/utils/cn'
-import {CSSProperties} from 'styled-components'
+import type { CSSProperties } from 'styled-components'
 
 import s from './grid-pulse-animation.module.css'
 
@@ -13,19 +13,22 @@ export const GridPulseAnimation = ({
 	const length = grid[0] * grid[1]
 	return (
 		<div
-			className='border-l border-t border-border'
+			className="border-border border-t border-l"
 			style={{
 				display: 'grid',
 				gridTemplateColumns: `repeat(${grid[0]}, ${cellSize})`,
 				gridTemplateRows: `repeat(${grid[1]}, ${cellSize})`
-			}}>
-			{Array.from({length: length}, (_, idx) => (
+			}}
+		>
+			{Array.from({ length: length }, (_, idx) => (
 				<div
 					key={idx}
-					className={cn('border-b border-r border-border bg-transparent', {
-						[s['animate-cell']]: true
+					className={cn('border-border border-r border-b bg-transparent', {
+						// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+						[s['animate-cell'] as any]: true
 					})}
-					style={{aspectRatio: '1/1', '--idx': length - idx} as CSSProperties}></div>
+					style={{ aspectRatio: '1/1', '--idx': length - idx } as CSSProperties}
+				/>
 			))}
 		</div>
 	)

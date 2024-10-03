@@ -8,7 +8,7 @@ const project = {
 		},
 		{
 			name: 'slug',
-			options: {source: 'name'},
+			options: { source: 'name' },
 			title: 'Slug',
 			type: 'slug'
 		},
@@ -21,7 +21,7 @@ const project = {
 				}
 			],
 			name: 'image',
-			options: {hotspot: true},
+			options: { hotspot: true },
 			title: 'Image',
 			type: 'image'
 		},
@@ -32,7 +32,7 @@ const project = {
 		},
 		{
 			name: 'content',
-			of: [{type: 'block'}],
+			of: [{ type: 'block' }],
 			title: 'Content',
 			type: 'array'
 		}

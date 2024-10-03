@@ -20,13 +20,13 @@ const homePage = {
 		},
 		{
 			name: 'team',
-			of: [{type: 'author'}],
+			of: [{ type: 'author' }],
 			title: 'Team',
 			type: 'array'
 		},
 		{
 			name: 'desc',
-			of: [{type: 'block'}],
+			of: [{ type: 'block' }],
 			title: 'Description',
 			type: 'array'
 		}

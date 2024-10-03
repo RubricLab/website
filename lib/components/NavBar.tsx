@@ -1,19 +1,19 @@
 'use client'
 import Link from 'next/link'
-import {usePathname, useRouter} from 'next/navigation'
-import {useEffect} from 'react'
+import { usePathname, useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 import Button from './Button'
 import Title from './Title'
 
 const shortcuts = [
-	{href: '/about', key: 'a'},
-	{href: '/lab', key: 'l'},
-	{href: '/contact', key: 'r'},
-	{href: '/blog', key: 'b'},
-	{href: '/projects', key: 'p'},
-	{href: '/newsletter', key: 'n'},
-	{href: '/', key: 'h'},
-	{href: '/', key: 'escape'}
+	{ href: '/about', key: 'a' },
+	{ href: '/lab', key: 'l' },
+	{ href: '/contact', key: 'r' },
+	{ href: '/blog', key: 'b' },
+	{ href: '/projects', key: 'p' },
+	{ href: '/newsletter', key: 'n' },
+	{ href: '/', key: 'h' },
+	{ href: '/', key: 'escape' }
 ]
 
 export default function NavBar() {
@@ -34,7 +34,7 @@ export default function NavBar() {
 				return
 
 			shortcuts.map(shortcut => {
-				if (shortcut.key == event.key.toLowerCase()) router.push(shortcut.href)
+				if (shortcut.key === event.key.toLowerCase()) router.push(shortcut.href)
 			})
 		}
 
@@ -48,34 +48,29 @@ export default function NavBar() {
 	if (pathname.startsWith('/studio')) return <></>
 
 	return (
-		<nav className='absolute left-[50%] top-0 z-40 flex w-full -translate-x-1/2 items-center justify-between gap-1 p-5 sm:px-10'>
-			<Link
-				className='text-inherit no-underline'
-				href='/'>
-				<Title size='small' />
+		<nav className="-translate-x-1/2 absolute top-0 left-[50%] z-40 flex w-full items-center justify-between gap-1 p-5 sm:px-10">
+			<Link className="text-inherit no-underline" href="/">
+				<Title size="small" />
 			</Link>
-			<div className='flex items-center gap-4'>
+			<div className="flex items-center gap-4">
 				{pathname !== '/about' && (
 					<Link
-						className='hidden no-underline underline-offset-4 transition-all duration-300 hover:underline sm:flex'
-						href='/about'>
+						className="hidden no-underline underline-offset-4 transition-all duration-300 hover:underline sm:flex"
+						href="/about"
+					>
 						About
 					</Link>
 				)}
 				{pathname !== '/blog' && (
 					<Link
-						className='hidden no-underline underline-offset-4 transition-all duration-300 hover:underline sm:flex'
-						href='/blog'>
+						className="hidden no-underline underline-offset-4 transition-all duration-300 hover:underline sm:flex"
+						href="/blog"
+					>
 						Blog
 					</Link>
 				)}
 				{pathname !== '/contact' && (
-					<Button
-						body='Get in touch'
-						className='w-fit'
-						href='/contact'
-						variant='dark'
-					/>
+					<Button body="Get in touch" className="w-fit" href="/contact" variant="dark" />
 				)}
 			</div>
 		</nav>

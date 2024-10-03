@@ -23,7 +23,7 @@ const newsletter = {
 		{
 			name: 'author',
 			title: 'Author',
-			to: {type: 'author'},
+			to: { type: 'author' },
 			type: 'reference'
 		},
 		{
@@ -31,19 +31,20 @@ const newsletter = {
 			title: 'Published at',
 			type: 'datetime'
 		},
-		{name: 'subscriberCount', title: 'Subscriber count', type: 'number'},
+		{ name: 'subscriberCount', title: 'Subscriber count', type: 'number' },
 		{
 			name: 'body',
-			of: [{type: 'block'}, {type: 'image'}],
+			of: [{ type: 'block' }, { type: 'image' }],
 			title: 'Body',
 			type: 'array'
 		}
 	],
 	name: 'newsletter',
 	preview: {
-		prepare(selection) {
-			const {author} = selection
-			return {...selection, subtitle: author && `by ${author}`}
+		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+		prepare(selection: any) {
+			const { author } = selection
+			return { ...selection, subtitle: author && `by ${author}` }
 		},
 		select: {
 			author: 'author.firstName',
