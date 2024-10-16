@@ -1,13 +1,15 @@
 'use client'
+
 import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import type { ReactElement } from 'react'
 import cn from '~/utils/cn'
 
-const variants = {
+const ButtonVariants = {
 	outline: 'bg-transparent outline outline-1 text-primary',
 	dark: 'bg-black dark:bg-white text-negative outline outline-1 outline-black dark:outline-white',
-	light: 'bg-neutral-100 dark:bg-neutral-900 text-primary'
+	light: 'bg-neutral-100 dark:bg-neutral-900 text-primary',
+	ghost: 'bg-transparent text-primary'
 }
 
 export default function Button({
@@ -23,7 +25,7 @@ export default function Button({
 	)
 }: {
 	body: string
-	variant: 'dark' | 'light' | 'teal' | 'outline'
+	variant: keyof typeof ButtonVariants
 	href?: string
 	onClick?: () => void
 	className?: string
@@ -37,8 +39,7 @@ export default function Button({
 			<Link
 				className={cn(
 					'group flex w-full items-center justify-between gap-20 rounded-md px-4 py-2 no-underline',
-					// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-					(variants as any)[variant],
+					ButtonVariants[variant],
 					className
 				)}
 				href={href}
@@ -53,8 +54,7 @@ export default function Button({
 			<button
 				className={cn(
 					'group flex w-full items-center justify-between gap-20 rounded-md px-4 py-2 disabled:cursor-not-allowed disabled:opacity-80',
-					// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-					(variants as any)[variant],
+					ButtonVariants[variant],
 					className
 				)}
 				disabled={disabled}

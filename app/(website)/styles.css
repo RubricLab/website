@@ -3,24 +3,29 @@
 @tailwind utilities;
 
 html {
-	@apply bg-white text-black dark:bg-black dark:text-white;
+	@apply bg-background text-foreground;
 }
 
 @layer base {
-	p {
-		@apply text-black dark:text-white;
+	:root {
+		--background: #ffffff;
+		--foreground: #000000;
+	}
+	.dark {
+		--background: #000000;
+		--foreground: #ffffff;
 	}
 	a {
 		@apply underline decoration-neutral-800 decoration-2 underline-offset-4 transition-opacity hover:opacity-80 dark:decoration-neutral-200;
 	}
 	h1 {
-		@apply font-neue-bit text-6xl text-black md:text-7xl dark:text-white;
+		@apply font-neue-bit text-6xl md:text-7xl;
 	}
 	h2 {
 		@apply text-4xl;
 	}
 	h3 {
-		@apply text-2xl leading-7 text-black dark:text-white;
+		@apply text-2xl leading-7;
 	}
 	input {
 		@apply border-secondary w-full rounded-md border bg-neutral-100 p-3 font-light text-neutral-500 opacity-70 focus:opacity-100 focus:outline-none dark:bg-neutral-900 dark:text-neutral-300;

@@ -17,7 +17,7 @@ export default function NewsletterPost({ post }: { post: Newsletter }) {
 	return (
 		<div className="relative flex min-h-screen w-full flex-col items-center px-5 sm:my-0 sm:px-10">
 			<BackgroundGrid className="pointer-events-none absolute top-0 left-0 z-[-1] h-full w-screen" />
-			<div className="my-28 flex w-full max-w-3xl flex-col gap-10">
+			<div className="my-28 flex w-full max-w-3xl flex-col gap-10 rounded-lg border border-neutral-500/10 bg-background p-5 dark:border-neutral-500/20">
 				<div>
 					<h1>{post.title}</h1>
 					<Link href="/newsletter" className="no-underline">
@@ -60,7 +60,7 @@ export default function NewsletterPost({ post }: { post: Newsletter }) {
 						<Button
 							className="w-full sm:w-fit"
 							body="See previous post"
-							variant="outline"
+							variant="ghost"
 							href={getPrevPostSlug(post.slug)}
 							// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 							icon={null as any}

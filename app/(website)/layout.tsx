@@ -1,11 +1,12 @@
 import Footer from '@/lib/components/Footer'
 import NavBar from '@/lib/components/NavBar'
-import { Toaster } from '@/lib/components/Toast'
 import { META } from '@/lib/constants/metadata'
 import PlausibleProvider from 'next-plausible'
 import { Plus_Jakarta_Sans } from 'next/font/google'
 import localFont from 'next/font/local'
 import './styles.css'
+import cn from '@/lib/utils/cn'
+import { Providers } from './providers'
 
 const jakartaSans = Plus_Jakarta_Sans({ subsets: ['latin'] })
 
@@ -25,14 +26,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 				<PlausibleProvider domain="rubriclabs.com" />
 			</head>
 			<body
-				className={`${jakartaSans.className}${neueBit.variable} relative flex h-full min-h-screen w-full flex-col items-center`}
+				className={cn(
+					'relative flex h-full min-h-screen w-full flex-col items-center',
+					neueBit.variable,
+					jakartaSans.className
+				)}
 			>
-				<NavBar />
-				<Toaster />
-				<main className="z-30 mb-[80vh] min-h-screen w-full bg-white sm:mb-96 dark:bg-black">
-					{children}
-				</main>
-				<Footer />
+				<Providers>
+					<NavBar />
+					<main className="z-30 mb-[80vh] min-h-screen w-full bg-background sm:mb-96">{children}</main>
+					<Footer />
+				</Providers>
 			</body>
 		</html>
 	)

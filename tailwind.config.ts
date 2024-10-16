@@ -52,6 +52,8 @@ const tailwindConfig: Config = {
 					tertiary: 'rgb(var(--color-surface-tertiary) / <alpha-value>)',
 					contrast: 'rgb(var(--color-surface-contrast) / <alpha-value>)'
 				},
+				background: 'color-mix(in srgb, var(--background) calc(<alpha-value> * 100%), transparent)',
+				foreground: 'color-mix(in srgb, var(--foreground) calc(<alpha-value> * 100%), transparent)',
 				border: {
 					DEFAULT: 'rgb(var(--color-border) / <alpha-value>)'
 				},
