@@ -1,6 +1,6 @@
 export const ROS = {
-	url: 'https://ros.rubric.sh',
+	url: 'https://rubricos.com',
 	api: {
-		leads: 'https://ros.rubric.sh/api/lead'
+		leads: 'https://rubricos.com/api/lead'
 	}
 }
