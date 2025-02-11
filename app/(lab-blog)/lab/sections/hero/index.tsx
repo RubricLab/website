@@ -9,7 +9,7 @@ import useMousePosition from '@/hooks/use-mouse-position'
 import type { DarkLightImageFragment } from '@/lib/basehub/fragments'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
-import SplitText from 'gsap/dist/SplitText'
+import SplitText from 'gsap/SplitText'
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 import astronaut from '@/public/images/lab/ASTRONAUT_STROKE.png'

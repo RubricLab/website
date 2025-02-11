@@ -282,11 +282,10 @@ const ProgressStatus = ({
 	onActiveChange: (idx: string) => void
 }) => {
 	const [isShrunk, setIsShrunk] = useState(true)
+	const [timeoutId] = useState<NodeJS.Timeout>()
 	const lg = useBreakpoint('lg')
 
 	useEffect(() => {
-		let timeoutId: NodeJS.Timeout
-
 		const handleScroll = () => {
 			setIsShrunk(true)
 			clearTimeout(timeoutId)
@@ -298,7 +297,7 @@ const ProgressStatus = ({
 			window.removeEventListener('scroll', handleScroll)
 			clearTimeout(timeoutId)
 		}
-	}, [])
+	}, [timeoutId])
 
 	const handleMouseEnter = () => {
 		if (!lg) return

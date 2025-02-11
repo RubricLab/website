@@ -11,7 +11,7 @@ const projects = [
 			'Dashboard, component system, and landing page for Gumloop, the platform for automating any workflow with AI.',
 		href: 'https://gumloop.com/',
 		title: 'Gumloop',
-		logo: <Gumloop key="gumloop" className="opacity-60" />
+		logo: <Gumloop key="gumloop" />
 	},
 	{
 		desc: 'AI generated video of your code contributions.',

@@ -2,7 +2,7 @@
 import { useAppStore } from '@/context/use-app-store'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
-import SplitText from 'gsap/dist/SplitText'
+import SplitText from 'gsap/SplitText'
 import Link from 'next/link'
 import { useEffect, useRef } from 'react'
 import type { CSSProperties } from 'styled-components'
