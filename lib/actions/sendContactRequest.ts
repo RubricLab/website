@@ -2,7 +2,6 @@
 
 import env from '@/lib/env'
 import { z } from 'zod'
-import { ROS } from '~/constants/ros'
 
 const schema = z.object({
 	message: z.string(),
@@ -26,7 +25,7 @@ export default async function sendContactRequest(_: any, formData: FormData) {
 
 	try {
 		// Submit formData to Ros API
-		const externalResponse = await fetch(ROS.api.leads, {
+		const externalResponse = await fetch(env.ROS_API_URL, {
 			method: 'POST',
 			body: new URLSearchParams({
 				message: parsed.message,
