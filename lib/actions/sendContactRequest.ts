@@ -11,8 +11,9 @@ const schema = z.object({
 })
 
 // Send contact request to Slack
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-export default async function sendContactRequest(_: any, formData: FormData) {
+export default async function sendContactRequest(
+	formData: FormData
+): Promise<{ message: string; type: 'success' | 'error' }> {
 	const parsed = schema.parse({
 		message: formData.get('message'),
 		email: formData.get('email'),
@@ -39,8 +40,11 @@ export default async function sendContactRequest(_: any, formData: FormData) {
 			}
 		})
 
-		// Return response
 		if (externalResponse.ok) return { message: 'Request submitted', type: 'success' }
+
+		const errorBody = (await externalResponse.text()) || 'Could not submit request'
+
+		return { message: errorBody, type: 'error' }
 	} catch (err) {
 		if (err instanceof Error)
 			return {
@@ -52,5 +56,4 @@ export default async function sendContactRequest(_: any, formData: FormData) {
 			type: 'error'
 		}
 	}
-	return
 }

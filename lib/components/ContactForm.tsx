@@ -1,16 +1,12 @@
 'use client'
+
 import { ArrowRightIcon, LoaderIcon } from 'lucide-react'
-import { useEffect, useRef } from 'react'
-import { useFormState, useFormStatus } from 'react-dom'
+import { useRef } from 'react'
+import { useFormStatus } from 'react-dom'
 import sendContactRequest from '~/actions/sendContactRequest'
 import copyToClipboard from '~/utils/copyToClipboard'
 import Button from './Button'
 import { toast } from './Toast'
-
-const initialState = {
-	type: null,
-	message: null
-}
 
 function SubmitButton() {
 	const { pending } = useFormStatus()
@@ -33,25 +29,20 @@ function SubmitButton() {
 }
 
 export default function ContactForm() {
-	const formRef = useRef(null)
-	const [state, formAction] = useFormState(
-		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-		sendContactRequest as any,
-		initialState
-	)
+	const formRef = useRef<HTMLFormElement>(null)
 
-	// Trigger toast when state changes
-	useEffect(() => {
-		if (state?.type === 'success') {
-			toast.success(state?.message)
-			// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-			setTimeout(() => (formRef.current as any).reset(), 2 * 1000) // Reset form state
-		} else if (state?.type === 'error') toast.error(state?.message)
-	}, [state])
+	const handleSubmit = async (formData: FormData) => {
+		const { message, type } = await sendContactRequest(formData)
+		if (type === 'success') {
+			toast.success(message)
+			setTimeout(() => formRef.current?.reset(), 2 * 1000)
+		}
+		if (type === 'error') toast.error(message)
+	}
 
 	return (
 		<div className="flex w-full max-w-md flex-col gap-4">
-			<form ref={formRef} className="flex w-full flex-col gap-8" action={formAction}>
+			<form ref={formRef} className="flex w-full flex-col gap-8" action={handleSubmit}>
 				<div className="flex flex-col gap-4">
 					<input type="text" name="name" placeholder="First name" required />
 					<input type="text" name="company" placeholder="Company" required />
