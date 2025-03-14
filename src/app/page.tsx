@@ -5,10 +5,11 @@ import { Button } from '~/ui/button'
 import { Cal } from '~/ui/logos/cal'
 import { Gumloop } from '~/ui/logos/gumloop'
 import { Rubric } from '~/ui/logos/rubric'
+import { WorkTable } from '~/ui/work-table'
 export default async function Page() {
 	return (
-		<div className="flex h-screen items-center gap-16 overflow-x-scroll">
-			<div className="flex h-full w-full shrink-0 flex-col items-center">
+		<div className="flex items-start gap-16 overflow-x-scroll">
+			<div className="flex h-screen w-full shrink-0 flex-col items-center">
 				<div className="flex h-full w-full max-w-5xl flex-col justify-center space-y-8">
 					<div className="group relative h-full max-h-[560px] w-full overflow-hidden">
 						<video autoPlay muted loop className="h-full w-full object-cover">
@@ -25,7 +26,7 @@ export default async function Page() {
 				</div>
 			</div>
 			<div className="flex h-full w-full shrink-0 flex-col items-center">
-				<div className="flex h-full w-full max-w-5xl flex-col justify-center space-y-8">
+				<div className="flex h-screen w-full max-w-5xl flex-col justify-center space-y-8">
 					<div className="relative h-full max-h-[560px] w-full overflow-hidden">
 						<Image fill className="object-cover" src={cool} alt="Rubric Labs" />
 						<div className="absolute top-0 left-0 h-full w-full backdrop-grayscale transition-all duration-300 hover:opacity-0" />
@@ -43,8 +44,8 @@ export default async function Page() {
 					</div>
 				</div>
 			</div>
-			<div className="flex h-full w-full shrink-0 flex-col items-center">
-				<div className="flex h-full w-full max-w-5xl flex-col justify-center space-y-8">
+			<div className="flex h-[200vh] w-full shrink-0 flex-col items-center">
+				<div className="flex h-screen w-full max-w-5xl shrink-0 flex-col justify-center space-y-8">
 					<div className="relative h-full max-h-[560px] w-full overflow-hidden">
 						<Image fill className="object-cover" src={warm} alt="Rubric Labs" />
 						<div className="absolute top-0 left-0 h-full w-full backdrop-grayscale transition-all duration-300 hover:opacity-0" />
@@ -59,6 +60,12 @@ export default async function Page() {
 							</p>
 							<Button>View project</Button>
 						</div>
+					</div>
+				</div>
+				<div className="flex min-h-screen w-screen flex-col items-center justify-center gap-8 py-20">
+					<div className="w-full max-w-5xl space-y-8">
+						<h2>Work</h2>
+						<WorkTable />
 					</div>
 				</div>
 			</div>
