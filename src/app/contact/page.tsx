@@ -1,7 +1,7 @@
+import { redirect } from 'next/navigation'
 import { z } from 'zod'
 import { env } from '~/lib/env'
 import { Button } from '~/ui/button'
-import { redirect } from 'next/navigation'
 
 const schema = z.object({
 	name: z.string().min(1),
@@ -31,30 +31,25 @@ export default async function Page({
 			redirect(`/contact?error=${encodeURIComponent(errorMessage)}`)
 		}
 
-		try {
-			const response = await fetch(`${env.ROS_API_URL}/lead`, {
-				method: 'POST',
-				body: new URLSearchParams({
-					message: data.message,
-					email: data.email,
-					name: data.name,
-					company: data.company || ''
-				}),
-				headers: {
-					'Content-Type': 'application/x-www-form-urlencoded',
-					Authorization: `Bearer ${env.ROS_SECRET}`
-				}
-			})
-
-			if (!response.ok) {
-				throw new Error('Failed to send message')
+		const response = await fetch(`${env.ROS_API_URL}/lead`, {
+			method: 'POST',
+			body: new URLSearchParams({
+				message: data.message,
+				email: data.email,
+				name: data.name,
+				company: data.company || ''
+			}),
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				Authorization: `Bearer ${env.ROS_SECRET}`
 			}
+		})
 
-			redirect('/contact?success=true')
-		} catch (error) {
-			console.error(error)
-			redirect(`/contact?error=${encodeURIComponent('Failed to send message. Please try again.')}`)
+		if (!response.ok) {
+			throw new Error('Failed to send message')
 		}
+
+		redirect('/contact?success=true')
 	}
 
 	return (
