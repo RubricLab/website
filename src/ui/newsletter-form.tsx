@@ -9,7 +9,7 @@ export const NewsletterForm = () => {
 
 	return (
 		<form action={formAction} className="flex items-center gap-1">
-			<input placeholder="Email" name="email" type="email" required />
+			<input placeholder="Email" className="w-full" name="email" type="email" required />
 			<Button type="submit" disabled={pending || !!state?.success}>
 				{pending ? 'Subscribing...' : state?.success ? 'Subscribed' : 'Subscribe'}
 			</Button>

@@ -1,5 +1,22 @@
 @import "tailwindcss";
 
+:root {
+	--primary: black;
+	--secondary: #808080;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--primary: white;
+		--secondary: #808080;
+	}
+}
+
+@theme inline {
+	--color-primary: var(--primary);
+	--color-secondary: var(--secondary);
+}
+
 @layer base {
 	html {
 		@apply dark:bg-black bg-white dark:text-white text-black;
@@ -17,11 +34,11 @@
 @layer components {
 	input,
 	textarea {
-		@apply hover:bg-neutral-100 rounded-full dark:hover:bg-neutral-900 transition-colors px-3.5 focus:outline-none focus:ring dark:ring-white/20 p-2;
+		@apply hover:bg-neutral-100 border transition-colors dark:border-neutral-900 border-neutral-100 dark:hover:bg-neutral-900 px-3.5 focus:outline-none focus:border-secondary dark:focus:border-secondary placeholder:text-neutral-500 p-2;
 	}
 
 	textarea {
-		@apply min-h-20 rounded-2xl;
+		@apply min-h-20;
 	}
 
 	article a {
@@ -38,10 +55,6 @@
 
 	pre {
 		@apply bg-neutral-100 dark:bg-neutral-900 rounded-md p-2 px-3.5 text-sm;
-	}
-
-	.text-secondary {
-		@apply text-neutral-600 dark:text-neutral-400;
 	}
 
 	.dev {
