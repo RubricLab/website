@@ -1,5 +1,13 @@
+import createMDX from '@next/mdx'
 import type { NextConfig } from 'next'
 
-export default {
-	reactStrictMode: true
+const nextConfig = {
+	reactStrictMode: true,
+	pageExtensions: ['md', 'mdx', 'ts', 'tsx']
 } satisfies NextConfig
+
+const withMDX = createMDX({
+	// Add markdown plugins here, as desired
+})
+
+export default withMDX(nextConfig)
