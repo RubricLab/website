@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 			'en-US': '/en-US'
 		}
 	},
-	metadataBase: new URL(env.VERCEL_URL),
+	metadataBase: new URL(`http${env.NODE_ENV === 'production' ? 's' : ''}://${env.VERCEL_URL}`),
 	...DEFAULT_META
 }
 
