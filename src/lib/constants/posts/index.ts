@@ -1,5 +1,5 @@
 import path from 'node:path'
-import { glob } from 'glob'
+import { readdir } from 'node:fs/promises'
 
 export type Post = {
 	title: string
@@ -11,6 +11,8 @@ export type Post = {
 
 // Helper function to get all post slugs
 export async function getPostSlugs(): Promise<string[]> {
-	const files = await glob('src/lib/constants/posts/*.mdx')
-	return files.map((file: string) => path.basename(file, '.mdx'))
+	const files = await readdir('src/lib/constants/posts')
+	return files
+		.filter(file => file.endsWith('.mdx'))
+		.map((file: string) => path.basename(file, '.mdx'))
 }
