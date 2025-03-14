@@ -2,10 +2,18 @@ import Image from 'next/image'
 import Link from 'next/link'
 import blog from '~/app/images/blog.webp'
 import blog2 from '~/app/images/blog2.webp'
-import { posts } from '~/lib/constants/posts'
+import { getPostSlugs } from '~/lib/constants/posts'
 import { cn } from '~/lib/utils/cn'
 
 export default async function Page() {
+	const slugs = await getPostSlugs()
+	const posts = await Promise.all(
+		slugs.map(async slug => {
+			const { metadata } = await import(`~/lib/constants/posts/${slug}.mdx`)
+			return { slug, ...metadata }
+		})
+	)
+
 	return (
 		<div className="flex min-h-screen flex-col items-center gap-16 py-32">
 			<div className="flex flex-col items-center gap-2">

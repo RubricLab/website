@@ -1,21 +1,112 @@
 export const metadata = {
-    title: "Planning for near-free AI",
-    date: "2024-01-07",
+    title: "Fine-tuning GPT-4o-mini for Spam Detection",
+    date: "2024-11-29",
     author: "Ted Spare",
     bannerImage: "/images/blog.webp",
-    description: "How trends in open-source large-language models are converging to usher in cheap, abundant intelligence. We examine the state of LLM capability, cost, and timeline."
+    description: "How we fine-tuned a small LLM for spam detection."
 }
 
-## Capability
+TLDR: We fine-tuned a small LLM on a few dozen spam tags and it's working well.
 
-Open-source LLMs are thriving. Since the summer of 2023, OS LLMs have rapidly approached human-level performance across a suite of benchmarks.
+Disclaimer on naming: we called it ros-spam, which is hopefully more scalable than OpenAI's gpt-3-3.5-turbo-4-4o-06-23-2024-11-20 or Anthropic's sonnet-3-3.5-3.5-but-better. Hindsight is 20/20.
 
-Line graph showing the average benchmark performance of open-source Large Language Models approaching that of GPT-4 and human-level performance, during the period from August 2023 to January 2024.
+## What We Built
 
-![LLM performance by benchmark](https://cdn.sanity.io/images/98ffjfuo/production/6507e4725a26ac292520cd60831867c6029efa2f-1056x722.png?rect=0,9,1056,704&w=600&h=400&fit=fillmax&dpr=2)
+We created a purpose-built spam detection model specifically for our schema:
 
-*From HuggingFace Open LLM Leaderboard and OpenAI.
+```ts
+type Contact = {
+  company: string;
+  email: string;
+  message: string;
+  // ...
+}
+```
 
-For now, GPT-4 remains the best. What's more, GPT-5 will come out around September 2024, according to prediction markets. We can expect the envelope to be pushed further by any jump in capabilities.
+While it's currently tailored to our needs, the approach could be generalized for broader email spam detection.
 
-Line graph showing the Metaculus prediction market for when GPT-5 will be released, ending around September 2024.
+## The Problem
+
+We get lots of inbound messages. Most are spam. Our workflow for triaging them was simple but inefficient:
+
+1. Someone submits a message on [rubriclabs.com/contact](http://rubriclabs.com/contact)
+2. We get a Slack notification
+3. Someone on our team manually flags it as spam or legitimate
+
+Here's the kicker: even at just 30 seconds per day, this adds up to hours per year (not to mention the lingering cost of context-switching) making it worthwhile to automate in a post-Cursor world.
+
+## The Solution: Fine-tuning
+
+The data from our spam flags was simply stored in Postgres, creating what would become our training dataset:
+
+```ts
+{ "message": "We sell the best leather couches", "status" : "👎" }
+// ...
+{ "message": "Looking to build an agentic flight booking system", "status": "👍" }
+```
+
+Given the hundreds of upvotes/downvotes, deduped and cleaned (a 10-minute process, given the simple schema), fine-tuning on OpenAI was a straightforward process.
+
+## The Technical Details
+
+The fine-tuning schema follows a standard chat message format:
+
+```ts
+type Message = {
+  role: {
+    role: "user" | "assistant" | "system";
+    content: string;
+  }
+}
+```
+The actual examples are stored as [JSONL](https://jsonlines.org/), a file format where each line is valid JSON.
+
+The actual process was refreshingly simple:
+
+1. Write our array of examples to a .jsonl file
+2. Upload the file
+3. Wait ~10 minutes
+4. Pay ~$10
+5. Profit?
+
+## Does It Work?
+
+### Quantitative Evaluation
+
+- We did a head-to-head comparison between `GPT-4o` and `ros-spam`:
+- We held back 10% of our dataset for testing
+
+We ran comparisons in both OpenAI playground and OpenPipe evals 
+
+The result: `ros-spam` achieved 100% accuracy vs ~80% for a frontier model, even with prompt engineering.
+
+## Qualitative Assessment
+
+We shipped it to prod with a feedback loop:
+
+- Each run appears with the message in Slack as 👍/👎
+- We can immediately spot and correct errors
+- When needed, we re-tune the model 🔃
+
+## Deployment
+
+The implementation was surprisingly painless. Accessing the model requires just a single-line change from standard GPT-4o calls, whether you're using:
+
+- the Node.js `fetch` API,
+- [OpenAI SDK](https://platform.openai.com/docs/libraries),
+- [AI SDK](https://sdk.vercel.ai/docs/introduction),
+- [@rubriclab/agents](https://github.com/rubriclab/agents) or any other standard method.
+
+For those interested in alternatives, you could also host this on:
+
+- Fireworks
+- Together
+- OpenPipe
+
+or self-host on bare metal.
+
+## Conclusion
+
+The ROI of this exercise was clear: human-level spam tagging running 24/7 for a couple hours of dev.
+
+Have questions or feedback? Drop us a message at [hello@rubriclabs.com](mailto:hello@rubriclabs.com).

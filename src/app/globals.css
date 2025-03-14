@@ -24,8 +24,20 @@
 		@apply min-h-20 rounded-3xl;
 	}
 
-	a {
-		@apply hover:text-blue-500;
+	article a {
+		@apply underline underline-offset-4 decoration-dashed hover:decoration-solid;
+	}
+
+	li {
+		@apply list-disc list-inside;
+	}
+
+	ol {
+		@apply list-decimal list-inside;
+	}
+
+	pre {
+		@apply bg-neutral-100 dark:bg-neutral-900 rounded-md p-2 px-3 text-sm;
 	}
 
 	.text-secondary {

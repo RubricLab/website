@@ -34,9 +34,9 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
 					</div>
 				</div>
 				<h1 className="mb-16">{metadata.title}</h1>
-				<div className="mx-auto max-w-3xl space-y-6">
+				<article className="mx-auto max-w-3xl space-y-6">
 					<Post />
-				</div>
+				</article>
 			</div>
 		</div>
 	)
