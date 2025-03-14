@@ -15,8 +15,8 @@
 		"quickfix.biome": "explicit",
 		"source.organizeImports.biome": "explicit"
 	},
-	"[prisma]": {
-		"editor.defaultFormatter": "Prisma.prisma"
+	"[mdx]": {
+		"editor.defaultFormatter": "unifiedjs.vscode-mdx"
 	},
 	"tailwindCSS.experimental.classRegex": [
 		["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
