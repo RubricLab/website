@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+html {
+	@apply dark:bg-black bg-white dark:text-white text-black;
+}
+
+h1 {
+	@apply text-6xl;
+}
+
+h2 {
+	@apply text-5xl;
+}
+
+input,
+textarea {
+	@apply rounded-full border dark:border-white/10 border-black/10 px-4 focus:outline-none focus:ring dark:ring-white/20 p-2;
+}
+
+textarea {
+	@apply min-h-20 rounded-3xl;
+}
+
+.text-secondary {
+	@apply text-neutral-600 dark:text-neutral-400;
+}
+
+.dev {
+	@apply border border-red-500 bg-red-500/10;
+}
