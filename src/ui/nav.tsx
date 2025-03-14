@@ -1,5 +1,7 @@
-import { headers } from 'next/headers'
+'use client'
+
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { cn } from '~/lib/utils/cn'
 
 const links = [
@@ -7,11 +9,8 @@ const links = [
 	{ href: '/contact', label: 'Contact' }
 ]
 
-export default async function Nav() {
-	const headersList = await headers()
-	const referer = headersList.get('referer')
-	const url = new URL(referer || 'https://example.com')
-	const { pathname } = url
+export default function Nav() {
+	const pathname = usePathname()
 
 	return (
 		<nav className="fixed top-0 left-0 z-10 flex w-full items-center justify-between px-8 py-6">
@@ -21,7 +20,7 @@ export default async function Nav() {
 					<Link
 						href={link.href}
 						key={link.href}
-						className={cn({ 'opacity-50': pathname.includes(link.href) })}
+						className={cn('opacity-60', { 'opacity-100': pathname.includes(link.href) })}
 					>
 						{link.label}
 					</Link>
