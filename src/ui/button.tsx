@@ -13,13 +13,15 @@ export const Button = ({
 	variant = 'default',
 	type = 'button',
 	className,
-	onClick
+	onClick,
+	disabled
 }: {
 	children: React.ReactNode
 	type?: 'button' | 'submit' | 'reset'
 	variant?: 'default' | 'outline' | 'link'
 	onClick?: () => void
 	className?: string
+	disabled?: boolean
 }) => {
 	return (
 		<button
@@ -30,6 +32,7 @@ export const Button = ({
 				className
 			)}
 			onClick={onClick}
+			disabled={disabled}
 		>
 			{children}
 		</button>

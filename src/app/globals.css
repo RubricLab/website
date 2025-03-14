@@ -47,4 +47,8 @@
 	.dev {
 		@apply border border-red-500 bg-red-500/10;
 	}
+
+	.wordmark path {
+		@apply transition-colors hover:fill-black dark:hover:fill-white fill-white dark:fill-black;
+	}
 }
