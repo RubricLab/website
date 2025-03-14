@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import blog from '~/app/images/blog.webp'
-import blog2 from '~/app/images/blog2.webp'
+import blog2 from '~/app/images/blur.jpeg'
 import { getPostSlugs } from '~/lib/constants/posts'
 import { cn } from '~/lib/utils/cn'
 

@@ -1,24 +1,22 @@
 import Image from 'next/image'
-import hero from '~/app/images/hero.png'
 import cool from '~/app/images/cool.jpeg'
 import warm from '~/app/images/warm.jpeg'
 import { Button } from '~/ui/button'
-import { TriangleRight } from '~/ui/icons/triangle-right'
 import { Cal } from '~/ui/logos/cal'
 import { Gumloop } from '~/ui/logos/gumloop'
-
+import { Rubric } from '~/ui/logos/rubric'
 export default async function Page() {
 	return (
 		<div className="flex h-screen items-center gap-16 overflow-x-scroll">
 			<div className="flex h-full w-full shrink-0 flex-col items-center">
 				<div className="flex h-full w-full max-w-5xl flex-col justify-center space-y-8">
-					<div className="relative h-full max-h-[560px] w-full overflow-hidden">
-						<Image fill className="object-cover" src={hero} alt="Rubric Labs" />
+					<div className="group relative h-full max-h-[560px] w-full overflow-hidden">
+						<video autoPlay muted loop className="h-full w-full object-cover">
+							<source src="/hero.mp4" type="video/mp4" />
+							Your browser does not support the video tag.
+						</video>
 						<div className="absolute top-0 left-0 h-full w-full backdrop-grayscale transition-all duration-300 hover:opacity-0" />
-						<Button className="absolute right-8 bottom-8">
-							Play video
-							<TriangleRight className="w-3" />
-						</Button>
+						<Rubric className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 h-12 w-12" />
 					</div>
 					<p className="max-w-1/2 text-lg">
 						We&apos;re an applied AI Lab helping companies deploy intelligence at scale, building the next
