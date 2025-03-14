@@ -17,11 +17,11 @@
 @layer components {
 	input,
 	textarea {
-		@apply rounded-full border dark:border-white/10 border-black/10 px-4 focus:outline-none focus:ring dark:ring-white/20 p-2;
+		@apply hover:bg-neutral-100 rounded-full dark:hover:bg-neutral-900 transition-colors px-3.5 focus:outline-none focus:ring dark:ring-white/20 p-2;
 	}
 
 	textarea {
-		@apply min-h-20 rounded-3xl;
+		@apply min-h-20 rounded-2xl;
 	}
 
 	article a {
@@ -37,7 +37,7 @@
 	}
 
 	pre {
-		@apply bg-neutral-100 dark:bg-neutral-900 rounded-md p-2 px-3 text-sm;
+		@apply bg-neutral-100 dark:bg-neutral-900 rounded-md p-2 px-3.5 text-sm;
 	}
 
 	.text-secondary {

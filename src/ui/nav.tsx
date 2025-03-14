@@ -9,7 +9,7 @@ const links = [
 	{ href: '/contact', label: 'Contact' }
 ]
 
-export default function Nav() {
+export function Nav() {
 	const pathname = usePathname()
 
 	return (
