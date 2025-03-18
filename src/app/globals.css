@@ -45,6 +45,10 @@
 		@apply underline underline-offset-4 decoration-dashed hover:decoration-solid;
 	}
 
+	article p {
+		@apply text-secondary;
+	}
+
 	li {
 		@apply list-disc list-inside;
 	}

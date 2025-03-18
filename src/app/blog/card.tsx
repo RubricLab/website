@@ -2,6 +2,7 @@ import Image, { type StaticImageData } from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import { cn } from '~/lib/utils/cn'
+import { formatDate } from '~/lib/utils/date'
 
 export const Card = ({
 	post,
@@ -22,9 +23,9 @@ export const Card = ({
 				<Image src={imgSrc} alt="Abstract plant image" fill />
 			</div>
 			<p className="max-w-full pt-4 text-lg">{post.title}</p>
-			<div className="flex gap-4 text-sm">
+			<div className="flex items-center gap-4 text-sm">
 				<p className="font-mono">{post.category}</p>
-				<p className="opacity-50">{post.date}</p>
+				<p className="opacity-50">{formatDate(post.date)}</p>
 			</div>
 		</Link>
 	)
