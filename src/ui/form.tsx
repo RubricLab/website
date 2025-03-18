@@ -20,6 +20,7 @@ export const Form = ({
 	action,
 	children,
 	className,
+	buttonClassName,
 	successText = 'Submitted',
 	pendingText = 'Submitting...',
 	ctaText = 'Submit'
@@ -29,6 +30,7 @@ export const Form = ({
 		| React.ReactNode
 		| ((props: { pending: boolean; state: ActionResult | null }) => React.ReactNode)
 	className?: string
+	buttonClassName?: string
 	successText?: string
 	pendingText?: string
 	ctaText?: string
@@ -38,7 +40,7 @@ export const Form = ({
 	return (
 		<form action={formAction} className={cn('flex items-center gap-1', className)}>
 			{typeof children === 'function' ? children({ pending, state }) : children}
-			<Button type="submit" disabled={pending || !!state?.success} className="w-full">
+			<Button type="submit" disabled={pending || !!state?.success} className={cn(buttonClassName)}>
 				{pending ? pendingText : state?.success ? successText : ctaText}
 			</Button>
 		</form>

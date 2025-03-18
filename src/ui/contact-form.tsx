@@ -5,7 +5,7 @@ import { Form } from './form'
 
 export const ContactForm = () => {
 	return (
-		<Form action={submitContact} className="flex w-full flex-col gap-4">
+		<Form action={submitContact} className="flex w-full flex-col gap-4" buttonClassName="w-full">
 			{({ pending, state }) => (
 				<div className="flex min-h-56 w-full flex-col items-center justify-center gap-1 text-center">
 					{state?.error ? (
