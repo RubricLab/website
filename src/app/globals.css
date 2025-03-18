@@ -65,7 +65,11 @@
 		@apply border border-red-500 bg-red-500/10;
 	}
 
-	.wordmark path {
-		@apply transition-colors hover:fill-black dark:hover:fill-white fill-white dark:fill-black;
+	.wordmark > #cover path {
+		@apply dark:fill-black fill-white hover:opacity-0 dark:stroke-white stroke-black;
+	}
+
+	.wordmark > defs > mask#mask > g > path {
+		@apply stroke-white fill-white;
 	}
 }
