@@ -56,7 +56,7 @@ const works = [
 		date: '2024'
 	},
 	{
-		name: 'Stealth',
+		name: 'Albertsons AI',
 		tag: 'Client work',
 		date: '2025'
 	}
