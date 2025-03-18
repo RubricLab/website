@@ -1,26 +1,16 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import blog from '~/app/images/blog.webp'
-import blog2 from '~/app/images/blur.jpeg'
-import cool from '~/app/images/cool.jpeg'
-import warm from '~/app/images/warm.jpeg'
-import { getPostSlugs } from '~/lib/constants/posts'
-import { cn } from '~/lib/utils/cn'
+import { getPostMetadata } from '~/lib/constants/posts'
 import { Button } from '~/ui/button'
 import { Cal } from '~/ui/logos/cal'
 import { Gumloop } from '~/ui/logos/gumloop'
 import { Rubric } from '~/ui/logos/rubric'
 import { Testimonials } from '~/ui/testimonials'
 import { WorkTable } from '~/ui/work-table'
+import { Card } from './blog/card'
 
 export default async function Page() {
-	const slugs = await getPostSlugs()
-	const posts = await Promise.all(
-		slugs.map(async slug => {
-			const { metadata } = await import(`~/lib/constants/posts/${slug}.mdx`)
-			return { slug, ...metadata }
-		})
-	)
+	const posts = await getPostMetadata()
 
 	return (
 		<div className="flex items-start gap-16 overflow-x-scroll">
@@ -28,7 +18,7 @@ export default async function Page() {
 				<div className="flex h-full w-full max-w-5xl flex-col justify-center space-y-8">
 					<div className="group relative h-full max-h-[560px] w-full overflow-hidden">
 						<video autoPlay muted loop className="h-full w-full object-cover">
-							<source src="/hero.mp4" type="video/mp4" />
+							<source src="/images/hero.mp4" type="video/mp4" />
 							Your browser does not support the video tag.
 						</video>
 						<div className="absolute top-0 left-0 h-full w-full backdrop-grayscale transition-all duration-300 hover:opacity-0" />
@@ -43,7 +33,7 @@ export default async function Page() {
 			<div className="flex h-[200vh] w-full shrink-0 flex-col items-center">
 				<div className="flex h-screen w-full max-w-5xl shrink-0 flex-col justify-center space-y-8">
 					<div className="relative h-full max-h-[560px] w-full overflow-hidden">
-						<Image fill className="object-cover" src={warm} alt="Rubric Labs" />
+						<Image fill className="object-cover" src={'/images/warm.jpeg'} alt="Rubric Labs" />
 						<div className="absolute top-0 left-0 h-full w-full backdrop-grayscale transition-all duration-300 hover:opacity-0" />
 						<Gumloop className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 w-32" />
 					</div>
@@ -62,7 +52,7 @@ export default async function Page() {
 			<div className="flex h-full w-full shrink-0 flex-col items-center">
 				<div className="flex h-screen w-full max-w-5xl flex-col justify-center space-y-8">
 					<div className="relative h-full max-h-[560px] w-full overflow-hidden">
-						<Image fill className="object-cover" src={cool} alt="Rubric Labs" />
+						<Image fill className="object-cover" src={'/images/cool.jpeg'} alt="Rubric Labs" />
 						<div className="absolute top-0 left-0 h-full w-full backdrop-grayscale transition-all duration-300 hover:opacity-0" />
 						<Cal className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 w-32" />
 					</div>
@@ -90,21 +80,8 @@ export default async function Page() {
 					<div className="flex w-full max-w-3xl flex-col items-center space-y-16">
 						<h2>Latest blog posts</h2>
 						<div className="grid grid-cols-8 gap-16">
-							{posts.slice(0, 2).map((post, index) => (
-								<Link
-									href={`/blog/${post.slug}`}
-									key={post.slug}
-									className={cn('col-span-4 space-y-2 text-left', index % 2 === 1 ? 'translate-y-16' : '')}
-								>
-									<div className="relative aspect-square w-full">
-										<Image src={Math.random() > 0.5 ? blog : blog2} alt="Abstract plant image" fill />
-									</div>
-									<p className="max-w-full pt-4 text-lg">{post.title}</p>
-									<div className="flex gap-4 text-sm">
-										<p className="font-mono">{post.category}</p>
-										<p className="opacity-50">{post.date}</p>
-									</div>
-								</Link>
+							{posts.slice(0, 2).map(post => (
+								<Card imgSrc={post.bannerImageUrl} key={post.slug} post={post} />
 							))}
 						</div>
 						<Link href="/blog">

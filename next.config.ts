@@ -6,6 +6,16 @@ const nextConfig = {
 	pageExtensions: ['md', 'mdx', 'ts', 'tsx'],
 	experimental: {
 		mdxRs: true
+	},
+	images: {
+		remotePatterns: [
+			{
+				hostname: 'assets.basehub.com'
+			},
+			{
+				hostname: 'localhost'
+			}
+		]
 	}
 } satisfies NextConfig
 

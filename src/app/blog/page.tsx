@@ -1,18 +1,8 @@
-import Image from 'next/image'
-import Link from 'next/link'
-import blog from '~/app/images/blog.webp'
-import blog2 from '~/app/images/blur.jpeg'
-import { getPostSlugs } from '~/lib/constants/posts'
-import { cn } from '~/lib/utils/cn'
+import { getPostMetadata } from '~/lib/constants/posts'
+import { Card } from './card'
 
 export default async function Page() {
-	const slugs = await getPostSlugs()
-	const posts = await Promise.all(
-		slugs.map(async slug => {
-			const { metadata } = await import(`~/lib/constants/posts/${slug}.mdx`)
-			return { slug, ...metadata }
-		})
-	)
+	const posts = await getPostMetadata()
 
 	return (
 		<div className="flex min-h-screen flex-col items-center gap-16 py-32">
@@ -22,20 +12,12 @@ export default async function Page() {
 			</div>
 			<div className="grid grid-cols-8 gap-16">
 				{posts.map((post, index) => (
-					<Link
-						href={`/blog/${post.slug}`}
+					<Card
+						imgSrc={post.bannerImageUrl}
 						key={post.slug}
-						className={cn('col-span-4 space-y-2', index % 2 === 1 ? 'translate-y-16' : '')}
-					>
-						<div className="relative aspect-square w-full">
-							<Image src={Math.random() > 0.5 ? blog : blog2} alt="Abstract plant image" fill />
-						</div>
-						<p className="max-w-full pt-4 text-lg">{post.title}</p>
-						<div className="flex gap-4 text-sm">
-							<p className="font-mono">{post.category}</p>
-							<p className="opacity-50">{post.date}</p>
-						</div>
-					</Link>
+						post={post}
+						className={index % 2 === 1 ? 'translate-y-16' : ''}
+					/>
 				))}
 			</div>
 		</div>

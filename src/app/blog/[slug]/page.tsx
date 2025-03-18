@@ -1,5 +1,4 @@
 import Image from 'next/image'
-import blog from '~/app/images/blog.webp'
 import { getPostSlugs } from '~/lib/constants/posts/index'
 import { env } from '~/lib/env'
 import { Copiable } from '~/ui/copiable'
@@ -19,7 +18,12 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
 		<div className="flex min-h-screen flex-col items-center gap-16 py-32">
 			<div className="flex w-full max-w-5xl flex-col items-start space-y-8">
 				<div className="relative h-96 w-full overflow-hidden">
-					<Image src={blog} alt={metadata.title} fill className="object-cover object-middle" />
+					<Image
+						src={metadata.bannerImageUrl}
+						alt={metadata.title}
+						fill
+						className="object-cover object-middle"
+					/>
 				</div>
 				<div className="flex w-full justify-between text-sm">
 					<div className="flex gap-2">
