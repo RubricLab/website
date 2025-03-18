@@ -30,7 +30,7 @@ export async function getPostMetadata(): Promise<Post[]> {
 				...metadata,
 				bannerImageUrl: metadata.bannerImageUrl.startsWith('https://')
 					? metadata.bannerImageUrl
-					: `${env.VERCEL_URL}${metadata.bannerImageUrl}`
+					: `https://${env.VERCEL_URL}${metadata.bannerImageUrl}`
 			} as Post
 		})
 	)
