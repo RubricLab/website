@@ -7,13 +7,11 @@ export const metadata = {
   description: "How we fine-tuned a small LLM for spam detection."
 }
 
-TLDR: We fine-tuned a small LLM on a few dozen spam tags and it's working well.
-
-Disclaimer on naming: we called it ros-spam, which is hopefully more scalable than OpenAI's gpt-3-3.5-turbo-4-4o-06-23-2024-11-20 or Anthropic's sonnet-3-3.5-3.5-but-better. Hindsight is 20/20.
-
 ## What We Built
 
-We created a purpose-built spam detection model specifically for our schema:
+We fine-tuned a small LLM for spam detection using dozens of historical spam tags. It's working remarkably well.
+
+While it's currently tailored to our needs, the approach could be generalized for broader email spam detection. Our schema is roughly as follows:
 
 ```ts
 type Contact = {
@@ -23,8 +21,6 @@ type Contact = {
   // ...
 }
 ```
-
-While it's currently tailored to our needs, the approach could be generalized for broader email spam detection.
 
 ## The Problem
 
@@ -40,10 +36,10 @@ Here's the kicker: even at just 30 seconds per day, this adds up to hours per ye
 
 The data from our spam flags was simply stored in Postgres, creating what would become our training dataset:
 
-```ts
-{ "message": "We sell the best leather couches", "status" : "👎" }
+```jsonl
+{ "message": "We sell the best leather couches", "status" : "spam" }
 // ...
-{ "message": "Looking to build an agentic flight booking system", "status": "👍" }
+{ "message": "Looking to build an agentic flight booking system", "status": "legit" }
 ```
 
 Given the hundreds of upvotes/downvotes, deduped and cleaned (a 10-minute process, given the simple schema), fine-tuning on OpenAI was a straightforward process.
@@ -81,11 +77,11 @@ We ran comparisons in both OpenAI playground and OpenPipe evals
 
 The result: `ros-spam` achieved 100% accuracy vs ~80% for a frontier model, even with prompt engineering.
 
-## Qualitative Assessment
+### Qualitative Assessment
 
 We shipped it to prod with a feedback loop:
 
-- Each run appears with the message in Slack as 👍/👎
+- Each run appears with the message in Slack as spam or legit
 - We can immediately spot and correct errors
 - When needed, we re-tune the model 🔃
 

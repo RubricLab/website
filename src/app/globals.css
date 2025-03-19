@@ -36,9 +36,7 @@
 	h3 {
 		@apply text-2xl;
 	}
-}
 
-@layer components {
 	input,
 	textarea {
 		@apply hover:bg-neutral-100 border transition-colors dark:border-neutral-900 border-neutral-100 dark:hover:bg-neutral-900 px-3.5 focus:outline-none focus:border-secondary/50 placeholder:text-secondary p-2;
@@ -52,7 +50,8 @@
 		@apply underline underline-offset-4 decoration-dashed hover:decoration-solid;
 	}
 
-	article p {
+	article p,
+	li {
 		@apply text-secondary;
 	}
 
@@ -63,15 +62,9 @@
 	ol {
 		@apply list-decimal list-inside;
 	}
+}
 
-	pre {
-		@apply bg-neutral-100 dark:bg-neutral-900 rounded-md p-2 px-3.5 text-sm;
-	}
-
-	code:not(pre code) {
-		@apply bg-neutral-100 dark:bg-neutral-900 rounded py-0.5 px-1.5 text-sm;
-	}
-
+@layer components {
 	.dev {
 		@apply border border-red-500 bg-red-500/10;
 	}
@@ -82,5 +75,37 @@
 
 	.wordmark > defs > mask#mask > g > path {
 		@apply stroke-white fill-white;
+	}
+
+	/* Codeblocks */
+
+	code {
+		@apply bg-neutral-100 dark:bg-neutral-900 rounded py-0.5 px-1.5 text-sm;
+	}
+
+	code[data-theme*=" "] {
+		@apply overflow-x-auto rounded-md p-2 px-3.5;
+		&,
+		& span {
+			@apply text-[var(--shiki-light)] dark:text-[var(--shiki-dark)];
+		}
+
+		& span[data-highlighted-line] {
+			@apply dark:bg-neutral-800 bg-neutral-200;
+
+			&::before {
+				@apply text-primary;
+			}
+		}
+	}
+
+	code {
+		counter-reset: line;
+	}
+
+	code > [data-line]::before {
+		counter-increment: line;
+		content: counter(line);
+		@apply inline-block w-4 mr-6 text-right text-secondary;
 	}
 }
