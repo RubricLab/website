@@ -1,11 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useClipboard } from '~/lib/hooks/use-clipboard'
 import { Button } from './button'
-import { copy } from '~/lib/utils/copy'
-import { Link } from './icons/link'
 import { Checkmark } from './icons/checkmark'
-import { TIMEOUT } from '~/lib/constants'
+import { Link } from './icons/link'
 
 type HeadingLevel = 'h1' | 'h2' | 'h3'
 
@@ -22,13 +20,7 @@ export const CopiableHeading = ({
 }: { children: React.ReactNode; as?: HeadingLevel } & React.HTMLAttributes<HTMLHeadingElement>) => {
 	const id = children?.toString().toLowerCase().replace(/ /g, '-')
 
-	const [copied, setCopied] = useState(false)
-
-	const handleCopy = () => {
-		copy(`${window.location.href.split('#')[0]}#${id}`)
-		setCopied(true)
-		setTimeout(() => setCopied(false), TIMEOUT)
-	}
+	const { copied, handleCopy } = useClipboard()
 
 	return (
 		<Component id={id} className="group relative" {...props}>
@@ -36,7 +28,7 @@ export const CopiableHeading = ({
 			<Button
 				size="sm"
 				variant="icon"
-				onClick={handleCopy}
+				onClick={() => handleCopy(`${window.location.href.split('#')[0]}#${id}`)}
 				className="-translate-x-full -translate-y-1/2 -left-2 absolute top-1/2 opacity-0 transition-opacity group-hover:opacity-100"
 			>
 				{copied ? (

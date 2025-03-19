@@ -1,20 +1,12 @@
 'use client'
 
-import { useState } from 'react'
-import { TIMEOUT } from '~/lib/constants'
-import { copy } from '~/lib/utils/copy'
 import { Button } from './button'
 import { Checkmark } from './icons/checkmark'
 import { Copy } from './icons/copy'
+import { useClipboard } from '~/lib/hooks/use-clipboard'
 
 export const CodeBlock = ({ children }: { children: React.ReactElement }) => {
-	const [copied, setCopied] = useState(false)
-
-	const handleCopy = () => {
-		copy((children.props as { children: string }).children)
-		setCopied(true)
-		setTimeout(() => setCopied(false), TIMEOUT)
-	}
+	const { copied, handleCopy } = useClipboard()
 
 	return (
 		<pre className="relative">
@@ -23,7 +15,7 @@ export const CodeBlock = ({ children }: { children: React.ReactElement }) => {
 				className="absolute top-2 right-2 w-fit text-center"
 				variant="link"
 				size="sm"
-				onClick={handleCopy}
+				onClick={() => handleCopy((children.props as { children: string }).children)}
 			>
 				{copied ? <Checkmark className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
 			</Button>

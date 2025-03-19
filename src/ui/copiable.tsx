@@ -1,8 +1,6 @@
 'use client'
 
-import { useState } from 'react'
-import { TIMEOUT } from '~/lib/constants'
-import { copy } from '~/lib/utils/copy'
+import { useClipboard } from '~/lib/hooks/use-clipboard'
 import { Button } from './button'
 
 export const Copiable = ({
@@ -10,16 +8,10 @@ export const Copiable = ({
 	variant,
 	content
 }: { children: React.ReactNode; variant: 'default' | 'outline' | 'link'; content: string }) => {
-	const [copied, setCopied] = useState(false)
-
-	const handleCopy = () => {
-		copy(content)
-		setCopied(true)
-		setTimeout(() => setCopied(false), TIMEOUT)
-	}
+	const { copied, handleCopy } = useClipboard()
 
 	return (
-		<Button onClick={handleCopy} variant={variant}>
+		<Button onClick={() => handleCopy(content)} variant={variant}>
 			{copied ? <span>Copied</span> : <span>{children}</span>}
 		</Button>
 	)
