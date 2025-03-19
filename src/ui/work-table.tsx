@@ -1,64 +1,82 @@
 type Work = {
 	name: string
-	tag: string
+	description: string
 	date: string
+	category: 'Client' | 'Internal'
 }
 
 const works = [
 	{
 		name: 'Archetype',
-		tag: 'Client work',
-		date: '2023'
+		description: 'Component system',
+		date: '2023',
+		category: 'Client'
 	},
 	{
 		name: 'Linear Sync',
-		tag: 'Client work',
-		date: '2023'
+		description: 'Sync your GitHub issues to Linear',
+		date: '2023',
+		category: 'Client'
 	},
 	{
 		name: 'Sweater Planet',
-		tag: 'Client work',
-		date: '2022'
+		description: 'eCommerce platform',
+		date: '2022',
+		category: 'Internal'
 	},
 	{
-		name: 'AutoChangelog',
-		tag: 'Client work',
-		date: '2024'
+		name: 'Trigger.dev',
+		description: 'Generate changelogs from git commits',
+		date: '2024',
+		category: 'Client'
 	},
 	{
 		name: 'Dashboard',
-		tag: 'Client work',
-		date: '2024'
+		description: 'All your personal apps, intelligent',
+		date: '2024',
+		category: 'Internal'
 	},
 	{
 		name: 'Maige',
-		tag: 'Client work',
-		date: '2024'
+		description: 'AI-powered codebase assistant',
+		date: '2024',
+		category: 'Internal'
 	},
 	{
 		name: 'Create Rubric App',
-		tag: 'Client work',
-		date: '2024'
+		description: 'Spin up an AI-native React app',
+		date: '2024',
+		category: 'Internal'
 	},
 	{
 		name: 'Rainmaker',
-		tag: 'Client work',
-		date: '2024'
+		description: 'Landing page',
+		date: '2024',
+		category: 'Client'
 	},
 	{
 		name: 'Year in Code',
-		tag: 'Client work',
-		date: '2023'
+		description: 'AI-native experience',
+		date: '2023',
+		category: 'Client'
 	},
 	{
 		name: 'Stealth',
-		tag: 'Client work',
-		date: '2024'
+		description: 'AI-native experience',
+		date: '2024',
+		category: 'Client'
 	},
 	{
 		name: 'Albertsons',
-		tag: 'Client work',
-		date: '2025'
+		description: 'WIP',
+		date: '2025',
+		category: 'Client'
+	},
+	{
+		name: 'Neat',
+		description: 'Your GitHub feed, smartly filtered',
+		date: '2022',
+		category: 'Internal'
 	}
 ] satisfies Work[]
 
@@ -68,8 +86,8 @@ export const WorkTable = () => {
 			<thead className="font-semibold">
 				<tr>
 					<th className="py-3 text-left">Name</th>
-					<th className="py-3 text-left">Tag</th>
-					<th className="py-3 text-left">Date</th>
+					<th className="py-3 text-left">Description</th>
+					<th className="py-3 text-left">Type</th>
 				</tr>
 			</thead>
 			<tbody className="divide-y divide-black/10 dark:divide-white/10">
@@ -78,8 +96,8 @@ export const WorkTable = () => {
 					.map((work, index) => (
 						<tr key={index}>
 							<td className="py-3">{work.name}</td>
-							<td className="py-3">{work.tag}</td>
-							<td className="py-3">{work.date}</td>
+							<td className="py-3">{work.description}</td>
+							<td className="py-3">{work.category}</td>
 						</tr>
 					))}
 			</tbody>

@@ -1,13 +1,51 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { cn } from '~/lib/utils/cn'
 import { getPostMetadata } from '~/lib/utils/posts'
 import { Button } from '~/ui/button'
 import { Cal } from '~/ui/logos/cal'
+import { DRisk } from '~/ui/logos/drisk'
 import { Gumloop } from '~/ui/logos/gumloop'
+import { Maige } from '~/ui/logos/maige'
 import { Rubric } from '~/ui/logos/rubric'
 import { Testimonials } from '~/ui/testimonials'
 import { WorkTable } from '~/ui/work-table'
 import { Card } from './blog/card'
+
+type Project = {
+	name: string
+	description: string
+	image: string
+	link: string
+	Icon: ({ className }: { className: string }) => React.ReactNode
+}
+
+const projects = [
+	{
+		name: 'Gumloop',
+		description:
+			'A UI system built to scale to infinite AI workflows. How we worked with Gumloop to capture the imagination of a new class of builder.',
+		image: '/images/warm.jpeg',
+		link: '/gumloop',
+		Icon: ({ className }) => <Gumloop className={className} />
+	},
+	{
+		name: 'dRisk',
+		description:
+			'A platform processing millions of pages of financial reports 24/7. How we optimized LLM use for scale.',
+		image: '/images/cool.jpeg',
+		link: '/drisk',
+		Icon: ({ className }) => <DRisk className={className} />
+	},
+	{
+		name: 'Maige',
+		description:
+			'A profitable AI codebase copilot. Why we open-sourced a product that benefits from each new generation of LLMs.',
+		image: '/images/warm.jpeg',
+		link: '/maige',
+		Icon: ({ className }) => <Maige className={cn(className, '!w-10')} />
+	}
+] satisfies Project[]
 
 export default async function Page() {
 	const posts = await getPostMetadata()
@@ -30,25 +68,24 @@ export default async function Page() {
 					</p>
 				</div>
 			</div>
-			<div className="flex h-[200vh] w-full shrink-0 flex-col items-center">
-				<div className="flex h-screen w-full max-w-5xl shrink-0 flex-col justify-center space-y-8">
-					<div className="relative h-full max-h-[560px] w-full overflow-hidden">
-						<Image fill className="object-cover" src={'/images/warm.jpeg'} alt="Rubric Labs" />
-						<div className="absolute top-0 left-0 h-full w-full backdrop-grayscale transition-all duration-300 hover:opacity-0" />
-						<Gumloop className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 w-32" />
-					</div>
-					<div className="flex justify-between gap-8">
-						<h2>Gumloop</h2>
-						<div className="flex w-1/2 flex-col gap-4">
-							<p>
-								A UI system built to scale to infinite AI workflows. How we worked with Gumloop to capture
-								the imagination of a new class of builder.
-							</p>
-							<Button>View project</Button>
+			{projects.map(project => (
+				<div key={project.name} className="flex h-[200vh] w-full shrink-0 flex-col items-center">
+					<div className="flex h-screen w-full max-w-5xl shrink-0 flex-col justify-center space-y-8">
+						<div className="relative h-full max-h-[560px] w-full overflow-hidden">
+							<Image fill className="object-cover" src={project.image} alt="Rubric Labs" />
+							<div className="absolute top-0 left-0 h-full w-full backdrop-grayscale transition-all duration-300 hover:opacity-0" />
+							<project.Icon className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 w-32" />
+						</div>
+						<div className="flex justify-between gap-8">
+							<h2>{project.name}</h2>
+							<div className="flex w-1/2 flex-col gap-4">
+								<p>{project.description}</p>
+								<Button>View project</Button>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
+			))}
 			<div className="flex h-full w-full shrink-0 flex-col items-center">
 				<div className="flex h-screen w-full max-w-5xl flex-col justify-center space-y-8">
 					<div className="relative h-full max-h-[560px] w-full overflow-hidden">
