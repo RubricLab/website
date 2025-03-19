@@ -19,8 +19,8 @@ export const Card = ({
 			key={post.slug}
 			className={cn('col-span-4 space-y-2', className)}
 		>
-			<div className="relative aspect-square w-full">
-				<Image src={imgSrc} alt="Abstract plant image" fill />
+			<div className="relative h-96 w-96">
+				<Image src={imgSrc} alt="Abstract plant image" fill className="object-cover" />
 			</div>
 			<p className="max-w-full pt-4 text-lg">{post.title}</p>
 			<div className="flex items-center gap-4 text-sm">
