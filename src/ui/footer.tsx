@@ -1,6 +1,6 @@
-import { GithubIcon } from './icons/github'
-import { LinkedinIcon } from './icons/linkedin'
-import { XIcon } from './icons/x'
+import { GithubIcon } from './logos/github'
+import { LinkedinIcon } from './logos/linkedin'
+import { XIcon } from './logos/x'
 import { Wordmark } from './logos/wordmark'
 import { NewsletterForm } from './newsletter-form'
 

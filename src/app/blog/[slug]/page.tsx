@@ -1,6 +1,6 @@
 import Image from 'next/image'
-import { getPostSlugs } from '~/lib/constants/posts/index'
 import { env } from '~/lib/env'
+import { getPostSlugs } from '~/lib/utils/posts'
 import { Copiable } from '~/ui/copiable'
 
 export async function generateStaticParams() {

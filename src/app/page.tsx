@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { getPostMetadata } from '~/lib/constants/posts'
+import { getPostMetadata } from '~/lib/utils/posts'
 import { Button } from '~/ui/button'
 import { Cal } from '~/ui/logos/cal'
 import { Gumloop } from '~/ui/logos/gumloop'

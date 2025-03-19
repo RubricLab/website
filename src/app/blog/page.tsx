@@ -1,4 +1,4 @@
-import { getPostMetadata } from '~/lib/constants/posts'
+import { getPostMetadata } from '~/lib/utils/posts'
 import { Card } from './card'
 
 export default async function Page() {
