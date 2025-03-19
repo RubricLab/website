@@ -4,7 +4,6 @@ import Providers from '~/app/providers'
 import { DEFAULT_META } from '~/lib/constants/metadata'
 import './globals.css'
 import { env } from '~/lib/env'
-import { Footer } from '~/ui/footer'
 import { Nav } from '~/ui/nav'
 
 const matter = localFont({ src: './fonts/matter-regular.woff' })
@@ -30,7 +29,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 				<Providers>
 					<div className="min-h-screen w-screen">{children}</div>
 				</Providers>
-				<Footer />
 			</body>
 		</html>
 	)

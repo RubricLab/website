@@ -37,6 +37,10 @@
 		@apply text-2xl;
 	}
 
+	a {
+		@apply focus:outline-none;
+	}
+
 	input,
 	textarea {
 		@apply hover:bg-neutral-100 border transition-colors dark:border-neutral-900 border-neutral-100 dark:hover:bg-neutral-900 px-3.5 focus:outline-none focus:border-secondary/50 placeholder:text-secondary p-2;

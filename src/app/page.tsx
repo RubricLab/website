@@ -1,8 +1,10 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { useEffect, useRef } from 'react'
 import { cn } from '~/lib/utils/cn'
 import { getPostMetadata } from '~/lib/utils/posts'
 import { Button } from '~/ui/button'
+import { Footer } from '~/ui/footer'
 import { Cal } from '~/ui/logos/cal'
 import { DRisk } from '~/ui/logos/drisk'
 import { Gumloop } from '~/ui/logos/gumloop'
@@ -10,7 +12,8 @@ import { Maige } from '~/ui/logos/maige'
 import { Rubric } from '~/ui/logos/rubric'
 import { Testimonials } from '~/ui/testimonials'
 import { WorkTable } from '~/ui/work-table'
-import { Card } from './blog/card'
+import { Card } from './(rest)/blog/card'
+import { HorizontalScroll } from './content'
 
 type Project = {
 	name: string
@@ -47,13 +50,16 @@ const projects = [
 	}
 ] satisfies Project[]
 
+const Section = ({ children }: { children: React.ReactNode }) => (
+	<div className="flex w-screen shrink-0 flex-col items-center p-24">{children}</div>
+)
+
 export default async function Page() {
 	const posts = await getPostMetadata()
-
 	return (
-		<div className="flex items-start gap-16 overflow-x-scroll">
-			<div className="flex h-screen w-full shrink-0 flex-col items-center">
-				<div className="flex h-full w-full max-w-5xl flex-col justify-center space-y-8">
+		<HorizontalScroll>
+			<Section>
+				<div className="flex h-full w-full flex-col items-start justify-center space-y-8">
 					<div className="group relative h-full max-h-[560px] w-full overflow-hidden">
 						<video autoPlay muted loop className="h-full w-full object-cover">
 							<source src="/images/hero.mp4" type="video/mp4" />
@@ -67,10 +73,10 @@ export default async function Page() {
 						generation of personalized software, enabled by AI.
 					</p>
 				</div>
-			</div>
+			</Section>
 			{projects.map(project => (
-				<div key={project.name} className="flex h-[200vh] w-full shrink-0 flex-col items-center">
-					<div className="flex h-screen w-full max-w-5xl shrink-0 flex-col justify-center space-y-8">
+				<Section key={project.name}>
+					<div className="flex h-full w-full shrink-0 flex-col justify-center space-y-8">
 						<div className="relative h-full max-h-[560px] w-full overflow-hidden">
 							<Image fill className="object-cover" src={project.image} alt="Rubric Labs" />
 							<div className="absolute top-0 left-0 h-full w-full backdrop-grayscale transition-all duration-300 hover:opacity-0" />
@@ -84,10 +90,10 @@ export default async function Page() {
 							</div>
 						</div>
 					</div>
-				</div>
+				</Section>
 			))}
-			<div className="flex h-full w-full shrink-0 flex-col items-center">
-				<div className="flex h-screen w-full max-w-5xl flex-col justify-center space-y-8">
+			<Section>
+				<div className="flex h-full w-full shrink-0 flex-col justify-center space-y-8">
 					<div className="relative h-full max-h-[560px] w-full overflow-hidden">
 						<Image fill className="object-cover" src={'/images/cool.jpeg'} alt="Rubric Labs" />
 						<div className="absolute top-0 left-0 h-full w-full backdrop-grayscale transition-all duration-300 hover:opacity-0" />
@@ -126,7 +132,8 @@ export default async function Page() {
 						</Link>
 					</div>
 				</div>
-			</div>
-		</div>
+				<Footer />
+			</Section>
+		</HorizontalScroll>
 	)
 }

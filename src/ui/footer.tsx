@@ -1,12 +1,13 @@
+import { cn } from '~/lib/utils/cn'
 import { GithubIcon } from './logos/github'
 import { LinkedinIcon } from './logos/linkedin'
 import { Wordmark } from './logos/wordmark'
 import { XIcon } from './logos/x'
 import { NewsletterForm } from './newsletter-form'
 
-export const Footer = () => {
+export const Footer = ({ className }: { className?: string }) => {
 	return (
-		<footer className="flex w-full justify-center">
+		<footer className={cn('flex w-full justify-center', className)}>
 			<div className="flex h-full w-full max-w-5xl flex-col items-center justify-center">
 				<Wordmark className="mb-20 h-auto w-full opacity-60" />
 				<div className="grid w-full grid-cols-9 divide-x divide-black/10 border border-black/10 dark:divide-white/10 dark:border-white/10">
