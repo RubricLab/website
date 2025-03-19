@@ -46,6 +46,14 @@ const projects = [
 		image: '/images/warm.jpeg',
 		link: '/maige',
 		Icon: ({ className }) => <Maige className={cn(className, '!w-10')} />
+	},
+	{
+		name: 'Cal.ai',
+		description:
+			'A system to manage your calendar with words. How one of the first agentic products to market started.',
+		image: '/images/warm.jpeg',
+		link: '/cal',
+		Icon: ({ className }) => <Cal className={className} />
 	}
 ] satisfies Project[]
 
@@ -73,7 +81,7 @@ export default async function Page() {
 					</p>
 				</div>
 			</Section>
-			{projects.map(project => (
+			{projects.slice(0, -1).map(project => (
 				<Section key={project.name}>
 					<div className="flex h-full w-full shrink-0 flex-col justify-center space-y-8">
 						<div className="relative h-full max-h-[560px] w-full overflow-hidden">
@@ -96,15 +104,14 @@ export default async function Page() {
 					<div className="relative h-full max-h-[560px] w-full overflow-hidden">
 						<Image fill className="object-cover" src={'/images/cool.jpeg'} alt="Rubric Labs" />
 						<div className="absolute top-0 left-0 h-full w-full backdrop-grayscale transition-all duration-300 hover:opacity-0" />
-						<Cal className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 w-32" />
+						{projects
+							.at(-1)
+							?.Icon({ className: '-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 w-32' })}
 					</div>
 					<div className="flex justify-between gap-8">
-						<h2>Cal.ai</h2>
+						<h2>{projects.at(-1)?.name}</h2>
 						<div className="flex w-1/2 flex-col gap-4">
-							<p>
-								A system to manage your calendar with words. How one of the first agentic products to market
-								started.
-							</p>
+							<p>{projects.at(-1)?.description}</p>
 							<Button>View project</Button>
 						</div>
 					</div>
