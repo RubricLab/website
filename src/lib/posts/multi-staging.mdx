@@ -46,9 +46,10 @@ Using this command I can tunnel `dexter.rubric.sh` → `localhost:3000`, allowin
 Bonus points (`~/.zshrc`):
 
 ```sh
-alias l='f(){
-  local port="$*"; ngrok http --domain=dexter.rubric.sh ${port:-3000}; 
-}; f'
+tunnel() {
+  local port="$*"; ngrok http --domain=dexter.rubric.sh "${port:-3000}"
+}
+alias l='tunnel'
 ```
 
 We further give each developer a local DB and their own set of auth tokens, but we will dive into this in [The Stack](#the-stack) section.
@@ -59,15 +60,11 @@ Let's go further and set up a multi-lane on-ramp to prod. In addition to local, 
 
 Each developer should have their own local and staging:
 
-Database
-
-AuthTokens
-
-URL
-
-GitHub branch
-
-ENV
+- Database
+- Auth tokens
+- URL
+- GitHub branch
+- Env
 
 We use this workflow for [Maige](https://maige.app/) - a Rubric experiment that brings intelligent workflows to your issues and PRs in GitHub. If you are interested in the project, check out the codebase (OS) [here](https://github.com/RubricLab/maige). There are several useful DX commands that allow you to never have to open the .env file. See [package.json](https://github.com/RubricLab/maige/blob/f017cb57ae588b3fb57fb32906a9360556fe8c80/package.json#L83C3-L83C61).
 

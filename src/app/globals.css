@@ -87,7 +87,7 @@
 		@apply bg-neutral-100 dark:bg-neutral-900 rounded py-0.5 px-1.5 text-sm;
 	}
 
-	code[data-theme*=" "] {
+	code[data-theme] {
 		@apply overflow-x-auto rounded-md p-2 px-3.5;
 		&,
 		& span {

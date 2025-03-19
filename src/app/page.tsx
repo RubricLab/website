@@ -1,6 +1,5 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { useEffect, useRef } from 'react'
 import { cn } from '~/lib/utils/cn'
 import { getPostMetadata } from '~/lib/utils/posts'
 import { Button } from '~/ui/button'
