@@ -1,7 +1,7 @@
 import { GithubIcon } from './logos/github'
 import { LinkedinIcon } from './logos/linkedin'
-import { XIcon } from './logos/x'
 import { Wordmark } from './logos/wordmark'
+import { XIcon } from './logos/x'
 import { NewsletterForm } from './newsletter-form'
 
 export const Footer = () => {

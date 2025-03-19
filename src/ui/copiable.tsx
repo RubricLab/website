@@ -1,8 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import { Button } from './button'
 import { TIMEOUT } from '~/lib/constants'
+import { copy } from '~/lib/utils/copy'
+import { Button } from './button'
 
 export const Copiable = ({
 	children,
@@ -12,18 +13,9 @@ export const Copiable = ({
 	const [copied, setCopied] = useState(false)
 
 	const handleCopy = () => {
-		if (!('clipboard' in navigator)) {
-			alert('Clipboard is not supported on this browser')
-			return
-		}
-
-		navigator.clipboard.writeText(content)
-
+		copy(content)
 		setCopied(true)
-
-		setTimeout(() => {
-			setCopied(false)
-		}, TIMEOUT)
+		setTimeout(() => setCopied(false), TIMEOUT)
 	}
 
 	return (

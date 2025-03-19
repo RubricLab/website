@@ -2,24 +2,27 @@
 
 :root {
 	--primary: black;
+	--negative: white;
 	--secondary: #808080;
 }
 
 @media (prefers-color-scheme: dark) {
 	:root {
 		--primary: white;
+		--negative: black;
 		--secondary: #808080;
 	}
 }
 
 @theme inline {
 	--color-primary: var(--primary);
+	--color-negative: var(--negative);
 	--color-secondary: var(--secondary);
 }
 
 @layer base {
 	html {
-		@apply dark:bg-black bg-white dark:text-white text-black;
+		@apply bg-negative text-primary;
 	}
 
 	h1 {
@@ -29,12 +32,16 @@
 	h2 {
 		@apply text-4xl;
 	}
+
+	h3 {
+		@apply text-2xl;
+	}
 }
 
 @layer components {
 	input,
 	textarea {
-		@apply hover:bg-neutral-100 border transition-colors dark:border-neutral-900 border-neutral-100 dark:hover:bg-neutral-900 px-3.5 focus:outline-none focus:border-secondary dark:focus:border-secondary placeholder:text-neutral-500 p-2;
+		@apply hover:bg-neutral-100 border transition-colors dark:border-neutral-900 border-neutral-100 dark:hover:bg-neutral-900 px-3.5 focus:outline-none focus:border-secondary/50 placeholder:text-secondary p-2;
 	}
 
 	textarea {
@@ -59,6 +66,10 @@
 
 	pre {
 		@apply bg-neutral-100 dark:bg-neutral-900 rounded-md p-2 px-3.5 text-sm;
+	}
+
+	code:not(pre code) {
+		@apply bg-neutral-100 dark:bg-neutral-900 rounded py-0.5 px-1.5 text-sm;
 	}
 
 	.dev {

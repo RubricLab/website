@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import { env } from '~/lib/env'
+import { formatDate } from '~/lib/utils/date'
 import { getPostSlugs } from '~/lib/utils/posts'
 import { Copiable } from '~/ui/copiable'
 
@@ -10,7 +11,7 @@ export async function generateStaticParams() {
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
 	const { slug } = await params
-	const { default: Post, metadata } = await import(`~/lib/constants/posts/${slug}.mdx`)
+	const { default: Post, metadata } = await import(`~/lib/posts/${slug}.mdx`)
 
 	if (!Post || !metadata) return <div>Post not found</div>
 
@@ -28,7 +29,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
 				<div className="flex w-full justify-between text-sm">
 					<div className="flex gap-2">
 						<p className="font-mono">{metadata.category}</p>
-						<p className="opacity-50">{metadata.date}</p>
+						<p className="opacity-50">{formatDate(metadata.date)}</p>
 					</div>
 					<div className="flex gap-2">
 						<p className="opacity-50">By {metadata.author}</p>

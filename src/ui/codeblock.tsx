@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { TIMEOUT } from '~/lib/constants'
+import { copy } from '~/lib/utils/copy'
 import { Button } from './button'
 import { Checkmark } from './icons/checkmark'
 import { Copy } from './icons/copy'
@@ -10,14 +11,8 @@ export const CodeBlock = ({ children }: { children: React.ReactElement }) => {
 	const [copied, setCopied] = useState(false)
 
 	const handleCopy = () => {
-		if (!('clipboard' in navigator)) {
-			alert('Clipboard is not supported on this browser')
-			return
-		}
-
-		navigator.clipboard.writeText((children.props as { children: string }).children)
+		copy((children.props as { children: string }).children)
 		setCopied(true)
-
 		setTimeout(() => setCopied(false), TIMEOUT)
 	}
 

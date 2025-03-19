@@ -1,10 +1,11 @@
 import { cn } from '~/lib/utils/cn'
 
 const variants = {
-	default: 'dark:bg-white/10 bg-black/10 hover:dark:bg-white/30 hover:bg-black/30 rounded-full',
+	default: 'dark:bg-white/10 bg-black/10 dark:hover:bg-white/20 hover:bg-black/20 rounded-full',
 	outline:
-		'dark:border-white/10 border-black/10 hover:dark:border-white/40 hover:border-black/40 rounded-full',
-	link: 'hover:opacity-80 focus:ring-0 !p-0'
+		'dark:border-white/10 border-black/10 dark:hover:border-white/40 hover:border-black/40 rounded-full',
+	link: 'hover:opacity-80 focus:ring-0 !p-0',
+	icon: 'focus:ring-0 !p-1 rounded dark:hover:bg-white/20 hover:bg-black/20'
 } as const
 
 const sizes = {
