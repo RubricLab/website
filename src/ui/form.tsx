@@ -1,7 +1,6 @@
 'use client'
 
 import { useActionState } from 'react'
-import { Button } from './button'
 import { cn } from '~/lib/utils/cn'
 
 type ActionResult =
@@ -19,30 +18,19 @@ type Action = (state: ActionResult | null, payload: FormData) => Promise<ActionR
 export const Form = ({
 	action,
 	children,
-	className,
-	buttonClassName,
-	successText = 'Submitted',
-	pendingText = 'Submitting...',
-	ctaText = 'Submit'
+	className
 }: {
 	action: Action
 	children:
 		| React.ReactNode
 		| ((props: { pending: boolean; state: ActionResult | null }) => React.ReactNode)
 	className?: string
-	buttonClassName?: string
-	successText?: string
-	pendingText?: string
-	ctaText?: string
 }) => {
 	const [state, formAction, pending] = useActionState(action, null)
 
 	return (
 		<form action={formAction} className={cn('flex items-center gap-1', className)}>
 			{typeof children === 'function' ? children({ pending, state }) : children}
-			<Button type="submit" disabled={pending || !!state?.success} className={cn(buttonClassName)}>
-				{pending ? pendingText : state?.success ? successText : ctaText}
-			</Button>
 		</form>
 	)
 }
