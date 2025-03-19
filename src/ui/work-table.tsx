@@ -25,6 +25,12 @@ const works = [
 		category: 'Internal'
 	},
 	{
+		name: 'Graphite',
+		description: 'AI-generated personalized video at scale',
+		date: '2023',
+		category: 'Client'
+	},
+	{
 		name: 'Trigger.dev',
 		description: 'Generate changelogs from git commits',
 		date: '2024',
