@@ -8,7 +8,7 @@ export default async function Page() {
 		<div className="flex min-h-screen flex-col items-center gap-16 py-32">
 			<div className="flex flex-col items-center gap-2">
 				<h1>Blog</h1>
-				<p className="text-sm">The latest from our team</p>
+				<p className="text-secondary text-sm">The latest from our team</p>
 			</div>
 			<div className="grid grid-cols-8 gap-16">
 				{posts.map((post, index) => (
