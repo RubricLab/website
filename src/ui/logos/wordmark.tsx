@@ -34,7 +34,7 @@ export const Wordmark = ({ className }: { className?: string }) => {
 					</g>
 				</mask>
 			</defs>
-			<image href="/images/blog.png" width="1251" mask="url(#mask)" />
+			<image href="/images/cactus-fast.png" width="1251" y="-120" mask="url(#mask)" />
 			<g id="cover">
 				<Paths />
 			</g>
