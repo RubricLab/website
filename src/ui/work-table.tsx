@@ -88,7 +88,7 @@ const works = [
 
 export const WorkTable = () => {
 	return (
-		<table className="w-full divide-y divide-black/10 dark:divide-white/10">
+		<table className="w-full divide-y divide-subtle">
 			<thead className="font-semibold">
 				<tr>
 					<th className="py-3 text-left">Name</th>
@@ -96,7 +96,7 @@ export const WorkTable = () => {
 					<th className="py-3 text-left">Type</th>
 				</tr>
 			</thead>
-			<tbody className="divide-y divide-black/10 dark:divide-white/10">
+			<tbody className="divide-y divide-subtle">
 				{works
 					.sort((a, b) => b.date.localeCompare(a.date))
 					.map((work, index) => (

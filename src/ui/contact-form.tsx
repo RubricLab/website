@@ -21,7 +21,7 @@ export const ContactForm = () => {
 								<input placeholder="Name" name="name" />
 								<input placeholder="Email" name="email" />
 								<input placeholder="Company" name="company" />
-								<textarea placeholder="Message" name="message" />
+								<textarea placeholder="Message" name="message" className="resize-none" />
 							</div>
 						)}
 					</div>

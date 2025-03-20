@@ -6,7 +6,7 @@ import { env } from '~/lib/env'
 const schema = z.object({
 	name: z.string().min(1),
 	email: z.string().email(),
-	message: z.string().min(1),
+	message: z.string().min(1).max(1000),
 	company: z.string().optional()
 })
 

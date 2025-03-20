@@ -3,6 +3,7 @@
 :root {
 	--primary: black;
 	--negative: white;
+	--subtle: #e5e5e5;
 	--secondary: #808080;
 }
 
@@ -10,6 +11,7 @@
 	:root {
 		--primary: white;
 		--negative: black;
+		--subtle: #1a1a1a;
 		--secondary: #808080;
 	}
 }
@@ -17,6 +19,7 @@
 @theme inline {
 	--color-primary: var(--primary);
 	--color-negative: var(--negative);
+	--color-subtle: var(--subtle);
 	--color-secondary: var(--secondary);
 }
 
@@ -43,7 +46,7 @@
 
 	input,
 	textarea {
-		@apply hover:bg-neutral-100 border transition-colors dark:border-neutral-900 border-neutral-100 dark:hover:bg-neutral-900 px-3.5 focus:outline-none focus:border-secondary/50 placeholder:text-secondary p-2;
+		@apply border transition-colors border-subtle hover:bg-subtle px-3.5 focus:outline-none focus:border-secondary/50 placeholder:text-secondary p-2;
 	}
 
 	textarea {
@@ -63,7 +66,7 @@
 		@apply list-disc list-inside;
 	}
 
-	ol {
+	ol li {
 		@apply list-decimal list-inside;
 	}
 
@@ -78,17 +81,17 @@
 	}
 
 	.wordmark > #cover path {
-		@apply dark:fill-black fill-white hover:opacity-0 stroke-secondary;
+		@apply dark:fill-black fill-white hover:opacity-0 transition-opacity duration-500 stroke-subtle;
 	}
 
 	.wordmark > defs > mask#mask > g > path {
-		@apply stroke-white fill-white;
+		@apply stroke-subtle fill-white;
 	}
 
 	/* Codeblocks */
 
 	code {
-		@apply bg-neutral-100 dark:bg-neutral-900 rounded py-0.5 px-1.5 text-sm;
+		@apply bg-neutral-100 dark:bg-neutral-900 rounded py-0.5 px-1.5 text-[13px];
 	}
 
 	code[data-theme] {
