@@ -4,6 +4,7 @@ import { useClipboard } from '~/lib/hooks/use-clipboard'
 import { Button } from './button'
 import { Checkmark } from './icons/checkmark'
 import { Link } from './icons/link'
+import { cn } from '~/lib/utils/cn'
 
 type HeadingLevel = 'h1' | 'h2' | 'h3'
 
@@ -11,6 +12,12 @@ const iconSizes = {
 	h1: 'h-8',
 	h2: 'h-6',
 	h3: 'h-4'
+}
+
+const margins = {
+	h1: 'mt-10',
+	h2: 'mt-8',
+	h3: 'mt-6'
 }
 
 export const CopiableHeading = ({
@@ -23,7 +30,11 @@ export const CopiableHeading = ({
 	const { copied, handleCopy } = useClipboard()
 
 	return (
-		<Component id={id} className="group relative" {...props}>
+		<Component
+			id={id}
+			className={cn('group relative', margins[Component], props.className)}
+			{...props}
+		>
 			{children}
 			<Button
 				size="sm"

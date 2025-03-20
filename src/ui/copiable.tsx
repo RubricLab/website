@@ -22,10 +22,10 @@ export const Copiable = ({
 		<Button
 			onClick={() => handleCopy(content)}
 			variant={variant}
-			className={cn(className, 'flex items-start gap-2')}
+			className={cn(className, 'relative')}
 		>
 			{children}
-			{copied ? <Checkmark className="size-4" /> : null}
+			{copied ? <Checkmark className="-top-0 -right-5 absolute size-4" /> : null}
 		</Button>
 	)
 }

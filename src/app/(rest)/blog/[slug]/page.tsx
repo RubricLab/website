@@ -26,19 +26,19 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
 						className="object-cover object-middle"
 					/>
 				</div>
-				<div className="flex w-full justify-between text-sm">
+				<div className="flex w-full justify-between text-secondary text-sm">
 					<div className="flex gap-2">
 						<p className="font-mono">{metadata.category}</p>
-						<p className="opacity-50">{formatDate(metadata.date)}</p>
+						<p>{formatDate(metadata.date)}</p>
 					</div>
 					<div className="flex gap-2">
-						<p className="opacity-50">By {metadata.author}</p>
+						<p>By {metadata.author}</p>
 						<Copiable variant="link" content={`${env.VERCEL_URL}/blog/${metadata.slug}`}>
 							Copy link
 						</Copiable>
 					</div>
 				</div>
-				<h1 className="mb-16">{metadata.title}</h1>
+				<h1>{metadata.title}</h1>
 				<article className="mx-auto max-w-2xl space-y-6">
 					<Post />
 				</article>

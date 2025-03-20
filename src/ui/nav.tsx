@@ -1,7 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
+import { useShortcut } from '~/lib/hooks/use-shortcut'
 import { cn } from '~/lib/utils/cn'
 
 const links = [
@@ -11,6 +12,12 @@ const links = [
 
 export function Nav() {
 	const pathname = usePathname()
+	const router = useRouter()
+
+	useShortcut('h', () => router.push('/'))
+	useShortcut('b', () => router.push('/blog'))
+	useShortcut('c', () => router.push('/contact'))
+	useShortcut('p', () => router.push('/privacy'))
 
 	return (
 		<nav className="fixed top-0 left-0 z-10 flex w-full items-center justify-between p-6 sm:px-8">

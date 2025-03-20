@@ -9,7 +9,7 @@ export const Footer = ({ className }: { className?: string }) => {
 		<footer className={cn('flex w-full justify-center px-6', className)}>
 			<div className="flex h-full w-full max-w-5xl flex-col items-center justify-center">
 				<Wordmark className="-mb-0.5 h-auto w-full" />
-				<div className="grid w-full divide-y divide-subtle border border-subtle bg-negative sm:grid-cols-9 sm:divide-x">
+				<div className="grid w-full divide-y divide-subtle border border-subtle bg-negative sm:grid-cols-9 sm:divide-x sm:divide-y-0">
 					<div className="flex flex-col gap-2 p-6 sm:col-span-3">
 						<p className="font-semibold">Location</p>
 						<Copiable
@@ -42,7 +42,7 @@ export const Footer = ({ className }: { className?: string }) => {
 				<div className="flex w-full border-subtle border-x p-6 font-lighter font-mono text-secondary text-sm uppercase">
 					<a href="/privacy">Privacy & terms</a>
 					<div className="grow" />
-					<p>© Rubric Labs™ {new Date().getFullYear()}</p>
+					<p>© Rubric Labs™ 2049</p>
 				</div>
 			</div>
 		</footer>
