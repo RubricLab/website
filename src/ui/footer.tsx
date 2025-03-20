@@ -1,8 +1,5 @@
 import { cn } from '~/lib/utils/cn'
-import { GithubIcon } from './logos/github'
-import { LinkedinIcon } from './logos/linkedin'
 import { Wordmark } from './logos/wordmark'
-import { XIcon } from './logos/x'
 import { NewsletterForm } from './newsletter-form'
 
 export const Footer = ({ className }: { className?: string }) => {
@@ -21,15 +18,15 @@ export const Footer = ({ className }: { className?: string }) => {
 					</div>
 					<div className="col-span-2 flex flex-col gap-2 p-6 pt-10">
 						<p className="font-semibold">Follow us</p>
-						<div className="flex gap-2 text-secondary">
-							<a className="hover:text-primary" href="https://x.com/rubriclabs">
-								<XIcon className="h-4 w-4" />
-							</a>
+						<div className="flex flex-col text-secondary">
 							<a className="hover:text-primary" href="https://github.com/rubriclabs">
-								<GithubIcon className="h-4 w-4" />
+								GitHub
+							</a>
+							<a className="hover:text-primary" href="https://x.com/rubriclabs">
+								X
 							</a>
 							<a className="hover:text-primary" href="https://www.linkedin.com/company/rubriclabs">
-								<LinkedinIcon className="h-4 w-4" />
+								LinkedIn
 							</a>
 						</div>
 					</div>
