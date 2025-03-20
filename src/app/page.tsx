@@ -1,11 +1,11 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { cn } from '~/lib/utils/cn'
 import { getPostMetadata } from '~/lib/utils/posts'
 import { Button } from '~/ui/button'
 import { Footer } from '~/ui/footer'
 import { Cal } from '~/ui/logos/cal'
 import { DRisk } from '~/ui/logos/drisk'
+import { Graphite } from '~/ui/logos/graphite'
 import { Gumloop } from '~/ui/logos/gumloop'
 import { Maige } from '~/ui/logos/maige'
 import { Rubric } from '~/ui/logos/rubric'
@@ -28,32 +28,39 @@ const projects = [
 		description:
 			'A UI system built to scale to infinite AI workflows. How we worked with Gumloop to capture the imagination of a new class of builder.',
 		image: '/images/warm.jpeg',
-		link: '/gumloop',
+		link: 'https://gumloop.com',
 		Icon: ({ className }) => <Gumloop className={className} />
+	},
+	{
+		name: 'Graphite',
+		link: 'https://year-in-code.com',
+		Icon: ({ className }) => <Graphite className={className} />,
+		image: '/images/cool.jpeg',
+		description: 'AI-generated personalized video at scale.'
 	},
 	{
 		name: 'dRisk',
 		description:
 			'A platform processing millions of pages of financial reports 24/7. How we optimized LLM use for scale.',
-		image: '/images/cool.jpeg',
-		link: '/drisk',
+		image: '/images/warm.jpeg',
+		link: 'https://d-risk.ai',
 		Icon: ({ className }) => <DRisk className={className} />
+	},
+	{
+		name: 'Cal.ai v0',
+		description:
+			'A system to manage your calendar with words. How one of the first agentic products to market started.',
+		image: '/images/cool.jpeg',
+		link: 'https://cal.com/blog/don-t-forget-about-cal-ai-your-24-7-scheduling-assistant',
+		Icon: ({ className }) => <Cal className={className} />
 	},
 	{
 		name: 'Maige',
 		description:
 			'A profitable AI codebase copilot. Why we open-sourced a product that benefits from each new generation of LLMs.',
 		image: '/images/warm.jpeg',
-		link: '/maige',
-		Icon: ({ className }) => <Maige className={cn(className, '!w-10')} />
-	},
-	{
-		name: 'Cal.ai',
-		description:
-			'A system to manage your calendar with words. How one of the first agentic products to market started.',
-		image: '/images/warm.jpeg',
-		link: '/cal',
-		Icon: ({ className }) => <Cal className={className} />
+		link: 'https://maige.app',
+		Icon: ({ className }) => <Maige className={className} />
 	}
 ] satisfies Project[]
 
@@ -87,13 +94,15 @@ export default async function Page() {
 						<div className="relative h-full max-h-[560px] w-full overflow-hidden">
 							<Image fill className="object-cover" src={project.image} alt="Rubric Labs" />
 							<div className="absolute top-0 left-0 h-full w-full backdrop-grayscale transition-all duration-300 hover:opacity-0" />
-							<project.Icon className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 w-32" />
+							<project.Icon className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 h-10" />
 						</div>
 						<div className="flex justify-between gap-8">
 							<h2>{project.name}</h2>
 							<div className="flex w-1/2 flex-col gap-4">
 								<p>{project.description}</p>
-								<Button>View project</Button>
+								<Link href={project.link}>
+									<Button>View project</Button>
+								</Link>
 							</div>
 						</div>
 					</div>
@@ -106,13 +115,15 @@ export default async function Page() {
 						<div className="absolute top-0 left-0 h-full w-full backdrop-grayscale transition-all duration-300 hover:opacity-0" />
 						{projects
 							.at(-1)
-							?.Icon({ className: '-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 w-32' })}
+							?.Icon({ className: '-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 h-12' })}
 					</div>
 					<div className="flex justify-between gap-8">
 						<h2>{projects.at(-1)?.name}</h2>
 						<div className="flex w-1/2 flex-col gap-4">
 							<p>{projects.at(-1)?.description}</p>
-							<Button>View project</Button>
+							<Link href={projects.at(-1)?.link || '/404'}>
+								<Button>View project</Button>
+							</Link>
 						</div>
 					</div>
 				</div>

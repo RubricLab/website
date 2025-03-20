@@ -25,12 +25,6 @@ const works = [
 		category: 'Internal'
 	},
 	{
-		name: 'Graphite',
-		description: 'AI-generated personalized video at scale',
-		date: '2023',
-		category: 'Client'
-	},
-	{
 		name: 'Trigger.dev',
 		description: 'Generate changelogs from git commits',
 		date: '2024',
@@ -39,12 +33,6 @@ const works = [
 	{
 		name: 'Dashboard',
 		description: 'All your personal apps, intelligent',
-		date: '2024',
-		category: 'Internal'
-	},
-	{
-		name: 'Maige',
-		description: 'AI-powered codebase assistant',
 		date: '2024',
 		category: 'Internal'
 	},
@@ -58,12 +46,6 @@ const works = [
 		name: 'Rainmaker',
 		description: 'Landing page',
 		date: '2024',
-		category: 'Client'
-	},
-	{
-		name: 'Year in Code',
-		description: 'AI-native experience',
-		date: '2023',
 		category: 'Client'
 	},
 	{

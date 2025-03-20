@@ -1,5 +1,3 @@
-import React from 'react'
-
 export const Gumloop = ({ className }: { className?: string }) => {
 	return (
 		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 135" className={className} fill="none">

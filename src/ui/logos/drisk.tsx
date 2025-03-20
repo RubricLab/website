@@ -1,14 +1,6 @@
-import React from 'react'
-import { cn } from '~/lib/utils/cn'
-
 export const DRisk = ({ className }: { className?: string }) => {
 	return (
-		<svg
-			xmlns="http://www.w3.org/2000/svg"
-			fill="none"
-			className={cn(className, 'h-8 text-primary sm:block')}
-			viewBox="0 0 121 32"
-		>
+		<svg xmlns="http://www.w3.org/2000/svg" fill="none" className={className} viewBox="0 2 121 28">
 			<title>dRisk logo</title>
 			<path
 				fill="currentColor"
