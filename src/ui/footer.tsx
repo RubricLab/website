@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { NewsletterForm } from '~/app/(rest)/newsletter/newsletter-form'
 import { ADDRESS } from '~/lib/constants'
 import { cn } from '~/lib/utils/cn'
@@ -23,15 +24,9 @@ export const Footer = ({ className }: { className?: string }) => {
 					<div className="flex flex-col gap-2 p-6 sm:col-span-2">
 						<p className="font-semibold">Follow us</p>
 						<div className="flex flex-col text-secondary">
-							<a className="hover:text-primary" href="https://github.com/rubriclabs">
-								GitHub
-							</a>
-							<a className="hover:text-primary" href="https://x.com/rubriclabs">
-								X
-							</a>
-							<a className="hover:text-primary" href="https://www.linkedin.com/company/rubriclabs">
-								LinkedIn
-							</a>
+							<Link href="https://github.com/rubriclabs">GitHub</Link>
+							<Link href="https://x.com/rubriclabs">X</Link>
+							<Link href="https://www.linkedin.com/company/rubriclabs">LinkedIn</Link>
 						</div>
 					</div>
 					<div className="flex flex-col justify-between gap-2 p-6 sm:col-span-4">
@@ -39,9 +34,18 @@ export const Footer = ({ className }: { className?: string }) => {
 						<NewsletterForm />
 					</div>
 				</div>
-				<div className="flex w-full border-subtle border-x p-6 font-lighter font-mono text-secondary text-sm uppercase">
-					<a href="/privacy">Privacy & terms</a>
-					<div className="grow" />
+				<div className="grid w-full border-subtle border-x border-b bg-negative sm:grid-cols-9 sm:divide-x">
+					<div className="col-span-3 flex flex-col gap-2 p-6">
+						<p className="font-semibold">Resources</p>
+						<div className="flex flex-col text-secondary">
+							<Link href="/newsletter">Newsletter</Link>
+							<Link href="/blog">Blog</Link>
+							<Link href="/contact">Contact</Link>
+						</div>
+					</div>
+				</div>
+				<div className="flex w-full justify-between border-subtle border-x border-b p-6 font-lighter font-mono text-secondary text-sm uppercase">
+					<Link href="/privacy">Privacy & terms</Link>
 					<p>© Rubric Labs™ 2049</p>
 				</div>
 			</div>

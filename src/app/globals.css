@@ -41,7 +41,7 @@
 	}
 
 	a {
-		@apply focus:outline-none;
+		@apply focus:outline-none text-secondary hover:text-primary transition-colors;
 	}
 
 	input,
