@@ -88,7 +88,7 @@ const works = [
 
 export const WorkTable = () => {
 	return (
-		<table className="w-full divide-y divide-subtle">
+		<table className="w-full divide-y divide-subtle text-secondary">
 			<thead className="font-semibold">
 				<tr>
 					<th className="py-3 text-left">Name</th>

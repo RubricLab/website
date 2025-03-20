@@ -99,7 +99,7 @@ export default async function Page() {
 					</div>
 				</Section>
 			))}
-			<Section>
+			<div className="flex min-h-screen w-screen shrink-0 flex-col items-center p-24">
 				<div className="flex h-full w-full shrink-0 flex-col justify-center space-y-8">
 					<div className="relative h-full max-h-[560px] w-full overflow-hidden">
 						<Image fill className="object-cover" src={'/images/cool.jpeg'} alt="Rubric Labs" />
@@ -116,13 +116,13 @@ export default async function Page() {
 						</div>
 					</div>
 				</div>
-				<div className="flex min-h-screen w-screen flex-col items-center justify-center gap-8 py-20">
+				<div className="flex h-fit min-h-screen w-screen shrink-0 flex-col items-center justify-center gap-8 py-20">
 					<div className="w-full max-w-5xl space-y-8">
 						<h2>Work</h2>
 						<WorkTable />
 					</div>
 				</div>
-				<div className="flex min-h-screen w-screen flex-col items-center justify-center gap-8 py-20">
+				<div className="flex min-h-screen w-screen shrink-0 flex-col items-center justify-center gap-8 py-20">
 					<Testimonials />
 				</div>
 				<div className="flex min-h-screen w-screen flex-col items-center justify-center gap-8 py-20">
@@ -139,7 +139,7 @@ export default async function Page() {
 					</div>
 				</div>
 				<Footer />
-			</Section>
+			</div>
 		</HorizontalScroll>
 	)
 }
