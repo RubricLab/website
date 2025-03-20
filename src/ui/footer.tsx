@@ -41,6 +41,7 @@ export const Footer = ({ className }: { className?: string }) => {
 							<Link href="/newsletter">Newsletter</Link>
 							<Link href="/blog">Blog</Link>
 							<Link href="/contact">Contact</Link>
+							<Link href="https://brand.rubriclabs.com">Brand</Link>
 						</div>
 					</div>
 				</div>
