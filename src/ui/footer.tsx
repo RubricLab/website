@@ -47,7 +47,9 @@ export const Footer = ({ className }: { className?: string }) => {
 				</div>
 				<div className="flex w-full justify-between border-subtle border-x border-b p-6 font-lighter font-mono text-secondary text-sm uppercase">
 					<Link href="/privacy">Privacy & terms</Link>
-					<p>© Rubric Labs™ 2049</p>
+					<Copiable variant="link" content="https://rubriclabs.com" className="uppercase">
+						© Rubric Labs™ 2049
+					</Copiable>
 				</div>
 			</div>
 		</footer>
