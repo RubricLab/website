@@ -5,6 +5,15 @@ type KeyCombo = string | string[]
 const shortcuts = new Map<string, Set<(e: KeyboardEvent) => void>>()
 
 function handleKeydown(event: KeyboardEvent) {
+	// Ignore shortcuts when focused on input elements
+	if (
+		event.target instanceof HTMLElement &&
+		(['input', 'textarea'].includes(event.target.tagName.toLowerCase()) ||
+			event.target.isContentEditable)
+	) {
+		return
+	}
+
 	const key = event.key.toLowerCase()
 	const meta = event.metaKey
 	const shift = event.shiftKey
