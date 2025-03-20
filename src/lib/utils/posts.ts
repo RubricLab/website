@@ -21,7 +21,7 @@ export async function getPostSlugs(): Promise<string[]> {
 export async function getPostMetadata(): Promise<Post[]> {
 	const slugs = await getPostSlugs()
 
-	const posts = await Promise.all(
+	const metadata = await Promise.all(
 		slugs.map(async slug => {
 			const { metadata } = await import(`~/lib/posts/${slug}.mdx`)
 			return {
@@ -30,6 +30,8 @@ export async function getPostMetadata(): Promise<Post[]> {
 			} as Post
 		})
 	)
+
+	const posts = metadata.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 
 	return posts
 }

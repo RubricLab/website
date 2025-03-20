@@ -130,7 +130,7 @@ export default async function Page() {
 						<h2>Latest blog posts</h2>
 						<div className="grid grid-cols-8 gap-16">
 							{posts.slice(0, 2).map(post => (
-								<Card imgSrc={post.bannerImageUrl} key={post.slug} post={post} />
+								<Card imgSrc={post.bannerImageUrl} imgAlt={post.title} key={post.slug} post={post} />
 							))}
 						</div>
 						<Link href="/blog">

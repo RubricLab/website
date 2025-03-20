@@ -1,0 +1,53 @@
+export const metadata = {
+    title: "Launch: Create Rubric App",
+    date: "2023-11-01",
+    author: "Ted Spare",
+    bannerImageUrl: "/images/monolith.png",
+    category: "AI",
+    description: "Create Rubric App is an open-source, full-stack AI agent template in the spirit of Create React App. Learn how it works and how to remix it for your own purposes."
+}
+
+`> npx create-rubric-app`
+
+We recently [wrote about](https://blog.langchain.dev/how-to-design-an-agent-for-production/) designing AI agents for production. Many developers shared the feedback that it's still not clear how to actually serve the thing to users. We wanted to bring that power to all.
+
+Today, we're excited to introduce create-rubric-app: the fastest way to bootstrap a full-stack AI project.
+
+Building on the legacy of create-react-app and create-next-app, this is our opinionated meta-meta-framework for building AI apps ready for users. We'll be adding templates for a ton of common use cases, but our first one is focused on AI agents.
+
+## Why agents?
+
+Agents are a powerful new tool that unlock a whole suite of applications, like variable-depth scraping, multi-step planning, and self-healing code. However, there is a lack of guidance on how to implement them in a deployable way.
+
+Our agent is built with LangChain and OpenAI Functions. As an example, we've built a smart to-do list. The agent has access to four tools:
+
+- `listTasks`
+- `createTask`
+- `updateTask`
+- `deleteTask`
+
+From these tools, it can manipulate the to-do list flexibly from natural language.
+
+To try it out, visit the app in the browser and try asking the Agent to "remind me to buy bread" then "mark the bread task as complete". It should explain what it's doing as it completes these tasks. To debug, watch the logs in your terminal.
+
+## How does it work?
+
+The tools above are each described by a [Zod schema](https://zod.dev/?id=objects). The app passes the descriptions of each tool to GPT via OpenAI's API. The LLM will then decide which tool to "call", and with which inputs. By using OpenAI's [Function Calling](https://platform.openai.com/docs/guides/gpt/function-calling), the LLM is well-suited to outputting structured data (a common limitation of LLMs).
+
+LangChain will then parse the output and call the actual functions, passing the output back to the LLM to inform the next step.
+
+You now understand how AI agents work and you're ready to build one for your own use case. Doing so is as simple as swapping the agent's toolkit with your functions, API endpoints, a [search engine](https://js.langchain.com/docs/api/tools/classes/SerpAPI), a [memory store](https://js.langchain.com/docs/modules/memory/how_to/vectorstore_retriever_memory), or even a Discord connection (allowing agent ↔ human communication).
+
+As long as your tools return text explaining their result, the agent will do its best to work with them.
+
+## Quickstart
+
+To use create-rubric-app, simply run `npx create-rubric-app@latest`. This will guide you through some steps to bootstrap a Next.js project and generate an OpenAI key.
+
+To run the app, simply run `bun dev` or `npm run dev`.
+
+To deploy your app and make the agent accessible to users, two options are [Vercel](https://vercel.com/solutions/nextjs) and [Railway](https://railway.app/template/HRZqTF).
+
+This project is [open-source](https://github.com/RubricLab/create-rubric-app)! We welcome suggestions and contributions.
+
+Most of all, we look forward to seeing what you build with this.

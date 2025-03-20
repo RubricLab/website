@@ -14,6 +14,7 @@ export default async function Page() {
 				{posts.map((post, index) => (
 					<Card
 						imgSrc={post.bannerImageUrl}
+						imgAlt={post.title}
 						key={post.slug}
 						post={post}
 						className={index % 2 === 1 ? 'translate-y-16' : ''}
