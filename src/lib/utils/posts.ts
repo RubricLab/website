@@ -35,3 +35,14 @@ export async function getPostMetadata(): Promise<Post[]> {
 
 	return posts
 }
+
+export async function getPost(
+	slug: string
+): Promise<{ Post: React.ComponentType; metadata: Post }> {
+	const { default: Post, metadata } = await import(`~/lib/posts/${slug}.mdx`)
+
+	return {
+		Post,
+		metadata
+	}
+}

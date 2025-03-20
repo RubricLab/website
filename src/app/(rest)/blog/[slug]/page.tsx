@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { env } from '~/lib/env'
 import { formatDate } from '~/lib/utils/date'
-import { getPostSlugs } from '~/lib/utils/posts'
+import { getPost, getPostSlugs } from '~/lib/utils/posts'
 import { Copiable } from '~/ui/copiable'
 
 export async function generateStaticParams() {
@@ -11,7 +11,7 @@ export async function generateStaticParams() {
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
 	const { slug } = await params
-	const { default: Post, metadata } = await import(`~/lib/posts/${slug}.mdx`)
+	const { Post, metadata } = await getPost(slug)
 
 	if (!Post || !metadata) return <div>Post not found</div>
 
@@ -39,7 +39,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
 					</div>
 				</div>
 				<h1>{metadata.title}</h1>
-				<article className="mx-auto max-w-2xl space-y-6">
+				<article className="mx-auto max-w-2xl">
 					<Post />
 				</article>
 			</div>

@@ -53,6 +53,10 @@
 		@apply min-h-20;
 	}
 
+	article {
+		@apply space-y-6;
+	}
+
 	article a {
 		@apply underline underline-offset-4 decoration-dashed hover:decoration-solid;
 	}

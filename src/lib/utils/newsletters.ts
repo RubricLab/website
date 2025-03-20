@@ -1,11 +1,12 @@
 import fs from 'node:fs'
 
 export type Newsletter = {
+	title: string
 	description: string
 	publishedAt: string
 	slug: string
 	subscriberCount: number
-	title: string
+	body: string
 }
 
 const FILEPATH = 'src/lib/newsletters/index.jsonl'
