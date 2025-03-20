@@ -66,6 +66,10 @@
 	ol {
 		@apply list-decimal list-inside;
 	}
+
+	section {
+		@apply space-y-4;
+	}
 }
 
 @layer components {
@@ -74,7 +78,7 @@
 	}
 
 	.wordmark > #cover path {
-		@apply dark:fill-black fill-white hover:opacity-0 dark:stroke-white stroke-black;
+		@apply dark:fill-black fill-white hover:opacity-0 stroke-secondary;
 	}
 
 	.wordmark > defs > mask#mask > g > path {

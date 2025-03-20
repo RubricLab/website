@@ -1,22 +1,26 @@
+import { ADDRESS } from '~/lib/constants'
 import { cn } from '~/lib/utils/cn'
+import { Copiable } from './copiable'
 import { Wordmark } from './logos/wordmark'
 import { NewsletterForm } from './newsletter-form'
 
 export const Footer = ({ className }: { className?: string }) => {
 	return (
-		<footer className={cn('flex w-full justify-center', className)}>
+		<footer className={cn('flex w-full justify-center px-6', className)}>
 			<div className="flex h-full w-full max-w-5xl flex-col items-center justify-center">
-				<Wordmark className="mb-20 h-auto w-full opacity-60" />
-				<div className="grid w-full grid-cols-9 divide-x divide-black/10 border border-black/10 dark:divide-white/10 dark:border-white/10">
-					<div className="col-span-3 flex flex-col gap-2 p-6 pt-10">
+				<Wordmark className="mb-20 h-auto w-full" />
+				<div className="grid w-full divide-y divide-black/10 border border-black/10 sm:grid-cols-9 sm:divide-x dark:divide-white/10 dark:border-white/10">
+					<div className="flex flex-col gap-2 p-6 sm:col-span-3">
 						<p className="font-semibold">Location</p>
-						<p className="text-secondary">
-							2967 Dundas St. W. #1670
-							<br />
-							Toronto ON, M6P 1Z2
-						</p>
+						<Copiable
+							className="whitespace-pre text-left text-secondary"
+							variant="link"
+							content={ADDRESS}
+						>
+							<p className="font-mono">{ADDRESS}</p>
+						</Copiable>
 					</div>
-					<div className="col-span-2 flex flex-col gap-2 p-6 pt-10">
+					<div className="flex flex-col gap-2 p-6 sm:col-span-2">
 						<p className="font-semibold">Follow us</p>
 						<div className="flex flex-col text-secondary">
 							<a className="hover:text-primary" href="https://github.com/rubriclabs">
@@ -30,7 +34,7 @@ export const Footer = ({ className }: { className?: string }) => {
 							</a>
 						</div>
 					</div>
-					<div className="col-span-4 flex flex-col justify-between gap-2 p-6 pt-10">
+					<div className="flex flex-col justify-between gap-2 p-6 sm:col-span-4">
 						<p className="font-semibold">Newsletter</p>
 						<NewsletterForm />
 					</div>

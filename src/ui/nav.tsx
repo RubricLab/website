@@ -13,7 +13,7 @@ export function Nav() {
 	const pathname = usePathname()
 
 	return (
-		<nav className="fixed top-0 left-0 z-10 flex w-full items-center justify-between px-8 py-6">
+		<nav className="fixed top-0 left-0 z-10 flex w-full items-center justify-between p-6 sm:px-8">
 			<Link href="/">Rubric Labs™</Link>
 			<div className="flex items-center gap-4 text-sm">
 				{links.map(link => (
