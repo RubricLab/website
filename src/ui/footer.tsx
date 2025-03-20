@@ -1,8 +1,8 @@
+import { NewsletterForm } from '~/app/(rest)/newsletter/newsletter-form'
 import { ADDRESS } from '~/lib/constants'
 import { cn } from '~/lib/utils/cn'
 import { Copiable } from './copiable'
 import { Wordmark } from './logos/wordmark'
-import { NewsletterForm } from './newsletter-form'
 
 export const Footer = ({ className }: { className?: string }) => {
 	return (

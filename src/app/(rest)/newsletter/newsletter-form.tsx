@@ -1,14 +1,15 @@
 'use client'
 
 import { joinNewsletter } from '~/app/actions/join-newsletter'
-import { Button } from './button'
-import { Form } from './form'
-import { Arrow } from './icons/arrow'
-import { Checkmark } from './icons/checkmark'
+import { cn } from '~/lib/utils/cn'
+import { Button } from '~/ui/button'
+import { Form } from '~/ui/form'
+import { Arrow } from '~/ui/icons/arrow'
+import { Checkmark } from '~/ui/icons/checkmark'
 
-export const NewsletterForm = () => {
+export const NewsletterForm = ({ className }: { className?: string }) => {
 	return (
-		<Form action={joinNewsletter}>
+		<Form action={joinNewsletter} className={cn(className)}>
 			{({ pending, state }) => (
 				<div className="relative flex w-full items-center">
 					<input placeholder="Email" className="w-full" name="email" type="email" required />
