@@ -1,4 +1,4 @@
-import { ContactForm } from '~/ui/contact-form'
+import { ContactForm } from './contact-form'
 
 export default function Page() {
 	return (

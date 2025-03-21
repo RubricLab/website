@@ -6,8 +6,8 @@ import { env } from '~/lib/env'
 const schema = z.object({
 	name: z.string().min(1),
 	email: z.string().email(),
-	message: z.string().min(1).max(1000),
-	company: z.string().optional()
+	company: z.string().optional(),
+	message: z.string().min(1).max(1000)
 })
 
 export async function submitContact(_: unknown, formData: FormData) {
@@ -19,10 +19,13 @@ export async function submitContact(_: unknown, formData: FormData) {
 	})
 
 	if (!success) {
-		const errorMessage = error.issues.map(issue => issue.message).join(', ')
+		const errorMessage = error.issues
+			.map(issue => `${issue.message}: ${issue.path.join('.')}`)
+			.join(', ')
 		return { error: errorMessage }
 	}
 
+	return { success: true }
 	try {
 		const response = await fetch(`${env.ROS_API_URL}/lead`, {
 			method: 'POST',

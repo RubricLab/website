@@ -2,18 +2,17 @@ import { useEffect } from 'react'
 
 type KeyCombo = string | string[]
 
-const shortcuts = new Map<string, Set<(e: KeyboardEvent) => void>>()
+const shortcuts = new Map<
+	string,
+	{
+		handlers: Set<(e: KeyboardEvent) => void>
+		options: {
+			fireInForm?: boolean
+		}
+	}
+>()
 
 function handleKeydown(event: KeyboardEvent) {
-	// Ignore shortcuts when focused on input elements
-	if (
-		event.target instanceof HTMLElement &&
-		(['input', 'textarea'].includes(event.target.tagName.toLowerCase()) ||
-			event.target.isContentEditable)
-	) {
-		return
-	}
-
 	const key = event.key.toLowerCase()
 	const meta = event.metaKey
 	const shift = event.shiftKey
@@ -30,8 +29,16 @@ function handleKeydown(event: KeyboardEvent) {
 		const mainKey = parts.filter(k => !['cmd', 'meta', 'shift'].includes(k))[0]
 
 		if (hasMeta === meta && hasShift === shift && key === mainKey) {
+			// Ignore shortcuts when focused on input elements
+			if (
+				!callbacks.options?.fireInForm &&
+				event.target instanceof HTMLElement &&
+				(['input', 'textarea'].includes(event.target.tagName.toLowerCase()) ||
+					event.target.isContentEditable)
+			)
+				return
 			event.preventDefault()
-			for (const callback of Array.from(callbacks)) {
+			for (const callback of Array.from(callbacks.handlers)) {
 				callback(event)
 			}
 		}
@@ -43,15 +50,25 @@ if (typeof document !== 'undefined') {
 	document.addEventListener('keydown', handleKeydown)
 }
 
-export function useShortcut(keys: KeyCombo, callback: (e: KeyboardEvent) => void) {
+export function useShortcut(
+	keys: KeyCombo,
+	callback: (e: KeyboardEvent) => void,
+	options: { fireInForm?: boolean } = { fireInForm: false }
+) {
 	// Normalize keys to array format
 	const keyArray = [keys].flat()
 
 	useEffect(() => {
 		for (const combo of keyArray) {
-			if (!shortcuts.has(combo)) shortcuts.set(combo, new Set())
+			if (!shortcuts.has(combo))
+				shortcuts.set(combo, {
+					handlers: new Set(),
+					options: {
+						...options
+					}
+				})
 
-			shortcuts.get(combo)?.add(callback)
+			shortcuts.get(combo)?.handlers.add(callback)
 		}
 
 		// Cleanup function to remove callbacks
@@ -59,10 +76,10 @@ export function useShortcut(keys: KeyCombo, callback: (e: KeyboardEvent) => void
 			for (const combo of keyArray) {
 				const callbacks = shortcuts.get(combo)
 				if (callbacks) {
-					callbacks.delete(callback)
-					if (callbacks.size === 0) shortcuts.delete(combo)
+					callbacks.handlers.delete(callback)
+					if (callbacks.handlers.size === 0) shortcuts.delete(combo)
 				}
 			}
 		}
-	}, [keyArray, callback])
+	}, [keyArray, callback, options])
 }

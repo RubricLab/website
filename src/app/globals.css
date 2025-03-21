@@ -5,6 +5,7 @@
 	--negative: white;
 	--subtle: #e5e5e5;
 	--secondary: #808080;
+	--danger: red;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -13,6 +14,7 @@
 		--negative: black;
 		--subtle: #222;
 		--secondary: #808080;
+		--danger: red;
 	}
 }
 
@@ -21,6 +23,7 @@
 	--color-negative: var(--negative);
 	--color-subtle: var(--subtle);
 	--color-secondary: var(--secondary);
+	--color-danger: var(--danger);
 }
 
 @layer base {
@@ -74,6 +77,10 @@
 		@apply list-decimal list-inside;
 	}
 
+	kbd {
+		@apply bg-negative text-secondary leading-4 rounded px-1.5 pt-0.5 text-sm;
+	}
+
 	section {
 		@apply space-y-4;
 	}
@@ -81,7 +88,7 @@
 
 @layer components {
 	.dev {
-		@apply border border-red-500 bg-red-500/10;
+		@apply border border-danger bg-danger/10;
 	}
 
 	.wordmark > #cover path {

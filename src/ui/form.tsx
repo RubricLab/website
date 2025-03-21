@@ -18,6 +18,7 @@ type Action = (state: ActionResult | null, payload: FormData) => Promise<ActionR
 export const Form = ({
 	action,
 	children,
+	ref,
 	className
 }: {
 	action: Action
@@ -25,11 +26,12 @@ export const Form = ({
 		| React.ReactNode
 		| ((props: { pending: boolean; state: ActionResult | null }) => React.ReactNode)
 	className?: string
+	ref?: React.RefObject<HTMLFormElement | null>
 }) => {
 	const [state, formAction, pending] = useActionState(action, null)
 
 	return (
-		<form action={formAction} className={cn('flex items-center gap-1', className)}>
+		<form action={formAction} className={cn('flex items-center gap-1', className)} ref={ref}>
 			{typeof children === 'function' ? children({ pending, state }) : children}
 		</form>
 	)

@@ -1,10 +1,11 @@
 import { cn } from '~/lib/utils/cn'
 
 const variants = {
-	default: 'bg-subtle dark:hover:bg-white/20 hover:bg-black/20 rounded-full',
-	outline: 'border-subtle dark:hover:border-white/40 hover:border-black/40 rounded-full',
-	link: 'hover:opacity-80 focus:ring-0 !p-0',
-	icon: 'focus:ring-0 !p-1 rounded dark:hover:bg-white/20 hover:bg-black/20'
+	default: 'bg-subtle dark:enabled:hover:bg-white/20 enabled:hover:bg-black/20 rounded-full',
+	outline:
+		'border-subtle dark:enabled:hover:border-white/40 enabled:hover:border-black/40 rounded-full',
+	link: 'enabled:hover:opacity-80 focus:ring-0 !p-0',
+	icon: 'focus:ring-0 !p-1 rounded dark:enabled:hover:bg-white/20 enabled:hover:bg-black/20'
 } as const
 
 const sizes = {
@@ -34,7 +35,7 @@ export const Button = ({
 		<button
 			type={type}
 			className={cn(
-				'flex w-fit cursor-pointer items-center justify-center gap-2 font-matter ring-secondary transition-all focus:outline-none focus:ring',
+				'flex w-fit cursor-pointer items-center justify-center gap-2 font-matter ring-secondary transition-all focus:outline-none focus:ring disabled:cursor-default',
 				variants[variant],
 				sizes[size],
 				className
