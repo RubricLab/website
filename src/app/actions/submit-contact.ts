@@ -25,7 +25,6 @@ export async function submitContact(_: unknown, formData: FormData) {
 		return { error: errorMessage }
 	}
 
-	return { success: true }
 	try {
 		const response = await fetch(`${env.ROS_API_URL}/lead`, {
 			method: 'POST',
