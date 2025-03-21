@@ -9,7 +9,7 @@ import { Form } from '~/ui/form'
 export const ContactForm = () => {
 	const formRef = useRef<HTMLFormElement>(null)
 
-	useShortcut('cmd+enter', () => formRef.current?.submit(), { fireInForm: true })
+	useShortcut('cmd+enter', () => formRef.current?.requestSubmit(), { fireInForm: true })
 
 	return (
 		<Form action={submitContact} ref={formRef} className="flex w-full flex-col gap-4">

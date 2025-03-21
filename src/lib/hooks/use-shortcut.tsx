@@ -13,7 +13,7 @@ const shortcuts = new Map<
 >()
 
 function handleKeydown(event: KeyboardEvent) {
-	const key = event.key.toLowerCase()
+	const key = event.key?.toLowerCase()
 	const meta = event.metaKey
 	const shift = event.shiftKey
 
