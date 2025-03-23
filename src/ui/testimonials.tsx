@@ -13,18 +13,18 @@ export const Testimonials = () => {
 			</thead>
 			<tbody className="text-secondary">
 				<tr>
-					<td className="space-y-2 border border-subtle p-6 text-lg">
-						<p className="mb-auto h-full">
+					<td className="space-y-2 border border-subtle p-6 align-top text-lg">
+						<p>
 							“Rubric was an absolute pleasure to work with. They were available to meet on short notice
 							and displayed an immense desire to meet our near-impossible deadlines. Their{' '}
 							<span className="text-primary">knowledge of complex AI solutions is impressive</span>. I will
 							definitely be working with the Rubric team again soon.”
 						</p>
-						<p className="mt-auto">
+						<p className="mt-10">
 							Daniel Bevan, <Link href="https://sligo.ai">Sligo</Link>
 						</p>
 					</td>
-					<td className="space-y-2 border border-subtle p-6 text-lg">
+					<td className="space-y-2 border border-subtle p-6 align-top text-lg">
 						<p>
 							“In just a few weeks, Rubric went from initial concepts to delivering an engaging AI video
 							experience that reached thousands of users. They&apos;re{' '}
