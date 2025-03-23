@@ -29,7 +29,10 @@ export const HorizontalScroll = ({ children }: { children: React.ReactNode }) =>
 	}, [])
 
 	return (
-		<div ref={scrollRef} className="flex h-screen w-screen overflow-scroll overscroll-contain">
+		<div
+			ref={scrollRef}
+			className="scrollbar-none flex h-screen w-screen overflow-scroll overscroll-contain"
+		>
 			{children}
 		</div>
 	)
