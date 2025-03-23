@@ -82,7 +82,7 @@ export default async function Page() {
 						<div className="absolute top-0 left-0 h-full w-full backdrop-grayscale transition-all duration-300 hover:opacity-0" />
 						<Rubric className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 h-12 w-12" />
 					</div>
-					<p className="max-w-1/2 text-lg">
+					<p className="max-w-1/2 shrink-0 text-lg sm:h-[108px]">
 						We&apos;re an applied AI Lab helping companies deploy intelligence at scale, building the next
 						generation of personalized software, enabled by AI.
 					</p>
