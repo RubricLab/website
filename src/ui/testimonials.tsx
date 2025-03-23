@@ -27,9 +27,9 @@ export const Testimonials = () => {
 					<td className="space-y-2 border border-subtle p-6 text-lg">
 						<p>
 							“In just a few weeks, Rubric went from initial concepts to delivering an engaging AI video
-							experience that reached thousands of users.{' '}
+							experience that reached thousands of users. They&apos;re{' '}
 							<span className="text-primary">
-								They&apos;re fluent in novel technologies, creative, highly responsive
+								fluent in novel technologies, creative, highly responsive
 							</span>
 							, and went the extra mile to follow through and iterate with us even after initial handoff.”
 						</p>
@@ -43,10 +43,11 @@ export const Testimonials = () => {
 						<p>
 							“Working with Rubric has been like having a CTO in our back pocket. They pair{' '}
 							<span className="text-primary">
-								the best in strategy with a killer product team to consistently deliver on time every time
+								the best in strategy with a killer product team to consistently deliver on time
 							</span>
-							. From our first conversation when they took time to understand our business needs, I knew
-							trusting them with our MVP build and every iteration since was the right choice.”
+							, every time. From our first conversation when they took time to understand our business
+							needs, I knew trusting them with our MVP build and every iteration since was the right
+							choice.”
 						</p>
 						<p>
 							Mitchell White, <Link href="https://www.weavein.co/login">Weave</Link>
