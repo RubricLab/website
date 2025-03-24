@@ -1,8 +1,6 @@
 import Image from 'next/image'
-import { env } from '~/lib/env'
 import { formatDate } from '~/lib/utils/date'
 import { getPost, getPostSlugs } from '~/lib/utils/posts'
-import { Copiable } from '~/ui/copiable'
 
 export const dynamicParams = false
 
@@ -32,9 +30,6 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
 					<p className="font-mono">{metadata.category}</p>
 					<p>by {metadata.author}</p>
 					<p>{formatDate(metadata.date)}</p>
-					<Copiable variant="link" content={`${env.VERCEL_URL}/blog/${metadata.slug}`}>
-						Copy link
-					</Copiable>
 				</div>
 				<article className="mx-auto max-w-full sm:max-w-2xl">
 					<h1 className="py-8">{metadata.title}</h1>
