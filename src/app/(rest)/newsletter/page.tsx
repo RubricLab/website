@@ -6,8 +6,8 @@ export default async function Page() {
 	const newsletters = await getNewsletterMetadata()
 
 	return (
-		<div className="mx-auto grid min-h-screen w-full max-w-5xl gap-8 p-4 py-32 sm:grid-cols-2">
-			<div className="flex flex-col items-center gap-2 sm:items-end">
+		<div className="flex min-h-screen flex-col items-center gap-16 p-4 py-32">
+			<div className="flex flex-col items-center gap-4 text-center">
 				<h1>The Grid</h1>
 				<p className="text-secondary">3 actionable insights. Once a week. Straight to your inbox.</p>
 				<NewsletterForm className="w-full" />
