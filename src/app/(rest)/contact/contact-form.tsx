@@ -23,7 +23,7 @@ export const ContactForm = () => {
 								{/* biome-ignore lint/a11y/noAutofocus: <explanation> */}
 								<input autoFocus placeholder="Name" name="name" required />
 								<input placeholder="Email" name="email" required />
-								<input placeholder="Company" name="company" />
+								<input placeholder="Company" name="company" required />
 								<textarea placeholder="Message" name="message" required className="resize-none" />
 							</div>
 						)}
