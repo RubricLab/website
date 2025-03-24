@@ -65,7 +65,9 @@ const projects = [
 ] satisfies Project[]
 
 const Section = ({ children }: { children: React.ReactNode }) => (
-	<div className="flex w-screen shrink-0 flex-col items-center p-4 sm:p-24">{children}</div>
+	<div className="flex min-h-screen w-screen shrink-0 flex-col items-center p-4 py-12 sm:p-24">
+		{children}
+	</div>
 )
 
 export default async function Page() {
@@ -82,7 +84,7 @@ export default async function Page() {
 						<div className="absolute top-0 left-0 h-full w-full backdrop-grayscale transition-all duration-300 hover:opacity-0" />
 						<Rubric className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 h-12 w-12" />
 					</div>
-					<p className="min-h-48 max-w-1/2 shrink-0 text-lg sm:min-h-28">
+					<p className="h-48 max-w-2/3 shrink-0 text-lg sm:h-28 sm:max-w-1/2">
 						We&apos;re an applied AI Lab helping companies deploy intelligence at scale, building the next
 						generation of personalized software, enabled by AI.
 					</p>
@@ -96,7 +98,7 @@ export default async function Page() {
 							<div className="absolute top-0 left-0 h-full w-full backdrop-grayscale transition-all duration-300 hover:opacity-0" />
 							<project.Icon className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 h-10" />
 						</div>
-						<div className="flex min-h-48 justify-between gap-8 sm:min-h-28">
+						<div className="flex h-48 justify-between gap-8 sm:h-28">
 							<h2>{project.name}</h2>
 							<div className="flex w-1/2 flex-col gap-4">
 								<p>{project.description}</p>
@@ -127,19 +129,19 @@ export default async function Page() {
 						</div>
 					</div>
 				</div>
-				<div className="flex h-fit min-h-screen w-screen shrink-0 flex-col items-center justify-center gap-8 px-4 py-20">
+				<Section>
 					<div className="w-full max-w-5xl space-y-8">
 						<h2>Work</h2>
 						<WorkTable />
 					</div>
-				</div>
-				<div className="flex min-h-screen w-screen shrink-0 flex-col items-center justify-center gap-8 px-4 py-20">
+				</Section>
+				<Section>
 					<Testimonials />
-				</div>
-				<div className="flex min-h-screen w-screen flex-col items-center justify-center gap-8 px-4 py-20">
+				</Section>
+				<Section>
 					<div className="flex w-full max-w-3xl flex-col items-center space-y-16">
 						<h2>Latest blog posts</h2>
-						<div className="grid grid-cols-8 gap-4 sm:gap-16">
+						<div className="grid gap-16 sm:grid-cols-2">
 							{posts.slice(0, 2).map(post => (
 								<Card imgSrc={post.bannerImageUrl} imgAlt={post.title} key={post.slug} post={post} />
 							))}
@@ -148,7 +150,7 @@ export default async function Page() {
 							<Button>See more</Button>
 						</Link>
 					</div>
-				</div>
+				</Section>
 				<Footer />
 			</div>
 		</HorizontalScroll>

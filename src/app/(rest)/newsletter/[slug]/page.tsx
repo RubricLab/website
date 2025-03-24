@@ -16,7 +16,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
 	const { default: MDXContent } = await evaluate(newsletter.body, runtime)
 
 	return (
-		<div className="min-h-screen w-screen px-6 py-32">
+		<div className="min-h-screen w-screen p-4 py-32">
 			<div className="mx-auto flex max-w-lg flex-col items-center gap-8">
 				<h1>{newsletter.title}</h1>
 				<article>

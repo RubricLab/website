@@ -4,6 +4,8 @@ import { formatDate } from '~/lib/utils/date'
 import { getPost, getPostSlugs } from '~/lib/utils/posts'
 import { Copiable } from '~/ui/copiable'
 
+export const dynamicParams = false
+
 export async function generateStaticParams() {
 	const slugs = await getPostSlugs()
 	return slugs.map(slug => ({ slug }))
@@ -16,7 +18,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
 	if (!Post || !metadata) return <div>Post not found</div>
 
 	return (
-		<div className="flex min-h-screen flex-col items-center gap-16 py-32">
+		<div className="flex min-h-screen flex-col items-center gap-16 p-4 py-32">
 			<div className="flex w-full max-w-5xl flex-col items-start space-y-8">
 				<div className="relative h-96 w-full overflow-hidden">
 					<Image
@@ -34,7 +36,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
 						Copy link
 					</Copiable>
 				</div>
-				<article className="mx-auto max-w-2xl">
+				<article className="mx-auto max-w-full sm:max-w-2xl">
 					<h1 className="py-8">{metadata.title}</h1>
 					<Post />
 				</article>
@@ -42,5 +44,3 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
 		</div>
 	)
 }
-
-export const dynamicParams = false
