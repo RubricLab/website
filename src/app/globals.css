@@ -43,7 +43,7 @@
 		@apply text-2xl;
 	}
 
-	a {
+	a:not(:has(button)) {
 		@apply focus:outline-none text-secondary hover:text-primary transition-colors;
 	}
 

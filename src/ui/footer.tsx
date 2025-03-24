@@ -45,10 +45,16 @@ export const Footer = ({ className }: { className?: string }) => {
 						</div>
 					</div>
 				</div>
-				<div className="flex w-full justify-between border-subtle border-x border-b p-6 font-lighter font-mono text-secondary text-sm uppercase">
+				<div className="flex w-full justify-between border-subtle border-x p-6 font-lighter font-mono text-secondary text-sm uppercase">
 					<Link href="/privacy">Privacy & terms</Link>
-					<Copiable variant="link" content="https://rubriclabs.com" className="uppercase">
-						© Rubric Labs™ 2049
+					<Copiable variant="link" content="https://rubriclabs.com" className="group relative uppercase">
+						© Rubric Labs™{' '}
+						<span className="opacity-0 transition-opacity delay-500 duration-1000 group-hover:opacity-100">
+							2049
+						</span>
+						<span className="absolute top-0 right-0 transition-opacity delay-500 duration-1000 group-hover:opacity-0">
+							{new Date().getFullYear()}
+						</span>
 					</Copiable>
 				</div>
 			</div>
