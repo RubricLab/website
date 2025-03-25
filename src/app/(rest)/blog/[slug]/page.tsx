@@ -35,7 +35,10 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
 					<p>{formatDate(metadata.date)}</p>
 				</div>
 				<article className="mx-auto max-w-full sm:max-w-2xl">
-					<h1>{metadata.title}</h1>
+					<div className="flex flex-col gap-2">
+						<h1>{metadata.title}</h1>
+						{metadata.subtitle && <h3 className="opacity-40">{metadata.subtitle}</h3>}
+					</div>
 					<Post />
 					<div className="flex items-center justify-center">
 						<Link
