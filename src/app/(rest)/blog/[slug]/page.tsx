@@ -1,6 +1,9 @@
 import Image from 'next/image'
+import Link from 'next/link'
+import { cn } from '~/lib/utils/cn'
 import { formatDate } from '~/lib/utils/date'
 import { getPost, getPostSlugs } from '~/lib/utils/posts'
+import { buttonVariants } from '~/ui/button'
 
 export const dynamicParams = false
 
@@ -32,8 +35,20 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
 					<p>{formatDate(metadata.date)}</p>
 				</div>
 				<article className="mx-auto max-w-full sm:max-w-2xl">
-					<h1 className="py-8">{metadata.title}</h1>
+					<div className="flex flex-col gap-2">
+						<h1>{metadata.title}</h1>
+						{metadata.subtitle && <h3 className="opacity-40">{metadata.subtitle}</h3>}
+					</div>
+
 					<Post />
+					<div className="flex items-center justify-center">
+						<Link
+							href="/contact"
+							className={cn(buttonVariants({ variant: 'default', size: 'md' }), 'no-underline')}
+						>
+							Get in touch
+						</Link>
+					</div>
 				</article>
 			</div>
 		</div>
