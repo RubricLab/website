@@ -39,6 +39,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
 						<h1>{metadata.title}</h1>
 						{metadata.subtitle && <h3 className="opacity-40">{metadata.subtitle}</h3>}
 					</div>
+
 					<Post />
 					<div className="flex items-center justify-center">
 						<Link
