@@ -34,7 +34,7 @@ const works = [
 	{
 		name: 'Trigger.dev',
 		description: 'Generate changelogs from git commits',
-		date: '2024',
+		date: '2023',
 		category: 'Client',
 		link: 'https://autochangelog.dev'
 	},
@@ -63,6 +63,13 @@ const works = [
 		description: 'AI-native experience',
 		date: '2024',
 		category: 'Client'
+	},
+	{
+		name: 'Cal.com',
+		description: 'Cal.ai v0',
+		date: '2024',
+		category: 'Client',
+		link: 'https://cal.com/blog/don-t-forget-about-cal-ai-your-24-7-scheduling-assistant'
 	},
 	{
 		name: 'Albertsons',

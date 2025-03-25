@@ -47,14 +47,6 @@ const projects = [
 		Icon: ({ className }) => <DRisk className={className} />
 	},
 	{
-		name: 'Cal.ai v0',
-		description:
-			'A system to manage your calendar with words. How one of the first agentic products to market started.',
-		image: '/images/cool.jpeg',
-		link: 'https://cal.com/blog/don-t-forget-about-cal-ai-your-24-7-scheduling-assistant',
-		Icon: ({ className }) => <Cal className={className} />
-	},
-	{
 		name: 'Maige',
 		description:
 			'A profitable AI codebase copilot. Why we open-sourced a product that benefits from each new generation of LLMs.',
