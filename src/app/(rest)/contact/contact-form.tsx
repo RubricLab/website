@@ -31,7 +31,7 @@ export const ContactForm = () => {
 							<kbd>⏎</kbd>
 						</div>
 					</Button>
-					{state?.success ? <p>Thanks. We'll be in touch soon.</p> : null}
+					<p className="h-5 text-sm">{state?.success ? "Thanks. We'll be in touch soon." : ''}</p>
 					<p className="h-5 text-danger text-sm">{state?.error || ''}</p>
 				</>
 			)}
