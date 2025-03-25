@@ -1,0 +1,131 @@
+import { Copiable } from "~/ui/copiable"
+
+export const metadata = {
+  title: "Multi-Staging → Local to Prod in Record Time",
+  date: "2024-02-16",
+  author: "Dexter Storey",
+  bannerImageUrl: "/images/highway.png",
+  category: "DevOps",
+  description: "How to use multi-staging workflows to build and test multiple full-stack changes in parallel."
+}
+
+At **Rubric**, we are constantly pushing full stack features in parallel. We strive to get high quality code to prod as fast as possible with minimal coordination. We developed the multi-staging workflow to address problems with webhooks in staging that created bottlenecks across the CI/CD pipeline.
+
+## TLDR;
+
+Instead of `Development`, `Staging`, `Prod` envs, we propose `Local-[DEVELOPER]`, `Staging-[DEVELOPER]`, and `Prod`.
+
+By setting up unique pipelines for each developer, you can move faster, testing multiple full stack features simultaneously in the cloud.
+
+![Multiple branches of local-staging merging into Prod](/images/multi-staging.webp "Multiple branches of local-staging merging into Prod")
+
+## The Problem
+
+Webhooks require a static URL (breaks Vercel preview branches)
+
+A single staging branch necessitates coordination across teams
+
+Shared databases don't let you push schema changes fast enough (conflicts)
+
+The common practice is to have a `development (local)`, `staging`, and `production` env, with slight modifications to each developer's local env that they handle manually in `.env.local` on their IDE.
+
+This creates conflicts: "Prisma Studio isn't working because you pushed schema"
+
+And headaches: "It works on my machine but times out in serverless (Vercel)"
+
+**_Multi-staging solves these problems by giving every developer their own local and staging env._**
+
+## Tunnelling (Local)
+
+We used [ngrok](https://ngrok.com/) to handle local environments, specifically the [cloud edge domains](https://ngrok.com/docs/guides/how-to-set-up-a-custom-domain/) feature.
+
+```sh
+ngrok http --domain=dexter.rubric.sh 3000
+```
+
+Using this command I can tunnel `dexter.rubric.sh` → `localhost:3000`, allowing webhooks sent to `dexter.rubric.sh` to be forwarded to my local machine. This is the bones of the `Local-[DEVELOPER]` env.
+
+Bonus points (`~/.zshrc`):
+
+```sh
+tunnel() {
+  local port="$*"; ngrok http --domain=dexter.rubric.sh "${port:-3000}"
+}
+alias l='tunnel'
+```
+
+We further give each developer a local DB and their own set of auth tokens, but we will dive into this in [The Stack](#the-stack) section.
+
+## Staging
+
+Let's go further and set up a multi-lane on-ramp to prod. In addition to local, let's also give each developer their own staging env, to let them build, test and share features without coordinating.
+
+Each developer should have their own local and staging:
+
+- Database
+- Auth tokens
+- URL
+- GitHub branch
+- Env
+
+We use this workflow for [Maige](https://maige.app/) - a Rubric experiment that brings intelligent workflows to your issues and PRs in GitHub. If you are interested in the project, check out the codebase (OS) [here](https://github.com/RubricLab/maige). There are several useful DX commands that allow you to never have to open the .env file. See [package.json](https://github.com/RubricLab/maige/blob/f017cb57ae588b3fb57fb32906a9360556fe8c80/package.json#L83C3-L83C61).
+
+## The Stack
+
+### Infisical
+
+Infisical is the single source of truth for environment variables for local and staging envs.
+
+On Local: `infisical --env=dexter-local export > .env.local`
+
+![Infisical Environments](/images/infisical.webp "Infisical Environments")
+
+### Supabase
+
+Supabase is the single source of truth for databases for local and staging envs.
+
+### PlanetScale
+
+[PlanetScale](https://planetscale.com/) is our database. Using the safe migrations workflow, you can manage schema like GitHub - with pull requests.
+
+A separate branch for local and staging (per developer) lets us push changes aggressively without coordination.
+
+![PlanetScale DB branches and schema changes](/images/planetscale.webp "PlanetScale DB branches and schema changes")
+
+### Vercel
+
+[Vercel](https://vercel.com) is our deployment partner, automatically deploying on changes to `main` and `[DEVELOPER]/staging`.
+
+Staging branches have their own url - and pull env from Infisical automatically.
+
+![Vercel staging URLs and Infisical env sync](/images/vercel.webp "Vercel staging URLs and Infisical env sync")
+
+### GitHub (Apps)
+
+For Maige, we have a separate app for each env, which allows webhooks to be handled properly.
+
+Each developer's instance of the app works in the cloud without an active IDE.
+
+![Maige GitHub Apps](/images/github.webp "Maige GitHub Apps")
+
+## The Magic
+
+Once this is all set up, we get to see the true power of the workflow. Developers demoing full stack features in the cloud simultaneously.
+
+With local envs configured, I can easily work on Ted's local branch if we pair program:
+
+```sh
+git checkout ted/feat
+  && infisical --env ted-local export > .env.local
+  && ngrok http -- domain=ted.rubric.sh
+```
+
+With staging envs configured, I can test out Arihan's new PR (which includes schema changes, new UI and modified GitHub permissions) from my phone on the subway. No need for an IDE or even a laptop (:
+
+![Arihan demoing a new feature in staging](/images/arihan-demo.webp "Arihan demoing a new feature in staging")
+
+As we hurdle forward into the future, it looks like modern engineering looks a lot less like vim and a lot more like chat. With multi-staging, we can field an aggressive pace by testing full stack changes in the cloud - on a real URL. When AI agents make the leap from copilots to engineers, we might not have the time to review code. What if we can simply open a URL and test as a user? Are we ready for this velocity?
+
+As always, this is a work in progress. Please send feedback or questions to <Copiable content="hello@rubriclabs.com" variant="link" size="lg">hello@rubriclabs.com</Copiable>.
+
+Peace nerds (:

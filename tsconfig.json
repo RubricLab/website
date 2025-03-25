@@ -1,32 +1,12 @@
 {
 	"compilerOptions": {
-		"target": "esnext",
 		"baseUrl": ".",
 		"paths": {
-			"@/*": ["./*"],
-			"~/*": ["./lib/*"]
+			"~/*": ["./src/*"]
 		},
-		"plugins": [{ "name": "next" }],
-		"skipLibCheck": true
+		"plugins": [{ "name": "next" }]
 	},
+	"exclude": ["node_modules"],
 	"extends": "@rubriclab/config/tsconfig",
-	"include": [
-		"./app/**/*.ts",
-		"./app/**/*.tsx",
-		"./lib/**/*.ts",
-		"./lib/**/*.tsx",
-		"./common/**/*.ts",
-		"./common/**/*.tsx",
-		"./components/**/*.ts",
-		"./components/**/*.tsx",
-		"./context/**/*.ts",
-		"./context/**/*.tsx",
-		"./hooks/**/*.ts",
-		"./hooks/**/*.tsx",
-		"./utils/**/*.ts",
-		"./next-env.d.ts",
-		"sanity.cli.ts",
-		".next/types/**/*.ts"
-	],
-	"exclude": ["node_modules"]
+	"include": ["./src/**/*.ts", "./src/**/*.tsx", ".next/types/**/*.ts", "next-env.d.ts"]
 }

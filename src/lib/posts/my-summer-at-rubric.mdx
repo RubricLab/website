@@ -1,0 +1,67 @@
+export const metadata = {
+  title: "My Summer at Rubric",
+  date: "2024-09-08",
+  author: "Arihan Varanasi",
+  bannerImageUrl: "/images/tree.png",
+  category: "Team",
+  description: "A quick overview of some of the cool projects at the Lab this summer."
+}
+
+This past summer, I had the privilege of running various projects at the Lab at Rubric. The focal point of these several experiments was **generative UI**, bridging capable LLMs with rich component libraries and design systems. Inspired by **Vercel AI** and **V0**, we set out to build our own fully functional genUI experience, supporting tedious dev work with intuitive **DX** and enhancing user interactions with dynamic but simple **UX**. Alright, enough high-level talk; let me actually show you some of the stuff we built, but please note that they are still a work in progress :)
+
+## Rubric UI
+
+![Rubric UI](/images/fib.png "The Codeblock component.") 
+
+With the sharp growth of Rubric, we've realized the need for a centralized design system and component library. One that captures the sick aesthetics and feels of the Rubric brand while making initialization super simple for internal or client projects. To this end, we've built an initial version of Rubric UI to achieve just that.
+
+With just...
+
+```sh
+bun i rubricui
+bunx rubricui init
+```
+
+You now have access to a fully featured component library + styles, ready to use in your project! Ranging from basic components like buttons to slightly more complex ones like code blocks, markdown displays, and file uploads, Rubric UI aims to remove the headache of re-implementing components or worrying about styling and dependencies.
+
+Play around with some of the components [here](https://rubricui.vercel.app/).
+
+## Genson
+
+![Genson demo](/images/genson.mp4 "A video demo we recorded for Genson.")
+
+Moving on to a more experimental and ambitious AI-centric project, we built Genson, a system that builds complex UIs with LLMs and structured outputs. With a ton of custom-written Zod schemas, we were able to build a system that generates typesafe JSON, which is then used to create entire React components that can not only render data but also call functions and make API calls all on their own.
+
+By defining a schema for all components, we can make it very intuitive to define actions (functions, server actions, APIs) and front-end components. Users can generate full dashboards with forms, buttons, dropdowns, and more with nested components, shared data, complete customizability, and APIs with minimal errors due to the nature of typesafe JSON output.
+
+Like V0, users can refine generations with additional prompts through the chat interface on the left while viewing the generated output on the right and previous generations via the bottom sidebar.
+
+![Genson dashboard](/images/genson2.mp4 "The Genson dashboard.")
+
+Additionally, updates to the UI are quicker due to a selective JSON update system, where only the necessary components or properties are rewritten.
+
+We're still working on defining what a "good" UI schema looks like, but we're really excited about the future of Genson and what it could mean for the future of JSON-powered UI generation.
+
+## Autotune
+
+Now moving to the end of the spectrum of UI → AI, I am excited to unofficially announce our fine-tuning package, Autotune! Given an OpenAI compatible OpenAPI JSON schema, Autotune performs synthetic data generation of user prompts and AI responses to fine-tune OS models to respond to prompts in the specified structured schema. Now, you can easily bring the power of structured outputs to your projects while using the open-source models you love.
+
+Best of all, Autotune is designed to be as simple as possible to use. Through `autotune init`, a `.env` file is generated based on the user-chosen fine-tuning provider and `schema.json` file is made, containing an example of an OpenAPI schema. Once the relevant values are filled in and your schema is ready, then simply run `autotune build` and you're ready to get started!
+
+The build step spawns a series of prompts for the user to answer, specifying the data generation and fine-tuning process. Users can create a new dataset or add entries to an existing one.
+
+![Autotune build](/images/autotune.webp "The Autotune build step.")
+
+Once all prompts are answered, new entries are generated and added to a new or existing dataset. Then, the user can specify whether they would like to fine-tune a model via the CLI, and if the answer is yes, the user can specify which model to fine-tune, and the FT status is shown in real-time. Finally, the new model slug is outputted to the user and can be used to make API calls.
+
+Autotune is currently in the early stages of development with a limited subset of providers and quite some work to be done, but we strongly believe in making fine-tuning as easy and accessible to all developers, no matter what their level of expertise is with AI. We hope to continue working on Autotune and release it soon, so stay tuned!
+
+## Some concluding statements 🫡
+
+Working on these projects at Rubric has been an incredible experience. I've shipped my first NPM package, worked on some really cool tech with a bunch of smart and talented people, and have been challenged in so many different ways. Best of all, I can already see tremendous growth in my skills, and I'm really excited about what's in store for me next.
+
+As always, keep learning and keep shipping 🚢
+
+Peace ✌️
+
+— Arihan

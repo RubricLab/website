@@ -1,0 +1,148 @@
+@import "tailwindcss";
+
+:root {
+	--primary: black;
+	--negative: #f5f0ec;
+	--subtle: #e5e5e5;
+	--secondary: #808080;
+	--danger: red;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--primary: white;
+		--negative: black;
+		--subtle: #222;
+		--secondary: #808080;
+		--danger: red;
+	}
+}
+
+@theme inline {
+	--color-primary: var(--primary);
+	--color-negative: var(--negative);
+	--color-subtle: var(--subtle);
+	--color-secondary: var(--secondary);
+	--color-danger: var(--danger);
+	--radius-custom: 1.75rem;
+}
+
+@layer base {
+	html {
+		@apply bg-negative text-primary;
+	}
+
+	h1 {
+		@apply text-6xl;
+	}
+
+	h2 {
+		@apply text-4xl;
+	}
+
+	h3 {
+		@apply text-2xl;
+	}
+
+	a:not(:has(button)) {
+		@apply focus:outline-none text-secondary hover:text-primary transition-colors;
+	}
+
+	input,
+	textarea {
+		@apply border transition-colors rounded-full border-subtle hover:bg-subtle px-3.5 focus:outline-none focus:border-secondary/50 placeholder:text-secondary p-2;
+	}
+
+	textarea {
+		@apply min-h-20 rounded-3xl;
+	}
+
+	article {
+		@apply space-y-6;
+	}
+
+	article a {
+		@apply underline underline-offset-4 decoration-dashed hover:decoration-solid;
+	}
+
+	article p,
+	li {
+		@apply text-secondary;
+	}
+
+	li {
+		@apply list-disc list-inside;
+	}
+
+	ol li {
+		@apply list-decimal list-inside;
+	}
+
+	img,
+	video {
+		@apply rounded-custom;
+	}
+
+	kbd {
+		@apply bg-negative text-secondary leading-4 rounded px-1.5 pt-0.5 text-sm;
+	}
+
+	section {
+		@apply space-y-4;
+	}
+}
+
+@layer components {
+	.dev {
+		@apply border border-danger bg-danger/10;
+	}
+
+	.wordmark > #cover path {
+		@apply dark:fill-black fill-white hover:opacity-0 transition-opacity duration-500 stroke-subtle;
+	}
+
+	.wordmark > defs > mask#mask > g > path {
+		@apply stroke-subtle fill-white;
+	}
+
+	.scrollbar-none {
+		-ms-overflow-style: none;
+		scrollbar-width: none;
+	}
+
+	.scrollbar-none::-webkit-scrollbar {
+		@apply hidden;
+	}
+
+	/* Codeblocks */
+
+	code {
+		@apply bg-neutral-100 dark:bg-neutral-900 rounded py-0.5 px-1.5 text-[13px];
+	}
+
+	code[data-theme] {
+		@apply overflow-x-auto rounded-md p-2 px-3.5;
+		&,
+		& span {
+			@apply text-[var(--shiki-light)] dark:text-[var(--shiki-dark)];
+		}
+
+		& span[data-highlighted-line] {
+			@apply dark:bg-neutral-800 bg-neutral-200;
+
+			&::before {
+				@apply text-primary;
+			}
+		}
+	}
+
+	code {
+		counter-reset: line;
+	}
+
+	code > [data-line]::before {
+		counter-increment: line;
+		content: counter(line);
+		@apply inline-block w-4 mr-6 text-right text-secondary;
+	}
+}
