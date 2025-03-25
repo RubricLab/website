@@ -13,7 +13,7 @@ export type Post = {
 
 // Helper function to get all post slugs
 export async function getPostSlugs(): Promise<string[]> {
-	const files = await readdir('src/lib/posts')
+	const files = await readdir(path.join(process.cwd(), 'src/lib/posts'))
 	return files
 		.filter(file => file.endsWith('.mdx'))
 		.map((file: string) => path.basename(file, '.mdx'))
