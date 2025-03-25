@@ -64,8 +64,9 @@
 		@apply underline underline-offset-4 decoration-dashed hover:decoration-solid;
 	}
 
-	article p {
-		@apply text-primary/80;
+	article p,
+	li {
+		@apply text-secondary;
 	}
 
 	li {
