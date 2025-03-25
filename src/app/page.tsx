@@ -8,8 +8,8 @@ import { DRisk } from '~/ui/logos/drisk'
 import { Graphite } from '~/ui/logos/graphite'
 import { Gumloop } from '~/ui/logos/gumloop'
 import { Maige } from '~/ui/logos/maige'
-import { Rubric } from '~/ui/logos/rubric'
 import { Testimonials } from '~/ui/testimonials'
+import VimeoPlayer from '~/ui/video'
 import { WorkTable } from '~/ui/work-table'
 import { Card } from './(rest)/blog/card'
 import { HorizontalScroll } from './content'
@@ -76,13 +76,10 @@ export default async function Page() {
 		<HorizontalScroll>
 			<Section>
 				<div className="flex h-full w-full flex-col items-start justify-center space-y-8">
-					<div className="group relative h-full max-h-[560px] w-full overflow-hidden">
-						<video autoPlay muted loop className="h-full w-full object-cover">
-							<source src="/images/hero.mp4" type="video/mp4" />
-							Your browser does not support the video tag.
-						</video>
-						<div className="absolute top-0 left-0 h-full w-full backdrop-grayscale transition-all duration-300 hover:opacity-0" />
-						<Rubric className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 h-12 w-12" />
+					<div className="group relative aspect-video w-full overflow-hidden">
+						<div className="relative h-full w-full">
+							<VimeoPlayer videoId={1069128661} thumbnailUrl="/images/video-thumbnail.jpg" />
+						</div>
 					</div>
 					<p className="h-48 max-w-2/3 shrink-0 text-lg sm:h-28 sm:max-w-1/2">
 						We&apos;re an applied AI Lab helping companies deploy intelligence at scale, building the next
