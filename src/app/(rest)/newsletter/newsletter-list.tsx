@@ -16,7 +16,7 @@ export const NewsletterList = ({ newsletters }: { newsletters: Newsletter[] }) =
 	)
 
 	return (
-		<div className="grid h-fit divide-y divide-subtle border border-subtle">
+		<div className="grid h-fit w-full max-w-3xl divide-y divide-subtle">
 			<div className="flex items-center justify-between gap-2 p-4">
 				<h3>Past newsletters</h3>
 				<input placeholder="Search" value={query} onChange={e => setQuery(e.target.value)} />
@@ -26,7 +26,7 @@ export const NewsletterList = ({ newsletters }: { newsletters: Newsletter[] }) =
 					<Link
 						href={`/newsletter/${newsletter.slug}`}
 						key={newsletter.slug}
-						className="h-32 overflow-hidden p-4 transition-colors hover:bg-subtle"
+						className="overflow-hidden p-4 transition-colors hover:bg-subtle"
 					>
 						<div className="flex flex-col gap-2">
 							<h2>{newsletter.title}</h2>
