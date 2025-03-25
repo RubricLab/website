@@ -76,10 +76,8 @@ export default async function Page() {
 		<HorizontalScroll>
 			<Section>
 				<div className="flex h-full w-full flex-col items-start justify-center space-y-8">
-					<div className="group relative aspect-video w-full overflow-hidden">
-						<div className="relative h-full w-full">
-							<VimeoPlayer videoId={1069128661} thumbnailUrl="/images/video-thumbnail.jpg" />
-						</div>
+					<div className="aspect-video w-full overflow-hidden">
+						<VimeoPlayer videoId={1069128661} thumbnailUrl="/images/video-thumbnail.jpg" />
 					</div>
 					<p className="h-48 max-w-2/3 shrink-0 text-lg sm:h-28 sm:max-w-1/2">
 						We&apos;re an applied AI Lab helping companies deploy intelligence at scale, building the next

@@ -1,9 +1,8 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { cn } from '~/lib/utils/cn'
 import { formatDate } from '~/lib/utils/date'
 import { getPost, getPostSlugs } from '~/lib/utils/posts'
-import { buttonVariants } from '~/ui/button'
+import { Button } from '~/ui/button'
 
 export const dynamicParams = false
 
@@ -41,11 +40,8 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
 					</div>
 					<Post />
 					<div className="flex items-center justify-center">
-						<Link
-							href="/contact"
-							className={cn(buttonVariants({ variant: 'default', size: 'md' }), 'no-underline')}
-						>
-							Get in touch
+						<Link href="/contact" className="no-underline">
+							<Button>Get in touch</Button>
 						</Link>
 					</div>
 				</article>

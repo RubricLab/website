@@ -3,10 +3,26 @@
 import Player from '@vimeo/player'
 import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
+import { Button } from './button'
+import { PlayIcon } from './icons/play'
 
 interface VimeoPlayerProps {
 	videoId: number
 	thumbnailUrl?: string
+}
+
+const PlayButton = ({ onClick }: { onClick: () => void }) => {
+	return (
+		<Button
+			onClick={onClick}
+			type="button"
+			className="absolute bottom-4 left-4 z-20 bg-white/10 backdrop-blur-sm transition-colors focus:ring-0 enabled:group-hover:bg-white/20"
+			aria-label="Play video with sound"
+		>
+			<PlayIcon className="size-4" />
+			Play with sound
+		</Button>
+	)
 }
 
 export default function VimeoPlayer({ videoId, thumbnailUrl }: VimeoPlayerProps) {
@@ -15,8 +31,6 @@ export default function VimeoPlayer({ videoId, thumbnailUrl }: VimeoPlayerProps)
 	const preloadedPlayerRef = useRef<HTMLDivElement>(null)
 	const preloadedPlayerInstance = useRef<Player | null>(null)
 	const [isPlaying, setIsPlaying] = useState(false)
-	// const [isLoaded, setIsLoaded] = useState(false)
-	// const [isBuffered, setIsBuffered] = useState(false)
 	const [isVideoVisible, setIsVideoVisible] = useState(false)
 
 	useEffect(() => {
@@ -47,14 +61,6 @@ export default function VimeoPlayer({ videoId, thumbnailUrl }: VimeoPlayerProps)
 			]).then(() => {
 				setIsVideoVisible(true)
 			})
-
-			// playerInstance.current.on('bufferstart', () => {
-			// 	setIsBuffered(false)
-			// })
-
-			// playerInstance.current.on('bufferend', () => {
-			// 	setIsBuffered(true)
-			// })
 		}
 
 		if (preloadedPlayerRef.current && !preloadedPlayerInstance.current) {
@@ -157,7 +163,7 @@ export default function VimeoPlayer({ videoId, thumbnailUrl }: VimeoPlayerProps)
 	}
 
 	return (
-		<div className="relative aspect-video w-full overflow-hidden">
+		<div className="relative aspect-video h-full w-full">
 			{thumbnailUrl && !isVideoVisible && (
 				<div className="absolute inset-0">
 					<Image
@@ -169,48 +175,22 @@ export default function VimeoPlayer({ videoId, thumbnailUrl }: VimeoPlayerProps)
 					/>
 				</div>
 			)}
-			<div
-				ref={playerRef}
-				className={`absolute inset-0 transition-opacity duration-300 ${
-					isVideoVisible && !isPlaying ? 'opacity-100' : 'opacity-0'
-				}`}
-			/>
-			<div
-				ref={preloadedPlayerRef}
-				className={`absolute inset-0 transition-opacity duration-300 ${
-					isPlaying ? 'opacity-100' : 'opacity-0'
-				}`}
-			/>
+			<div className="absolute inset-0">
+				<div
+					ref={playerRef}
+					className={`object-cover transition-opacity ${
+						isVideoVisible && !isPlaying ? 'opacity-100' : 'opacity-0'
+					}`}
+				/>
+				<div
+					ref={preloadedPlayerRef}
+					className={` object-cover transition-opacity ${isPlaying ? 'opacity-100' : 'opacity-0'}`}
+				/>
+			</div>
 			{!isPlaying && (
 				<>
-					<button
-						onClick={() => {
-							console.log('Button clicked')
-							handlePlayClick()
-						}}
-						type="button"
-						className="absolute inset-0 z-20 flex cursor-pointer items-end p-8"
-						aria-label="Play video with sound"
-					>
-						<div className="flex items-center gap-3 rounded-full bg-white/10 px-4 py-2 backdrop-blur-sm transition-all hover:bg-white/20">
-							<svg
-								className="h-5 w-5"
-								fill="currentColor"
-								viewBox="0 0 24 24"
-								xmlns="http://www.w3.org/2000/svg"
-								aria-hidden="true"
-							>
-								<title>Play icon</title>
-								<path
-									fillRule="evenodd"
-									d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z"
-									clipRule="evenodd"
-								/>
-							</svg>
-							<span className="font-medium text-sm">Play with sound</span>
-						</div>
-					</button>
-					<div className="absolute inset-0 z-10 bg-black/10 backdrop-grayscale transition-all duration-300 group-hover:opacity-0" />
+					<PlayButton onClick={handlePlayClick} />
+					<div className="absolute inset-0 z-10 bg-black/10 backdrop-grayscale transition-all group-hover:opacity-0" />
 				</>
 			)}
 		</div>
