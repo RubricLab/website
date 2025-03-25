@@ -26,7 +26,7 @@ const Section = ({ children, className }: { children: React.ReactNode; className
 export default async function Page() {
 	return (
 		<div className="flex flex-col items-center">
-			<Section className="relative">
+			<Section className="relative h-screen">
 				<div className="flex h-full w-full flex-col items-start justify-center gap-4">
 					<p className="max-w-2/3 shrink-0 text-lg">
 						We&apos;re an applied AI Lab helping companies get intelligence to production.
