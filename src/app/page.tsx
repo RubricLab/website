@@ -52,9 +52,15 @@ export default async function Page() {
 				<div className="flex w-full max-w-2xl flex-col items-center space-y-8">
 					<p className="text-secondary">our partners</p>
 					<div className="flex w-full items-center justify-between">
-						<Neon className="w-36" />
-						<Vercel className="w-40" />
-						<Langchain className="w-44" />
+						<Link href="https://neon.tech/blog/rubric-labs-can-make-your-ai-dreams-come-true">
+							<Neon className="w-36" />
+						</Link>
+						<Link href="https://vercel.com/partners/solution-partners/rubriclabs">
+							<Vercel className="w-40" />
+						</Link>
+						<Link href="https://langchain.com/experts">
+							<Langchain className="w-44" />
+						</Link>
 					</div>
 				</div>
 				<h2 className="max-w-2xl text-7xl">
