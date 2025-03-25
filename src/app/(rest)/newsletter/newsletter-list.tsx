@@ -16,7 +16,7 @@ export const NewsletterList = ({ newsletters }: { newsletters: Newsletter[] }) =
 	)
 
 	return (
-		<div className="grid h-fit w-full max-w-3xl divide-y divide-subtle">
+		<div className="grid h-fit w-full max-w-2xl divide-y divide-subtle">
 			<div className="flex items-center justify-between gap-2 p-4">
 				<h3>Past newsletters</h3>
 				<input placeholder="Search" value={query} onChange={e => setQuery(e.target.value)} />

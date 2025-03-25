@@ -1,6 +1,3 @@
-import Link from 'next/link'
-import { Arrow } from './icons/arrow'
-
 type Work = {
 	name: string
 	description: string
@@ -12,74 +9,90 @@ type Work = {
 const works = [
 	{
 		name: 'Archetype',
-		description: 'Component system',
+		description: 'We built a component system for Archetype.',
 		date: '2023',
 		category: 'Client',
 		link: 'https://archetype.dev'
 	},
 	{
-		name: 'Linear Sync',
-		description: 'Sync your GitHub issues to Linear',
+		name: 'Cal.com',
+		description:
+			'We built a self-hostable app to sync GitHub issues to Linear. It serves 1k+ repos at no cost.',
 		date: '2023',
 		category: 'Client',
 		link: 'https://synclinear.com'
 	},
 	{
 		name: 'Sweater Planet',
-		description: 'eCommerce platform',
+		description: 'We built a scalable eCommerce platform. Acquired.',
 		date: '2022',
 		category: 'Internal',
 		link: 'https://sweaterplanet.com'
 	},
 	{
 		name: 'Trigger.dev',
-		description: 'Generate changelogs from git commits',
+		description: "We built several open-source demos to showcase Trigger.dev's AI capabilities.",
 		date: '2023',
 		category: 'Client',
 		link: 'https://autochangelog.dev'
 	},
 	{
 		name: 'Dashboard',
-		description: 'All your personal apps, intelligent',
-		date: '2024',
+		description: 'All your personal apps, intelligent.',
+		date: '2023',
 		category: 'Internal',
 		link: 'https://dashboard.rubric.sh'
 	},
 	{
 		name: 'Create Rubric App',
-		description: 'Spin up an AI-native React app',
+		description: 'Our CLI to spin up an AI-native React app.',
 		date: '2024',
 		category: 'Internal',
 		link: 'https://todo.rubric.sh/'
 	},
 	{
+		name: 'Greptile',
+		description: 'We built a landing page and demo for Greptile.',
+		date: '2024',
+		category: 'Client',
+		link: 'https://greptile.com'
+	},
+	{
 		name: 'Rainmaker',
-		description: 'Landing page',
+		description: 'Original landing page for Rainmaker.',
 		date: '2024',
 		category: 'Client'
 	},
 	{
-		name: 'Stealth',
-		description: 'AI-native experience',
+		name: 'Series B stealth',
+		description: 'We built a flagship AI-native product for this team.',
 		date: '2024',
 		category: 'Client'
 	},
 	{
 		name: 'Cal.com',
-		description: 'Cal.ai v0',
+		description:
+			'We built the first version of Cal.ai. Now defunct, it was one of the first agents to go to market.',
 		date: '2024',
 		category: 'Client',
 		link: 'https://cal.com/blog/don-t-forget-about-cal-ai-your-24-7-scheduling-assistant'
 	},
 	{
 		name: 'Albertsons',
-		description: 'WIP',
+		description: 'Work in progress.',
 		date: '2025',
 		category: 'Client'
 	},
 	{
+		name: 'Maige',
+		description:
+			'A profitable, open-source software for running LLM commands on your repo. Used by 4k+ teams.',
+		date: '2023',
+		category: 'Client'
+	},
+	{
 		name: 'Neat',
-		description: 'Your GitHub feed, smartly filtered',
+		description: 'Your GitHub feed, smartly filtered. Used by 2k+ developers.',
 		date: '2022',
 		category: 'Internal',
 		link: 'https://neat.run'
@@ -88,32 +101,22 @@ const works = [
 
 export const WorkTable = () => {
 	return (
-		<table className="w-full divide-y divide-subtle text-secondary">
-			<thead className="hidden font-semibold">
-				<tr>
-					<th>Name</th>
-					<th>Description</th>
-					<th>Type</th>
-				</tr>
-			</thead>
-			<tbody className="divide-y divide-subtle">
+		<div className="w-full max-w-2xl">
+			<div className="flex flex-col gap-16">
 				{works
 					.sort((a, b) => b.date.localeCompare(a.date))
 					.map((work, index) => (
-						<tr key={index} className="group hover:bg-subtle hover:text-primary">
-							<td className="p-3">{work.name}</td>
-							<td className="p-3">{work.description}</td>
-							<td className="p-3">{work.category}</td>
-							<td>
-								{work.link ? (
-									<Link href={work.link} target="_blank" className="opacity-0 group-hover:opacity-100">
-										<Arrow className="-rotate-45 size-5" />
-									</Link>
+						<div key={index} className="group flex w-full items-start justify-between">
+							<div className="w-full">
+								<h3>{work.name}</h3>
+								{work.description ? (
+									<div className="max-w-2/3 text-secondary">{work.description}</div>
 								) : null}
-							</td>
-						</tr>
+							</div>
+							<div>{work.date}</div>
+						</div>
 					))}
-			</tbody>
-		</table>
+			</div>
+		</div>
 	)
 }
