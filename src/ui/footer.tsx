@@ -1,54 +1,52 @@
 import Link from 'next/link'
 import { NewsletterForm } from '~/app/(rest)/newsletter/newsletter-form'
-import { ADDRESS } from '~/lib/constants'
 import { cn } from '~/lib/utils/cn'
+import { GithubIcon } from '~/ui/icons/github'
+import { LinkedInIcon } from '~/ui/icons/linkedin'
+import { XIcon } from '~/ui/icons/x'
+import { Wordmark } from '~/ui/logos/wordmark'
 import { Copiable } from './copiable'
-import { Wordmark } from './logos/wordmark'
 
 export const Footer = ({ className }: { className?: string }) => {
 	return (
-		<footer className={cn('flex w-full justify-center px-4 sm:px-6', className)}>
-			<div className="flex h-full w-full max-w-5xl flex-col items-center justify-center">
-				<Wordmark className="-mb-0.5 h-auto w-full" />
-				<div className="grid w-full divide-y divide-subtle border border-subtle bg-negative sm:grid-cols-9 sm:divide-x sm:divide-y-0">
-					<div className="flex flex-col gap-2 p-6 sm:col-span-3">
-						<p className="font-semibold">Location</p>
-						<Copiable
-							className="whitespace-pre text-left text-secondary"
-							variant="link"
-							content={ADDRESS}
-						>
-							<p className="font-mono">{ADDRESS}</p>
-						</Copiable>
-					</div>
-					<div className="flex flex-col gap-2 p-6 sm:col-span-2">
-						<p className="font-semibold">Follow us</p>
-						<div className="flex flex-col text-secondary">
-							<Link href="https://github.com/rubriclabs">GitHub</Link>
-							<Link href="https://x.com/rubriclabs">X</Link>
-							<Link href="https://www.linkedin.com/company/rubriclabs">LinkedIn</Link>
-						</div>
-					</div>
-					<div className="flex flex-col justify-between gap-2 p-6 sm:col-span-4">
-						<p className="font-semibold">Newsletter</p>
+		<footer
+			className={cn('flex w-full flex-col items-center justify-center space-y-24 py-20', className)}
+		>
+			<Wordmark className="text-amber-500" />
+			<div className="w-full max-w-2xl space-y-16">
+				<div className="flex w-full justify-between">
+					<div className="flex w-full max-w-1/2 flex-col gap-4">
+						<p>Newsletter</p>
 						<NewsletterForm />
 					</div>
-				</div>
-				<div className="grid w-full border-subtle border-x border-b bg-negative sm:grid-cols-9 sm:divide-x">
-					<div className="col-span-3 flex flex-col gap-2 p-6">
-						<p className="font-semibold">Resources</p>
-						<div className="flex flex-col text-secondary">
-							<Link href="/newsletter">Newsletter</Link>
-							<Link href="/blog">Blog</Link>
-							<Link href="/contact">Contact</Link>
-							<Link href="https://brand.rubriclabs.com">Brand</Link>
+					<div className="flex flex-col gap-4">
+						<p>Socials</p>
+						<div className="flex gap-5 text-secondary">
+							<Link href="https://github.com/rubriclabs">
+								<GithubIcon className="size-5" />
+							</Link>
+							<Link href="https://x.com/rubriclabs">
+								<XIcon className="size-5" />
+							</Link>
+							<Link href="https://www.linkedin.com/company/rubriclabs">
+								<LinkedInIcon className="size-5" />
+							</Link>
 						</div>
 					</div>
 				</div>
-				<div className="flex w-full justify-between border-subtle border-x p-6 font-lighter font-mono text-secondary text-sm uppercase">
-					<Link href="/privacy">Privacy & terms</Link>
-					<Copiable variant="link" content="https://rubriclabs.com" className="group relative uppercase">
-						© Rubric Labs™{' '}
+				<div className="w-full">
+					<div className="flex w-fit flex-col gap-4">
+						<p>Links</p>
+						<div className="flex flex-wrap gap-5 text-secondary">
+							<Link href="/newsletter">Newsletter</Link>
+							<Link href="https://brand.rubriclabs.com">Brand</Link>
+							<Link href="/privacy">Privacy</Link>
+						</div>
+					</div>
+				</div>
+				<div className="text-center font-mono text-secondary">
+					<Copiable variant="link" content="https://rubriclabs.com" className="group relative">
+						© Rubric Labs Inc.{' '}
 						<span className="opacity-0 transition-opacity delay-500 duration-1000 group-hover:opacity-100">
 							2049
 						</span>

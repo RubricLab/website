@@ -2,7 +2,7 @@
 
 :root {
 	--primary: black;
-	--negative: white;
+	--negative: #f5f0ec;
 	--subtle: #e5e5e5;
 	--secondary: #808080;
 	--danger: red;
@@ -24,6 +24,7 @@
 	--color-subtle: var(--subtle);
 	--color-secondary: var(--secondary);
 	--color-danger: var(--danger);
+	--radius-custom: 1.75rem;
 }
 
 @layer base {
@@ -49,11 +50,11 @@
 
 	input,
 	textarea {
-		@apply border transition-colors border-subtle hover:bg-subtle px-3.5 focus:outline-none focus:border-secondary/50 placeholder:text-secondary p-2;
+		@apply border transition-colors rounded-full border-subtle hover:bg-subtle px-3.5 focus:outline-none focus:border-secondary/50 placeholder:text-secondary p-2;
 	}
 
 	textarea {
-		@apply min-h-20;
+		@apply min-h-20 rounded-3xl;
 	}
 
 	article {
@@ -75,6 +76,11 @@
 
 	ol li {
 		@apply list-decimal list-inside;
+	}
+
+	img,
+	video {
+		@apply rounded-custom;
 	}
 
 	kbd {

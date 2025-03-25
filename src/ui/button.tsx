@@ -3,7 +3,7 @@ import { cn } from '~/lib/utils/cn'
 const variants = {
 	default: 'bg-subtle dark:enabled:hover:bg-white/20 enabled:hover:bg-black/20 rounded-full',
 	outline:
-		'border-subtle dark:enabled:hover:border-white/40 enabled:hover:border-black/40 rounded-full',
+		'border-subtle border dark:enabled:hover:border-white/20 enabled:hover:border-black/20 rounded-full',
 	link: 'enabled:hover:opacity-80 focus:ring-0 !p-0',
 	icon: 'focus:ring-0 !p-1 rounded dark:enabled:hover:bg-white/20 enabled:hover:bg-black/20'
 } as const

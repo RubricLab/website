@@ -29,7 +29,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
 					/>
 				</div>
 				<div className="flex w-full justify-between text-secondary text-sm">
-					<p className="font-mono">{metadata.category}</p>
+					<p>{metadata.category}</p>
 					<p>by {metadata.author}</p>
 					<p>{formatDate(metadata.date)}</p>
 				</div>

@@ -7,7 +7,10 @@ export default {
 	presets: [config],
 	theme: {
 		colors: {
-			...config.theme.colors
+			...config.theme.colors,
+			radius: {
+				custom: '5rem'
+			}
 		}
 	}
 } satisfies Config

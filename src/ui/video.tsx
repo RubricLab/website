@@ -164,7 +164,7 @@ export default function VimeoPlayer({ videoId, thumbnailUrl }: VimeoPlayerProps)
 	}
 
 	return (
-		<div className="relative flex aspect-video h-full w-full shrink-0 items-center justify-center">
+		<div className="relative flex aspect-video h-full w-full shrink-0 items-center justify-center overflow-hidden rounded-custom">
 			{thumbnailUrl && !isVideoVisible && (
 				<div className="absolute inset-0 flex items-center justify-center">
 					<Image

@@ -18,7 +18,13 @@ const Paths = () => {
 	)
 }
 
-export const Wordmark = ({ className }: { className?: string }) => {
+export const Wordmark = ({
+	className,
+	mask = false
+}: {
+	className?: string
+	mask?: boolean
+}) => {
 	return (
 		<svg
 			viewBox="0 0 1251 182"
@@ -27,17 +33,25 @@ export const Wordmark = ({ className }: { className?: string }) => {
 			className={cn(className, 'wordmark group')}
 		>
 			<title>Rubric wordmark</title>
-			<defs>
-				<mask id="mask">
-					<g>
+			{mask ? (
+				<>
+					<defs>
+						<mask id="mask">
+							<g>
+								<Paths />
+							</g>
+						</mask>
+					</defs>
+					<image href="/images/cactus-fast.png" width="1251" y="-120" mask="url(#mask)" />
+					<g id="cover">
 						<Paths />
 					</g>
-				</mask>
-			</defs>
-			<image href="/images/cactus-fast.png" width="1251" y="-120" mask="url(#mask)" />
-			<g id="cover">
-				<Paths />
-			</g>
+				</>
+			) : (
+				<g className="fill-current">
+					<Paths />
+				</g>
+			)}
 		</svg>
 	)
 }
