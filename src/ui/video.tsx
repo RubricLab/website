@@ -3,6 +3,7 @@
 import Player from '@vimeo/player'
 import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
+import { cn } from '~/lib/utils/cn'
 import { Button } from './button'
 import { PlayIcon } from './icons/play'
 
@@ -163,9 +164,9 @@ export default function VimeoPlayer({ videoId, thumbnailUrl }: VimeoPlayerProps)
 	}
 
 	return (
-		<div className="relative aspect-video h-full w-full">
+		<div className="relative flex aspect-video h-full w-full shrink-0 items-center justify-center">
 			{thumbnailUrl && !isVideoVisible && (
-				<div className="absolute inset-0">
+				<div className="absolute inset-0 flex items-center justify-center">
 					<Image
 						src={thumbnailUrl}
 						alt="Video preview thumbnail"
@@ -175,18 +176,20 @@ export default function VimeoPlayer({ videoId, thumbnailUrl }: VimeoPlayerProps)
 					/>
 				</div>
 			)}
-			<div className="absolute inset-0">
-				<div
-					ref={playerRef}
-					className={`object-cover transition-opacity ${
-						isVideoVisible && !isPlaying ? 'opacity-100' : 'opacity-0'
-					}`}
-				/>
-				<div
-					ref={preloadedPlayerRef}
-					className={` object-cover transition-opacity ${isPlaying ? 'opacity-100' : 'opacity-0'}`}
-				/>
-			</div>
+			<div
+				ref={playerRef}
+				className={cn(
+					'absolute w-full shrink-0 object-cover transition-opacity',
+					isVideoVisible && !isPlaying ? 'opacity-100' : 'opacity-0'
+				)}
+			/>
+			<div
+				ref={preloadedPlayerRef}
+				className={cn(
+					'absolute w-full shrink-0 object-cover transition-opacity',
+					isPlaying ? 'opacity-100' : 'opacity-0'
+				)}
+			/>
 			{!isPlaying && (
 				<>
 					<PlayButton onClick={handlePlayClick} />
