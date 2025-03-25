@@ -2,7 +2,7 @@ import { ImageResponse } from 'next/og'
 import colors from 'tailwindcss/colors'
 
 export const runtime = 'edge'
-export const alt = 'Rubric website'
+export const alt = 'Applied AI Lab helping companies get intelligence to production'
 export const contentType = 'image/png'
 export const size = {
 	height: 630,
@@ -28,8 +28,10 @@ export const Component = () => {
 				width: '100%'
 			}}
 		>
-			<div style={{ color: colors.white, fontSize: 128 }}>Rubric</div>
-			<div style={{ color: colors.white, fontSize: 48 }}>Website</div>
+			<div style={{ color: colors.white, fontSize: 128 }}>Rubric Labs</div>
+			<div style={{ color: colors.white, fontSize: 36, maxWidth: '60%', textAlign: 'center' }}>
+				Applied AI Lab helping companies get intelligence to production.
+			</div>
 		</div>
 	)
 }
