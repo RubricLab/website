@@ -32,7 +32,7 @@ export default async function Page() {
 						We&apos;re an applied AI Lab helping companies get intelligence to production.
 					</p>
 					<div className="aspect-video w-full overflow-hidden">
-						<VimeoPlayer videoId={1069128661} thumbnailUrl="/images/video-thumbnail.jpg" />
+						<VimeoPlayer videoId={1069128661} thumbnailUrl="/images/video-thumbnail.png" />
 					</div>
 				</div>
 				<ScrollButton className="absolute bottom-6" />
