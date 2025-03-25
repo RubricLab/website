@@ -37,13 +37,6 @@ const works = [
 		link: 'https://autochangelog.dev'
 	},
 	{
-		name: 'Dashboard',
-		description: 'All your personal apps, intelligent.',
-		date: '2023',
-		category: 'Internal',
-		link: 'https://dashboard.rubric.sh'
-	},
-	{
 		name: 'Create Rubric App',
 		description: 'Our CLI to spin up an AI-native React app.',
 		date: '2024',
@@ -56,12 +49,6 @@ const works = [
 		date: '2024',
 		category: 'Client',
 		link: 'https://greptile.com'
-	},
-	{
-		name: 'Rainmaker',
-		description: 'Original landing page for Rainmaker.',
-		date: '2024',
-		category: 'Client'
 	},
 	{
 		name: 'Series B stealth',
