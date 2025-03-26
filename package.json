@@ -11,6 +11,7 @@
 		"clsx": "^2.1.1",
 		"framer-motion": "^11.11.10",
 		"next": "^15.2.1",
+		"posthog-js": "^1.232.7",
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0",
 		"rehype-pretty-code": "^0.14.1",
