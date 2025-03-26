@@ -2,7 +2,7 @@
 
 import Player from '@vimeo/player'
 import Image from 'next/image'
-import posthog from 'posthog-js'
+import { usePostHog } from 'posthog-js/react'
 import { useEffect, useRef, useState } from 'react'
 import { cn } from '~/lib/utils/cn'
 import { Button } from './button'
@@ -31,6 +31,7 @@ const PlayButton = ({ className, onClick }: { className?: string; onClick: () =>
 }
 
 export default function VimeoPlayer({ videoId, thumbnailUrl }: VimeoPlayerProps) {
+	const posthog = usePostHog()
 	const playerRef = useRef<HTMLDivElement>(null)
 	const playerInstance = useRef<Player | null>(null)
 	const preloadedPlayerRef = useRef<HTMLDivElement>(null)

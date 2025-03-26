@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import posthog from 'posthog-js'
+import { usePostHog } from 'posthog-js/react'
 import { Langchain } from './logos/langchain'
 import { Neon } from './logos/neon'
 import { Vercel } from './logos/vercel'
@@ -25,6 +25,8 @@ const partners = [
 ]
 
 export const Partners = () => {
+	const posthog = usePostHog()
+
 	return (
 		<div className="flex w-full max-w-2xl flex-col items-center space-y-6">
 			<p className="text-secondary text-sm">Our partners</p>

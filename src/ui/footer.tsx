@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import posthog from 'posthog-js'
+import { usePostHog } from 'posthog-js/react'
 import { NewsletterForm } from '~/app/(rest)/newsletter/newsletter-form'
 import { cn } from '~/lib/utils/cn'
 import { GithubIcon } from '~/ui/icons/github'
@@ -29,6 +29,8 @@ const socials = [
 ]
 
 export const Footer = ({ className }: { className?: string }) => {
+	const posthog = usePostHog()
+
 	return (
 		<footer
 			className={cn('flex h-screen w-full flex-col items-center justify-center space-y-24', className)}

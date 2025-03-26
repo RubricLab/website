@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import posthog from 'posthog-js'
+import { usePostHog } from 'posthog-js/react'
 import { cn } from '~/lib/utils/cn'
 import { Button } from '~/ui/button'
 import { Footer } from '~/ui/footer'
@@ -24,7 +24,9 @@ const Section = ({ children, className }: { children: React.ReactNode; className
 	</div>
 )
 
-export default async function Page() {
+export default function Page() {
+	const posthog = usePostHog()
+
 	return (
 		<div className="flex flex-col items-center">
 			<Section className="relative h-screen">

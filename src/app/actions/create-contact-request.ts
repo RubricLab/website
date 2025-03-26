@@ -1,6 +1,5 @@
 'use server'
 
-import posthog from 'posthog-js'
 import { z } from 'zod'
 import { env } from '~/lib/env'
 
@@ -48,7 +47,5 @@ export async function createContactRequest(_: unknown, formData: FormData) {
 		return { success: true }
 	} catch (error) {
 		return { error: 'Failed to send message' }
-	} finally {
-		posthog.capture('create_contact_request.clicked')
 	}
 }

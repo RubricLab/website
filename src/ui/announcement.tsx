@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import posthog from 'posthog-js'
+import { usePostHog } from 'posthog-js/react'
 import { Arrow } from './icons/arrow'
 
 const body = 'Read about our approach'
@@ -9,6 +9,7 @@ const body = 'Read about our approach'
 const href = '/blog/introducing-rubric-labs'
 
 export const Announcement = () => {
+	const posthog = usePostHog()
 	return (
 		<Link
 			href={href}

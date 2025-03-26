@@ -1,12 +1,14 @@
 'use client'
 
-import posthog from 'posthog-js'
+import { usePostHog } from 'posthog-js/react'
 import { Button } from './button'
 import { Arrow } from './icons/arrow'
 
 const body = 'See our work'
 
 export const ScrollButton = ({ className }: { className?: string }) => {
+	const posthog = usePostHog()
+
 	return (
 		<Button
 			variant="link"

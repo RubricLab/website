@@ -1,6 +1,5 @@
 'use server'
 
-import posthog from 'posthog-js'
 import { z } from 'zod'
 import { env } from '~/lib/env'
 
@@ -32,7 +31,5 @@ export async function createNewsletterSubscriber(_: unknown, formData: FormData)
 		return { success: true }
 	} catch (err) {
 		return { error: (err as Error).message || 'Unexpected error' }
-	} finally {
-		posthog.capture('create_newsletter_subscriber.clicked')
 	}
 }
