@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef } from 'react'
-import { submitContact } from '~/app/actions/submit-contact'
+import { createContactRequest } from '~/app/actions/create-contact-request'
 import { useShortcut } from '~/lib/hooks/use-shortcut'
 import { Button } from '~/ui/button'
 import { Form } from '~/ui/form'
@@ -12,7 +12,7 @@ export const ContactForm = () => {
 	useShortcut('cmd+enter', () => formRef.current?.requestSubmit(), { fireInForm: true })
 
 	return (
-		<Form action={submitContact} ref={formRef} className="flex w-full flex-col gap-4">
+		<Form action={createContactRequest} ref={formRef} className="flex w-full flex-col gap-4">
 			{({ pending, state }) => (
 				<>
 					<div className="flex min-h-56 w-full flex-col items-center justify-center text-center">

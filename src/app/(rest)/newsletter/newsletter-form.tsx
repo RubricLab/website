@@ -1,6 +1,6 @@
 'use client'
 
-import { joinNewsletter } from '~/app/actions/join-newsletter'
+import { createNewsletterSubscriber } from '~/app/actions/create-newsletter-subscriber'
 import { cn } from '~/lib/utils/cn'
 import { Button } from '~/ui/button'
 import { Form } from '~/ui/form'
@@ -9,7 +9,7 @@ import { Checkmark } from '~/ui/icons/checkmark'
 
 export const NewsletterForm = ({ className }: { className?: string }) => {
 	return (
-		<Form action={joinNewsletter} className={cn(className)}>
+		<Form action={createNewsletterSubscriber} className={cn(className)}>
 			{({ pending, state }) => (
 				<div className="relative flex w-full items-center">
 					<input placeholder="Email" className="w-full" name="email" type="email" required />

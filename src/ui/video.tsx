@@ -2,6 +2,7 @@
 
 import Player from '@vimeo/player'
 import Image from 'next/image'
+import posthog from 'posthog-js'
 import { useEffect, useRef, useState } from 'react'
 import { cn } from '~/lib/utils/cn'
 import { Button } from './button'
@@ -132,11 +133,11 @@ export default function VimeoPlayer({ videoId, thumbnailUrl }: VimeoPlayerProps)
 	}, [videoId])
 
 	const handlePlayClick = async () => {
-		if (!playerInstance.current || !preloadedPlayerRef.current) {
-			return
-		}
-
 		try {
+			if (!playerInstance.current || !preloadedPlayerRef.current) {
+				return
+			}
+
 			if (preloadedPlayerInstance.current) {
 				preloadedPlayerInstance.current.destroy()
 				preloadedPlayerInstance.current = null
@@ -166,6 +167,8 @@ export default function VimeoPlayer({ videoId, thumbnailUrl }: VimeoPlayerProps)
 			await preloadedPlayerInstance.current.play()
 		} catch (error) {
 			console.error(error)
+		} finally {
+			posthog.capture('play_video.clicked')
 		}
 	}
 
