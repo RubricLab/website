@@ -1,8 +1,8 @@
-import Image, { type StaticImageData } from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import { cn } from '~/lib/utils/cn'
 import { formatDate } from '~/lib/utils/date'
+import { CustomImage } from '~/ui/custom-image'
 
 export const Card = ({
 	post,
@@ -11,7 +11,7 @@ export const Card = ({
 	className
 }: {
 	post: { slug: string; title: string; category: string; date: string }
-	imgSrc: StaticImageData | string
+	imgSrc: string
 	imgAlt: string
 	className?: string
 }) => {
@@ -22,10 +22,9 @@ export const Card = ({
 			className={cn('group col-span-1 space-y-2', className)}
 		>
 			<div className="relative aspect-square w-full">
-				<Image
+				<CustomImage
 					src={imgSrc}
 					alt={imgAlt}
-					fill
 					className="object-cover grayscale transition-all duration-300 group-hover:grayscale-0"
 				/>
 			</div>
