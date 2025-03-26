@@ -64,7 +64,6 @@ export default function VimeoPlayer({ videoId, thumbnailUrl }: VimeoPlayerProps)
 					playerInstance.current?.on('play', resolve)
 				})
 			]).then(() => {
-				playerInstance.current?.setCurrentTime(0.6)
 				setIsVideoVisible(true)
 			})
 		}
