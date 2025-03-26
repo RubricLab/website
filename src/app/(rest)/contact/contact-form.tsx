@@ -12,7 +12,12 @@ export const ContactForm = () => {
 	useShortcut('cmd+enter', () => formRef.current?.requestSubmit(), { fireInForm: true })
 
 	return (
-		<Form action={createContactRequest} ref={formRef} className="flex w-full flex-col gap-4">
+		<Form
+			label="contact"
+			action={createContactRequest}
+			ref={formRef}
+			className="flex w-full flex-col gap-4"
+		>
 			{({ pending, state }) => (
 				<>
 					<div className="flex min-h-56 w-full flex-col items-center justify-center text-center">
