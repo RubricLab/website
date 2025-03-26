@@ -10,7 +10,7 @@ export default async function Page() {
 				<h1>Blog</h1>
 				<p className="text-secondary text-sm">The latest from our team</p>
 			</div>
-			<div className="grid gap-16 sm:grid-cols-2">
+			<div className="grid max-w-4xl gap-16 sm:grid-cols-2">
 				{posts.map((post, index) => (
 					<Card
 						imgSrc={post.bannerImageUrl}
