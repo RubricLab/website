@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { cn } from '~/lib/utils/cn'
+import { Announcement } from '~/ui/announcement'
 import { Button } from '~/ui/button'
 import { Footer } from '~/ui/footer'
 import { Albertsons } from '~/ui/logos/albertsons'
@@ -28,7 +29,8 @@ export default async function Page() {
 		<div className="flex flex-col items-center">
 			<Section className="relative h-screen">
 				<div className="flex h-full w-full flex-col items-start justify-center gap-4">
-					<p className="max-w-2/3 shrink-0 text-lg">
+					<Announcement />
+					<p className="shrink-0 text-lg sm:max-w-2/3">
 						We&apos;re an applied AI Lab helping companies get intelligence to production.
 					</p>
 					<div className="aspect-video w-full overflow-hidden">

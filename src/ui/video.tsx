@@ -12,12 +12,15 @@ interface VimeoPlayerProps {
 	thumbnailUrl?: string
 }
 
-const PlayButton = ({ onClick }: { onClick: () => void }) => {
+const PlayButton = ({ className, onClick }: { className?: string; onClick: () => void }) => {
 	return (
 		<Button
 			onClick={onClick}
 			type="button"
-			className="absolute bottom-4 left-4 z-20 bg-white/10 backdrop-blur-sm transition-colors focus:ring-0 enabled:group-hover:bg-white/20"
+			className={cn(
+				'bg-white/10 text-white backdrop-blur-sm transition-colors focus:ring-0 enabled:group-hover:bg-white/20',
+				className
+			)}
 			aria-label="Play video with sound"
 		>
 			<PlayIcon className="size-4" />
@@ -195,7 +198,7 @@ export default function VimeoPlayer({ videoId, thumbnailUrl }: VimeoPlayerProps)
 			/>
 			{!isPlaying && (
 				<>
-					<PlayButton onClick={handlePlayClick} />
+					<PlayButton onClick={handlePlayClick} className="absolute bottom-4 left-4 z-20" />
 					<div className="absolute inset-0 z-10 bg-black/10 backdrop-grayscale transition-all group-hover:opacity-0" />
 				</>
 			)}

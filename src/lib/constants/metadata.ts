@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 
 export const META = {
 	desc: 'Rubric is an applied AI lab helping companies get intelligence to production.',
-	title: 'Rubric',
+	title: 'Rubric Labs',
 	twitter: '@rubriclabs'
 }
 

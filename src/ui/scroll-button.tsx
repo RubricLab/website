@@ -13,7 +13,8 @@ export const ScrollButton = ({ className }: { className?: string }) => {
 				window.scrollTo({ top: windowHeight, behavior: 'smooth' })
 			}}
 		>
-			Work <Arrow className="size-5 rotate-90" />
+			<p className="text-base">See our work</p>
+			<Arrow className="size-5 rotate-90" />
 		</Button>
 	)
 }
