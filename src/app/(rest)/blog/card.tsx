@@ -2,7 +2,7 @@ import Link from 'next/link'
 import React from 'react'
 import { cn } from '~/lib/utils/cn'
 import { formatDate } from '~/lib/utils/date'
-import { CaptionedImage } from '~/ui/captioned-image'
+import { CustomImage } from '~/ui/custom-image'
 
 export const Card = ({
 	post,
@@ -22,7 +22,7 @@ export const Card = ({
 			className={cn('group col-span-1 space-y-2', className)}
 		>
 			<div className="relative aspect-square w-full">
-				<CaptionedImage
+				<CustomImage
 					src={imgSrc}
 					alt={imgAlt}
 					className="object-cover grayscale transition-all duration-300 group-hover:grayscale-0"

@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { formatDate } from '~/lib/utils/date'
 import { getPost, getPostSlugs } from '~/lib/utils/posts'
 import { Button } from '~/ui/button'
-import { CaptionedImage } from '~/ui/captioned-image'
+import { CustomImage } from '~/ui/custom-image'
 
 export const dynamicParams = false
 
@@ -21,7 +21,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
 		<div className="flex min-h-screen flex-col items-center gap-16 p-4 py-32">
 			<div className="flex w-full max-w-5xl flex-col items-start space-y-8">
 				<div className="relative h-96 w-full overflow-hidden">
-					<CaptionedImage
+					<CustomImage
 						src={metadata.bannerImageUrl}
 						alt={metadata.title}
 						className="object-cover object-middle"

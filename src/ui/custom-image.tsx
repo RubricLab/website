@@ -1,6 +1,6 @@
 import { cn } from '~/lib/utils/cn'
 
-export const CaptionedImage = ({
+export const CustomImage = ({
 	...props
 }: { children?: React.ReactNode } & React.ImgHTMLAttributes<HTMLImageElement>) => {
 	return (
