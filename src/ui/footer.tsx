@@ -1,4 +1,7 @@
+'use client'
+
 import Link from 'next/link'
+import posthog from 'posthog-js'
 import { NewsletterForm } from '~/app/(rest)/newsletter/newsletter-form'
 import { cn } from '~/lib/utils/cn'
 import { GithubIcon } from '~/ui/icons/github'
@@ -6,6 +9,24 @@ import { LinkedInIcon } from '~/ui/icons/linkedin'
 import { XIcon } from '~/ui/icons/x'
 import { Wordmark } from '~/ui/logos/wordmark'
 import { Copiable } from './copiable'
+
+const socials = [
+	{
+		icon: <GithubIcon className="size-5" />,
+		label: 'GitHub',
+		href: 'https://github.com/RubricLab'
+	},
+	{
+		icon: <XIcon className="size-5" />,
+		label: 'X',
+		href: 'https://x.com/RubricLabs'
+	},
+	{
+		icon: <LinkedInIcon className="size-5" />,
+		label: 'LinkedIn',
+		href: 'https://www.linkedin.com/company/RubricLabs'
+	}
+]
 
 export const Footer = ({ className }: { className?: string }) => {
 	return (
@@ -22,15 +43,16 @@ export const Footer = ({ className }: { className?: string }) => {
 					<div className="flex flex-col gap-4">
 						<p>Socials</p>
 						<div className="flex gap-5 text-secondary">
-							<Link href="https://github.com/rubriclabs">
-								<GithubIcon className="size-5" />
-							</Link>
-							<Link href="https://x.com/rubriclabs">
-								<XIcon className="size-5" />
-							</Link>
-							<Link href="https://www.linkedin.com/company/rubriclabs">
-								<LinkedInIcon className="size-5" />
-							</Link>
+							{socials.map(({ icon, href, label }) => (
+								<Link
+									key={label}
+									href={href}
+									onClick={() => posthog.capture('social.clicked', { href, label })}
+									target="_blank"
+								>
+									{icon}
+								</Link>
+							))}
 						</div>
 					</div>
 				</div>
