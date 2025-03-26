@@ -29,7 +29,6 @@ export default async function Page() {
 		<div className="flex flex-col items-center">
 			<Section className="relative h-screen">
 				<div className="flex h-full w-full flex-col items-start justify-center gap-4">
-					<Announcement />
 					<p className="shrink-0 text-lg sm:max-w-2/3">
 						We&apos;re an applied AI Lab helping companies get intelligence to production.
 					</p>
