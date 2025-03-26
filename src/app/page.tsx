@@ -37,9 +37,9 @@ export default async function Page() {
 				</div>
 				<ScrollButton className="absolute bottom-6" />
 			</Section>
-			<Section className="space-y-32">
-				<div className="flex w-full flex-col items-center space-y-8">
-					<div className="flex w-full items-center justify-between">
+			<Section className="space-y-40">
+				<div className="flex w-full flex-col items-center space-y-6">
+					<div className="flex w-full max-w-2xl items-center justify-between">
 						<Cal className="w-40" />
 						<Graphite className="w-40" />
 						<Albertsons className="w-48" />
@@ -49,8 +49,8 @@ export default async function Page() {
 					</Link>
 				</div>
 				<Testimonials />
-				<div className="flex w-full max-w-2xl flex-col items-center space-y-8">
-					<p className="text-secondary">our partners</p>
+				<div className="flex w-full max-w-2xl flex-col items-center space-y-6">
+					<p className="text-secondary text-sm">Our partners</p>
 					<div className="flex w-full items-center justify-between">
 						<Link href="https://neon.tech/blog/rubric-labs-can-make-your-ai-dreams-come-true">
 							<Neon className="w-36" />
