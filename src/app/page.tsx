@@ -1,13 +1,14 @@
+'use client'
+
 import Link from 'next/link'
+import posthog from 'posthog-js'
 import { cn } from '~/lib/utils/cn'
 import { Button } from '~/ui/button'
 import { Footer } from '~/ui/footer'
 import { Albertsons } from '~/ui/logos/albertsons'
 import { Cal } from '~/ui/logos/cal'
 import { Graphite } from '~/ui/logos/graphite'
-import { Langchain } from '~/ui/logos/langchain'
-import { Neon } from '~/ui/logos/neon'
-import { Vercel } from '~/ui/logos/vercel'
+import { Partners } from '~/ui/partners'
 import { ScrollButton } from '~/ui/scroll-button'
 import { Testimonials } from '~/ui/testimonials'
 import VimeoPlayer from '~/ui/video'
@@ -44,33 +45,36 @@ export default async function Page() {
 						<Graphite className="w-40" />
 						<Albertsons className="w-48" />
 					</div>
-					<Link href="/work" className="text-sm">
+					<Link
+						href="/work"
+						onClick={() => posthog.capture('projects.clicked', { body: 'See more', href: '/work' })}
+					>
 						See more
 					</Link>
 				</div>
 				<Testimonials />
-				<div className="flex w-full max-w-2xl flex-col items-center space-y-6">
-					<p className="text-secondary text-sm">Our partners</p>
-					<div className="flex w-full items-center justify-between">
-						<Link href="https://neon.tech/blog/rubric-labs-can-make-your-ai-dreams-come-true">
-							<Neon className="w-36" />
-						</Link>
-						<Link href="https://vercel.com/partners/solution-partners/rubriclabs">
-							<Vercel className="w-40" />
-						</Link>
-						<Link href="https://langchain.com/experts">
-							<Langchain className="w-44" />
-						</Link>
-					</div>
-				</div>
+				<Partners />
 				<h2 className="max-w-2xl text-7xl">
 					We&apos;re a small team of startup builders. We could be talking tomorrow.
 				</h2>
 				<div className="flex items-center gap-4">
-					<Link href="/blog/introducing-rubric-labs">
+					<Link
+						href="/blog/introducing-rubric-labs"
+						onClick={() =>
+							posthog.capture('read_more.clicked', {
+								body: 'Read more',
+								href: '/blog/introducing-rubric-labs'
+							})
+						}
+					>
 						<Button variant="outline">Read more</Button>
 					</Link>
-					<Link href="/contact">
+					<Link
+						href="/contact"
+						onClick={() =>
+							posthog.capture('contact_us.clicked', { body: 'Get in touch', href: '/contact' })
+						}
+					>
 						<Button>Get in touch</Button>
 					</Link>
 				</div>
