@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import { cn } from '~/lib/utils/cn'
-import { Announcement } from '~/ui/announcement'
 import { Button } from '~/ui/button'
 import { Footer } from '~/ui/footer'
 import { Albertsons } from '~/ui/logos/albertsons'
