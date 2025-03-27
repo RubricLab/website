@@ -114,6 +114,17 @@
 		@apply hidden;
 	}
 
+	/* Caption styling */
+	video::cue {
+		font-size: 0.85rem;
+		line-height: 1.2;
+		background-color: rgba(0, 0, 0, 0.7);
+		color: white;
+		font-family: ui-sans-serif, system-ui, sans-serif;
+		white-space: pre-line;
+		padding: 0.5rem;
+	}
+
 	/* Codeblocks */
 
 	code {
