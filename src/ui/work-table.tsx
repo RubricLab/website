@@ -67,30 +67,29 @@ const works = [
 			'We built a platform to make an AI-directed video out of your GitHub activity. It was used by thousands of devs, which caused it to crash, so we parallelized the rendering engine and dynamically down-rezzed on mobile to scale.',
 		backgroundImageUrl: '/images/graphite.png',
 		image: (
-			<div className="flex w-full flex-col gap-4">
-				<div className="mr-auto rounded bg-primary px-2 py-1">enter your github username</div>
-				<div className="ml-auto rounded bg-primary px-2 py-1">@carmenlala</div>
-
-				<div className="flex flex-col gap-4 overflow-hidden rounded bg-primary p-3">
-					<div className="grid w-fit grid-flow-col grid-rows-7 gap-1">
-						{Array.from({ length: 7 * 40 }).map((_, index) => (
+			<div className="flex w-full flex-col gap-2">
+				<div className="mr-auto rounded-custom bg-background px-2 py-1">enter your github username</div>
+				<div className="ml-auto rounded-custom bg-background px-2 py-1">@carmenlala</div>
+				<div className="flex flex-col gap-4 rounded-custom bg-background p-4">
+					<div className="grid w-full grid-flow-col grid-rows-7 gap-1 overflow-hidden">
+						{Array.from({ length: 7 * 52 }).map((_, index) => (
 							<div
 								key={index}
-								className={cn('h-2 w-2', index % 5 === 0 ? 'bg-background' : 'bg-secondary')}
+								className={cn('h-2 w-2', index % (index % 5) === 0 ? 'bg-secondary' : 'bg-subtle')}
 							/>
 						))}
 					</div>
-					<div className="flex items-center gap-1">
+					<div className="flex items-center gap-6">
 						<div className="text-center">
-							<h3>1337</h3>
+							<p className="text-2xl">468</p>
 							<p>commits</p>
 						</div>
 						<div className="text-center">
-							<h3>400</h3>
+							<p className="text-2xl">239</p>
 							<p>PRs</p>
 						</div>
 						<div className="text-center">
-							<h3>101</h3>
+							<p className="text-2xl">76</p>
 							<p>followers</p>
 						</div>
 					</div>
@@ -99,8 +98,7 @@ const works = [
 		),
 		date: '2024',
 		category: 'Client',
-		quote:
-			'Rubric went from initial concepts to delivering an engaging AI video experience that reached thousands of users.',
+		quote: 'Scaling personalized, generative video to 1000s of users',
 		link: {
 			label: 'Try it out',
 			href: 'https://year-in-code.com'
@@ -194,43 +192,50 @@ export const WorkTable = () => {
 						<div
 							key={index}
 							id={`work-${work.name}`}
-							className={`group grid w-full grid-cols-2 rounded-custom border p-4 px-6 text-secondary transition-colors duration-500 ${
-								highlightedWork === work.name ? 'border-primary' : 'border-background'
+							className={`group h-fit w-full space-y-4 rounded-custom border p-4 px-6 text-secondary transition-colors duration-500 ${
+								highlightedWork === work.name ? 'border-primary' : 'border-primary/0'
 							}`}
 						>
-							<div className="flex w-full flex-col gap-4">
+							<div className="flex justify-between">
 								<h3 className="text-primary">{work.name}</h3>
-								{work.quote ? (
-									<div className="text-5xl text-primary leading-12 tracking-tight">"{work.quote}"</div>
-								) : null}
-								{work.description ? <div>{work.description}</div> : null}
-								<div className="flex items-center gap-2">
-									{work.secondaryLink && typeof work.secondaryLink === 'object' ? (
-										<Link href={work.secondaryLink.href}>
-											<Button variant="outline">{work.secondaryLink.label}</Button>
-										</Link>
+								<div>{work.date}</div>
+							</div>
+							<div className="grid grid-cols-2 gap-6">
+								<div className="flex w-full flex-col gap-4">
+									{work.quote ? (
+										<div className="text-5xl text-primary leading-12 tracking-tight">{work.quote}</div>
 									) : null}
-									{work.link && typeof work.link === 'object' ? (
-										<Link href={work.link.href}>
-											<Button variant="default">{work.link.label}</Button>
-										</Link>
+									{work.description ? <div>{work.description}</div> : null}
+									<div className="grow" />
+									<div className="flex items-center gap-2">
+										{work.secondaryLink && typeof work.secondaryLink === 'object' ? (
+											<Link href={work.secondaryLink.href}>
+												<Button variant="outline">{work.secondaryLink.label}</Button>
+											</Link>
+										) : null}
+										{work.link && typeof work.link === 'object' ? (
+											<Link href={work.link.href}>
+												<Button variant="default">{work.link.label}</Button>
+											</Link>
+										) : null}
+									</div>
+								</div>
+								<div
+									className={cn('relative w-full space-y-4 text-right', { 'aspect-square': work.image })}
+								>
+									{work.image ? (
+										<div className="absolute top-0 left-0 z-10 flex h-full w-full items-center justify-center p-4">
+											{work.image}
+										</div>
+									) : null}
+									{work.backgroundImageUrl ? (
+										<CustomImage
+											src={work.backgroundImageUrl}
+											alt={work.name}
+											className="absolute top-0 h-full w-full object-cover"
+										/>
 									) : null}
 								</div>
-							</div>
-							<div className={cn('relative w-full space-y-4 text-right', { 'aspect-square': work.image })}>
-								<div>{work.date}</div>
-								{work.image ? (
-									<div className="absolute top-10 left-0 z-10 flex h-full w-full items-center justify-center p-4">
-										{work.image}
-									</div>
-								) : null}
-								{work.backgroundImageUrl ? (
-									<CustomImage
-										src={work.backgroundImageUrl}
-										alt={work.name}
-										className="absolute top-10 h-full w-full object-cover"
-									/>
-								) : null}
 							</div>
 						</div>
 					))}
