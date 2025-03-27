@@ -8,6 +8,7 @@ import { useInView } from 'react-intersection-observer'
 import { cn } from '~/lib/utils/cn'
 import { Button } from '../button'
 
+import { CrossIcon } from '../icons/cross'
 import { useVideoPlayer } from './useVideoPlayer'
 // Sub-components and hooks for better organization
 import { VideoControls } from './video-controls'
@@ -267,14 +268,15 @@ export function Video({ hlsUrl, mp4Url, className = '', posterUrl, transcription
 
 				{/* Close button for floating mode */}
 				{isFloating && (
-					<button
-						type="button"
-						className="absolute top-2 right-2 z-30 flex h-8 w-8 items-center justify-center rounded-full bg-black bg-opacity-50 text-white"
+					<Button
+						variant="icon"
+						size="sm"
+						className="absolute top-1 right-1 z-30"
 						onClick={closeFloating}
 						aria-label="Close video"
 					>
-						✕
-					</button>
+						<CrossIcon className="size-5" />
+					</Button>
 				)}
 			</div>
 		</div>
