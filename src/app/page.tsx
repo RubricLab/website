@@ -36,8 +36,8 @@ export default function Page() {
 					</p>
 					<div className="aspect-video w-full overflow-hidden">
 						<Video
-							hlsUrl="https://dxr63bjwc8ovl.cloudfront.net/hero/hls/master.m3u8"
-							mp4Url="https://dxr63bjwc8ovl.cloudfront.net/hero/preview.mp4"
+							hlsUrl="https://d2phm56ykhsjlm.cloudfront.net/hero/hls/master.m3u8"
+							mp4Url="https://d2phm56ykhsjlm.cloudfront.net/hero/preview.mp4"
 							posterUrl="/images/video-thumbnail.jpg"
 							transcriptionUrl="/transcripts/hero.vtt"
 						/>
