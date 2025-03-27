@@ -5,7 +5,6 @@ import { toast } from 'sonner'
 import { useClipboard } from '~/lib/hooks/use-clipboard'
 import { cn } from '~/lib/utils/cn'
 import { Button } from './button'
-import { Checkmark } from './icons/checkmark'
 
 export const Copiable = ({
 	children,
