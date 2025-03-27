@@ -36,7 +36,6 @@ export const Copiable = ({
 			className={cn(className, 'relative inline-flex')}
 		>
 			{children}
-			{copied ? <Checkmark className="-top-0 -right-5 absolute size-4" /> : null}
 		</Button>
 	)
 }
