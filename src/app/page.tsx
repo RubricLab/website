@@ -37,14 +37,12 @@ export default function Page() {
 						<h2 className="mb-4 text-2xl">
 							We&apos;re an applied AI Lab helping companies get intelligence to production.
 						</h2>
-						<div className="video-parent">
-							<Video
-								hlsUrl="https://d2os0zhpsj02b0.cloudfront.net/hero/hls/master.m3u8"
-								mp4Url="https://d2os0zhpsj02b0.cloudfront.net/hero/preview.mp4"
-								posterUrl="/images/video-thumbnail.jpg"
-								transcriptionUrl="/transcripts/hero.vtt"
-							/>
-						</div>
+						<Video
+							hlsUrl="https://d2os0zhpsj02b0.cloudfront.net/hero/hls/master.m3u8"
+							mp4Url="https://d2os0zhpsj02b0.cloudfront.net/hero/preview.mp4"
+							posterUrl="/images/video-thumbnail.jpg"
+							transcriptionUrl="/transcripts/hero.vtt"
+						/>
 					</div>
 				</div>
 				<ScrollButton

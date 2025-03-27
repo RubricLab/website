@@ -5,6 +5,7 @@ import Image from 'next/image'
 import type React from 'react'
 import { useEffect, useRef } from 'react'
 import { useInView } from 'react-intersection-observer'
+import { cn } from '~/lib/utils/cn'
 import { Button } from '../button'
 
 import { useVideoPlayer } from './useVideoPlayer'
@@ -167,10 +168,14 @@ export function Video({ hlsUrl, mp4Url, className = '', posterUrl, transcription
 	const showPlayButton = status !== 'playing-with-sound'
 
 	return (
-		<div ref={containerRef} className={`video-outer-container ${className}`}>
+		<div ref={containerRef} className={cn('video-outer-container', className)}>
 			<div
 				ref={videoContainerRef}
-				className={`video-inner-container ${hasSound ? '' : 'grayscale'} ${isFloating ? 'is-floating' : ''}`}
+				className={cn(
+					'video-inner-container',
+					hasSound ? '' : 'grayscale',
+					isFloating ? 'is-floating' : ''
+				)}
 			>
 				{/* Poster image */}
 				{posterUrl && status === 'loading' && (
@@ -178,10 +183,9 @@ export function Video({ hlsUrl, mp4Url, className = '', posterUrl, transcription
 						<Image
 							src={posterUrl}
 							alt="Video thumbnail"
-							fill
 							priority
-							style={{ objectFit: 'cover' }}
-							className="rounded-custom"
+							fill
+							className="rounded-custom object-cover"
 						/>
 					</div>
 				)}
