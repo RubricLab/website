@@ -45,7 +45,7 @@
 	}
 
 	a:not(:has(button)) {
-		@apply focus:outline-none text-secondary hover:text-primary transition-colors;
+		@apply focus:outline-none opacity-90 hover:opacity-100 transition-opacity;
 	}
 
 	input,
@@ -58,16 +58,15 @@
 	}
 
 	article {
-		@apply space-y-6;
+		@apply space-y-4;
 	}
 
 	article a {
 		@apply underline underline-offset-4 decoration-dashed hover:decoration-solid;
 	}
 
-	article p,
-	li {
-		@apply text-secondary;
+	article p {
+		@apply opacity-90;
 	}
 
 	li {

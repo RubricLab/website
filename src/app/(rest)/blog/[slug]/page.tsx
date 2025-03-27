@@ -51,7 +51,7 @@ export default async function Page({ params }: Props) {
 				<article className="mx-auto max-w-full sm:max-w-2xl">
 					<div className="flex flex-col gap-2">
 						<h1>{metadata.title}</h1>
-						{metadata.subtitle ? <h3 className="text-secondary">{metadata.subtitle}</h3> : null}
+						{metadata.subtitle ? <h3 className="opacity-80">{metadata.subtitle}</h3> : null}
 					</div>
 					<Post />
 					<div className="flex items-center justify-center">
