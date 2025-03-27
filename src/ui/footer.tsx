@@ -55,7 +55,7 @@ export const Footer = ({ className }: { className?: string }) => {
 			className={cn('flex h-screen w-full flex-col items-center justify-center space-y-24', className)}
 		>
 			<Wordmark className="text-secondary" />
-			<div className="w-full max-w-2xl space-y-16">
+			<div className="w-full max-w-2xl space-y-16 px-4">
 				<div className="flex w-full justify-between">
 					<div className="flex w-full max-w-1/2 flex-col gap-4">
 						<p>Newsletter</p>

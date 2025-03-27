@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 export const Testimonials = () => {
 	return (
-		<div className="w-full max-w-2xl space-y-20 text-justify">
+		<div className="w-full max-w-2xl space-y-20 sm:text-justify">
 			<div className="space-y-4">
 				<p>
 					<span className="text-secondary/50">
