@@ -2,9 +2,14 @@
 
 import Hls from 'hls.js'
 import Image from 'next/image'
-import React, { useRef, useEffect, useState } from 'react'
+import type React from 'react'
+import { useEffect, useRef } from 'react'
 import { useInView } from 'react-intersection-observer'
-import { Button } from './button'
+import { Button } from '../button'
+
+import { useVideoPlayer } from './useVideoPlayer'
+// Sub-components and hooks for better organization
+import { VideoControls } from './video-controls'
 
 interface VideoProps {
 	hlsUrl: string
@@ -21,12 +26,25 @@ export function Video({ hlsUrl, mp4Url, className = '', posterUrl, transcription
 	const videoContainerRef = useRef<HTMLDivElement>(null)
 	const hlsRef = useRef<Hls | null>(null)
 
-	// Core state
-	const [status, setStatus] = useState<'loading' | 'playing' | 'playing-with-sound'>('loading')
-	const [isFloating, setIsFloating] = useState(false)
-
 	// Detect when video is scrolled out of view
 	const [inViewRef, inView] = useInView({ threshold: 0.3 })
+
+	// Use the custom hook for player state and controls
+	const {
+		status,
+		isPlaying,
+		isFloating,
+		isCaptionsOn,
+		currentTime,
+		duration,
+		buffered,
+		playWithSound,
+		togglePlayPause,
+		toggleCaptions,
+		toggleFullscreen,
+		closeFloating,
+		handleTimeUpdate
+	} = useVideoPlayer(videoRef)
 
 	// Setup video player
 	useEffect(() => {
@@ -37,6 +55,8 @@ export function Video({ hlsUrl, mp4Url, className = '', posterUrl, transcription
 		inViewRef(containerRef.current)
 		video.muted = true
 		video.playsInline = true
+
+		let playbackStarted = false
 
 		// Setup HLS if supported
 		const setupHls = () => {
@@ -54,7 +74,10 @@ export function Video({ hlsUrl, mp4Url, className = '', posterUrl, transcription
 				hls.attachMedia(video)
 
 				hls.on(Hls.Events.MANIFEST_PARSED, () => {
-					video.play().catch(err => console.log('Autoplay prevented:', err))
+					if (!playbackStarted) {
+						playbackStarted = true
+						video.play().catch(err => console.log('Autoplay prevented:', err))
+					}
 				})
 
 				hls.on(Hls.Events.ERROR, (_, data) => {
@@ -64,6 +87,7 @@ export function Video({ hlsUrl, mp4Url, className = '', posterUrl, transcription
 						hlsRef.current = null
 						return false
 					}
+					return true
 				})
 
 				return true
@@ -88,12 +112,18 @@ export function Video({ hlsUrl, mp4Url, className = '', posterUrl, transcription
 					video.src = mp4Url
 				}
 
-				video.play().catch(err => console.log('Native playback prevented:', err))
+				if (!playbackStarted) {
+					playbackStarted = true
+					video.play().catch(err => console.log('Native playback prevented:', err))
+				}
 			} catch (e) {
 				console.error('Video playback error:', e)
 				// Last resort fallback
 				video.src = mp4Url
-				video.play().catch(err => console.log('Fallback playback prevented:', err))
+				if (!playbackStarted) {
+					playbackStarted = true
+					video.play().catch(err => console.log('Fallback playback prevented:', err))
+				}
 			}
 		}
 
@@ -103,26 +133,8 @@ export function Video({ hlsUrl, mp4Url, className = '', posterUrl, transcription
 			setupNative()
 		}
 
-		// Update status when playback starts
-		const handlePlaying = () => {
-			setStatus(prev => (prev === 'loading' ? 'playing' : prev))
-		}
-
-		// Handle video ending when in playing-with-sound mode
-		const handleEnded = () => {
-			if (video.controls && !video.muted) {
-				// Reset to muted grayscale state
-				video.muted = true
-				video.controls = false
-				setStatus('playing')
-
-				// Restart playback in muted mode
-				video.play().catch(err => console.log('Restart playback prevented:', err))
-			}
-		}
-
-		video.addEventListener('playing', handlePlaying)
-		video.addEventListener('ended', handleEnded)
+		// Add event listeners
+		video.addEventListener('timeupdate', handleTimeUpdate)
 
 		// Cleanup
 		return () => {
@@ -130,79 +142,23 @@ export function Video({ hlsUrl, mp4Url, className = '', posterUrl, transcription
 				hlsRef.current.destroy()
 				hlsRef.current = null
 			}
-			video.removeEventListener('playing', handlePlaying)
-			video.removeEventListener('ended', handleEnded)
+
+			video.removeEventListener('timeupdate', handleTimeUpdate)
 		}
-	}, [hlsUrl, mp4Url, inViewRef])
+	}, [hlsUrl, mp4Url, inViewRef, handleTimeUpdate])
 
 	// Handle floating video when scrolled away
 	useEffect(() => {
 		if (!inView && status === 'playing-with-sound') {
-			setIsFloating(true)
+			if (videoContainerRef.current) {
+				videoContainerRef.current.classList.add('is-floating')
+			}
 		} else {
-			setIsFloating(false)
+			if (videoContainerRef.current) {
+				videoContainerRef.current.classList.remove('is-floating')
+			}
 		}
 	}, [inView, status])
-
-	// Apply floating mode class to video container
-	useEffect(() => {
-		if (!videoContainerRef.current) return
-
-		if (isFloating) {
-			videoContainerRef.current.classList.add('is-floating')
-		} else {
-			videoContainerRef.current.classList.remove('is-floating')
-		}
-	}, [isFloating])
-
-	// Add custom styles to fix border radius issues
-	useEffect(() => {
-		// Add style to head
-		const style = document.createElement('style')
-		style.innerHTML = `
-			/* Override nested border radius in floating mode */
-			.video-container.is-floating video {
-				border-radius: 0 !important;
-			}
-		`
-		document.head.appendChild(style)
-
-		// Clean up
-		return () => {
-			document.head.removeChild(style)
-		}
-	}, [])
-
-	// Play with sound handler
-	const playWithSound = () => {
-		const video = videoRef.current
-		if (!video) return
-
-		// Reset to beginning
-		video.currentTime = 0
-
-		// Turn on sound
-		video.muted = false
-
-		// Set controls
-		video.controls = true
-
-		// Play with sound (this will turn on color via CSS)
-		const playPromise = video.play()
-
-		// Only update state after play succeeds
-		if (playPromise !== undefined) {
-			playPromise
-				.then(() => setStatus('playing-with-sound'))
-				.catch(err => console.log('Play with sound failed:', err))
-		}
-	}
-
-	// Close floating video
-	const closeFloating = () => {
-		setIsFloating(false)
-		videoRef.current?.pause()
-	}
 
 	const hasSound = status === 'playing-with-sound'
 	const showPlayButton = status !== 'playing-with-sound'
@@ -211,7 +167,7 @@ export function Video({ hlsUrl, mp4Url, className = '', posterUrl, transcription
 		<div ref={containerRef} className={`relative overflow-hidden ${className}`}>
 			<div
 				ref={videoContainerRef}
-				className={`video-container ${hasSound ? '' : 'grayscale'} relative`}
+				className={`video-container ${hasSound ? '' : 'grayscale'}`}
 				style={{
 					aspectRatio: '16/9',
 					maxHeight: '100%'
@@ -225,8 +181,6 @@ export function Video({ hlsUrl, mp4Url, className = '', posterUrl, transcription
 							alt="Video thumbnail"
 							fill
 							priority
-							placeholder="blur"
-							blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wgARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIQAxAAAAGZB//EABQQAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQEAAQUCf//EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQMBAT8Bf//EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQIBAT8Bf//EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQIBAT8Bf//EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQIBAT8Bf//EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQIBAT8Bf//EABQQAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQEAAT8Cf//EABQQAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQEAAT8hf//aAAwDAQACAAMAAAAQD//EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQMBAT8Qf//EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQIBAT8Qf//EABQQAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQEAAT8Qf//Z"
 							style={{ objectFit: 'cover' }}
 							className="rounded-custom"
 						/>
@@ -238,11 +192,9 @@ export function Video({ hlsUrl, mp4Url, className = '', posterUrl, transcription
 					ref={videoRef}
 					muted={!hasSound}
 					playsInline
-					loop={status !== 'playing-with-sound'}
 					className="h-full w-full object-cover"
 					preload="auto"
 					poster={posterUrl}
-					style={{ borderRadius: 'var(--radius-custom)' }}
 				>
 					{transcriptionUrl ? (
 						<track kind="captions" src={transcriptionUrl} srcLang="en" label="English" default />
@@ -251,7 +203,19 @@ export function Video({ hlsUrl, mp4Url, className = '', posterUrl, transcription
 					)}
 				</video>
 
-				{/* Clickable overlay for the entire video */}
+				{/* Clickable overlay for play/pause when in playing-with-sound mode */}
+				{status === 'playing-with-sound' && (
+					<div
+						className="absolute inset-0 z-[5] cursor-pointer"
+						onClick={togglePlayPause}
+						onKeyDown={e => e.key === 'Enter' && togglePlayPause()}
+						tabIndex={0}
+						role="button"
+						aria-label="Play or pause video"
+					/>
+				)}
+
+				{/* Clickable overlay for the entire video when not in playing-with-sound mode */}
 				{showPlayButton && (
 					<div
 						className="absolute inset-0 z-10 cursor-pointer"
@@ -280,6 +244,23 @@ export function Video({ hlsUrl, mp4Url, className = '', posterUrl, transcription
 						</Button>
 					</div>
 				)}
+
+				{/* Video Controls - extracted to a separate component */}
+				<div className="video-controls-container z-20">
+					{status === 'playing-with-sound' && (
+						<VideoControls
+							isPlaying={isPlaying}
+							isCaptionsOn={isCaptionsOn}
+							currentTime={currentTime}
+							duration={duration}
+							buffered={buffered}
+							onPlayPause={togglePlayPause}
+							onToggleCaptions={toggleCaptions}
+							onToggleFullscreen={toggleFullscreen}
+							videoContainerRef={videoContainerRef}
+						/>
+					)}
+				</div>
 
 				{/* Close button for floating mode */}
 				{isFloating && (

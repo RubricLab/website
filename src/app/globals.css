@@ -116,13 +116,201 @@
 
 	/* Caption styling */
 	video::cue {
-		font-size: 0.85rem;
-		line-height: 1.2;
+		font-size: 1rem;
+		line-height: 1.4;
 		background-color: rgba(0, 0, 0, 0.7);
 		color: white;
-		font-family: ui-sans-serif, system-ui, sans-serif;
+		font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+		text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.5);
 		white-space: pre-line;
-		padding: 0.5rem;
+		padding-left: 0.5rem;
+		padding-right: 0.5rem;
+	}
+
+	/* Position captions above controls */
+	video::-webkit-media-text-track-container {
+		transform: translateY(-4.5rem);
+		padding-bottom: 3.5rem;
+	}
+
+	/* Video player styles */
+	.video-container {
+		position: relative;
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
+		opacity: 1;
+		transition: opacity 0.15s ease-out;
+		border-radius: var(--radius-custom);
+	}
+
+	.video-container video {
+		border-radius: var(--radius-custom);
+	}
+
+	.video-controls-container {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		border-bottom-left-radius: var(--radius-custom);
+		border-bottom-right-radius: var(--radius-custom);
+		overflow: hidden;
+		z-index: 30;
+	}
+
+	/* Progress bar and control styles */
+	.video-controls {
+		opacity: 0;
+		transition: opacity 0.3s ease;
+		z-index: 20;
+		background-image: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+		padding-top: 3rem;
+		padding-bottom: 0.75rem;
+	}
+
+	.video-container:hover .video-controls,
+	.video-controls.always-show {
+		opacity: 1;
+	}
+
+	.progress-bar {
+		position: relative;
+		height: 3px;
+		background: rgba(255, 255, 255, 0.2);
+		cursor: pointer;
+		transition: height 0.15s ease, transform 0.15s ease;
+		margin: 0 16px;
+		border-radius: 3px;
+	}
+
+	.video-container:hover .progress-bar {
+		height: 5px;
+		transform: translateY(-1px);
+	}
+
+	.progress-buffer {
+		position: absolute;
+		height: 100%;
+		background: rgba(255, 255, 255, 0.3);
+		border-radius: 3px;
+	}
+
+	.progress-current {
+		position: absolute;
+		height: 100%;
+		background: rgba(255, 255, 255, 0.9);
+		border-radius: 3px;
+	}
+
+	.cc-button {
+		font-weight: 600;
+		font-size: 13px;
+		padding: 2px 4px;
+		border-radius: 3px;
+		user-select: none;
+		cursor: pointer;
+	}
+
+	.video-controls button {
+		cursor: pointer;
+		opacity: 0.85;
+		transition: opacity 0.2s ease;
+	}
+
+	.video-controls button:hover {
+		opacity: 1;
+	}
+
+	/* Fade out before starting transform */
+	.video-container.is-floating {
+		animation: pip-transition 0.25s ease-out forwards;
+		transform-origin: bottom right;
+	}
+
+	.video-container.is-floating:after {
+		content: "";
+		position: absolute;
+		top: -2px;
+		left: -2px;
+		right: -2px;
+		bottom: -2px;
+		background: black;
+		border-radius: 0.6rem;
+		z-index: -1;
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+	}
+
+	.video-container.is-floating video {
+		border-radius: 0.5rem !important;
+		outline: none;
+		border: none;
+		display: block;
+	}
+
+	.video-container.is-floating .video-controls-container {
+		border-bottom-left-radius: 0.5rem;
+		border-bottom-right-radius: 0.5rem;
+	}
+
+	.video-container.is-floating video::-webkit-media-text-track-container {
+		transform: translateY(-3.5rem);
+		padding-bottom: 2.5rem;
+	}
+
+	.video-container.is-floating video::cue {
+		font-size: 0.8rem;
+	}
+
+	@keyframes pip-transition {
+		0% {
+			opacity: 0;
+			position: relative;
+		}
+		10% {
+			opacity: 0;
+			position: fixed;
+			bottom: 1rem;
+			right: 1rem;
+			width: 18rem;
+			height: 10rem;
+			z-index: 999;
+			border-radius: 0.5rem;
+			box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+			background-color: transparent;
+			padding: 0;
+		}
+		100% {
+			opacity: 1;
+			position: fixed;
+			bottom: 1rem;
+			right: 1rem;
+			width: 18rem;
+			height: 10rem;
+			z-index: 999;
+			border-radius: 0.5rem;
+			box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+			background-color: transparent;
+			padding: 0;
+		}
+	}
+
+	/* Ensure transition back from PiP to fullscreen is also smooth */
+	.video-container:not(.is-floating) {
+		animation: fullscreen-transition 0.25s ease-out forwards;
+	}
+
+	@keyframes fullscreen-transition {
+		0% {
+			opacity: 0;
+		}
+		100% {
+			opacity: 1;
+		}
+	}
+
+	.video-container.grayscale video {
+		filter: grayscale(100%);
 	}
 
 	/* Codeblocks */
@@ -155,70 +343,5 @@
 		counter-increment: line;
 		content: counter(line);
 		@apply inline-block w-4 mr-6 text-right text-secondary;
-	}
-
-	/* Video player styles */
-	.video-container {
-		position: relative;
-		width: 100%;
-		height: 100%;
-		overflow: hidden;
-		opacity: 1;
-		transition: opacity 0.15s ease-out;
-	}
-
-	/* Fade out before starting transform */
-	.video-container.is-floating {
-		animation: pip-transition 0.25s ease-out forwards;
-		transform-origin: bottom right;
-	}
-
-	@keyframes pip-transition {
-		0% {
-			opacity: 0;
-			position: relative;
-		}
-		10% {
-			opacity: 0;
-			position: fixed;
-			bottom: 1rem;
-			right: 1rem;
-			width: 18rem;
-			height: 10rem;
-			z-index: 999;
-			border-radius: 0.5rem;
-			box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-			background-color: black;
-		}
-		100% {
-			opacity: 1;
-			position: fixed;
-			bottom: 1rem;
-			right: 1rem;
-			width: 18rem;
-			height: 10rem;
-			z-index: 999;
-			border-radius: 0.5rem;
-			box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-			background-color: black;
-		}
-	}
-
-	/* Ensure transition back from PiP to fullscreen is also smooth */
-	.video-container:not(.is-floating) {
-		animation: fullscreen-transition 0.25s ease-out forwards;
-	}
-
-	@keyframes fullscreen-transition {
-		0% {
-			opacity: 0;
-		}
-		100% {
-			opacity: 1;
-		}
-	}
-
-	.video-container.grayscale video {
-		filter: grayscale(100%);
 	}
 }

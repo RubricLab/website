@@ -11,7 +11,7 @@ import { Graphite } from '~/ui/logos/graphite'
 import { Partners } from '~/ui/partners'
 import { ScrollButton } from '~/ui/scroll-button'
 import { Testimonials } from '~/ui/testimonials'
-import { Video } from '~/ui/video'
+import { Video } from '~/ui/video/video'
 
 const Section = ({ children, className }: { children: React.ReactNode; className?: string }) => (
 	<div
