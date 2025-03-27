@@ -1,8 +1,9 @@
 import { ImageResponse } from 'next/og'
-import colors from 'tailwindcss/colors'
+import { getBaseUrl } from '~/lib/utils'
+import { Rubric } from '~/ui/logos/rubric'
 
 export const runtime = 'edge'
-export const alt = 'Applied AI Lab helping companies get intelligence to production'
+export const alt = 'Applied AI lab helping companies get intelligence to production'
 export const contentType = 'image/png'
 export const size = {
 	height: 630,
@@ -18,20 +19,29 @@ export const Component = () => {
 		<div
 			style={{
 				alignItems: 'center',
-				background: colors.black,
 				display: 'flex',
 				flexDirection: 'column',
 				height: '100%',
 				justifyContent: 'center',
-				overflowY: 'hidden',
 				position: 'relative',
+				color: 'white',
 				width: '100%'
 			}}
 		>
-			<div style={{ color: colors.white, fontSize: 128 }}>Rubric Labs</div>
-			<div style={{ color: colors.white, fontSize: 36, maxWidth: '60%', textAlign: 'center' }}>
-				Applied AI Lab helping companies get intelligence to production.
+			<div
+				style={{
+					display: 'flex',
+					position: 'absolute',
+					top: 0,
+					left: 0,
+					width: '100%',
+					height: '100%'
+				}}
+			>
+				<img src={`${getBaseUrl()}/images/seedling.png`} alt="Rubric Labs" width="100%" height="auto" />
 			</div>
+			<Rubric style={{ width: 56, height: 56, marginBottom: 24 }} />
+			<div style={{ fontSize: 48 }}>Applied AI</div>
 		</div>
 	)
 }
