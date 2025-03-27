@@ -67,30 +67,29 @@ const works = [
 			'We built a platform to make an AI-directed video out of your GitHub activity. It was used by thousands of devs, which caused it to crash, so we parallelized the rendering engine and dynamically down-rezzed on mobile to scale.',
 		backgroundImageUrl: '/images/graphite.png',
 		image: (
-			<div className="flex w-full flex-col gap-4">
-				<div className="mr-auto rounded bg-primary px-2 py-1">enter your github username</div>
-				<div className="ml-auto rounded bg-primary px-2 py-1">@carmenlala</div>
-
-				<div className="flex flex-col gap-4 overflow-hidden rounded bg-primary p-3">
-					<div className="grid w-fit grid-flow-col grid-rows-7 gap-1">
-						{Array.from({ length: 7 * 40 }).map((_, index) => (
+			<div className="flex w-full flex-col gap-2">
+				<div className="mr-auto rounded-custom bg-background px-2 py-1">enter your github username</div>
+				<div className="ml-auto rounded-custom bg-background px-2 py-1">@carmenlala</div>
+				<div className="flex flex-col gap-4 rounded-custom bg-background p-4">
+					<div className="grid w-full grid-flow-col grid-rows-7 gap-1 overflow-hidden">
+						{Array.from({ length: 7 * 52 }).map((_, index) => (
 							<div
 								key={index}
-								className={cn('h-2 w-2', index % 5 === 0 ? 'bg-background' : 'bg-secondary')}
+								className={cn('h-2 w-2', index % (index % 5) === 0 ? 'bg-secondary' : 'bg-subtle')}
 							/>
 						))}
 					</div>
-					<div className="flex items-center gap-1">
+					<div className="flex items-center gap-6">
 						<div className="text-center">
-							<h3>1337</h3>
+							<p className="text-2xl">468</p>
 							<p>commits</p>
 						</div>
 						<div className="text-center">
-							<h3>400</h3>
+							<p className="text-2xl">239</p>
 							<p>PRs</p>
 						</div>
 						<div className="text-center">
-							<h3>101</h3>
+							<p className="text-2xl">76</p>
 							<p>followers</p>
 						</div>
 					</div>
@@ -195,7 +194,7 @@ export const WorkTable = () => {
 							key={index}
 							id={`work-${work.name}`}
 							className={`group grid w-full grid-cols-2 rounded-custom border p-4 px-6 text-secondary transition-colors duration-500 ${
-								highlightedWork === work.name ? 'border-primary' : 'border-background'
+								highlightedWork === work.name ? 'border-primary' : 'border-primary/0'
 							}`}
 						>
 							<div className="flex w-full flex-col gap-4">
