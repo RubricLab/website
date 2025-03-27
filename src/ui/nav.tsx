@@ -2,19 +2,20 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { useFold } from '~/lib/hooks/use-fold'
+import { useScrollDirection } from '~/lib/hooks/use-scroll-direction'
 import { useShortcut } from '~/lib/hooks/use-shortcut'
 import { cn } from '~/lib/utils/cn'
 
 const links = [
 	{ href: '/blog', label: 'Blog' },
+	{ href: '/work', label: 'Work' },
 	{ href: '/contact', label: 'Contact' }
 ]
 
 export function Nav() {
 	const pathname = usePathname()
 	const router = useRouter()
-	const { isBelowFold } = useFold()
+	const { scrollDirection, scrollY } = useScrollDirection()
 
 	useShortcut('h', () => router.push('/'))
 	useShortcut('b', () => router.push('/blog'))
@@ -26,22 +27,28 @@ export function Nav() {
 	return (
 		<nav
 			className={cn(
-				'group fixed top-0 left-0 z-30 flex w-full items-center justify-between p-6 transition-colors hover:bg-background sm:px-8',
-				'hide-on-small-height'
+				'group fixed top-0 left-0 z-30 flex w-full items-center p-1 sm:justify-between sm:p-2'
 			)}
 		>
-			<Link
-				href="/"
-				className={cn('text-xl tracking-tight', {
-					'opacity-0 transition-opacity group-hover:opacity-100': isBelowFold
-				})}
-			>
-				Rubric Labs
-			</Link>
 			<div
-				className={cn('flex items-center gap-6', {
-					'opacity-0 transition-opacity group-hover:opacity-100': isBelowFold
-				})}
+				className={cn(
+					'flex h-10 items-center justify-center rounded-full border px-3 transition-all duration-300 sm:px-6',
+					scrollDirection === 'down' ? 'opacity-0' : 'opacity-100',
+					scrollY > 0 ? 'border-subtle bg-background' : 'border-transparent'
+				)}
+			>
+				<Link href="/" className="whitespace-nowrap text-xl">
+					Rubric Labs
+				</Link>
+			</div>
+
+			<div
+				className={cn(
+					'flex h-10 items-center gap-6 rounded-full border px-2 transition-all duration-300 sm:px-6',
+					scrollDirection === 'down' ? 'opacity-0' : 'opacity-100',
+					scrollY > 0 ? 'border-subtle bg-background' : 'border-transparent',
+					'invisible sm:visible'
+				)}
 			>
 				{links.map(link => (
 					<Link
