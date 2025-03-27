@@ -28,14 +28,13 @@ const Section = ({ children, className }: { children: React.ReactNode; className
 export default function Page() {
 	const posthog = usePostHog()
 	const { isBelowFold } = useFold()
-
 	const hook = "We don't have a sales team. Let's talk."
 
 	return (
 		<div className="flex flex-col items-center">
 			<Section className="relative h-screen">
 				<div className="flex h-full w-full flex-col items-center justify-center">
-					<div className="w-full max-w-5xl">
+					<div className="w-fit max-w-5xl">
 						<h2 className="mb-4 text-2xl">
 							We&apos;re an applied AI Lab helping companies get intelligence to production.
 						</h2>
@@ -75,32 +74,34 @@ export default function Page() {
 				<Testimonials />
 				<Partners />
 
-				<h2 className="max-w-2xl text-7xl">{hook}</h2>
-				<div className="flex items-center gap-4">
-					<Link
-						href="/blog/introducing-rubric-labs"
-						onClick={() =>
-							posthog.capture('read_more.clicked', {
-								body: 'Read more',
-								hook,
-								href: '/blog/introducing-rubric-labs'
-							})
-						}
-					>
-						<Button variant="outline">Read more</Button>
-					</Link>
-					<Link
-						href="/contact"
-						onClick={() =>
-							posthog.capture('contact_us.clicked', {
-								body: 'Get in touch',
-								hook,
-								href: '/contact'
-							})
-						}
-					>
-						<Button>Get in touch</Button>
-					</Link>
+				<div className="flex flex-col gap-8">
+					<h2 className="max-w-2xl text-7xl">{hook}</h2>
+					<div className="flex items-center gap-4">
+						<Link
+							href="/blog/introducing-rubric-labs"
+							onClick={() =>
+								posthog.capture('read_more.clicked', {
+									body: 'Read more',
+									hook,
+									href: '/blog/introducing-rubric-labs'
+								})
+							}
+						>
+							<Button variant="outline">Read more</Button>
+						</Link>
+						<Link
+							href="/contact"
+							onClick={() =>
+								posthog.capture('contact_us.clicked', {
+									body: 'Get in touch',
+									hook,
+									href: '/contact'
+								})
+							}
+						>
+							<Button>Get in touch</Button>
+						</Link>
+					</div>
 				</div>
 			</Section>
 
