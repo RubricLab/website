@@ -1,7 +1,7 @@
 import { writeFile } from 'node:fs/promises'
 import { $ } from 'bun'
 
-async function transcribe(videoPath: string, apiKey: string): Promise<void> {
+export async function transcribe(videoPath: string, apiKey: string): Promise<void> {
 	// Extract audio
 	await $`ffmpeg -i ${videoPath} -vn -acodec pcm_s16le -ar 16000 -ac 1 audio.wav`
 

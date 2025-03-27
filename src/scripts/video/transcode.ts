@@ -117,17 +117,17 @@ export async function transcodeVideo(config: TranscodeConfig): Promise<void> {
 	await writeFile(path.join(config.outputDir, 'metadata.json'), JSON.stringify(metadata, null, 2))
 }
 
-transcodeVideo({
-	inputFile: 'Architecting AI Systems.mov',
-	outputDir: './processed',
-	segmentDuration: 4,
-	qualities: [
-		{ name: '4k', resolution: '3840:-1', bitrate: '20000k', codec: 'libx264' },
-		{ name: '2k', resolution: '2560:-1', bitrate: '12000k', codec: 'libx264' },
-		{ name: '1080p', resolution: '1920:-1', bitrate: '6000k', codec: 'libx264' },
-		{ name: '720p', resolution: '1280:-1', bitrate: '3000k', codec: 'libx264' },
-		{ name: '480p', resolution: '854:-1', bitrate: '1400k', codec: 'libx264' }
-	],
-	ffmpegThreads: 0,
-	ffmpegPreset: 'fast'
-})
+// transcodeVideo({
+// 	inputFile: 'Architecting AI Systems.mov',
+// 	outputDir: './processed',
+// 	segmentDuration: 4,
+// 	qualities: [
+// 		{ name: '4k', resolution: '3840:-1', bitrate: '20000k', codec: 'libx264' },
+// 		{ name: '2k', resolution: '2560:-1', bitrate: '12000k', codec: 'libx264' },
+// 		{ name: '1080p', resolution: '1920:-1', bitrate: '6000k', codec: 'libx264' },
+// 		{ name: '720p', resolution: '1280:-1', bitrate: '3000k', codec: 'libx264' },
+// 		{ name: '480p', resolution: '854:-1', bitrate: '1400k', codec: 'libx264' }
+// 	],
+// 	ffmpegThreads: 0,
+// 	ffmpegPreset: 'fast'
+// })

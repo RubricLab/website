@@ -44,7 +44,7 @@ export function Video({ hlsUrl, mp4Url, className = '', posterUrl, transcription
 		toggleFullscreen,
 		closeFloating,
 		handleTimeUpdate
-	} = useVideoPlayer(videoRef)
+	} = useVideoPlayer(videoRef as React.RefObject<HTMLVideoElement>)
 
 	// Setup video player
 	useEffect(() => {
@@ -257,7 +257,7 @@ export function Video({ hlsUrl, mp4Url, className = '', posterUrl, transcription
 							onPlayPause={togglePlayPause}
 							onToggleCaptions={toggleCaptions}
 							onToggleFullscreen={toggleFullscreen}
-							videoContainerRef={videoContainerRef}
+							videoContainerRef={videoContainerRef as React.RefObject<HTMLDivElement>}
 						/>
 					)}
 				</div>
