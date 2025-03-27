@@ -65,7 +65,7 @@ export function useVideoPlayer(videoRef: React.RefObject<HTMLVideoElement>) {
 
 	// Toggle fullscreen
 	const toggleFullscreen = useCallback(() => {
-		const container = videoRef.current?.closest('.video-container') as HTMLElement
+		const container = videoRef.current?.closest('.video-inner-container') as HTMLElement
 		if (!container) return
 
 		if (!document.fullscreenElement) {
