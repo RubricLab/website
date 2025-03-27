@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { usePostHog } from 'posthog-js/react'
+import { useFold } from '~/lib/hooks/use-fold'
 import { cn } from '~/lib/utils/cn'
 import { Button } from '~/ui/button'
 import { Footer } from '~/ui/footer'
@@ -26,6 +27,7 @@ const Section = ({ children, className }: { children: React.ReactNode; className
 
 export default function Page() {
 	const posthog = usePostHog()
+	const { isBelowFold } = useFold()
 
 	return (
 		<div className="flex flex-col items-center">
@@ -43,7 +45,9 @@ export default function Page() {
 						/>
 					</div>
 				</div>
-				<ScrollButton className="absolute bottom-6" />
+				<ScrollButton
+					className={cn('absolute bottom-6 transition-opacity', { 'opacity-0': isBelowFold })}
+				/>
 			</Section>
 			<Section className="space-y-40">
 				<div className="flex w-full max-w-2xl flex-col items-center space-y-6">
@@ -60,6 +64,7 @@ export default function Page() {
 					</div>
 					<Link
 						href="/work"
+						className="text-sm"
 						onClick={() => posthog.capture('projects.clicked', { body: 'See more', href: '/work' })}
 					>
 						See more

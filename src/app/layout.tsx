@@ -25,8 +25,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 			<body
 				className={`${matter.className} relative flex h-full min-h-screen w-full flex-col items-center`}
 			>
-				<Nav />
 				<Providers>
+					<Nav />
 					<div className="min-h-screen w-screen">{children}</div>
 				</Providers>
 			</body>
