@@ -126,7 +126,10 @@ export async function transcodeVideo(config: TranscodeConfig): Promise<void> {
 // 		{ name: '2k', resolution: '2560:-1', bitrate: '12000k', codec: 'libx264' },
 // 		{ name: '1080p', resolution: '1920:-1', bitrate: '6000k', codec: 'libx264' },
 // 		{ name: '720p', resolution: '1280:-1', bitrate: '3000k', codec: 'libx264' },
-// 		{ name: '480p', resolution: '854:-1', bitrate: '1400k', codec: 'libx264' }
+// 		{ name: '480p', resolution: '854:-1', bitrate: '1400k', codec: 'libx264' },
+// 		{ name: '360p', resolution: '640:-1', bitrate: '1000k', codec: 'libx264' },
+// 		{ name: '240p', resolution: '426:-1', bitrate: '700k', codec: 'libx264' },
+// 		{ name: '144p', resolution: '256:-1', bitrate: '300k', codec: 'libx264' }
 // 	],
 // 	ffmpegThreads: 0,
 // 	ffmpegPreset: 'fast'
