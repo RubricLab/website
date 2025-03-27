@@ -29,6 +29,8 @@ export default function Page() {
 	const posthog = usePostHog()
 	const { isBelowFold } = useFold()
 
+	const hook = "We don't have a sales team. Let's talk."
+
 	return (
 		<div className="flex flex-col items-center">
 			<Section className="relative h-screen">
@@ -72,15 +74,15 @@ export default function Page() {
 				</div>
 				<Testimonials />
 				<Partners />
-				<h2 className="max-w-2xl text-7xl">
-					We&apos;re a small team of startup builders. We could be talking tomorrow.
-				</h2>
+
+				<h2 className="max-w-2xl text-7xl">{hook}</h2>
 				<div className="flex items-center gap-4">
 					<Link
 						href="/blog/introducing-rubric-labs"
 						onClick={() =>
 							posthog.capture('read_more.clicked', {
 								body: 'Read more',
+								hook,
 								href: '/blog/introducing-rubric-labs'
 							})
 						}
@@ -90,7 +92,11 @@ export default function Page() {
 					<Link
 						href="/contact"
 						onClick={() =>
-							posthog.capture('contact_us.clicked', { body: 'Get in touch', href: '/contact' })
+							posthog.capture('contact_us.clicked', {
+								body: 'Get in touch',
+								hook,
+								href: '/contact'
+							})
 						}
 					>
 						<Button>Get in touch</Button>
