@@ -29,11 +29,11 @@ export function VideoControls({
 	const controlsTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
 	// Format time (seconds to mm:ss)
-	const formatTime = useCallback((seconds: number) => {
-		const mins = Math.floor(seconds / 60)
-		const secs = Math.floor(seconds % 60)
-		return `${mins}:${secs < 10 ? '0' : ''}${secs}`
-	}, [])
+	// const formatTime = useCallback((seconds: number) => {
+	// 	const mins = Math.floor(seconds / 60)
+	// 	const secs = Math.floor(seconds % 60)
+	// 	return `${mins}:${secs < 10 ? '0' : ''}${secs}`
+	// }, [])
 
 	// Handle scrubber click
 	const handleProgressClick = useCallback(
@@ -160,11 +160,6 @@ export function VideoControls({
 							</svg>
 						)}
 					</button>
-
-					{/* Time Display */}
-					<div className="text-sm text-white">
-						{formatTime(currentTime)} / {formatTime(duration)}
-					</div>
 				</div>
 
 				<div className="flex items-center gap-4">

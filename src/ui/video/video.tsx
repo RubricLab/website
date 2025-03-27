@@ -43,7 +43,8 @@ export function Video({ hlsUrl, mp4Url, className = '', posterUrl, transcription
 		toggleCaptions,
 		toggleFullscreen,
 		closeFloating,
-		handleTimeUpdate
+		handleTimeUpdate,
+		setIsFloating
 	} = useVideoPlayer(videoRef as React.RefObject<HTMLVideoElement>)
 
 	// Setup video player
@@ -152,26 +153,24 @@ export function Video({ hlsUrl, mp4Url, className = '', posterUrl, transcription
 		if (!inView && status === 'playing-with-sound') {
 			if (videoContainerRef.current) {
 				videoContainerRef.current.classList.add('is-floating')
+				setIsFloating(true)
 			}
 		} else {
 			if (videoContainerRef.current) {
 				videoContainerRef.current.classList.remove('is-floating')
+				setIsFloating(false)
 			}
 		}
-	}, [inView, status])
+	}, [inView, status, setIsFloating])
 
 	const hasSound = status === 'playing-with-sound'
 	const showPlayButton = status !== 'playing-with-sound'
 
 	return (
-		<div ref={containerRef} className={`relative overflow-hidden ${className}`}>
+		<div ref={containerRef} className={`video-outer-container ${className}`}>
 			<div
 				ref={videoContainerRef}
-				className={`video-container ${hasSound ? '' : 'grayscale'}`}
-				style={{
-					aspectRatio: '16/9',
-					maxHeight: '100%'
-				}}
+				className={`video-inner-container ${hasSound ? '' : 'grayscale'} ${isFloating ? 'is-floating' : ''}`}
 			>
 				{/* Poster image */}
 				{posterUrl && status === 'loading' && (
@@ -192,12 +191,12 @@ export function Video({ hlsUrl, mp4Url, className = '', posterUrl, transcription
 					ref={videoRef}
 					muted={!hasSound}
 					playsInline
-					className="h-full w-full object-cover"
+					className="video-player"
 					preload="auto"
 					poster={posterUrl}
 				>
 					{transcriptionUrl ? (
-						<track kind="captions" src={transcriptionUrl} srcLang="en" label="English" default />
+						<track kind="captions" src={transcriptionUrl} srcLang="en" label="English" />
 					) : (
 						<track kind="captions" src="/captions/default.vtt" srcLang="en" label="English" />
 					)}
@@ -245,8 +244,8 @@ export function Video({ hlsUrl, mp4Url, className = '', posterUrl, transcription
 					</div>
 				)}
 
-				{/* Video Controls - extracted to a separate component */}
-				<div className="video-controls-container z-20">
+				{/* Video Controls */}
+				<div className="video-controls-container">
 					{status === 'playing-with-sound' && (
 						<VideoControls
 							isPlaying={isPlaying}
@@ -266,7 +265,7 @@ export function Video({ hlsUrl, mp4Url, className = '', posterUrl, transcription
 				{isFloating && (
 					<button
 						type="button"
-						className="absolute top-2 right-2 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-black bg-opacity-50 text-white"
+						className="absolute top-2 right-2 z-30 flex h-8 w-8 items-center justify-center rounded-full bg-black bg-opacity-50 text-white"
 						onClick={closeFloating}
 						aria-label="Close video"
 					>

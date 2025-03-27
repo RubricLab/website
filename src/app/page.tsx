@@ -32,17 +32,19 @@ export default function Page() {
 	return (
 		<div className="flex flex-col items-center">
 			<Section className="relative h-screen">
-				<div className="flex h-full w-full flex-col items-start justify-center gap-4">
-					<p className="shrink-0 text-lg sm:max-w-2/3">
-						We&apos;re an applied AI Lab helping companies get intelligence to production.
-					</p>
-					<div className="aspect-video w-full overflow-hidden">
-						<Video
-							hlsUrl="https://d2os0zhpsj02b0.cloudfront.net/hero/hls/master.m3u8"
-							mp4Url="https://d2os0zhpsj02b0.cloudfront.net/hero/preview.mp4"
-							posterUrl="/images/video-thumbnail.jpg"
-							transcriptionUrl="/transcripts/hero.vtt"
-						/>
+				<div className="flex h-full w-full flex-col items-center justify-center">
+					<div className="w-full max-w-5xl">
+						<h2 className="mb-4 text-2xl">
+							We&apos;re an applied AI Lab helping companies get intelligence to production.
+						</h2>
+						<div className="video-parent">
+							<Video
+								hlsUrl="https://d2os0zhpsj02b0.cloudfront.net/hero/hls/master.m3u8"
+								mp4Url="https://d2os0zhpsj02b0.cloudfront.net/hero/preview.mp4"
+								posterUrl="/images/video-thumbnail.jpg"
+								transcriptionUrl="/transcripts/hero.vtt"
+							/>
+						</div>
 					</div>
 				</div>
 				<ScrollButton
