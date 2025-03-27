@@ -377,4 +377,15 @@
 	.video-player.grayscale {
 		filter: grayscale(100%);
 	}
+
+	.hide-on-small-height {
+		display: block;
+	}
+}
+
+/* Small viewport height media query - outside any layers */
+@media screen and (max-height: 500px) {
+	.hide-on-small-height {
+		display: none !important;
+	}
 }

@@ -26,7 +26,8 @@ export function Nav() {
 	return (
 		<nav
 			className={cn(
-				'group fixed top-0 left-0 z-30 flex w-full items-center justify-between p-6 transition-colors hover:bg-background sm:px-8'
+				'group fixed top-0 left-0 z-30 flex w-full items-center justify-between p-6 transition-colors hover:bg-background sm:px-8',
+				'hide-on-small-height'
 			)}
 		>
 			<Link

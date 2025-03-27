@@ -1,6 +1,7 @@
 'use client'
 
 import { usePostHog } from 'posthog-js/react'
+import { cn } from '~/lib/utils/cn'
 import { Button } from './button'
 import { Arrow } from './icons/arrow'
 
@@ -12,7 +13,7 @@ export const ScrollButton = ({ className }: { className?: string }) => {
 	return (
 		<Button
 			variant="link"
-			className={className || ''}
+			className={cn(className || '', 'hide-on-small-height')}
 			onClick={() => {
 				const windowHeight = window.innerHeight
 				window.scrollTo({ top: windowHeight, behavior: 'smooth' })
