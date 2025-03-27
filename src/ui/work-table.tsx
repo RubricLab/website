@@ -130,14 +130,41 @@ const works = [
 	},
 	{
 		name: 'Cal.com',
-		description:
-			'We built the first version of Cal.ai. Now defunct, it was one of the first agents to go to market.',
+		description: 'We built an early version of Cal.ai, one of the first AI agents to go to market.',
+		image: (
+			<div className="flex w-full flex-col gap-2 text-left">
+				<div className="mr-auto flex flex-col rounded-custom bg-background p-4">
+					<p>from: carmen@acme.com</p>
+					<p className="opacity-70">to: Cal.ai</p>
+					<p>is sydney@acme.com free on monday?</p>
+				</div>
+				<div className="ml-auto flex flex-col rounded-custom bg-background p-4">
+					<p>from: Cal.ai</p>
+					<p className="opacity-70">to: carmen@acme.com</p>
+					<p>yes, sydney is free on monday</p>
+				</div>
+				<div className="mr-auto flex w-full flex-col rounded-custom bg-background p-4">
+					<p>one on one with sydney</p>
+					<p className="opacity-70">30 mins</p>
+					<p className="opacity-70">24th june 2049</p>
+					<div className="flex items-center gap-2 pt-2">
+						<div className="rounded-custom border px-2">10am</div>
+						<div className="rounded-custom border border-primary bg-primary px-2 text-background">
+							10:30am
+						</div>
+						<div className="rounded-custom border px-2">2pm</div>
+					</div>
+				</div>
+			</div>
+		),
+		backgroundImageUrl: '/images/cal.png',
 		date: '2024',
 		category: 'Client',
 		link: {
 			href: 'https://cal.com/blog/don-t-forget-about-cal-ai-your-24-7-scheduling-assistant',
 			label: 'Technical report'
-		}
+		},
+		quote: 'Iterating toward production-ready agents.'
 	},
 	{
 		name: 'Albertsons',
@@ -200,7 +227,7 @@ export const WorkTable = () => {
 								<h3 className="text-primary">{work.name}</h3>
 								<div>{work.date}</div>
 							</div>
-							<div className="grid grid-cols-2 gap-6">
+							<div className="grid gap-6 md:grid-cols-2">
 								<div className="flex w-full flex-col gap-4">
 									{work.quote ? (
 										<div className="text-5xl text-primary leading-12 tracking-tight">{work.quote}</div>
@@ -221,7 +248,9 @@ export const WorkTable = () => {
 									</div>
 								</div>
 								<div
-									className={cn('relative w-full space-y-4 text-right', { 'aspect-square': work.image })}
+									className={cn('relative h-fit w-full space-y-4 text-right', {
+										'aspect-square': work.image
+									})}
 								>
 									{work.image ? (
 										<div className="absolute top-0 left-0 z-10 flex h-full w-full items-center justify-center p-4">
@@ -232,7 +261,7 @@ export const WorkTable = () => {
 										<CustomImage
 											src={work.backgroundImageUrl}
 											alt={work.name}
-											className="absolute top-0 h-full w-full object-cover"
+											className="absolute top-0 h-full w-full object-cover saturate-[1.25] dark:saturate-[0.75]"
 										/>
 									) : null}
 								</div>
