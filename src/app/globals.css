@@ -176,8 +176,8 @@
 
 	/* Position captions above controls */
 	video::-webkit-media-text-track-container {
-		transform: translateY(-2rem);
-		padding-bottom: 1.5rem;
+		transform: translateY(-1rem);
+		padding-bottom: 0.5rem;
 	}
 
 	.video-controls-container {
