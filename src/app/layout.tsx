@@ -3,8 +3,8 @@ import type { Metadata } from 'next/types'
 import Providers from '~/app/providers'
 import { DEFAULT_META } from '~/lib/constants/metadata'
 import './globals.css'
-import { env } from '~/lib/env'
 import { Nav } from '~/ui/nav'
+import { getBaseUrl } from '~/lib/utils'
 
 const matter = localFont({ src: './fonts/matter-regular.woff' })
 
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 			'en-US': '/en-US'
 		}
 	},
-	metadataBase: new URL(`http${env.NODE_ENV === 'production' ? 's' : ''}://${env.VERCEL_URL}`),
+	metadataBase: new URL(getBaseUrl()),
 	...DEFAULT_META
 }
 
