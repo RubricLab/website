@@ -30,6 +30,14 @@ const socials = [
 
 const links = [
 	{
+		label: 'Blog',
+		href: '/blog'
+	},
+	{
+		label: 'Contact',
+		href: '/contact'
+	},
+	{
 		label: 'Newsletter',
 		href: '/newsletter'
 	},
@@ -80,7 +88,7 @@ export const Footer = ({ className }: { className?: string }) => {
 				<div className="w-full">
 					<div className="flex w-fit flex-col gap-4">
 						<p>Links</p>
-						<div className="flex flex-wrap gap-5 text-secondary">
+						<div className="grid grid-cols-3 gap-5 text-secondary sm:flex sm:flex-wrap">
 							{links.map(({ label, href }) => (
 								<Link key={label} href={href}>
 									{label}
