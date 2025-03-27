@@ -1,25 +1,13 @@
 'use client'
 
+import { useEffect } from 'react'
+import { toast } from 'sonner'
 import { useClipboard } from '~/lib/hooks/use-clipboard'
-import { Button } from './button'
-import { Checkmark } from './icons/checkmark'
-import { Link } from './icons/link'
 import { cn } from '~/lib/utils/cn'
 
 type HeadingLevel = 'h1' | 'h2' | 'h3'
 
-const iconSizes = {
-	h1: 'h-8',
-	h2: 'h-6',
-	h3: 'h-4'
-}
-
-const margins = {
-	h1: 'mt-10',
-	h2: 'mt-8',
-	h3: 'mt-6'
-}
-
+// TODO: remove this component in favour of <Copiable /
 export const CopiableHeading = ({
 	children,
 	as: Component = 'h2',
@@ -29,25 +17,18 @@ export const CopiableHeading = ({
 
 	const { copied, handleCopy } = useClipboard()
 
+	useEffect(() => {
+		if (copied) toast.success('Link copied')
+	}, [copied])
+
 	return (
 		<Component
 			id={id}
-			className={cn('group relative', margins[Component], props.className)}
+			className={cn('group relative cursor-pointer', props.className)}
+			onClick={() => handleCopy(`${window.location.href.split('#')[0]}#${id}`)}
 			{...props}
 		>
 			{children}
-			<Button
-				size="sm"
-				variant="icon"
-				onClick={() => handleCopy(`${window.location.href.split('#')[0]}#${id}`)}
-				className="-translate-x-full -translate-y-1/2 -left-2 absolute top-1/2 opacity-0 transition-opacity group-hover:opacity-100"
-			>
-				{copied ? (
-					<Checkmark className={iconSizes[Component]} />
-				) : (
-					<Link className={iconSizes[Component]} />
-				)}
-			</Button>
 		</Component>
 	)
 }
