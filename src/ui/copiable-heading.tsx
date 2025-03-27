@@ -7,7 +7,6 @@ import { cn } from '~/lib/utils/cn'
 
 type HeadingLevel = 'h1' | 'h2' | 'h3'
 
-// TODO: remove this component in favour of <Copiable /
 export const CopiableHeading = ({
 	children,
 	as: Component = 'h2',
