@@ -38,11 +38,17 @@ export default async function Page() {
 				<ScrollButton className="absolute bottom-6" />
 			</Section>
 			<Section className="space-y-40">
-				<div className="flex w-full flex-col items-center space-y-6">
-					<div className="flex w-full max-w-2xl items-center justify-between">
-						<Cal className="w-40" />
-						<Graphite className="w-40" />
-						<Albertsons className="w-48" />
+				<div className="flex w-full max-w-2xl flex-col items-center space-y-6">
+					<div className="flex w-full items-center justify-between gap-4">
+						<Link className="w-36" href="/work#Cal.com">
+							<Cal className="w-full" />
+						</Link>
+						<Link className="w-40" href="/work#Graphite">
+							<Graphite className="w-full" />
+						</Link>
+						<Link className="w-48" href="/work#Albertsons">
+							<Albertsons className="w-full" />
+						</Link>
 					</div>
 					<Link href="/work" className="text-sm">
 						See more
@@ -51,15 +57,18 @@ export default async function Page() {
 				<Testimonials />
 				<div className="flex w-full max-w-2xl flex-col items-center space-y-6">
 					<p className="text-secondary text-sm">Our partners</p>
-					<div className="flex w-full items-center justify-between">
-						<Link href="https://neon.tech/blog/rubric-labs-can-make-your-ai-dreams-come-true">
-							<Neon className="w-36" />
+					<div className="flex w-full items-center justify-between gap-4">
+						<Link
+							className="w-36"
+							href="https://neon.tech/blog/rubric-labs-can-make-your-ai-dreams-come-true"
+						>
+							<Neon className="w-full" />
 						</Link>
-						<Link href="https://vercel.com/partners/solution-partners/rubriclabs">
-							<Vercel className="w-40" />
+						<Link className="w-40" href="https://vercel.com/partners/solution-partners/rubriclabs">
+							<Vercel className="w-full" />
 						</Link>
-						<Link href="https://langchain.com/experts">
-							<Langchain className="w-44" />
+						<Link className="w-44" href="https://langchain.com/experts">
+							<Langchain className="w-full" />
 						</Link>
 					</div>
 				</div>

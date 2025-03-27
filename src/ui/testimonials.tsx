@@ -14,7 +14,7 @@ export const Testimonials = () => {
 						{' '}
 						is impressive. I will definitely be working with the Rubric team again soon. - Daniel Bevan,
 						CTO of{' '}
-						<Link className="opacity-50" href="https://sligo.ai">
+						<Link className="opacity-50" href="/work#Sligo">
 							Sligo
 						</Link>
 					</span>
