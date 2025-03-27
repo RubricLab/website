@@ -27,7 +27,7 @@ export function Nav() {
 	return (
 		<nav
 			className={cn(
-				'group fixed top-0 left-0 z-30 flex w-full items-center p-1 sm:justify-between sm:p-2'
+				'group fixed top-0 left-0 z-30 flex w-full items-center pt-4 pl-1 sm:justify-between sm:pt-2 sm:pl-4'
 			)}
 		>
 			<div
