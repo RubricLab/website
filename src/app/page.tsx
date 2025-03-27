@@ -1,16 +1,17 @@
+'use client'
+
 import Link from 'next/link'
+import { usePostHog } from 'posthog-js/react'
 import { cn } from '~/lib/utils/cn'
 import { Button } from '~/ui/button'
 import { Footer } from '~/ui/footer'
 import { Albertsons } from '~/ui/logos/albertsons'
 import { Cal } from '~/ui/logos/cal'
 import { Graphite } from '~/ui/logos/graphite'
-import { Langchain } from '~/ui/logos/langchain'
-import { Neon } from '~/ui/logos/neon'
-import { Vercel } from '~/ui/logos/vercel'
+import { Partners } from '~/ui/partners'
 import { ScrollButton } from '~/ui/scroll-button'
 import { Testimonials } from '~/ui/testimonials'
-import VimeoPlayer from '~/ui/video'
+import { Video } from '~/ui/video/video'
 
 const Section = ({ children, className }: { children: React.ReactNode; className?: string }) => (
 	<div
@@ -23,7 +24,9 @@ const Section = ({ children, className }: { children: React.ReactNode; className
 	</div>
 )
 
-export default async function Page() {
+export default function Page() {
+	const posthog = usePostHog()
+
 	return (
 		<div className="flex flex-col items-center">
 			<Section className="relative h-screen">
@@ -32,7 +35,12 @@ export default async function Page() {
 						We&apos;re an applied AI Lab helping companies get intelligence to production.
 					</p>
 					<div className="aspect-video w-full overflow-hidden">
-						<VimeoPlayer videoId={1069128661} thumbnailUrl="/images/video-thumbnail.png" />
+						<Video
+							hlsUrl="https://d2os0zhpsj02b0.cloudfront.net/hero/hls/master.m3u8"
+							mp4Url="https://d2os0zhpsj02b0.cloudfront.net/hero/preview.mp4"
+							posterUrl="/images/video-thumbnail.jpg"
+							transcriptionUrl="/transcripts/hero.vtt"
+						/>
 					</div>
 				</div>
 				<ScrollButton className="absolute bottom-6" />
@@ -50,36 +58,36 @@ export default async function Page() {
 							<Albertsons className="w-full" />
 						</Link>
 					</div>
-					<Link href="/work" className="text-sm">
+					<Link
+						href="/work"
+						onClick={() => posthog.capture('projects.clicked', { body: 'See more', href: '/work' })}
+					>
 						See more
 					</Link>
 				</div>
 				<Testimonials />
-				<div className="flex w-full max-w-2xl flex-col items-center space-y-6">
-					<p className="text-secondary text-sm">Our partners</p>
-					<div className="flex w-full items-center justify-between gap-4">
-						<Link
-							className="w-36"
-							href="https://neon.tech/blog/rubric-labs-can-make-your-ai-dreams-come-true"
-						>
-							<Neon className="w-full" />
-						</Link>
-						<Link className="w-40" href="https://vercel.com/partners/solution-partners/rubriclabs">
-							<Vercel className="w-full" />
-						</Link>
-						<Link className="w-44" href="https://langchain.com/experts">
-							<Langchain className="w-full" />
-						</Link>
-					</div>
-				</div>
+				<Partners />
 				<h2 className="max-w-2xl text-7xl">
 					We&apos;re a small team of startup builders. We could be talking tomorrow.
 				</h2>
 				<div className="flex items-center gap-4">
-					<Link href="/blog/introducing-rubric-labs">
+					<Link
+						href="/blog/introducing-rubric-labs"
+						onClick={() =>
+							posthog.capture('read_more.clicked', {
+								body: 'Read more',
+								href: '/blog/introducing-rubric-labs'
+							})
+						}
+					>
 						<Button variant="outline">Read more</Button>
 					</Link>
-					<Link href="/contact">
+					<Link
+						href="/contact"
+						onClick={() =>
+							posthog.capture('contact_us.clicked', { body: 'Get in touch', href: '/contact' })
+						}
+					>
 						<Button>Get in touch</Button>
 					</Link>
 				</div>

@@ -9,7 +9,7 @@ import { Checkmark } from '~/ui/icons/checkmark'
 
 export const NewsletterForm = ({ className }: { className?: string }) => {
 	return (
-		<Form action={createNewsletterSubscriber} className={cn(className)}>
+		<Form label="newsletter" action={createNewsletterSubscriber} className={cn(className)}>
 			{({ pending, state }) => (
 				<div className="relative flex w-full items-center">
 					<input placeholder="Email" className="w-full" name="email" type="email" required />

@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import posthog from 'posthog-js'
+import { usePostHog } from 'posthog-js/react'
 import { NewsletterForm } from '~/app/(rest)/newsletter/newsletter-form'
 import { cn } from '~/lib/utils/cn'
 import { GithubIcon } from '~/ui/icons/github'
@@ -28,7 +28,28 @@ const socials = [
 	}
 ]
 
+const links = [
+	{
+		label: 'Newsletter',
+		href: '/newsletter'
+	},
+	{
+		label: 'Work',
+		href: '/work'
+	},
+	{
+		label: 'Brand',
+		href: 'https://brand.rubriclabs.com'
+	},
+	{
+		label: 'Privacy',
+		href: '/privacy'
+	}
+]
+
 export const Footer = ({ className }: { className?: string }) => {
+	const posthog = usePostHog()
+
 	return (
 		<footer
 			className={cn('flex h-screen w-full flex-col items-center justify-center space-y-24', className)}
@@ -60,9 +81,11 @@ export const Footer = ({ className }: { className?: string }) => {
 					<div className="flex w-fit flex-col gap-4">
 						<p>Links</p>
 						<div className="flex flex-wrap gap-5 text-secondary">
-							<Link href="/newsletter">Newsletter</Link>
-							<Link href="https://brand.rubriclabs.com">Brand</Link>
-							<Link href="/privacy">Privacy</Link>
+							{links.map(({ label, href }) => (
+								<Link key={label} href={href}>
+									{label}
+								</Link>
+							))}
 						</div>
 					</div>
 				</div>

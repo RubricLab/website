@@ -2,7 +2,7 @@
 
 import type { ReactNode } from 'react'
 import { Toaster } from 'sonner'
-import { PostHogProvider } from './posthog-provider'
+import { PostHogProvider } from '~/lib/posthog/provider'
 
 export default function Providers({ children }: { children: ReactNode }) {
 	return (
