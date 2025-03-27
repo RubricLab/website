@@ -46,11 +46,17 @@ export default function Page() {
 				<ScrollButton className="absolute bottom-6" />
 			</Section>
 			<Section className="space-y-40">
-				<div className="flex w-full flex-col items-center space-y-6">
-					<div className="flex w-full max-w-2xl items-center justify-between">
-						<Cal className="w-40" />
-						<Graphite className="w-40" />
-						<Albertsons className="w-48" />
+				<div className="flex w-full max-w-2xl flex-col items-center space-y-6">
+					<div className="flex w-full items-center justify-between gap-4">
+						<Link className="w-36" href="/work#Cal.com">
+							<Cal className="w-full" />
+						</Link>
+						<Link className="w-40" href="/work#Graphite">
+							<Graphite className="w-full" />
+						</Link>
+						<Link className="w-48" href="/work#Albertsons">
+							<Albertsons className="w-full" />
+						</Link>
 					</div>
 					<Link
 						href="/work"

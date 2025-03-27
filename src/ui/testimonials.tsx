@@ -14,7 +14,7 @@ export const Testimonials = () => {
 						{' '}
 						is impressive. I will definitely be working with the Rubric team again soon. - Daniel Bevan,
 						CTO of{' '}
-						<Link className="opacity-50" href="https://sligo.ai">
+						<Link className="opacity-50" href="/work#Sligo">
 							Sligo
 						</Link>
 					</span>
@@ -31,7 +31,7 @@ export const Testimonials = () => {
 						. They&apos;re fluent in novel technologies, creative, highly responsive, and went the extra
 						mile to follow through and iterate with us even after initial handoff." - Merrill Lutsky,
 						Co-Founder of{' '}
-						<Link className="opacity-50" href="https://graphite.dev">
+						<Link className="opacity-50" href="/work#Graphite">
 							Graphite
 						</Link>
 					</span>
@@ -48,7 +48,7 @@ export const Testimonials = () => {
 						. From our first conversation when they took time to understand our business needs, I knew
 						trusting them with our MVP build and every iteration since was the right choice." - Mitchell
 						White, Founder of{' '}
-						<Link className="opacity-50" href="https://weavein.co">
+						<Link className="opacity-50" href="/work#Weave">
 							Weave
 						</Link>
 					</span>
