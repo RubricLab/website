@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { formatDate } from '~/lib/utils/date'
 import { getPost, getPostSlugs } from '~/lib/utils/posts'
@@ -6,12 +7,27 @@ import { CustomImage } from '~/ui/custom-image'
 
 export const dynamicParams = false
 
+type Props = {
+	params: Promise<{ slug: string }>
+}
+
 export async function generateStaticParams() {
 	const slugs = await getPostSlugs()
 	return slugs.map(slug => ({ slug }))
 }
 
-export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+	const { slug } = await params
+
+	const { metadata } = await getPost(slug)
+
+	return {
+		title: metadata.title,
+		description: metadata.description
+	}
+}
+
+export default async function Page({ params }: Props) {
 	const { slug } = await params
 	const { Post, metadata } = await getPost(slug)
 

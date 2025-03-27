@@ -3,6 +3,7 @@ import path from 'node:path'
 
 export type Post = {
 	title: string
+	description: string
 	subtitle?: string
 	date: string
 	author: string
