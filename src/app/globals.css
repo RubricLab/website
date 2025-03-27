@@ -145,4 +145,69 @@
 		content: counter(line);
 		@apply inline-block w-4 mr-6 text-right text-secondary;
 	}
+
+	/* Video player styles */
+	.video-container {
+		position: relative;
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
+		opacity: 1;
+		transition: opacity 0.15s ease-out;
+	}
+
+	/* Fade out before starting transform */
+	.video-container.is-floating {
+		animation: pip-transition 0.25s ease-out forwards;
+		transform-origin: bottom right;
+	}
+
+	@keyframes pip-transition {
+		0% {
+			opacity: 0;
+			position: relative;
+		}
+		10% {
+			opacity: 0;
+			position: fixed;
+			bottom: 1rem;
+			right: 1rem;
+			width: 18rem;
+			height: 10rem;
+			z-index: 999;
+			border-radius: 0.5rem;
+			box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+			background-color: black;
+		}
+		100% {
+			opacity: 1;
+			position: fixed;
+			bottom: 1rem;
+			right: 1rem;
+			width: 18rem;
+			height: 10rem;
+			z-index: 999;
+			border-radius: 0.5rem;
+			box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+			background-color: black;
+		}
+	}
+
+	/* Ensure transition back from PiP to fullscreen is also smooth */
+	.video-container:not(.is-floating) {
+		animation: fullscreen-transition 0.25s ease-out forwards;
+	}
+
+	@keyframes fullscreen-transition {
+		0% {
+			opacity: 0;
+		}
+		100% {
+			opacity: 1;
+		}
+	}
+
+	.video-container.grayscale video {
+		filter: grayscale(100%);
+	}
 }

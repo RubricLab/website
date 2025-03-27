@@ -11,7 +11,7 @@ import { Graphite } from '~/ui/logos/graphite'
 import { Partners } from '~/ui/partners'
 import { ScrollButton } from '~/ui/scroll-button'
 import { Testimonials } from '~/ui/testimonials'
-import VimeoPlayer from '~/ui/video'
+import { Video } from '~/ui/video'
 
 const Section = ({ children, className }: { children: React.ReactNode; className?: string }) => (
 	<div
@@ -35,7 +35,10 @@ export default function Page() {
 						We&apos;re an applied AI Lab helping companies get intelligence to production.
 					</p>
 					<div className="aspect-video w-full overflow-hidden">
-						<VimeoPlayer videoId={1069128661} thumbnailUrl="/images/video-thumbnail.png" />
+						<Video
+							hlsUrl="https://dxr63bjwc8ovl.cloudfront.net/hero/hls/master.m3u8"
+							mp4Url="https://dxr63bjwc8ovl.cloudfront.net/hero/preview.mp4"
+						/>
 					</div>
 				</div>
 				<ScrollButton className="absolute bottom-6" />
