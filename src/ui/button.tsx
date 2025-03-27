@@ -1,7 +1,8 @@
 import { cn } from '~/lib/utils/cn'
 
 const variants = {
-	default: 'bg-subtle dark:enabled:hover:bg-white/20 enabled:hover:bg-black/20 rounded-full',
+	default:
+		'bg-black/10 dark:bg-subtle dark:enabled:hover:bg-white/20 enabled:hover:bg-black/20 rounded-full',
 	outline:
 		'border-subtle border dark:enabled:hover:border-white/20 enabled:hover:border-black/20 rounded-full',
 	link: 'enabled:hover:opacity-80 focus:ring-0 !p-0',

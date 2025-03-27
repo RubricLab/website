@@ -21,6 +21,7 @@ export function Nav() {
 	useShortcut('c', () => router.push('/contact'))
 	useShortcut('p', () => router.push('/privacy'))
 	useShortcut('n', () => router.push('/newsletter'))
+	useShortcut('w', () => router.push('/work'))
 
 	return (
 		<nav

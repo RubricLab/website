@@ -32,7 +32,7 @@ export function FoldProvider({ children }: { children: React.ReactNode }) {
 
 	return (
 		<FoldContext.Provider value={{ isBelowFold }}>
-			<div ref={observerRef} className="absolute top-0 h-screen w-full" />
+			<div ref={observerRef} className="pointer-events-none absolute top-0 h-screen w-full" />
 			{children}
 		</FoldContext.Provider>
 	)

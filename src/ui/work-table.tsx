@@ -1,14 +1,27 @@
 'use client'
 
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { TIMEOUT } from '~/lib/constants'
+import { cn } from '~/lib/utils/cn'
+import { Button } from './button'
+import { CustomImage } from './custom-image'
+
+type DemoLink = {
+	href: string
+	label: string
+}
 
 type Work = {
 	name: string
 	description: string
 	date: string
 	category: 'Client' | 'Internal'
-	link?: string
+	backgroundImageUrl?: string
+	quote?: string
+	image?: React.ReactNode
+	link?: string | DemoLink
+	secondaryLink?: string | DemoLink
 }
 
 const works = [
@@ -51,10 +64,51 @@ const works = [
 	{
 		name: 'Graphite',
 		description:
-			"We built Year in Code with Graphite: personalized videos celebrating developers' coding milestones.",
+			'We built a platform to make an AI-directed video out of your GitHub activity. It was used by thousands of devs, which caused it to crash, so we parallelized the rendering engine and dynamically down-rezzed on mobile to scale.',
+		backgroundImageUrl: '/images/graphite.png',
+		image: (
+			<div className="flex w-full flex-col gap-4">
+				<div className="mr-auto rounded bg-primary px-2 py-1">enter your github username</div>
+				<div className="ml-auto rounded bg-primary px-2 py-1">@carmenlala</div>
+
+				<div className="flex flex-col gap-4 overflow-hidden rounded bg-primary p-3">
+					<div className="grid w-fit grid-flow-col grid-rows-7 gap-1">
+						{Array.from({ length: 7 * 40 }).map((_, index) => (
+							<div
+								key={index}
+								className={cn('h-2 w-2', index % 5 === 0 ? 'bg-background' : 'bg-secondary')}
+							/>
+						))}
+					</div>
+					<div className="flex items-center gap-1">
+						<div className="text-center">
+							<h3>1337</h3>
+							<p>commits</p>
+						</div>
+						<div className="text-center">
+							<h3>400</h3>
+							<p>PRs</p>
+						</div>
+						<div className="text-center">
+							<h3>101</h3>
+							<p>followers</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		),
 		date: '2024',
 		category: 'Client',
-		link: 'https://graphite.dev'
+		quote:
+			'Rubric went from initial concepts to delivering an engaging AI video experience that reached thousands of users.',
+		link: {
+			label: 'Try it out',
+			href: 'https://year-in-code.com'
+		},
+		secondaryLink: {
+			label: 'Technical report',
+			href: '/blog/personalized-video-at-scale'
+		}
 	},
 	{
 		name: 'Create Rubric App',
@@ -82,7 +136,10 @@ const works = [
 			'We built the first version of Cal.ai. Now defunct, it was one of the first agents to go to market.',
 		date: '2024',
 		category: 'Client',
-		link: 'https://cal.com/blog/don-t-forget-about-cal-ai-your-24-7-scheduling-assistant'
+		link: {
+			href: 'https://cal.com/blog/don-t-forget-about-cal-ai-your-24-7-scheduling-assistant',
+			label: 'Technical report'
+		}
 	},
 	{
 		name: 'Albertsons',
@@ -129,7 +186,7 @@ export const WorkTable = () => {
 	}, [])
 
 	return (
-		<div className="w-full max-w-2xl">
+		<div className="w-full max-w-4xl">
 			<div className="flex flex-col gap-12">
 				{works
 					.sort((a, b) => b.date.localeCompare(a.date))
@@ -137,15 +194,44 @@ export const WorkTable = () => {
 						<div
 							key={index}
 							id={`work-${work.name}`}
-							className={`group flex w-full items-start justify-between rounded-custom border p-4 px-6 text-secondary transition-colors duration-500 ${
+							className={`group grid w-full grid-cols-2 rounded-custom border p-4 px-6 text-secondary transition-colors duration-500 ${
 								highlightedWork === work.name ? 'border-primary' : 'border-background'
 							}`}
 						>
-							<div className="w-full">
+							<div className="flex w-full flex-col gap-4">
 								<h3 className="text-primary">{work.name}</h3>
-								{work.description ? <div className="max-w-2/3">{work.description}</div> : null}
+								{work.quote ? (
+									<div className="text-5xl text-primary leading-12 tracking-tight">"{work.quote}"</div>
+								) : null}
+								{work.description ? <div>{work.description}</div> : null}
+								<div className="flex items-center gap-2">
+									{work.secondaryLink && typeof work.secondaryLink === 'object' ? (
+										<Link href={work.secondaryLink.href}>
+											<Button variant="outline">{work.secondaryLink.label}</Button>
+										</Link>
+									) : null}
+									{work.link && typeof work.link === 'object' ? (
+										<Link href={work.link.href}>
+											<Button variant="default">{work.link.label}</Button>
+										</Link>
+									) : null}
+								</div>
 							</div>
-							<div>{work.date}</div>
+							<div className={cn('relative w-full space-y-4 text-right', { 'aspect-square': work.image })}>
+								<div>{work.date}</div>
+								{work.image ? (
+									<div className="absolute top-10 left-0 z-10 flex h-full w-full items-center justify-center p-4">
+										{work.image}
+									</div>
+								) : null}
+								{work.backgroundImageUrl ? (
+									<CustomImage
+										src={work.backgroundImageUrl}
+										alt={work.name}
+										className="absolute top-10 h-full w-full object-cover"
+									/>
+								) : null}
+							</div>
 						</div>
 					))}
 			</div>
