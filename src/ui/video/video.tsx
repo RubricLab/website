@@ -237,10 +237,10 @@ export function Video({ hlsUrl, mp4Url, className = '', posterUrl, transcription
 						<Button
 							variant="default"
 							size="sm"
-							className="bg-black/30 text-white shadow-lg backdrop-blur-sm transition-all hover:bg-black/40"
+							className="bg-black/30 text-white backdrop-blur-sm transition-all hover:bg-black/40"
 							onClick={playWithSound}
 						>
-							<svg viewBox="0 0 24 24" fill="currentColor" className="mr-2 h-5 w-5" aria-hidden="true">
+							<svg viewBox="0 0 24 24" fill="currentColor" className="size-5" aria-hidden="true">
 								<title>Play</title>
 								<path d="M8 5v14l11-7z" />
 							</svg>
