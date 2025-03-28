@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { usePostHog } from 'posthog-js/react'
 import { useFold } from '~/lib/hooks/use-fold'
 import { cn } from '~/lib/utils/cn'
-import { Button } from '~/ui/button'
+import { CTA } from '~/ui/cta'
 import { Footer } from '~/ui/footer'
 import { Albertsons } from '~/ui/logos/albertsons'
 import { Cal } from '~/ui/logos/cal'
@@ -28,7 +28,6 @@ const Section = ({ children, className }: { children: React.ReactNode; className
 export default function Page() {
 	const posthog = usePostHog()
 	const { isBelowFold } = useFold()
-	const hook = "We don't have a sales team. Let's talk."
 
 	return (
 		<div className="flex flex-col items-center">
@@ -80,37 +79,8 @@ export default function Page() {
 				</div>
 				<Testimonials />
 				<Partners />
-				<div className="flex flex-col gap-8">
-					<h2 className="max-w-2xl text-7xl">{hook}</h2>
-					<div className="flex items-center gap-4">
-						<Link
-							href="/blog/introducing-rubric-labs"
-							onClick={() =>
-								posthog.capture('read_more.clicked', {
-									body: 'Read our founding story',
-									hook,
-									href: '/blog/introducing-rubric-labs'
-								})
-							}
-						>
-							<Button variant="ghost">Read our founding story</Button>
-						</Link>
-						<Link
-							href="/contact"
-							onClick={() =>
-								posthog.capture('contact_us.clicked', {
-									body: 'Get in touch',
-									hook,
-									href: '/contact'
-								})
-							}
-						>
-							<Button>Get in touch</Button>
-						</Link>
-					</div>
-				</div>
+				<CTA />
 			</Section>
-
 			<Footer />
 		</div>
 	)

@@ -5,7 +5,7 @@
 	--secondary: #666;
 	--background: #f5f0ec;
 	--negative: #222;
-	--subtle: #ddd;
+	--subtle: #0000001a; /* black/10 */
 	--danger: red;
 }
 
@@ -15,7 +15,7 @@
 		--secondary: #999;
 		--background: black;
 		--negative: #ddd;
-		--subtle: #222;
+		--subtle: #ffffff1a; /* white/10 */
 		--danger: red;
 	}
 }
@@ -98,6 +98,10 @@
 
 	section {
 		@apply space-y-4;
+	}
+
+	button svg {
+		@apply size-4;
 	}
 }
 
@@ -324,7 +328,7 @@
 	/* Codeblocks */
 
 	code {
-		@apply bg-black/10 dark:bg-white/10 rounded py-0.5 px-1.5 text-[13px];
+		@apply bg-subtle rounded py-0.5 px-1.5 text-[13px];
 	}
 
 	code[data-theme] {

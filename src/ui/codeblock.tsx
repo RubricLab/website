@@ -16,8 +16,8 @@ export const CodeBlock = ({ children, ...props }: { children: React.ReactElement
 				{children}
 			</pre>
 			<Button
-				className="absolute top-2 right-2 w-fit text-center opacity-0 transition-opacity group-hover:opacity-100"
-				variant="link"
+				className="absolute top-1 right-1 opacity-0 transition-opacity group-hover:opacity-100"
+				variant="icon"
 				size="sm"
 				onClick={() => handleCopy(preRef.current?.textContent || 'Code not found')}
 			>

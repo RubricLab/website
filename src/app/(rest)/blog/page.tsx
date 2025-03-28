@@ -1,5 +1,5 @@
 import { getPostMetadata } from '~/lib/utils/posts'
-import { Card } from './card'
+import { Card } from '~/ui/card'
 
 export default async function Page() {
 	const posts = await getPostMetadata()

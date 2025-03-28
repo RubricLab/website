@@ -21,7 +21,7 @@ export const ScrollButton = ({ className }: { className?: string }) => {
 			}}
 		>
 			<p className="text-base">{body}</p>
-			<Arrow className="size-4 rotate-90" />
+			<Arrow className="rotate-90" />
 		</Button>
 	)
 }

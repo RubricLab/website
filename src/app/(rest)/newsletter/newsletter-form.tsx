@@ -26,7 +26,7 @@ export const NewsletterForm = ({ className }: { className?: string }) => {
 						variant="icon"
 						className="-translate-y-1/2 absolute top-1/2 right-2"
 					>
-						<Arrow className="h-5 w-5" />
+						<Arrow />
 					</Button>
 				</div>
 			)}

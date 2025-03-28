@@ -26,7 +26,7 @@ export const NewsletterList = ({ newsletters }: { newsletters: Newsletter[] }) =
 					<Link
 						href={`/newsletter/${newsletter.slug}`}
 						key={newsletter.slug}
-						className="overflow-hidden p-4 transition-colors hover:bg-subtle"
+						className="overflow-hidden p-4 hover:bg-subtle"
 					>
 						<div className="flex flex-col gap-2">
 							<h2>{newsletter.title}</h2>

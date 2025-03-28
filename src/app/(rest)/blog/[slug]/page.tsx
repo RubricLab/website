@@ -1,9 +1,9 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
 import { formatDate } from '~/lib/utils/date'
 import { getPost, getPostSlugs } from '~/lib/utils/posts'
-import { Button } from '~/ui/button'
+import { CTA } from '~/ui/cta'
 import { CustomImage } from '~/ui/custom-image'
+import { NextPost } from '~/ui/next-post'
 
 export const dynamicParams = false
 
@@ -54,11 +54,8 @@ export default async function Page({ params }: Props) {
 						{metadata.subtitle ? <h3 className="text-secondary">{metadata.subtitle}</h3> : null}
 					</div>
 					<Post />
-					<div className="mt-8 flex items-center justify-center">
-						<Link href="/contact">
-							<Button>Get in touch</Button>
-						</Link>
-					</div>
+					<CTA />
+					<NextPost date={metadata.date} />
 				</article>
 			</div>
 		</div>

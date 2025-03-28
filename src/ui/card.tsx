@@ -19,16 +19,16 @@ export const Card = ({
 		<Link
 			href={`/blog/${post.slug}`}
 			key={post.slug}
-			className={cn('group col-span-1 space-y-2', className)}
+			className={cn('group col-span-1 space-y-2 no-underline', className)}
 		>
 			<div className="relative aspect-square w-full">
 				<CustomImage
 					src={imgSrc}
 					alt={imgAlt}
-					className="object-cover grayscale transition-all duration-300 group-hover:grayscale-0"
+					className="object-cover grayscale transition-all group-hover:grayscale-0"
 				/>
 			</div>
-			<p className="max-w-full pt-4 text-lg">{post.title}</p>
+			<p className="max-w-full pt-4 text-lg group-hover:text-primary">{post.title}</p>
 			<div className="flex items-center gap-4 text-sm">
 				<p>{post.category}</p>
 				<p className="text-secondary">{formatDate(post.date)}</p>

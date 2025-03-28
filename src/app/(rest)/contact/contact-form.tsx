@@ -41,7 +41,7 @@ export const ContactForm = () => {
 					</div>
 					<Button type="submit" disabled={pending || !!state?.success} className="w-full">
 						<p>Submit</p>
-						<div className="ml-auto flex items-center gap-0.5">
+						<div className="ml-auto hidden items-center gap-0.5 sm:flex">
 							<kbd>⌘</kbd>
 							<kbd>⏎</kbd>
 						</div>
