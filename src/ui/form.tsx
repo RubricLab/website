@@ -1,7 +1,8 @@
 'use client'
 
 import { usePostHog } from 'posthog-js/react'
-import { useActionState, useEffect } from 'react'
+import { useActionState, useEffect, useRef } from 'react'
+import { toast } from 'sonner'
 import { cn } from '~/lib/utils/cn'
 
 type ActionResult =
@@ -32,15 +33,28 @@ export const Form = ({
 	ref?: React.RefObject<HTMLFormElement | null>
 }) => {
 	const posthog = usePostHog()
+	const formRef = useRef<HTMLFormElement>(null)
+	const toastIdRef = useRef<string | number | undefined>(undefined)
 	const [state, formAction, pending] = useActionState(action, null)
 
 	useEffect(() => {
-		if (state?.success) posthog.capture(`${label}_form.submitted`)
-		if (state?.error) posthog.capture(`${label}_form.error`, { error: state.error })
-	}, [state, label, posthog])
+		if (pending) toastIdRef.current = toast.loading('Submitting...')
+		if (state?.success && toastIdRef.current) {
+			toast.success('Successfully submitted!', { id: toastIdRef.current })
+			posthog.capture(`${label}_form.submitted`)
+			formRef.current?.reset()
+		} else if (state?.error && toastIdRef.current) {
+			toast.error(state.error, { id: toastIdRef.current })
+			posthog.capture(`${label}_form.error`, { error: state.error })
+		}
+	}, [pending, state, label, posthog])
 
 	return (
-		<form action={formAction} className={cn('flex items-center gap-1', className)} ref={ref}>
+		<form
+			action={formAction}
+			className={cn('flex items-center gap-1', className)}
+			ref={ref || formRef}
+		>
 			{typeof children === 'function' ? children({ pending, state }) : children}
 		</form>
 	)

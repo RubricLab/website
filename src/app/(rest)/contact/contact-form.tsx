@@ -10,7 +10,6 @@ export const ContactForm = () => {
 	const formRef = useRef<HTMLFormElement>(null)
 
 	useShortcut('cmd+enter', () => formRef.current?.requestSubmit(), { fireInForm: true })
-
 	return (
 		<Form
 			label="contact"
@@ -23,21 +22,25 @@ export const ContactForm = () => {
 					<div className="flex min-h-56 w-full flex-col items-center justify-center text-center">
 						<div className="flex w-full flex-col gap-2">
 							{/* biome-ignore lint/a11y/noAutofocus: <explanation> */}
-							<input autoFocus placeholder="Name" name="name" required />
-							<input placeholder="Email" name="email" required />
-							<input placeholder="Company" name="company" required />
-							<textarea placeholder="Message" name="message" required className="resize-none" />
+							<input autoFocus placeholder="Name" name="name" type="text" required />
+							<input placeholder="Email" name="email" type="email" required />
+							<input placeholder="Company" name="company" type="text" required />
+							<textarea
+								placeholder="Message"
+								name="message"
+								required
+								className="resize-none"
+								maxLength={500}
+							/>
 						</div>
 					</div>
 					<Button type="submit" disabled={pending || !!state?.success} className="w-full">
-						{pending ? 'Submitting...' : state?.success ? 'Submitted' : 'Submit'}
+						<p>Submit</p>
 						<div className="ml-auto flex items-center gap-0.5">
 							<kbd>⌘</kbd>
 							<kbd>⏎</kbd>
 						</div>
 					</Button>
-					<p className="h-5 text-sm">{state?.success ? "Thanks. We'll be in touch soon." : ''}</p>
-					<p className="h-5 text-danger text-sm">{state?.error || ''}</p>
 				</>
 			)}
 		</Form>

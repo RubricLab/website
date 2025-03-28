@@ -9,7 +9,7 @@ export const Toaster = () => {
 			toastOptions={{
 				classNames: {
 					toast:
-						'!rounded !border-subtle !rounded-full !min-h-10 !py-2 !px-3.5 !bg-background !text-primary',
+						'!rounded !border-subtle !rounded-full !min-h-12 !py-2 !px-3.5 !bg-background !text-primary',
 					title: '!font-normal',
 					description: '!font-light'
 				}

@@ -36,7 +36,7 @@ export const Button = ({
 		<button
 			type={type}
 			className={cn(
-				'flex w-fit cursor-pointer items-center justify-center gap-2 font-matter ring-secondary transition-all focus:outline-none focus:ring disabled:cursor-default',
+				'flex w-fit cursor-pointer items-center justify-center gap-2 font-matter ring-secondary transition-all focus:outline-none focus:ring disabled:cursor-not-allowed',
 				variants[variant],
 				sizes[size],
 				className
