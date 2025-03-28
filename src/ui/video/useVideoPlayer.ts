@@ -1,5 +1,25 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
+interface DocumentWithFullscreen extends Document {
+	webkitFullscreenElement?: Element | null
+	mozFullScreenElement?: Element | null
+	msFullscreenElement?: Element | null
+	webkitExitFullscreen?: () => Promise<void>
+	mozCancelFullScreen?: () => Promise<void>
+	msExitFullscreen?: () => Promise<void>
+}
+
+interface HTMLElementWithFullscreen extends HTMLElement {
+	webkitRequestFullscreen?: () => Promise<void>
+	mozRequestFullScreen?: () => Promise<void>
+	msRequestFullscreen?: () => Promise<void>
+}
+
+interface HTMLVideoElementWithFullscreen extends HTMLVideoElement {
+	webkitEnterFullscreen?: () => void
+	webkitExitFullscreen?: () => void
+}
+
 export function useVideoPlayer(videoRef: React.RefObject<HTMLVideoElement>) {
 	// Core state
 	const [status, setStatus] = useState<'loading' | 'playing' | 'playing-with-sound'>('loading')
@@ -65,27 +85,59 @@ export function useVideoPlayer(videoRef: React.RefObject<HTMLVideoElement>) {
 
 	// Toggle fullscreen
 	const toggleFullscreen = useCallback(() => {
-		const container = videoRef.current?.closest('.video-inner-container') as HTMLElement
+		const container = videoRef.current?.closest('.video-inner-container') as HTMLElementWithFullscreen
 		if (!container) return
 
-		if (!document.fullscreenElement) {
-			container
-				.requestFullscreen()
-				.then(() => {
-					setIsFullscreen(true)
-				})
-				.catch(err => {
-					console.log(`Error attempting to enable fullscreen: ${err.message}`)
-				})
+		// Check if we're already in fullscreen mode
+		const isFullscreen =
+			document.fullscreenElement ||
+			(document as DocumentWithFullscreen).webkitFullscreenElement ||
+			(document as DocumentWithFullscreen).mozFullScreenElement ||
+			(document as DocumentWithFullscreen).msFullscreenElement
+
+		if (!isFullscreen) {
+			// Try different fullscreen methods
+			if (container.requestFullscreen) {
+				container.requestFullscreen()
+			} else if (container.webkitRequestFullscreen) {
+				container.webkitRequestFullscreen()
+			} else if (container.mozRequestFullScreen) {
+				container.mozRequestFullScreen()
+			} else if (container.msRequestFullscreen) {
+				container.msRequestFullscreen()
+			} else if ((videoRef.current as HTMLVideoElementWithFullscreen)?.webkitEnterFullscreen) {
+				// iOS Safari specific method
+				const video = videoRef.current as HTMLVideoElementWithFullscreen
+				if (video.webkitEnterFullscreen) {
+					video.webkitEnterFullscreen()
+				}
+			}
 		} else {
-			document
-				.exitFullscreen()
-				.then(() => {
-					setIsFullscreen(false)
-				})
-				.catch(err => {
-					console.log(`Error attempting to exit fullscreen: ${err.message}`)
-				})
+			// Exit fullscreen
+			if (document.exitFullscreen) {
+				document.exitFullscreen()
+			} else if ((document as DocumentWithFullscreen).webkitExitFullscreen) {
+				const doc = document as DocumentWithFullscreen
+				if (doc.webkitExitFullscreen) {
+					doc.webkitExitFullscreen()
+				}
+			} else if ((document as DocumentWithFullscreen).mozCancelFullScreen) {
+				const doc = document as DocumentWithFullscreen
+				if (doc.mozCancelFullScreen) {
+					doc.mozCancelFullScreen()
+				}
+			} else if ((document as DocumentWithFullscreen).msExitFullscreen) {
+				const doc = document as DocumentWithFullscreen
+				if (doc.msExitFullscreen) {
+					doc.msExitFullscreen()
+				}
+			} else if ((videoRef.current as HTMLVideoElementWithFullscreen)?.webkitExitFullscreen) {
+				// iOS Safari specific method
+				const video = videoRef.current as HTMLVideoElementWithFullscreen
+				if (video.webkitExitFullscreen) {
+					video.webkitExitFullscreen()
+				}
+			}
 		}
 	}, [videoRef])
 
@@ -192,6 +244,30 @@ export function useVideoPlayer(videoRef: React.RefObject<HTMLVideoElement>) {
 			video.removeEventListener('loadedmetadata', handleLoadedMetadata)
 		}
 	}, [status, videoRef])
+
+	// Add fullscreen change event listeners
+	useEffect(() => {
+		const handleFullscreenChange = () => {
+			const isFullscreen =
+				document.fullscreenElement ||
+				(document as DocumentWithFullscreen).webkitFullscreenElement ||
+				(document as DocumentWithFullscreen).mozFullScreenElement ||
+				(document as DocumentWithFullscreen).msFullscreenElement
+			setIsFullscreen(!!isFullscreen)
+		}
+
+		document.addEventListener('fullscreenchange', handleFullscreenChange)
+		document.addEventListener('webkitfullscreenchange', handleFullscreenChange)
+		document.addEventListener('mozfullscreenchange', handleFullscreenChange)
+		document.addEventListener('MSFullscreenChange', handleFullscreenChange)
+
+		return () => {
+			document.removeEventListener('fullscreenchange', handleFullscreenChange)
+			document.removeEventListener('webkitfullscreenchange', handleFullscreenChange)
+			document.removeEventListener('mozfullscreenchange', handleFullscreenChange)
+			document.removeEventListener('MSFullscreenChange', handleFullscreenChange)
+		}
+	}, [])
 
 	// Return the state and handlers
 	return {
