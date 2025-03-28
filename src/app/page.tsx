@@ -52,6 +52,7 @@ export default function Page() {
 			</Section>
 			<Section className="space-y-40">
 				<div className="flex w-full max-w-2xl flex-col items-center space-y-6">
+					<p className="text-secondary text-sm">Trusted by</p>
 					<div className="grid w-full grid-cols-3 gap-4">
 						<div className="flex justify-start">
 							<Link className="w-36" href="/work#Cal.com">
@@ -72,9 +73,9 @@ export default function Page() {
 					<Link
 						href="/work"
 						className="text-sm"
-						onClick={() => posthog.capture('projects.clicked', { body: 'See more', href: '/work' })}
+						onClick={() => posthog.capture('projects.clicked', { body: 'View more', href: '/work' })}
 					>
-						See more
+						View more
 					</Link>
 				</div>
 				<Testimonials />
@@ -86,13 +87,13 @@ export default function Page() {
 							href="/blog/introducing-rubric-labs"
 							onClick={() =>
 								posthog.capture('read_more.clicked', {
-									body: 'Read more',
+									body: 'Read our founding story',
 									hook,
 									href: '/blog/introducing-rubric-labs'
 								})
 							}
 						>
-							<Button variant="outline">Read more</Button>
+							<Button variant="ghost">Read our founding story</Button>
 						</Link>
 						<Link
 							href="/contact"

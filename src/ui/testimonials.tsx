@@ -15,11 +15,9 @@ export const Testimonials = () => {
 						is impressive. I will definitely be working with the Rubric team again soon."
 					</span>
 				</p>
-				<span className="self-end text-secondary/50 text-xs">
-					Daniel Bevan, CTO of{' '}
-					<Link className="opacity-50" href="/work#Sligo">
-						Sligo
-					</Link>
+				<span className="self-end text-secondary text-sm">Daniel Bevan</span>
+				<span className="self-end text-secondary text-sm">
+					CTO of <Link href="/work#Sligo">Sligo</Link>
 				</span>
 			</div>
 			<div className="flex flex-col">
@@ -34,11 +32,9 @@ export const Testimonials = () => {
 						mile to follow through and iterate with us even after initial handoff."
 					</span>
 				</p>
-				<span className="self-end text-secondary/50 text-xs">
-					Merrill Lutsky, Co-Founder of{' '}
-					<Link className="opacity-50" href="/work#Graphite">
-						Graphite
-					</Link>
+				<span className="self-end text-secondary text-sm">Merrill Lutsky</span>
+				<span className="self-end text-secondary text-sm">
+					Co-Founder of <Link href="/work#Graphite">Graphite</Link>
 				</span>
 			</div>
 			<div className="flex flex-col">
@@ -53,11 +49,9 @@ export const Testimonials = () => {
 						trusting them with our MVP build and every iteration since was the right choice."
 					</span>
 				</p>
-				<span className="self-end text-secondary/50 text-xs">
-					Mitchell White, Founder of{' '}
-					<Link className="opacity-50" href="/work#Weave">
-						Weave
-					</Link>
+				<span className="self-end text-secondary text-sm">Mitchell White</span>
+				<span className="self-end text-secondary text-sm">
+					Founder of <Link href="/work#Weave">Weave</Link>
 				</span>
 			</div>
 		</div>

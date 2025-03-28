@@ -97,7 +97,7 @@ export const Footer = ({ className }: { className?: string }) => {
 						</div>
 					</div>
 				</div>
-				<div className="text-center font-mono text-secondary">
+				<div className="font-mono text-secondary">
 					<Copiable
 						message="Website link copied"
 						variant="link"

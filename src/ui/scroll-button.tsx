@@ -12,7 +12,7 @@ export const ScrollButton = ({ className }: { className?: string }) => {
 
 	return (
 		<Button
-			variant="link"
+			variant="ghost"
 			className={cn(className || '', 'hide-on-small-height')}
 			onClick={() => {
 				const windowHeight = window.innerHeight
@@ -21,7 +21,7 @@ export const ScrollButton = ({ className }: { className?: string }) => {
 			}}
 		>
 			<p className="text-base">{body}</p>
-			<Arrow className="size-5 rotate-90" />
+			<Arrow className="size-4 rotate-90" />
 		</Button>
 	)
 }
