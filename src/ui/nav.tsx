@@ -33,7 +33,10 @@ export function Nav() {
 					scrollY > 0 ? 'bg-background' : ''
 				)}
 			>
-				<Link href="/" className="whitespace-nowrap text-xl">
+				<Link
+					href="/"
+					className={cn('whitespace-nowrap text-xl', { 'text-primary': pathname === '/' })}
+				>
 					Rubric Labs
 				</Link>
 			</div>
