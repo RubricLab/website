@@ -16,7 +16,10 @@ export const ContactForm = () => {
 			action={createContactRequest}
 			ref={formRef}
 			onLoad={{ title: 'Submitting...' }}
-			onSuccess={{ title: 'Contact request submitted', description: 'We will get back to you as soon as possible.' }}
+			onSuccess={{
+				title: 'Request submitted',
+				description: 'We will get back to you as soon as possible'
+			}}
 			className="flex w-full flex-col gap-4"
 		>
 			{({ pending, state }) => (
@@ -32,7 +35,7 @@ export const ContactForm = () => {
 								name="message"
 								required
 								className="resize-none"
-								maxLength={500}
+								maxLength={300}
 							/>
 						</div>
 					</div>

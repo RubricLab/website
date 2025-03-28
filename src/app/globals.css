@@ -54,7 +54,7 @@
 	}
 
 	textarea {
-		@apply min-h-20 rounded-3xl;
+		@apply min-h-36 rounded-3xl;
 	}
 
 	article {
