@@ -52,16 +52,22 @@ export default function Page() {
 			</Section>
 			<Section className="space-y-40">
 				<div className="flex w-full max-w-2xl flex-col items-center space-y-6">
-					<div className="flex w-full items-center justify-between gap-4">
-						<Link className="w-36" href="/work#Cal.com">
-							<Cal className="w-full" />
-						</Link>
-						<Link className="w-40" href="/work#Graphite">
-							<Graphite className="w-full" />
-						</Link>
-						<Link className="w-48" href="/work#Albertsons">
-							<Albertsons className="w-full" />
-						</Link>
+					<div className="grid w-full grid-cols-3 gap-4">
+						<div className="flex justify-start">
+							<Link className="w-36" href="/work#Cal.com">
+								<Cal className="w-full" />
+							</Link>
+						</div>
+						<div className="flex justify-center">
+							<Link className="w-40" href="/work#Graphite">
+								<Graphite className="w-full" />
+							</Link>
+						</div>
+						<div className="flex justify-end">
+							<Link className="w-48" href="/work#Albertsons">
+								<Albertsons className="w-full" />
+							</Link>
+						</div>
 					</div>
 					<Link
 						href="/work"
@@ -73,7 +79,6 @@ export default function Page() {
 				</div>
 				<Testimonials />
 				<Partners />
-
 				<div className="flex flex-col gap-8">
 					<h2 className="max-w-2xl text-7xl">{hook}</h2>
 					<div className="flex items-center gap-4">
