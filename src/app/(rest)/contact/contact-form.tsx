@@ -15,6 +15,8 @@ export const ContactForm = () => {
 			label="contact"
 			action={createContactRequest}
 			ref={formRef}
+			onLoad={{ title: 'Submitting...' }}
+			onSuccess={{ title: 'Contact request submitted', description: 'We will get back to you as soon as possible.' }}
 			className="flex w-full flex-col gap-4"
 		>
 			{({ pending, state }) => (

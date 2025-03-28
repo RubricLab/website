@@ -22,7 +22,13 @@ export const Form = ({
 	action,
 	children,
 	ref,
-	className
+	className,
+	onLoad = {
+		title: 'Submitting...'
+	},
+	onSuccess = {
+		title: 'Successfully submitted!'
+	}
 }: {
 	label: string
 	action: Action
@@ -31,6 +37,13 @@ export const Form = ({
 		| ((props: { pending: boolean; state: ActionResult | null }) => React.ReactNode)
 	className?: string
 	ref?: React.RefObject<HTMLFormElement | null>
+	onLoad?: {
+		title: string
+	}
+	onSuccess?: {
+		title: string
+		description?: string
+	}
 }) => {
 	const posthog = usePostHog()
 	const formRef = useRef<HTMLFormElement>(null)
@@ -38,16 +51,16 @@ export const Form = ({
 	const [state, formAction, pending] = useActionState(action, null)
 
 	useEffect(() => {
-		if (pending) toastIdRef.current = toast.loading('Submitting...')
+		if (pending) toastIdRef.current = toast.loading(onLoad.title)
 		if (state?.success && toastIdRef.current) {
-			toast.success('Successfully submitted!', { id: toastIdRef.current })
+			toast.success(onSuccess.title, { id: toastIdRef.current, description: onSuccess?.description })
 			posthog.capture(`${label}_form.submitted`)
 			formRef.current?.reset()
 		} else if (state?.error && toastIdRef.current) {
 			toast.error(state.error, { id: toastIdRef.current })
 			posthog.capture(`${label}_form.error`, { error: state.error })
 		}
-	}, [pending, state, label, posthog])
+	}, [pending, state, label, posthog, onLoad, onSuccess])
 
 	return (
 		<form

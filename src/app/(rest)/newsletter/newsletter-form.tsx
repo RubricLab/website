@@ -8,7 +8,15 @@ import { Arrow } from '~/ui/icons/arrow'
 
 export const NewsletterForm = ({ className }: { className?: string }) => {
 	return (
-		<Form label="newsletter" action={createNewsletterSubscriber} className={cn(className)}>
+		<Form
+			label="newsletter"
+			action={createNewsletterSubscriber}
+			onLoad={{ title: 'Subscribing...' }}
+			onSuccess={{
+				title: 'Subscribed to newsletter'
+			}}
+			className={cn(className)}
+		>
 			{({ pending, state }) => (
 				<div className="relative flex w-full items-center">
 					<input placeholder="Email" className="w-full" name="email" type="email" required />
