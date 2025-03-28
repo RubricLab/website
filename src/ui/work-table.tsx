@@ -42,7 +42,8 @@ const works = [
 	},
 	{
 		name: 'Weave',
-		description: 'We built an enterprise-grade booking platform for Weave.',
+		description:
+			'We built an enterprise booking platform for Weave to handle everything from POS to inventory management.',
 		date: '2024',
 		category: 'Client',
 		link: 'https://weavein.co'
@@ -113,7 +114,7 @@ const works = [
 		description: 'Our CLI to spin up an AI-native React app.',
 		date: '2024',
 		category: 'Internal',
-		link: 'https://todo.rubric.sh/'
+		link: 'https://rubriclabs.com/blog/create-rubric-app'
 	},
 	{
 		name: 'Greptile',
