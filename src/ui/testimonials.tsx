@@ -3,7 +3,7 @@ import Link from 'next/link'
 export const Testimonials = () => {
 	return (
 		<div className="w-full max-w-2xl space-y-20 sm:text-justify">
-			<div className="flex flex-col gap-4">
+			<div className="flex flex-col">
 				<p>
 					<span className="text-secondary/50">
 						"Rubric was an absolute pleasure to work with. They were available to meet on short notice and
@@ -15,14 +15,14 @@ export const Testimonials = () => {
 						is impressive. I will definitely be working with the Rubric team again soon."
 					</span>
 				</p>
-				<span className="self-end text-secondary/50">
-					- Daniel Bevan, CTO of{' '}
+				<span className="self-end text-secondary/50 text-xs">
+					Daniel Bevan, CTO of{' '}
 					<Link className="opacity-50" href="/work#Sligo">
 						Sligo
 					</Link>
 				</span>
 			</div>
-			<div className="flex flex-col gap-4">
+			<div className="flex flex-col">
 				<p>
 					<span className="text-secondary/50">
 						"In just a few weeks, Rubric went from initial concepts to delivering an engaging AI video
@@ -34,14 +34,14 @@ export const Testimonials = () => {
 						mile to follow through and iterate with us even after initial handoff."
 					</span>
 				</p>
-				<span className="self-end text-secondary/50">
-					- Merrill Lutsky, Co-Founder of{' '}
+				<span className="self-end text-secondary/50 text-xs">
+					Merrill Lutsky, Co-Founder of{' '}
 					<Link className="opacity-50" href="/work#Graphite">
 						Graphite
 					</Link>
 				</span>
 			</div>
-			<div className="flex flex-col gap-4">
+			<div className="flex flex-col">
 				<p>
 					<span className="text-secondary/50">
 						"Working with Rubric has been like having a CTO in our back pocket. They pair the best in
@@ -53,8 +53,8 @@ export const Testimonials = () => {
 						trusting them with our MVP build and every iteration since was the right choice."
 					</span>
 				</p>
-				<span className="self-end text-secondary/50">
-					- Mitchell White, Founder of{' '}
+				<span className="self-end text-secondary/50 text-xs">
+					Mitchell White, Founder of{' '}
 					<Link className="opacity-50" href="/work#Weave">
 						Weave
 					</Link>

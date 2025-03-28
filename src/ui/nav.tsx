@@ -25,28 +25,23 @@ export function Nav() {
 	useShortcut('w', () => router.push('/work'))
 
 	return (
-		<nav
-			className={cn(
-				'group fixed top-0 left-0 z-30 flex w-full items-center pt-4 pl-1 sm:justify-between sm:pt-2 sm:pl-4'
-			)}
-		>
+		<nav className={cn('group fixed top-0 left-0 z-30 flex w-full items-start sm:justify-between')}>
 			<div
 				className={cn(
-					'flex h-10 items-center justify-center rounded-full border px-3 transition-all duration-300 sm:px-6',
+					'flex items-center justify-center rounded-br-custom px-4 py-4 transition-all duration-300 sm:px-6',
 					scrollDirection === 'down' ? 'opacity-0' : 'opacity-100',
-					scrollY > 0 ? 'border-subtle bg-background' : 'border-transparent'
+					scrollY > 0 ? 'bg-background' : ''
 				)}
 			>
 				<Link href="/" className="whitespace-nowrap text-xl">
 					Rubric Labs
 				</Link>
 			</div>
-
 			<div
 				className={cn(
-					'flex h-10 items-center gap-6 rounded-full border px-2 transition-all duration-300 sm:px-6',
+					'flex items-center gap-6 rounded-bl-custom px-6 py-4 transition-all duration-300',
 					scrollDirection === 'down' ? 'opacity-0' : 'opacity-100',
-					scrollY > 0 ? 'border-subtle bg-background' : 'border-transparent',
+					scrollY > 0 ? 'bg-background' : '',
 					'invisible sm:visible'
 				)}
 			>

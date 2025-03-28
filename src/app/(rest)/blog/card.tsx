@@ -31,7 +31,7 @@ export const Card = ({
 			<p className="max-w-full pt-4 text-lg">{post.title}</p>
 			<div className="flex items-center gap-4 text-sm">
 				<p>{post.category}</p>
-				<p className="opacity-50">{formatDate(post.date)}</p>
+				<p className="text-secondary">{formatDate(post.date)}</p>
 			</div>
 		</Link>
 	)

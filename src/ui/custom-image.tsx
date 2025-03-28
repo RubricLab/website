@@ -13,7 +13,7 @@ export const CustomImage = ({
 			) : (
 				<img {...props} alt={props.alt || 'Blog image'} className={cn('h-full', props.className)} />
 			)}
-			{props.title ? <span className="text-center text-sm opacity-80">{props.title}</span> : null}
+			{props.title ? <span className="text-center text-secondary text-sm">{props.title}</span> : null}
 		</span>
 	)
 }
