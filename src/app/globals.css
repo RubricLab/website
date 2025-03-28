@@ -27,7 +27,7 @@
 	--color-negative: var(--negative);
 	--color-secondary: var(--secondary);
 	--color-danger: var(--danger);
-	--radius-custom: 1.75rem;
+	--radius-custom: 1.625rem;
 }
 
 @layer base {
