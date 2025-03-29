@@ -7,8 +7,8 @@ import { cn } from '~/lib/utils/cn'
 import { CTA } from '~/ui/cta'
 import { Footer } from '~/ui/footer'
 import { Albertsons } from '~/ui/logos/albertsons'
-import { Cal } from '~/ui/logos/cal'
 import { Graphite } from '~/ui/logos/graphite'
+import { Gumloop } from '~/ui/logos/gumloop'
 import { Partners } from '~/ui/partners'
 import { ScrollButton } from '~/ui/scroll-button'
 import { Testimonials } from '~/ui/testimonials'
@@ -54,8 +54,8 @@ export default function Page() {
 					<p className="text-secondary text-sm">Trusted by</p>
 					<div className="grid w-full grid-cols-3 gap-4">
 						<div className="flex justify-start">
-							<Link className="w-36" href="/work#Cal.com">
-								<Cal className="w-full" />
+							<Link className="w-36" href="/work#Gumloop">
+								<Gumloop className="w-full" />
 							</Link>
 						</div>
 						<div className="flex justify-center">

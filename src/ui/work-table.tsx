@@ -26,6 +26,13 @@ type Work = {
 
 const works = [
 	{
+		name: 'Gumloop',
+		description: 'We built their landing page and platform frontend.',
+		date: '2023',
+		category: 'Client',
+		link: 'https://gumloop.com'
+	},
+	{
 		name: 'Archetype',
 		description: 'We built a component system for Archetype.',
 		date: '2023',
