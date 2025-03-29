@@ -113,7 +113,7 @@ const works = [
 			href: 'https://year-in-code.com'
 		},
 		secondaryLink: {
-			label: 'Technical report',
+			label: 'Read technical report',
 			href: '/blog/personalized-video-at-scale'
 		}
 	},
@@ -171,7 +171,7 @@ const works = [
 		category: 'Client',
 		link: {
 			href: 'https://cal.com/blog/don-t-forget-about-cal-ai-your-24-7-scheduling-assistant',
-			label: 'Technical report'
+			label: 'Read technical report'
 		},
 		quote: 'Iterating toward production-ready agents.'
 	},
@@ -244,14 +244,14 @@ export const WorkTable = () => {
 									{work.description ? <div>{work.description}</div> : null}
 									<div className="grow" />
 									<div className="flex items-center gap-2">
-										{work.secondaryLink && typeof work.secondaryLink === 'object' ? (
-											<Link href={work.secondaryLink.href}>
-												<Button variant="outline">{work.secondaryLink.label}</Button>
-											</Link>
-										) : null}
 										{work.link && typeof work.link === 'object' ? (
 											<Link href={work.link.href}>
 												<Button variant="default">{work.link.label}</Button>
+											</Link>
+										) : null}
+										{work.secondaryLink && typeof work.secondaryLink === 'object' ? (
+											<Link href={work.secondaryLink.href}>
+												<Button variant="ghost">{work.secondaryLink.label}</Button>
 											</Link>
 										) : null}
 									</div>
