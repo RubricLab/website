@@ -27,7 +27,8 @@ type Work = {
 const works = [
 	{
 		name: 'Gumloop',
-		description: 'We built their landing page and platform frontend.',
+		description:
+			'Gumloop is an AI-native automation platform. We designed and built their landing page and platform frontend.',
 		date: '2023',
 		category: 'Client',
 		link: 'https://gumloop.com'
