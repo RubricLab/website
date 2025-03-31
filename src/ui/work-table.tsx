@@ -254,9 +254,8 @@ export const WorkTable = () => {
 						highlightedWork === work.name ? 'border-primary' : 'border-primary/0'
 					}`}
 				>
-					<div className="flex w-full items-center justify-between">
+					<div className="flex w-full items-center">
 						<h3 className="text-primary">{work.name}</h3>
-						<div>{work.date}</div>
 					</div>
 					<div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
 						<div className="flex h-full w-full flex-col justify-center gap-4">
