@@ -105,7 +105,7 @@ const works = [
 	{
 		name: 'Cal.com',
 		description:
-			'Cal.com is a fully customizable scheduling software for individuals and businesses. Peer, the founder, came to us with a vision of building a proof of concept of an AI-powered, email-first scheduling assistant. We ended up buiding Cal.ai, one of the first AI agents to go to market.',
+			'Cal.com is a fully customizable scheduling software for individuals and businesses. Peer, the founder, came to us with a vision of building a proof of concept of an AI-powered, email-first scheduling assistant. We ended up building Cal.ai, one of the first AI agents to go to market.',
 		image: (
 			<div className="flex h-full w-full flex-col gap-2">
 				<div className="mr-auto flex flex-col rounded-custom bg-background p-4">
@@ -157,7 +157,7 @@ const works = [
 	},
 	{
 		name: 'Greptile',
-		description: 'We built a landing page and demo for Greptile.',
+		description: 'Greptile is an AI code-review bot. We built a landing page and demo for Greptile.',
 		date: '2024',
 		category: 'Client',
 		link: { label: 'Visit website', href: 'https://greptile.com', target: '_blank' }
@@ -165,10 +165,10 @@ const works = [
 	{
 		name: 'Maige',
 		description:
-			'A profitable, open-source software for running LLM commands on your repo. Used by 4k+ teams.',
+			'Maige is an open-source, intelligent codebase copilot for running LLM commands on your code repository. It is used by 4000+ teams.',
 		date: '2023',
 		category: 'Client',
-		link: { label: 'Visit website', href: 'https://maige.ai', target: '_blank' },
+		link: { label: 'Try it out', href: 'https://maige.app', target: '_blank' },
 		secondaryLink: {
 			label: 'Check source code',
 			href: 'https://github.com/rubricLab/maige',
