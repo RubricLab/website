@@ -31,14 +31,14 @@ const works = [
 			'Gumloop is an AI-native automation platform. We designed and built their landing page and platform frontend.',
 		date: '2023',
 		category: 'Client',
-		link: 'https://gumloop.com'
+		link: { label: 'View website', href: 'https://gumloop.com' }
 	},
 	{
 		name: 'Archetype',
 		description: 'We built a component system for Archetype.',
 		date: '2023',
 		category: 'Client',
-		link: 'https://archetype.dev'
+		link: { label: 'View website', href: 'https://archetype.dev' }
 	},
 	{
 		name: 'SyncLinear',
@@ -46,7 +46,7 @@ const works = [
 			'We built a self-hostable app to sync GitHub issues to Linear. It serves 1k+ repos at no cost.',
 		date: '2023',
 		category: 'Client',
-		link: 'https://synclinear.com'
+		link: { label: 'View website', href: 'https://synclinear.com' }
 	},
 	{
 		name: 'Weave',
@@ -54,21 +54,21 @@ const works = [
 			'We built an enterprise booking platform for Weave to handle everything from POS to inventory management.',
 		date: '2024',
 		category: 'Client',
-		link: 'https://weavein.co'
+		link: { label: 'View website', href: 'https://weavein.co' }
 	},
 	{
 		name: 'Sweater Planet',
 		description: 'We built a scalable eCommerce platform. Acquired.',
 		date: '2022',
 		category: 'Internal',
-		link: 'https://sweaterplanet.com'
+		link: { label: 'View website', href: 'https://sweaterplanet.com' }
 	},
 	{
 		name: 'Trigger.dev',
 		description: "We built several open-source demos to showcase Trigger.dev's AI capabilities.",
 		date: '2023',
 		category: 'Client',
-		link: 'https://autochangelog.dev'
+		link: { label: 'View website', href: 'https://autochangelog.dev' }
 	},
 	{
 		name: 'Graphite',
@@ -122,14 +122,14 @@ const works = [
 		description: 'Our CLI to spin up an AI-native React app.',
 		date: '2024',
 		category: 'Internal',
-		link: 'https://rubriclabs.com/blog/create-rubric-app'
+		link: { label: 'View source code', href: 'https://rubriclabs.com/blog/create-rubric-app' }
 	},
 	{
 		name: 'Greptile',
 		description: 'We built a landing page and demo for Greptile.',
 		date: '2024',
 		category: 'Client',
-		link: 'https://greptile.com'
+		link: { label: 'View website', href: 'https://greptile.com' }
 	},
 	{
 		name: 'Series B stealth',
@@ -193,14 +193,14 @@ const works = [
 		description: 'We built a RAG and SQL generation system for Sligo.',
 		date: '2024',
 		category: 'Client',
-		link: 'https://sligo.ai'
+		link: { label: 'View website', href: 'https://sligo.ai' }
 	},
 	{
 		name: 'Neat',
 		description: 'Your GitHub feed, smartly filtered. Used by 2k+ developers.',
 		date: '2022',
 		category: 'Internal',
-		link: 'https://neat.run'
+		link: { label: 'View website', href: 'https://neat.run' }
 	}
 ] satisfies Work[]
 
@@ -220,56 +220,55 @@ export const WorkTable = () => {
 	}, [])
 
 	return (
-		<div className="w-full max-w-4xl">
-			<div className="flex flex-col gap-12">
-				{works
-					.sort((a, b) => b.date.localeCompare(a.date))
-					.map((work, index) => (
-						<div
-							key={index}
-							id={`work-${work.name}`}
-							className={`group h-fit w-full space-y-4 rounded-custom border text-secondary transition-colors duration-500 sm:p-4 sm:px-6 ${
-								highlightedWork === work.name ? 'border-primary' : 'border-primary/0'
-							}`}
-						>
-							<div className="flex justify-between">
-								<h3 className="text-primary">{work.name}</h3>
-								<div>{work.date}</div>
-							</div>
-							<div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-								<div className="flex w-full flex-col gap-4">
-									{work.quote ? (
-										<div className="text-5xl text-primary leading-12 tracking-tight">{work.quote}</div>
-									) : null}
-									{work.description ? <div>{work.description}</div> : null}
-									<div className="grow" />
+		<div className="flex flex-col gap-12">
+			{works
+				.sort((a, b) => b.date.localeCompare(a.date))
+				.map((work, index) => (
+					<div
+						key={index}
+						id={`work-${work.name}`}
+						className={`group flex h-fit w-full flex-col items-center justify-center rounded-custom border text-secondary transition-colors duration-500 sm:px-6 sm:py-4 ${
+							highlightedWork === work.name ? 'border-primary' : 'border-primary/0'
+						}`}
+					>
+						<div className="flex w-full items-center justify-between">
+							<h3 className="text-primary">{work.name}</h3>
+							<div>{work.date}</div>
+						</div>
+						<div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
+							<div className="flex h-full w-full flex-col justify-center gap-4">
+								{work.quote && (
+									<div className="text-5xl text-primary leading-12 tracking-tight">{work.quote}</div>
+								)}
+								{work.description && <div className="flex h-full flex-col">{work.description}</div>}
+								{(work.link || work.secondaryLink) && (
 									<div className="flex items-center gap-2">
-										{work.link && typeof work.link === 'object' ? (
+										{work.link && (
 											<Link href={work.link.href}>
 												<Button variant="default">{work.link.label}</Button>
 											</Link>
-										) : null}
-										{work.secondaryLink && typeof work.secondaryLink === 'object' ? (
+										)}
+										{work.secondaryLink && (
 											<Link href={work.secondaryLink.href}>
 												<Button variant="ghost">{work.secondaryLink.label}</Button>
 											</Link>
-										) : null}
+										)}
 									</div>
-								</div>
-								<div className="relative flex h-full w-full flex-col items-center justify-center">
-									{work.image ? <div className="z-10 h-full w-full shrink-0 p-4">{work.image}</div> : null}
-									{work.backgroundImageUrl ? (
-										<CustomImage
-											src={work.backgroundImageUrl}
-											alt={work.name}
-											className="absolute top-0 left-0 w-full object-cover saturate-[1.25] dark:saturate-[0.75]"
-										/>
-									) : null}
-								</div>
+								)}
+							</div>
+							<div className="relative flex h-full w-full flex-col items-center justify-center">
+								{work.image && <div className="z-10 h-full w-full shrink-0 p-4">{work.image}</div>}
+								{work.backgroundImageUrl && (
+									<CustomImage
+										src={work.backgroundImageUrl}
+										alt={work.name}
+										className="absolute top-0 left-0 w-full object-cover saturate-[1.25] dark:saturate-[0.75]"
+									/>
+								)}
 							</div>
 						</div>
-					))}
-			</div>
+					</div>
+				))}
 		</div>
 	)
 }
