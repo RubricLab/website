@@ -1,6 +1,7 @@
 import { evaluate } from '@mdx-js/mdx'
 import * as runtime from 'react/jsx-runtime'
 import { getNewsletter, getNewsletterSlugs } from '~/lib/utils/newsletters'
+import { ExternalLinks } from './external-links'
 
 export async function generateStaticParams() {
 	const slugs = await getNewsletterSlugs()
@@ -23,7 +24,9 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
 					<p>
 						Welcome back to the Grid. You are 1 of {newsletter.subscriberCount} builders receiving this.
 					</p>
-					<MDXContent />
+					<ExternalLinks>
+						<MDXContent />
+					</ExternalLinks>
 				</article>
 			</div>
 		</div>
