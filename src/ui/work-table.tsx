@@ -27,6 +27,13 @@ type Work = {
 
 const works = [
 	{
+		name: 'Albertsons',
+		description:
+			'Albertsons is a Fortune 500 company that is a major American grocery retailer, and it operates numerous supermarket brands, including Safeway, Vons, and Jewel-Osco. We have been working with them on an ongoing project, details of which are not yet public.',
+		date: '2025',
+		category: 'Client'
+	},
+	{
 		name: 'Graphite',
 		description:
 			'We built a platform to make an AI-directed video out of your GitHub activity. It was used by thousands of devs, which caused it to crash, so we parallelized the rendering engine and dynamically down-rezzed on mobile to scale.',
@@ -77,38 +84,10 @@ const works = [
 	{
 		name: 'Gumloop',
 		description:
-			'Gumloop is an AI-native automation platform. We designed and built their landing page and platform frontend.',
+			'Gumloop is an AI-native automation platform. The founders of Gumloop, Rahul and Max, came to us with an impossible task — to rebuild their landing page and platform frontend in 10 days. Our understanding of consumers in the AI space made this possible.',
 		date: '2023',
 		category: 'Client',
 		link: { label: 'Visit website', href: 'https://gumloop.com', target: '_blank' }
-	},
-	{
-		name: 'SyncLinear',
-		description:
-			'SyncLinear is an open-source app which enables end-to-end sync of Linear tickets and GitHub issues. The team at cal.com came to us with the idea and we implemented the solution in collaboration. It serves 1000+ projects at no cost and is used by teams at PostHog, Vercel, Novu, and more.',
-		date: '2023',
-		category: 'Client',
-		link: { label: 'Try it out', href: 'https://synclinear.com', target: '_blank' },
-		secondaryLink: {
-			label: 'Check source code',
-			href: 'https://github.com/calcom/synclinear.com',
-			target: '_blank'
-		}
-	},
-	{
-		name: 'Weave',
-		description:
-			'We built an enterprise booking platform for Weave to handle everything from POS to inventory management.',
-		date: '2024',
-		category: 'Client',
-		link: { label: 'Visit website', href: 'https://weavein.co', target: '_blank' }
-	},
-	{
-		name: 'Sweater Planet',
-		description: 'We built a scalable eCommerce platform. Acquired.',
-		date: '2022',
-		category: 'Internal',
-		link: { label: 'Visit website', href: 'https://sweaterplanet.com', target: '_blank' }
 	},
 	{
 		name: 'Trigger.dev',
@@ -116,35 +95,6 @@ const works = [
 		date: '2023',
 		category: 'Client',
 		link: { label: 'Visit website', href: 'https://autochangelog.dev', target: '_blank' }
-	},
-
-	{
-		name: 'Create Rubric App',
-		description: 'Our CLI to spin up an AI-native React app.',
-		date: '2024',
-		category: 'Internal',
-		link: {
-			label: 'Check source code',
-			href: 'https://github.com/rubricLab/create-rubric-app',
-			target: '_blank'
-		},
-		secondaryLink: {
-			label: 'Read blog post',
-			href: '/blog/create-rubric-app'
-		}
-	},
-	{
-		name: 'Greptile',
-		description: 'We built a landing page and demo for Greptile.',
-		date: '2024',
-		category: 'Client',
-		link: { label: 'Visit website', href: 'https://greptile.com', target: '_blank' }
-	},
-	{
-		name: 'Series B stealth',
-		description: 'We built a flagship AI-native product for this team.',
-		date: '2024',
-		category: 'Client'
 	},
 	{
 		name: 'Cal.com',
@@ -186,11 +136,19 @@ const works = [
 		quote: 'Iterating toward production-ready agents.'
 	},
 	{
-		name: 'Albertsons',
+		name: 'dRisk',
 		description:
-			'Albertsons is a Fortune 500 company that is a major American grocery retailer, and it operates numerous supermarket brands, including Safeway, Vons, and Jewel-Osco. We have been working with them on an ongoing project, details of which are not yet public.',
-		date: '2025',
-		category: 'Client'
+			'dRisk is a fintech platform that instantly identifies new risk factors in the quarterly (10-Q) and annual (10-K) financial reports filed with the SEC. Evan, the founder, came to us with an idea and we implemented the platform end-to-end.',
+		date: '2024',
+		category: 'Client',
+		link: { label: 'Visit platform', href: 'https://d-risk.ai', target: '_blank' }
+	},
+	{
+		name: 'Greptile',
+		description: 'We built a landing page and demo for Greptile.',
+		date: '2024',
+		category: 'Client',
+		link: { label: 'Visit website', href: 'https://greptile.com', target: '_blank' }
 	},
 	{
 		name: 'Maige',
@@ -206,11 +164,53 @@ const works = [
 		}
 	},
 	{
+		name: 'Create Rubric App',
+		description: 'Our CLI to spin up an AI-native React app.',
+		date: '2024',
+		category: 'Internal',
+		link: {
+			label: 'Check source code',
+			href: 'https://github.com/rubricLab/create-rubric-app',
+			target: '_blank'
+		},
+		secondaryLink: {
+			label: 'Read blog post',
+			href: '/blog/create-rubric-app'
+		}
+	},
+	{
+		name: 'SyncLinear',
+		description:
+			'SyncLinear is an open-source app which enables end-to-end sync of Linear tickets and GitHub issues. The team at cal.com came to us with the idea and we implemented the solution in collaboration. It serves 1000+ projects at no cost and is used by teams at PostHog, Vercel, Novu, and more.',
+		date: '2023',
+		category: 'Client',
+		link: { label: 'Try it out', href: 'https://synclinear.com', target: '_blank' },
+		secondaryLink: {
+			label: 'Check source code',
+			href: 'https://github.com/calcom/synclinear.com',
+			target: '_blank'
+		}
+	},
+	{
+		name: 'Series B stealth',
+		description: 'We built a flagship AI-native product for this team.',
+		date: '2024',
+		category: 'Client'
+	},
+	{
 		name: 'Sligo',
 		description: 'We built a RAG and SQL generation system for Sligo.',
 		date: '2024',
 		category: 'Client',
 		link: { label: 'Visit website', href: 'https://sligo.ai', target: '_blank' }
+	},
+	{
+		name: 'Weave',
+		description:
+			'We built an enterprise booking platform for Weave to handle everything from POS to inventory management.',
+		date: '2024',
+		category: 'Client',
+		link: { label: 'Visit website', href: 'https://weavein.co', target: '_blank' }
 	},
 	{
 		name: 'Neat',
@@ -220,12 +220,11 @@ const works = [
 		link: { label: 'Visit website', href: 'https://neat.run', target: '_blank' }
 	},
 	{
-		name: 'dRisk',
-		description:
-			'dRisk is a fintech platform that instantly identifies new risk factors in the quarterly (10-Q) and annual (10-K) financial reports filed with the SEC. Evan, the founder, came to us with an idea and we implemented the platform end-to-end.',
-		date: '2024',
-		category: 'Client',
-		link: { label: 'Visit platform', href: 'https://d-risk.ai', target: '_blank' }
+		name: 'Sweater Planet',
+		description: 'We built a scalable eCommerce platform. Acquired.',
+		date: '2022',
+		category: 'Internal',
+		link: { label: 'Visit website', href: 'https://sweaterplanet.com', target: '_blank' }
 	}
 ] satisfies Work[]
 
@@ -271,7 +270,7 @@ export const WorkTable = () => {
 										</Link>
 									)}
 									{work.secondaryLink && (
-										<Link href={work.secondaryLink.href} target={work.link.target ?? '_self'}>
+										<Link href={work.secondaryLink.href} target="_self">
 											<Button variant="ghost">{work.secondaryLink.label}</Button>
 										</Link>
 									)}
