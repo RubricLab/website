@@ -29,14 +29,14 @@ const works = [
 	{
 		name: 'Albertsons',
 		description:
-			'Albertsons is a Fortune 500 company that is a major American grocery retailer, and it operates numerous supermarket brands, including Safeway, Vons, and Jewel-Osco. We have been working with them on an ongoing project, details of which are not yet public.',
+			'Albertsons, a Fortune 500 company, is a major American grocery retailer, and operates numerous supermarket brands, including Safeway, Vons, and Jewel-Osco. We have been working with them on an ongoing project, details of which are not yet public.',
 		date: '2025',
 		category: 'Client'
 	},
 	{
 		name: 'Graphite',
 		description:
-			'We built a platform to make an AI-directed video out of your GitHub activity. It was used by thousands of devs, which caused it to crash, so we parallelized the rendering engine and dynamically down-rezzed on mobile to scale.',
+			'Graphite is an AI developer productivity platform. We built a marketing product for Graphite to make AI-directed video using GitHub activity. It was used by thousands of devs, which caused it to crash, so we parallelized the rendering engine and dynamically down-rezzed on mobile to scale.',
 		backgroundImageUrl: '/images/graphite.png',
 		image: (
 			<div className="flex h-full w-full flex-col justify-center gap-2">
@@ -84,21 +84,28 @@ const works = [
 	{
 		name: 'Gumloop',
 		description:
-			'Gumloop is an AI-native automation platform. The founders of Gumloop, Rahul and Max, came to us with an impossible task — to rebuild their landing page and platform frontend in 10 days. Our understanding of consumers in the AI space made this possible.',
+			'Gumloop is an AI-native automation platform. The founders, Rahul and Max, came to us with an impossible task — to rebuild their landing page and platform frontend in a few weeks. This was one of the most fun projects we have worked on.',
 		date: '2023',
 		category: 'Client',
 		link: { label: 'Visit website', href: 'https://gumloop.com', target: '_blank' }
 	},
 	{
 		name: 'Trigger.dev',
-		description: "We built several open-source demos to showcase Trigger.dev's AI capabilities.",
+		description:
+			"Trigger is an AI infrastructure and background jobs platform for developers. The founders of Trigger wanted us to build several open-source demos to showcase Trigger.dev's AI capabilities. One of them was AutoChangelog, a tool that uses AI to generate changelogs for your GitHub repositories.",
 		date: '2023',
 		category: 'Client',
-		link: { label: 'Visit website', href: 'https://autochangelog.dev', target: '_blank' }
+		link: { label: 'Try it out', href: 'https://trigger-ai-changelog.vercel.app', target: '_blank' },
+		secondaryLink: {
+			label: 'Check source code',
+			href: 'https://github.com/triggerdotdev/ai-changelog',
+			target: '_blank'
+		}
 	},
 	{
 		name: 'Cal.com',
-		description: 'We built an early version of Cal.ai, one of the first AI agents to go to market.',
+		description:
+			'Cal.com is a fully customizable scheduling software for individuals and businesses. Peer, the founder, came to us with a vision of building a proof of concept of an AI-powered, email-first scheduling assistant. We ended up buiding Cal.ai, one of the first AI agents to go to market.',
 		image: (
 			<div className="flex h-full w-full flex-col gap-2">
 				<div className="mr-auto flex flex-col rounded-custom bg-background p-4">
@@ -129,8 +136,13 @@ const works = [
 		date: '2024',
 		category: 'Client',
 		link: {
-			href: 'https://cal.com/blog/don-t-forget-about-cal-ai-your-24-7-scheduling-assistant',
+			href: 'https://blog.langchain.dev/how-to-design-an-agent-for-production/',
 			label: 'Read technical report',
+			target: '_blank'
+		},
+		secondaryLink: {
+			label: 'Visit website',
+			href: 'https://cal.com/blog/don-t-forget-about-cal-ai-your-24-7-scheduling-assistant',
 			target: '_blank'
 		},
 		quote: 'Iterating toward production-ready agents.'
