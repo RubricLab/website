@@ -31,9 +31,9 @@ export const TrustedBy = () => {
 			<Link
 				href="/work"
 				className="text-sm"
-				onClick={() => posthog.capture('projects.clicked', { body: 'View more', href: '/work' })}
+				onClick={() => posthog.capture('projects.clicked', { body: 'View all', href: '/work' })}
 			>
-				View more
+				View all
 			</Link>
 		</div>
 	)

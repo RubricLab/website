@@ -10,6 +10,7 @@ import { CustomImage } from './custom-image'
 type DemoLink = {
 	href: string
 	label: string
+	target?: '_blank'
 }
 
 type Work = {
@@ -20,56 +21,11 @@ type Work = {
 	backgroundImageUrl?: string
 	quote?: string
 	image?: React.ReactNode
-	link?: string | DemoLink
-	secondaryLink?: string | DemoLink
+	link?: DemoLink
+	secondaryLink?: DemoLink
 }
 
 const works = [
-	{
-		name: 'Gumloop',
-		description:
-			'Gumloop is an AI-native automation platform. We designed and built their landing page and platform frontend.',
-		date: '2023',
-		category: 'Client',
-		link: { label: 'View website', href: 'https://gumloop.com' }
-	},
-	{
-		name: 'Archetype',
-		description: 'We built a component system for Archetype.',
-		date: '2023',
-		category: 'Client',
-		link: { label: 'View website', href: 'https://archetype.dev' }
-	},
-	{
-		name: 'SyncLinear',
-		description:
-			'We built a self-hostable app to sync GitHub issues to Linear. It serves 1k+ repos at no cost.',
-		date: '2023',
-		category: 'Client',
-		link: { label: 'View website', href: 'https://synclinear.com' }
-	},
-	{
-		name: 'Weave',
-		description:
-			'We built an enterprise booking platform for Weave to handle everything from POS to inventory management.',
-		date: '2024',
-		category: 'Client',
-		link: { label: 'View website', href: 'https://weavein.co' }
-	},
-	{
-		name: 'Sweater Planet',
-		description: 'We built a scalable eCommerce platform. Acquired.',
-		date: '2022',
-		category: 'Internal',
-		link: { label: 'View website', href: 'https://sweaterplanet.com' }
-	},
-	{
-		name: 'Trigger.dev',
-		description: "We built several open-source demos to showcase Trigger.dev's AI capabilities.",
-		date: '2023',
-		category: 'Client',
-		link: { label: 'View website', href: 'https://autochangelog.dev' }
-	},
 	{
 		name: 'Graphite',
 		description:
@@ -110,7 +66,8 @@ const works = [
 		quote: 'Scaling personalized, generative video to 1000s of users',
 		link: {
 			label: 'Try it out',
-			href: 'https://year-in-code.com'
+			href: 'https://year-in-code.com',
+			target: '_blank'
 		},
 		secondaryLink: {
 			label: 'Read technical report',
@@ -118,18 +75,70 @@ const works = [
 		}
 	},
 	{
+		name: 'Gumloop',
+		description:
+			'Gumloop is an AI-native automation platform. We designed and built their landing page and platform frontend.',
+		date: '2023',
+		category: 'Client',
+		link: { label: 'Visit website', href: 'https://gumloop.com', target: '_blank' }
+	},
+	{
+		name: 'SyncLinear',
+		description:
+			'SyncLinear is an open-source app which enables end-to-end sync of Linear tickets and GitHub issues. The team at cal.com came to us with the idea and we implemented the solution in collaboration. It serves 1000+ projects at no cost and is used by teams at PostHog, Vercel, Novu, and more.',
+		date: '2023',
+		category: 'Client',
+		link: { label: 'Try it out', href: 'https://synclinear.com', target: '_blank' },
+		secondaryLink: {
+			label: 'Check source code',
+			href: 'https://github.com/calcom/synclinear.com',
+			target: '_blank'
+		}
+	},
+	{
+		name: 'Weave',
+		description:
+			'We built an enterprise booking platform for Weave to handle everything from POS to inventory management.',
+		date: '2024',
+		category: 'Client',
+		link: { label: 'Visit website', href: 'https://weavein.co', target: '_blank' }
+	},
+	{
+		name: 'Sweater Planet',
+		description: 'We built a scalable eCommerce platform. Acquired.',
+		date: '2022',
+		category: 'Internal',
+		link: { label: 'Visit website', href: 'https://sweaterplanet.com', target: '_blank' }
+	},
+	{
+		name: 'Trigger.dev',
+		description: "We built several open-source demos to showcase Trigger.dev's AI capabilities.",
+		date: '2023',
+		category: 'Client',
+		link: { label: 'Visit website', href: 'https://autochangelog.dev', target: '_blank' }
+	},
+
+	{
 		name: 'Create Rubric App',
 		description: 'Our CLI to spin up an AI-native React app.',
 		date: '2024',
 		category: 'Internal',
-		link: { label: 'View source code', href: 'https://rubriclabs.com/blog/create-rubric-app' }
+		link: {
+			label: 'Check source code',
+			href: 'https://github.com/rubricLab/create-rubric-app',
+			target: '_blank'
+		},
+		secondaryLink: {
+			label: 'Read blog post',
+			href: '/blog/create-rubric-app'
+		}
 	},
 	{
 		name: 'Greptile',
 		description: 'We built a landing page and demo for Greptile.',
 		date: '2024',
 		category: 'Client',
-		link: { label: 'View website', href: 'https://greptile.com' }
+		link: { label: 'Visit website', href: 'https://greptile.com', target: '_blank' }
 	},
 	{
 		name: 'Series B stealth',
@@ -171,13 +180,15 @@ const works = [
 		category: 'Client',
 		link: {
 			href: 'https://cal.com/blog/don-t-forget-about-cal-ai-your-24-7-scheduling-assistant',
-			label: 'Read technical report'
+			label: 'Read technical report',
+			target: '_blank'
 		},
 		quote: 'Iterating toward production-ready agents.'
 	},
 	{
 		name: 'Albertsons',
-		description: 'Work in progress.',
+		description:
+			'Albertsons is a Fortune 500 company that is a major American grocery retailer, and it operates numerous supermarket brands, including Safeway, Vons, and Jewel-Osco. We have been working with them on an ongoing project, details of which are not yet public.',
 		date: '2025',
 		category: 'Client'
 	},
@@ -186,21 +197,35 @@ const works = [
 		description:
 			'A profitable, open-source software for running LLM commands on your repo. Used by 4k+ teams.',
 		date: '2023',
-		category: 'Client'
+		category: 'Client',
+		link: { label: 'Visit website', href: 'https://maige.ai', target: '_blank' },
+		secondaryLink: {
+			label: 'Check source code',
+			href: 'https://github.com/rubricLab/maige',
+			target: '_blank'
+		}
 	},
 	{
 		name: 'Sligo',
 		description: 'We built a RAG and SQL generation system for Sligo.',
 		date: '2024',
 		category: 'Client',
-		link: { label: 'View website', href: 'https://sligo.ai' }
+		link: { label: 'Visit website', href: 'https://sligo.ai', target: '_blank' }
 	},
 	{
 		name: 'Neat',
 		description: 'Your GitHub feed, smartly filtered. Used by 2k+ developers.',
 		date: '2022',
 		category: 'Internal',
-		link: { label: 'View website', href: 'https://neat.run' }
+		link: { label: 'Visit website', href: 'https://neat.run', target: '_blank' }
+	},
+	{
+		name: 'dRisk',
+		description:
+			'dRisk is a fintech platform that instantly identifies new risk factors in the quarterly (10-Q) and annual (10-K) financial reports filed with the SEC. Evan, the founder, came to us with an idea and we implemented the platform end-to-end.',
+		date: '2024',
+		category: 'Client',
+		link: { label: 'Visit platform', href: 'https://d-risk.ai', target: '_blank' }
 	}
 ] satisfies Work[]
 
@@ -221,54 +246,52 @@ export const WorkTable = () => {
 
 	return (
 		<div className="flex flex-col gap-12">
-			{works
-				.sort((a, b) => b.date.localeCompare(a.date))
-				.map((work, index) => (
-					<div
-						key={index}
-						id={`work-${work.name}`}
-						className={`group flex h-fit w-full flex-col items-center justify-center rounded-custom border text-secondary transition-colors duration-500 sm:px-6 sm:py-4 ${
-							highlightedWork === work.name ? 'border-primary' : 'border-primary/0'
-						}`}
-					>
-						<div className="flex w-full items-center justify-between">
-							<h3 className="text-primary">{work.name}</h3>
-							<div>{work.date}</div>
+			{works.map((work, index) => (
+				<div
+					key={index}
+					id={`work-${work.name}`}
+					className={`group flex h-fit w-full flex-col items-center justify-center rounded-custom border text-secondary transition-colors duration-500 sm:px-6 sm:py-4 ${
+						highlightedWork === work.name ? 'border-primary' : 'border-primary/0'
+					}`}
+				>
+					<div className="flex w-full items-center justify-between">
+						<h3 className="text-primary">{work.name}</h3>
+						<div>{work.date}</div>
+					</div>
+					<div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
+						<div className="flex h-full w-full flex-col justify-center gap-4">
+							{work.quote && (
+								<div className="text-5xl text-primary leading-12 tracking-tight">{work.quote}</div>
+							)}
+							{work.description && <div className="flex h-full flex-col">{work.description}</div>}
+							{(work.link || work.secondaryLink) && (
+								<div className="flex items-center gap-2">
+									{work.link && (
+										<Link href={work.link.href} target={work.link.target ?? '_self'}>
+											<Button variant="default">{work.link.label}</Button>
+										</Link>
+									)}
+									{work.secondaryLink && (
+										<Link href={work.secondaryLink.href} target={work.link.target ?? '_self'}>
+											<Button variant="ghost">{work.secondaryLink.label}</Button>
+										</Link>
+									)}
+								</div>
+							)}
 						</div>
-						<div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
-							<div className="flex h-full w-full flex-col justify-center gap-4">
-								{work.quote && (
-									<div className="text-5xl text-primary leading-12 tracking-tight">{work.quote}</div>
-								)}
-								{work.description && <div className="flex h-full flex-col">{work.description}</div>}
-								{(work.link || work.secondaryLink) && (
-									<div className="flex items-center gap-2">
-										{work.link && (
-											<Link href={work.link.href}>
-												<Button variant="default">{work.link.label}</Button>
-											</Link>
-										)}
-										{work.secondaryLink && (
-											<Link href={work.secondaryLink.href}>
-												<Button variant="ghost">{work.secondaryLink.label}</Button>
-											</Link>
-										)}
-									</div>
-								)}
-							</div>
-							<div className="relative flex h-full w-full flex-col items-center justify-center">
-								{work.image && <div className="z-10 h-full w-full shrink-0 p-4">{work.image}</div>}
-								{work.backgroundImageUrl && (
-									<CustomImage
-										src={work.backgroundImageUrl}
-										alt={work.name}
-										className="absolute top-0 left-0 w-full object-cover saturate-[1.25] dark:saturate-[0.75]"
-									/>
-								)}
-							</div>
+						<div className="relative flex h-full w-full flex-col items-center justify-center">
+							{work.image && <div className="z-10 h-full w-full shrink-0 p-4">{work.image}</div>}
+							{work.backgroundImageUrl && (
+								<CustomImage
+									src={work.backgroundImageUrl}
+									alt={work.name}
+									className="absolute top-0 left-0 w-full object-cover saturate-[1.25] dark:saturate-[0.75]"
+								/>
+							)}
 						</div>
 					</div>
-				))}
+				</div>
+			))}
 		</div>
 	)
 }
