@@ -165,7 +165,7 @@ const works = [
 	{
 		name: 'Maige',
 		description:
-			'Maige is an open-source, intelligent codebase copilot for running LLM commands on your code repository. It is used by 4000+ teams.',
+			'Maige is an open-source, intelligent codebase copilot for running LLM commands on your code repository. It has been used in 4000+ projects.',
 		date: '2023',
 		category: 'Client',
 		link: { label: 'Try it out', href: 'https://maige.app', target: '_blank' },
