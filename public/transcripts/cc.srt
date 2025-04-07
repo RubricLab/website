@@ -1,0 +1,171 @@
+1
+00:00:07,000 --> 00:00:12,460
+Hi, we're the co-founders of Rubric, which is an applied AI lab.
+
+2
+00:00:12,460 --> 00:00:17,160
+We see so many interesting LLM-based products getting built every day, but we've noticed
+
+3
+00:00:17,160 --> 00:00:21,240
+that there's just this fundamental difference between a really good demo, like a really
+
+4
+00:00:21,240 --> 00:00:25,559
+interesting prototype, and a production-grade system that kind of works in the hands of
+
+5
+00:00:25,559 --> 00:00:27,160
+real people at scale.
+
+6
+00:00:27,160 --> 00:00:29,520
+Yeah, this is exactly what we do at Rubric.
+
+7
+00:00:29,520 --> 00:00:34,639
+We architect, build, deploy AI apps, and we've already done this with everyone from
+
+8
+00:00:34,639 --> 00:00:37,639
+Series B startups to publicly traded companies.
+
+9
+00:00:37,639 --> 00:00:42,360
+Our process for building products at Rubric is first gathering as much context as possible
+
+10
+00:00:42,360 --> 00:00:45,919
+to really understand the problem that we're trying to solve.
+
+11
+00:00:45,919 --> 00:00:49,840
+Once we have the understanding, we want to build a prototype really, really quickly,
+
+12
+00:00:49,840 --> 00:00:54,439
+validating the hardest part, and zoom in on the things that really matter so that we have
+
+13
+00:00:54,439 --> 00:00:57,720
+this rich context to solve the problems at hand.
+
+14
+00:00:57,720 --> 00:00:59,680
+I see us fundamentally as architects.
+
+15
+00:00:59,680 --> 00:01:04,739
+I think our core strength at Rubric is the ability to take a complex problem and break
+
+16
+00:01:04,739 --> 00:01:08,239
+it down into a set of discrete chunks.
+
+17
+00:01:08,239 --> 00:01:11,800
+And once you can lock off a few of those chunks and figure out how to do them really, really
+
+18
+00:01:11,800 --> 00:01:14,919
+well, suddenly the problem doesn't seem so complex anymore.
+
+19
+00:01:14,919 --> 00:01:19,760
+And the hard part is those chunks are often LLM calls, which are fundamentally non-deterministic.
+
+20
+00:01:19,760 --> 00:01:20,760
+They're mushy.
+
+21
+00:01:20,760 --> 00:01:24,080
+But we want an app to be reliable.
+
+22
+00:01:24,080 --> 00:01:25,959
+So how do we do that?
+
+23
+00:01:25,959 --> 00:01:29,680
+Often the products we end up with will have sort of like a large system that's using like
+
+24
+00:01:29,680 --> 00:01:32,779
+frontier intelligence, like, you know, maybe reasoning models.
+
+25
+00:01:32,779 --> 00:01:36,639
+When you go to production, you boil them down, you sort of like tune them, and it turns into
+
+26
+00:01:36,639 --> 00:01:38,599
+a really performant, fast, cheap thing.
+
+27
+00:01:38,599 --> 00:01:39,599
+Right.
+
+28
+00:01:39,599 --> 00:01:44,040
+If I can riff on this, also like this semiconductor was such a breakthrough, but you wouldn't
+
+29
+00:01:44,040 --> 00:01:46,080
+know it if you only had one.
+
+30
+00:01:46,080 --> 00:01:52,440
+So if the LLM is a breakthrough of like equal magnitude, then trying to optimize one, it
+
+31
+00:01:52,440 --> 00:01:53,440
+only gets us so far.
+
+32
+00:01:53,440 --> 00:01:57,199
+We got expectancy systems of like thousands of these combined.
+
+33
+00:01:57,199 --> 00:02:00,480
+Part of the thesis of why we started Rubric was because we kind of wanted to challenge
+
+34
+00:02:00,480 --> 00:02:04,559
+this assumption that you needed a large team and a lot of infrastructure to build these
+
+35
+00:02:04,559 --> 00:02:05,559
+systems.
+
+36
+00:02:05,559 --> 00:02:09,800
+We want to be really intentional about being the team that can fill this moment.
+
+37
+00:02:09,800 --> 00:02:15,699
+By building a framework that really prioritizes experimentation and ideation, while also having
+
+38
+00:02:15,699 --> 00:02:20,199
+the persistence to actually build a reliable product is what defines Rubric.
+
+39
+00:02:20,199 --> 00:02:21,759
+Okay, that's Rubric.
+
+40
+00:02:22,279 --> 00:02:24,679
+Thank you so much for your time and please reach out to us.
+
+41
+00:02:24,679 --> 00:02:28,119
+We would love to hear what you're trying to build and how we might be able to help.
+
+42
+00:02:28,119 --> 00:02:29,119
+Thank you.
+
+43
+00:02:29,119 --> 00:02:30,119
+Thank you.
