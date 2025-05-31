@@ -7,11 +7,10 @@ import { useEffect, useRef } from 'react'
 import { useInView } from 'react-intersection-observer'
 import { cn } from '~/lib/utils/cn'
 import { Button } from '../button'
-
 import { CrossIcon } from '../icons/cross'
 import { useVideoPlayer } from './useVideoPlayer'
-// Sub-components and hooks for better organization
 import { VideoControls } from './video-controls'
+import { PlayIcon } from '../icons/play'
 
 interface VideoProps {
 	hlsUrl: string
@@ -240,10 +239,7 @@ export function Video({ hlsUrl, mp4Url, className = '', posterUrl, transcription
 							className="bg-black/30 text-white backdrop-blur-sm transition-all hover:bg-black/40"
 							onClick={playWithSound}
 						>
-							<svg viewBox="0 0 24 24" fill="currentColor" className="size-5" aria-hidden="true">
-								<title>Play</title>
-								<path d="M8 5v14l11-7z" />
-							</svg>
+							<PlayIcon className="size-4" />
 							Play with sound
 						</Button>
 					</div>

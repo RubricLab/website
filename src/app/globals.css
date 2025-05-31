@@ -231,25 +231,6 @@
 		border-radius: 3px;
 	}
 
-	.cc-button {
-		font-weight: 600;
-		font-size: 13px;
-		padding: 2px 4px;
-		border-radius: 3px;
-		user-select: none;
-		cursor: pointer;
-	}
-
-	.video-controls button {
-		cursor: pointer;
-		opacity: 0.9;
-		transition: opacity 0.2s ease;
-	}
-
-	.video-controls button:hover {
-		opacity: 1;
-	}
-
 	/* Fade out before starting transform */
 	.video-inner-container.is-floating {
 		animation: pip-transition 0.25s ease-out forwards;

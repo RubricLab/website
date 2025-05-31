@@ -6,7 +6,8 @@ const variants = {
 		'border-subtle border dark:enabled:hover:border-white/20 enabled:hover:border-black/20 rounded-full',
 	ghost: 'dark:enabled:hover:bg-white/20 enabled:hover:bg-black/20 rounded-full',
 	link: 'text-secondary enabled:hover:text-primary focus:ring-0 !p-0',
-	icon: 'focus:ring-0 !p-1.5 rounded dark:enabled:hover:bg-white/20 enabled:hover:bg-black/20'
+	icon:
+		'focus:ring-0 !px-1.5 !py-1.5 rounded dark:enabled:hover:bg-white/20 enabled:hover:bg-black/20'
 } as const
 
 const sizes = {

@@ -1,4 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { cn } from '~/lib/utils/cn'
+import { Button } from '../button'
+import { Demaximize } from '../icons/demaximize'
+import { Maximize } from '../icons/maximize'
+import { PauseIcon } from '../icons/pause'
+import { PlayIcon } from '../icons/play'
 
 interface VideoControlsProps {
 	isPlaying: boolean
@@ -27,13 +33,6 @@ export function VideoControls({
 	const [isFullscreen, setIsFullscreen] = useState(false)
 	const progressRef = useRef<HTMLDivElement>(null)
 	const controlsTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-
-	// Format time (seconds to mm:ss)
-	// const formatTime = useCallback((seconds: number) => {
-	// 	const mins = Math.floor(seconds / 60)
-	// 	const secs = Math.floor(seconds % 60)
-	// 	return `${mins}:${secs < 10 ? '0' : ''}${secs}`
-	// }, [])
 
 	// Handle scrubber click
 	const handleProgressClick = useCallback(
@@ -143,53 +142,38 @@ export function VideoControls({
 			<div className="flex items-center justify-between px-4 pt-3">
 				<div className="flex items-center gap-3">
 					{/* Play/Pause Button */}
-					<button
-						className="text-white focus:outline-none"
+					<Button
+						variant="icon"
+						size="sm"
 						onClick={onPlayPause}
 						aria-label={isPlaying ? 'Pause' : 'Play'}
-						type="button"
 					>
-						{isPlaying ? (
-							<svg viewBox="0 0 24 24" fill="currentColor" className="h-6 w-6" aria-hidden="true">
-								<rect x="6" y="4" width="4" height="16" />
-								<rect x="14" y="4" width="4" height="16" />
-							</svg>
-						) : (
-							<svg viewBox="0 0 24 24" fill="currentColor" className="h-6 w-6" aria-hidden="true">
-								<path d="M8 5v14l11-7z" />
-							</svg>
-						)}
-					</button>
+						{isPlaying ? <PauseIcon className="size-5" /> : <PlayIcon className="size-5" />}
+					</Button>
 				</div>
 
 				<div className="flex items-center gap-4">
 					{/* CC Button */}
-					<button
-						className={`cc-button text-white focus:outline-none ${isCaptionsOn ? 'bg-white/30' : 'opacity-70'}`}
+					<Button
+						variant="icon"
+						size="sm"
+						className={cn('!py-1', isCaptionsOn ? 'bg-white/30' : 'opacity-70')}
 						onClick={onToggleCaptions}
 						aria-label="Toggle Captions"
-						type="button"
 					>
 						CC
-					</button>
+					</Button>
 
 					{/* Fullscreen Button */}
-					<button
+					<Button
+						variant="icon"
+						size="sm"
 						className="text-white focus:outline-none"
 						onClick={onToggleFullscreen}
 						aria-label={isFullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}
-						type="button"
 					>
-						{isFullscreen ? (
-							<svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5" aria-hidden="true">
-								<path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z" />
-							</svg>
-						) : (
-							<svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5" aria-hidden="true">
-								<path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z" />
-							</svg>
-						)}
-					</button>
+						{isFullscreen ? <Demaximize className="size-5" /> : <Maximize className="size-5" />}
+					</Button>
 				</div>
 			</div>
 		</div>
