@@ -13,11 +13,11 @@ export async function transcribe(videoPath: string, apiKey: string): Promise<voi
 	formData.append('prompt', 'The company name is Rubric, an applied AI lab.') // Add custom vocabulary hint
 
 	const response = await fetch('https://api.openai.com/v1/audio/transcriptions', {
-		method: 'POST',
+		body: formData,
 		headers: {
 			Authorization: `Bearer ${apiKey}`
 		},
-		body: formData
+		method: 'POST'
 	})
 
 	// Get VTT content directly from the API

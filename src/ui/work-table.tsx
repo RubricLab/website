@@ -27,17 +27,18 @@ type Work = {
 
 const works = [
 	{
-		name: 'Albertsons',
+		category: 'Client',
+		date: '2025',
 		description:
 			'Albertsons, a Fortune 500 company, is a major American grocery retailer, and operates numerous supermarket brands, including Safeway, Vons, and Jewel-Osco. We have been working with them on an ongoing project, details of which are not yet public.',
-		date: '2025',
-		category: 'Client'
+		name: 'Albertsons'
 	},
 	{
-		name: 'Graphite',
+		backgroundImageUrl: '/images/graphite.png',
+		category: 'Client',
+		date: '2024',
 		description:
 			'Graphite is an AI developer productivity platform. We built a marketing product for Graphite to make AI-directed video using GitHub activity. It was used by thousands of devs, which caused it to crash, so we parallelized the rendering engine and dynamically down-rezzed on mobile to scale.',
-		backgroundImageUrl: '/images/graphite.png',
 		image: (
 			<div className="flex h-full w-full flex-col justify-center gap-2">
 				<div className="mr-auto rounded-custom bg-background px-2 py-1">enter your github username</div>
@@ -68,42 +69,43 @@ const works = [
 				</div>
 			</div>
 		),
-		date: '2024',
-		category: 'Client',
-		quote: 'Scaling personalized, generative video to 1000s of users',
 		link: {
-			label: 'Try it out',
 			href: 'https://year-in-code.com',
+			label: 'Try it out',
 			target: '_blank'
 		},
+		name: 'Graphite',
+		quote: 'Scaling personalized, generative video to 1000s of users',
 		secondaryLink: {
-			label: 'Read technical report',
-			href: '/blog/personalized-video-at-scale'
+			href: '/blog/personalized-video-at-scale',
+			label: 'Read technical report'
 		}
 	},
 	{
-		name: 'Gumloop',
+		category: 'Client',
+		date: '2023',
 		description:
 			'Gumloop is an AI-native automation platform. The founders, Rahul and Max, came to us with an impossible task — to rebuild their landing page and platform frontend in a few weeks. This was one of the most fun projects we have worked on.',
-		date: '2023',
-		category: 'Client',
-		link: { label: 'Visit website', href: 'https://gumloop.com', target: '_blank' }
+		link: { href: 'https://gumloop.com', label: 'Visit website', target: '_blank' },
+		name: 'Gumloop'
 	},
 	{
-		name: 'Trigger.dev',
+		category: 'Client',
+		date: '2023',
 		description:
 			"Trigger is an AI infrastructure and background jobs platform for developers. The founders of Trigger wanted us to build several open-source demos to showcase Trigger.dev's AI capabilities. One of them was AutoChangelog, a tool that uses AI to generate changelogs for your GitHub repositories.",
-		date: '2023',
-		category: 'Client',
-		link: { label: 'Try it out', href: 'https://trigger-ai-changelog.vercel.app', target: '_blank' },
+		link: { href: 'https://trigger-ai-changelog.vercel.app', label: 'Try it out', target: '_blank' },
+		name: 'Trigger.dev',
 		secondaryLink: {
-			label: 'Check source code',
 			href: 'https://github.com/triggerdotdev/ai-changelog',
+			label: 'Check source code',
 			target: '_blank'
 		}
 	},
 	{
-		name: 'Cal.com',
+		backgroundImageUrl: '/images/cal.png',
+		category: 'Client',
+		date: '2024',
 		description:
 			'Cal.com is a fully customizable scheduling software for individuals and businesses. Peer, the founder, came to us with a vision of building a proof of concept of an AI-powered, email-first scheduling assistant. We ended up building Cal.ai, one of the first AI agents to go to market.',
 		image: (
@@ -132,111 +134,109 @@ const works = [
 				</div>
 			</div>
 		),
-		backgroundImageUrl: '/images/cal.png',
-		date: '2024',
-		category: 'Client',
 		link: {
 			href: 'https://blog.langchain.dev/how-to-design-an-agent-for-production/',
 			label: 'Read technical report',
 			target: '_blank'
 		},
+		name: 'Cal.com',
+		quote: 'Iterating toward production-ready agents.',
 		secondaryLink: {
-			label: 'Visit website',
 			href: 'https://cal.com/blog/don-t-forget-about-cal-ai-your-24-7-scheduling-assistant',
+			label: 'Visit website',
 			target: '_blank'
-		},
-		quote: 'Iterating toward production-ready agents.'
+		}
 	},
 	{
-		name: 'dRisk',
+		category: 'Client',
+		date: '2024',
 		description:
 			'dRisk is a fintech platform that instantly identifies new risk factors in the quarterly (10-Q) and annual (10-K) financial reports filed with the SEC. Evan, the founder, came to us with an idea and we implemented the platform end-to-end.',
-		date: '2024',
-		category: 'Client',
-		link: { label: 'Visit platform', href: 'https://d-risk.ai', target: '_blank' }
+		link: { href: 'https://d-risk.ai', label: 'Visit platform', target: '_blank' },
+		name: 'dRisk'
 	},
 	{
-		name: 'Greptile',
+		category: 'Client',
+		date: '2024',
 		description: 'Greptile is an AI code-review bot. We built a landing page and demo for Greptile.',
-		date: '2024',
-		category: 'Client',
-		link: { label: 'Visit website', href: 'https://greptile.com', target: '_blank' }
+		link: { href: 'https://greptile.com', label: 'Visit website', target: '_blank' },
+		name: 'Greptile'
 	},
 	{
-		name: 'Maige',
+		category: 'Client',
+		date: '2023',
 		description:
 			'Maige is an open-source, intelligent codebase copilot for running LLM commands on your code repository. It has been used in 4000+ projects.',
-		date: '2023',
-		category: 'Client',
-		link: { label: 'Try it out', href: 'https://maige.app', target: '_blank' },
+		link: { href: 'https://maige.app', label: 'Try it out', target: '_blank' },
+		name: 'Maige',
 		secondaryLink: {
-			label: 'Check source code',
 			href: 'https://github.com/rubricLab/maige',
+			label: 'Check source code',
 			target: '_blank'
 		}
 	},
 	{
-		name: 'Create Rubric App',
-		description: 'Our CLI to spin up an AI-native React app.',
-		date: '2024',
 		category: 'Internal',
+		date: '2024',
+		description: 'Our CLI to spin up an AI-native React app.',
 		link: {
-			label: 'Check source code',
 			href: 'https://github.com/rubricLab/create-rubric-app',
+			label: 'Check source code',
 			target: '_blank'
 		},
+		name: 'Create Rubric App',
 		secondaryLink: {
-			label: 'Read blog post',
-			href: '/blog/create-rubric-app'
+			href: '/blog/create-rubric-app',
+			label: 'Read blog post'
 		}
 	},
 	{
-		name: 'SyncLinear',
+		category: 'Client',
+		date: '2023',
 		description:
 			'SyncLinear is an open-source app which enables end-to-end sync of Linear tickets and GitHub issues. The team at cal.com came to us with the idea and we implemented the solution in collaboration. It serves 1000+ projects at no cost and is used by teams at PostHog, Vercel, Novu, and more.',
-		date: '2023',
-		category: 'Client',
-		link: { label: 'Try it out', href: 'https://synclinear.com', target: '_blank' },
+		link: { href: 'https://synclinear.com', label: 'Try it out', target: '_blank' },
+		name: 'SyncLinear',
 		secondaryLink: {
-			label: 'Check source code',
 			href: 'https://github.com/calcom/synclinear.com',
+			label: 'Check source code',
 			target: '_blank'
 		}
 	},
 	{
-		name: 'Series B stealth',
-		description: 'We built a flagship AI-native product for this team.',
-		date: '2024',
-		category: 'Client'
-	},
-	{
-		name: 'Sligo',
-		description: 'We built a RAG and SQL generation system for Sligo.',
-		date: '2024',
 		category: 'Client',
-		link: { label: 'Visit website', href: 'https://sligo.ai', target: '_blank' }
+		date: '2024',
+		description: 'We built a flagship AI-native product for this team.',
+		name: 'Series B stealth'
 	},
 	{
-		name: 'Weave',
+		category: 'Client',
+		date: '2024',
+		description: 'We built a RAG and SQL generation system for Sligo.',
+		link: { href: 'https://sligo.ai', label: 'Visit website', target: '_blank' },
+		name: 'Sligo'
+	},
+	{
+		category: 'Client',
+		date: '2024',
 		description:
 			'We built an enterprise booking platform for Weave to handle everything from POS to inventory management.',
-		date: '2024',
-		category: 'Client',
-		link: { label: 'Visit website', href: 'https://weavein.co', target: '_blank' }
+		link: { href: 'https://weavein.co', label: 'Visit website', target: '_blank' },
+		name: 'Weave'
 	},
 	{
-		name: 'Neat',
+		category: 'Internal',
+		date: '2022',
 		description: 'Your GitHub feed, smartly filtered. Used by 2k+ developers.',
-		date: '2022',
-		category: 'Internal',
-		link: { label: 'Visit website', href: 'https://neat.run', target: '_blank' }
+		link: { href: 'https://neat.run', label: 'Visit website', target: '_blank' },
+		name: 'Neat'
 	},
 	{
-		name: 'Sweater Planet',
-		description: 'We built a scalable eCommerce platform. Acquired.',
-		date: '2022',
 		category: 'Internal',
-		link: { label: 'Visit website', href: 'https://sweaterplanet.com', target: '_blank' }
+		date: '2022',
+		description: 'We built a scalable eCommerce platform. Acquired.',
+		link: { href: 'https://sweaterplanet.com', label: 'Visit website', target: '_blank' },
+		name: 'Sweater Planet'
 	}
 ] satisfies Work[]
 

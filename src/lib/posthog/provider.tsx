@@ -10,8 +10,8 @@ export const PostHogProvider = ({ children }: { children: React.ReactNode }) => 
 	useEffect(() => {
 		posthog.init(env.NEXT_PUBLIC_POSTHOG_KEY, {
 			api_host: env.NEXT_PUBLIC_POSTHOG_HOST,
-			capture_pageview: false, // Disable automatic pageview capture, as we capture manually
-			capture_pageleave: true // Enable pageleave capture
+			capture_pageleave: true, // Enable pageleave capture, // Disable automatic pageview capture, as we capture manually
+			capture_pageview: false
 		})
 	}, [])
 

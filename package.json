@@ -24,6 +24,7 @@
 		"typescript": "^5.8.2",
 		"zod": "3.24.2"
 	},
+	"description": "Rubric website",
 	"devDependencies": {
 		"@types/bun": "^1.2.6",
 		"@types/mdx": "^2.0.13",
@@ -34,16 +35,15 @@
 	},
 	"license": "gonuts",
 	"name": "website",
-	"description": "Rubric website",
 	"private": true,
-	"type": "module",
 	"scripts": {
-		"build": "next build",
-		"dev": "next dev",
-		"start": "next start",
 		"bleed": "bun x npm-check-updates -u",
+		"build": "next build",
 		"clean": "rm -rf .next && rm -rf node_modules",
-		"format": "bun x biome check . --write"
+		"dev": "next dev",
+		"format": "bun x biome check . --write",
+		"start": "next start"
 	},
+	"type": "module",
 	"version": "0.0.0"
 }

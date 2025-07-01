@@ -16,7 +16,7 @@ export const ScrollButton = ({ className }: { className?: string }) => {
 			className={cn(className || '', 'hide-on-small-height')}
 			onClick={() => {
 				const windowHeight = window.innerHeight
-				window.scrollTo({ top: windowHeight, behavior: 'smooth' })
+				window.scrollTo({ behavior: 'smooth', top: windowHeight })
 				posthog.capture('projects.clicked', { body, type: 'scroll_button' })
 			}}
 		>

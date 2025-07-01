@@ -1,10 +1,10 @@
 'use client'
 
 import { useRef } from 'react'
+import { useClipboard } from '~/lib/hooks/use-clipboard'
 import { Button } from './button'
 import { Checkmark } from './icons/checkmark'
 import { Copy } from './icons/copy'
-import { useClipboard } from '~/lib/hooks/use-clipboard'
 
 export const CodeBlock = ({ children, ...props }: { children: React.ReactElement }) => {
 	const { copied, handleCopy } = useClipboard()

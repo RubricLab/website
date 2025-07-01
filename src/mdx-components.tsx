@@ -6,10 +6,10 @@ import { CustomImage } from './ui/custom-image'
 export function useMDXComponents(components: MDXComponents): MDXComponents {
 	return {
 		...components,
-		pre: CodeBlock,
-		img: CustomImage,
 		h1: props => <CopiableHeading as="h1" {...props} />,
 		h2: props => <CopiableHeading as="h2" {...props} />,
-		h3: props => <CopiableHeading as="h3" {...props} />
+		h3: props => <CopiableHeading as="h3" {...props} />,
+		img: CustomImage,
+		pre: CodeBlock
 	}
 }

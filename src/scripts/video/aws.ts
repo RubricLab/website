@@ -45,9 +45,9 @@ export async function deployToAWS(config: DeployConfig): Promise<{
 	const corsConfig = JSON.stringify({
 		CORSRules: [
 			{
-				AllowedOrigins: ['*'],
-				AllowedMethods: ['GET', 'HEAD'],
 				AllowedHeaders: ['*'],
+				AllowedMethods: ['GET', 'HEAD'],
+				AllowedOrigins: ['*'],
 				ExposeHeaders: ['ETag', 'Content-Length'],
 				MaxAgeSeconds: 86400
 			}
@@ -99,65 +99,65 @@ export async function deployToAWS(config: DeployConfig): Promise<{
 
 		// Create CloudFront distribution
 		const distConfig = {
-			CallerReference: `hero-video-${Date.now()}`,
-			Comment: 'Hero Video Distribution',
-			DefaultRootObject: 'hero/hls/master.m3u8',
-			Enabled: true,
-			Origins: {
-				Quantity: 1,
-				Items: [
-					{
-						Id: 'S3Origin',
-						DomainName: `${config.bucketName}.s3.${config.aws.region}.amazonaws.com`,
-						OriginPath: '',
-						S3OriginConfig: { OriginAccessIdentity: '' },
-						OriginAccessControlId: oacId
-					}
-				]
-			},
-			DefaultCacheBehavior: {
-				TargetOriginId: 'S3Origin',
-				ViewerProtocolPolicy: 'redirect-to-https',
-				CachePolicyId: '658327ea-f89d-4fab-a63d-7e88639e58f6', // CachingOptimized
-				OriginRequestPolicyId: '88a5eaf4-2fd4-4709-b370-b4c650ea3fcf', // CORS-S3Origin
-				ResponseHeadersPolicyId: corsHeadersPolicyId, // SimpleCORS
-				AllowedMethods: {
-					Quantity: 3,
-					Items: ['GET', 'HEAD', 'OPTIONS']
-				}
-			},
 			CacheBehaviors: {
-				Quantity: 2,
 				Items: [
 					{
-						PathPattern: '*.m3u8',
-						TargetOriginId: 'S3Origin',
-						ViewerProtocolPolicy: 'redirect-to-https',
+						AllowedMethods: {
+							Items: ['GET', 'HEAD', 'OPTIONS'],
+							Quantity: 3
+						},
 						CachePolicyId: '658327ea-f89d-4fab-a63d-7e88639e58f6',
 						OriginRequestPolicyId: '88a5eaf4-2fd4-4709-b370-b4c650ea3fcf',
+						PathPattern: '*.m3u8',
 						ResponseHeadersPolicyId: corsHeadersPolicyId,
-						AllowedMethods: {
-							Quantity: 3,
-							Items: ['GET', 'HEAD', 'OPTIONS']
-						}
+						TargetOriginId: 'S3Origin',
+						ViewerProtocolPolicy: 'redirect-to-https'
 					},
 					{
-						PathPattern: '*.ts',
-						TargetOriginId: 'S3Origin',
-						ViewerProtocolPolicy: 'redirect-to-https',
+						AllowedMethods: {
+							Items: ['GET', 'HEAD', 'OPTIONS'],
+							Quantity: 3
+						},
 						CachePolicyId: '658327ea-f89d-4fab-a63d-7e88639e58f6',
 						OriginRequestPolicyId: '88a5eaf4-2fd4-4709-b370-b4c650ea3fcf',
+						PathPattern: '*.ts',
 						ResponseHeadersPolicyId: corsHeadersPolicyId,
-						AllowedMethods: {
-							Quantity: 3,
-							Items: ['GET', 'HEAD', 'OPTIONS']
-						}
+						TargetOriginId: 'S3Origin',
+						ViewerProtocolPolicy: 'redirect-to-https'
 					}
-				]
+				],
+				Quantity: 2
 			},
-			PriceClass: 'PriceClass_All',
+			CallerReference: `hero-video-${Date.now()}`,
+			Comment: 'Hero Video Distribution',
+			DefaultCacheBehavior: {
+				AllowedMethods: {
+					Items: ['GET', 'HEAD', 'OPTIONS'],
+					Quantity: 3
+				},
+				CachePolicyId: '658327ea-f89d-4fab-a63d-7e88639e58f6',
+				OriginRequestPolicyId: '88a5eaf4-2fd4-4709-b370-b4c650ea3fcf', // CachingOptimized
+				ResponseHeadersPolicyId: corsHeadersPolicyId, // CORS-S3Origin
+				TargetOriginId: 'S3Origin', // SimpleCORS
+				ViewerProtocolPolicy: 'redirect-to-https'
+			},
+			DefaultRootObject: 'hero/hls/master.m3u8',
+			Enabled: true,
 			HttpVersion: 'http2and3',
-			IsIPV6Enabled: true
+			IsIPV6Enabled: true,
+			Origins: {
+				Items: [
+					{
+						DomainName: `${config.bucketName}.s3.${config.aws.region}.amazonaws.com`,
+						Id: 'S3Origin',
+						OriginAccessControlId: oacId,
+						OriginPath: '',
+						S3OriginConfig: { OriginAccessIdentity: '' }
+					}
+				],
+				Quantity: 1
+			},
+			PriceClass: 'PriceClass_All'
 		}
 
 		await writeFile('cf-config.json', JSON.stringify(distConfig, null, 2))
@@ -177,21 +177,21 @@ export async function deployToAWS(config: DeployConfig): Promise<{
 			.toString()
 			.trim()
 		const bucketPolicy = JSON.stringify({
-			Version: '2012-10-17',
 			Statement: [
 				{
-					Sid: 'AllowCloudFrontAccess',
-					Effect: 'Allow',
-					Principal: { Service: 'cloudfront.amazonaws.com' },
 					Action: 's3:GetObject',
-					Resource: `arn:aws:s3:::${config.bucketName}/*`,
 					Condition: {
 						StringEquals: {
 							'AWS:SourceArn': `arn:aws:cloudfront::${accountId}:distribution/${distributionId}`
 						}
-					}
+					},
+					Effect: 'Allow',
+					Principal: { Service: 'cloudfront.amazonaws.com' },
+					Resource: `arn:aws:s3:::${config.bucketName}/*`,
+					Sid: 'AllowCloudFrontAccess'
 				}
-			]
+			],
+			Version: '2012-10-17'
 		})
 
 		// Using echo pipe to aws CLI to avoid writing temporary files
@@ -218,8 +218,8 @@ export async function deployToAWS(config: DeployConfig): Promise<{
 
 	return {
 		bucketName: config.bucketName,
-		cfDomain: distributionDomain,
-		cfDistributionId: distributionId || ''
+		cfDistributionId: distributionId || '',
+		cfDomain: distributionDomain
 	}
 }
 

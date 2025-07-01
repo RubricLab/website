@@ -44,7 +44,7 @@ export async function getPost(
 	const { default: Post, metadata } = await import(`~/lib/posts/${slug}.mdx`)
 
 	return {
-		Post,
-		metadata
+		metadata,
+		Post
 	}
 }

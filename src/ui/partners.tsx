@@ -9,22 +9,22 @@ import { Vercel } from './logos/vercel'
 
 const partners = [
 	{
-		name: 'Neon',
 		className: 'w-36',
+		href: 'https://neon.tech/blog/rubric-labs-can-make-your-ai-dreams-come-true',
 		Icon: (props: { className: string }) => <Neon {...props} />,
-		href: 'https://neon.tech/blog/rubric-labs-can-make-your-ai-dreams-come-true'
+		name: 'Neon'
 	},
 	{
-		name: 'Vercel',
 		className: 'w-36',
+		href: 'https://vercel.com/partners/solution-partners/rubriclabs',
 		Icon: (props: { className: string }) => <Vercel {...props} />,
-		href: 'https://vercel.com/partners/solution-partners/rubriclabs'
+		name: 'Vercel'
 	},
 	{
-		name: 'Langchain',
 		className: 'w-44',
+		href: 'https://langchain.com/experts',
 		Icon: (props: { className: string }) => <Langchain {...props} />,
-		href: 'https://langchain.com/experts'
+		name: 'Langchain'
 	}
 ]
 
@@ -49,7 +49,7 @@ export const Partners = () => {
 					>
 						<Link
 							href={href}
-							onClick={() => posthog.capture('partner.clicked', { name, href })}
+							onClick={() => posthog.capture('partner.clicked', { href, name })}
 							target="_blank"
 							className={cn(className)}
 						>

@@ -53,7 +53,7 @@ export const Form = ({
 	useEffect(() => {
 		if (pending) toastIdRef.current = toast.loading(onLoad.title)
 		if (state?.success && toastIdRef.current) {
-			toast.success(onSuccess.title, { id: toastIdRef.current, description: onSuccess?.description })
+			toast.success(onSuccess.title, { description: onSuccess?.description, id: toastIdRef.current })
 			posthog.capture(`${label}_form.submitted`)
 			formRef.current?.reset()
 		} else if (state?.error && toastIdRef.current) {

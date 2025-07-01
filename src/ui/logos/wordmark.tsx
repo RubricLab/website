@@ -1,4 +1,3 @@
-import React from 'react'
 import { cn } from '~/lib/utils/cn'
 
 const Paths = () => {
@@ -18,13 +17,7 @@ const Paths = () => {
 	)
 }
 
-export const Wordmark = ({
-	className,
-	mask = false
-}: {
-	className?: string
-	mask?: boolean
-}) => {
+export const Wordmark = ({ className, mask = false }: { className?: string; mask?: boolean }) => {
 	return (
 		<svg
 			viewBox="0 0 1251 182"

@@ -19,28 +19,29 @@ export const Component = () => {
 		<div
 			style={{
 				alignItems: 'center',
+				color: 'white',
 				display: 'flex',
 				flexDirection: 'column',
 				height: '100%',
 				justifyContent: 'center',
 				position: 'relative',
-				color: 'white',
 				width: '100%'
 			}}
 		>
 			<div
 				style={{
 					display: 'flex',
+					height: '100%',
+					left: 0,
 					position: 'absolute',
 					top: 0,
-					left: 0,
-					width: '100%',
-					height: '100%'
+					width: '100%'
 				}}
 			>
+				{/** biome-ignore lint/performance/noImgElement: techdebt */}
 				<img src={`${getBaseUrl()}/images/seedling.png`} alt="Rubric Labs" width="100%" height="auto" />
 			</div>
-			<Rubric style={{ width: 56, height: 56, marginBottom: 24 }} />
+			<Rubric style={{ height: 56, marginBottom: 24, width: 56 }} />
 			<div style={{ fontSize: 48 }}>Applied AI</div>
 		</div>
 	)
@@ -55,8 +56,8 @@ export default async function Response(_: ImageProps) {
 		...size,
 		fonts: [
 			{
-				name: 'Matter',
 				data: localFont,
+				name: 'Matter',
 				style: 'normal',
 				weight: 400
 			}

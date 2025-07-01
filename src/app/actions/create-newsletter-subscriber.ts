@@ -18,12 +18,12 @@ export async function createNewsletterSubscriber(_: unknown, formData: FormData)
 		if (!email) return { error: 'Email is required' }
 
 		const res = await fetch(`${env.ROS_API_URL}/newsletter`, {
-			method: 'POST',
 			body: new URLSearchParams({ email }),
 			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded',
-				Authorization: `Bearer ${env.ROS_SECRET}`
-			}
+				Authorization: `Bearer ${env.ROS_SECRET}`,
+				'Content-Type': 'application/x-www-form-urlencoded'
+			},
+			method: 'POST'
 		})
 
 		if (!res.ok) return { error: 'Failed to join newsletter' }

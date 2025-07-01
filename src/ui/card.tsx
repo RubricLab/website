@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import React from 'react'
 import { cn } from '~/lib/utils/cn'
 import { formatDate } from '~/lib/utils/date'
 import { CustomImage } from '~/ui/custom-image'

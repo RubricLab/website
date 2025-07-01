@@ -271,23 +271,23 @@ export function useVideoPlayer(videoRef: React.RefObject<HTMLVideoElement>) {
 
 	// Return the state and handlers
 	return {
-		status,
-		isPlaying,
-		isFloating,
-		isCaptionsOn,
-		isFullscreen,
-		showControls,
+		buffered,
+		closeFloating,
 		currentTime,
 		duration,
-		buffered,
 		formatTime,
+		handleTimeUpdate,
+		isCaptionsOn,
+		isFloating,
+		isFullscreen,
+		isPlaying,
 		playWithSound,
-		togglePlayPause,
+		setIsFloating,
+		showControls,
+		showControlsTemporarily,
+		status,
 		toggleCaptions,
 		toggleFullscreen,
-		closeFloating,
-		showControlsTemporarily,
-		handleTimeUpdate,
-		setIsFloating
+		togglePlayPause
 	}
 }

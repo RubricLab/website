@@ -12,46 +12,46 @@ import { Copiable } from './copiable'
 
 const socials = [
 	{
+		href: 'https://github.com/RubricLab',
 		icon: <GithubIcon className="size-5" />,
-		label: 'GitHub',
-		href: 'https://github.com/RubricLab'
+		label: 'GitHub'
 	},
 	{
+		href: 'https://x.com/RubricLabs',
 		icon: <XIcon className="size-5" />,
-		label: 'X',
-		href: 'https://x.com/RubricLabs'
+		label: 'X'
 	},
 	{
+		href: 'https://www.linkedin.com/company/RubricLabs',
 		icon: <LinkedInIcon className="size-5" />,
-		label: 'LinkedIn',
-		href: 'https://www.linkedin.com/company/RubricLabs'
+		label: 'LinkedIn'
 	}
 ]
 
 const links = [
 	{
-		label: 'Blog',
-		href: '/blog'
+		href: '/blog',
+		label: 'Blog'
 	},
 	{
-		label: 'Contact',
-		href: '/contact'
+		href: '/contact',
+		label: 'Contact'
 	},
 	{
-		label: 'Newsletter',
-		href: '/newsletter'
+		href: '/newsletter',
+		label: 'Newsletter'
 	},
 	{
-		label: 'Work',
-		href: '/work'
+		href: '/work',
+		label: 'Work'
 	},
 	{
-		label: 'Brand',
-		href: 'https://brand.rubriclabs.com'
+		href: 'https://brand.rubriclabs.com',
+		label: 'Brand'
 	},
 	{
-		label: 'Privacy',
-		href: '/privacy'
+		href: '/privacy',
+		label: 'Privacy'
 	}
 ]
 

@@ -1,5 +1,3 @@
-import React from 'react'
-
 export const Maige = ({ className }: { className?: string }) => {
 	return (
 		<svg

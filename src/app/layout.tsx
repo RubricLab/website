@@ -3,8 +3,8 @@ import type { Metadata } from 'next/types'
 import Providers from '~/app/providers'
 import { DEFAULT_META } from '~/lib/constants/metadata'
 import './globals.css'
-import { Nav } from '~/ui/nav'
 import { getBaseUrl } from '~/lib/utils'
+import { Nav } from '~/ui/nav'
 
 const matter = localFont({ src: './fonts/matter-regular.woff' })
 

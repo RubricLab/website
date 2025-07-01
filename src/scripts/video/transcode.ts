@@ -30,9 +30,9 @@ async function getVideoInfo(file: string): Promise<VideoInfo> {
 		await $`ffprobe -v error -select_streams v:0 -show_entries stream=width,height -show_entries format=duration -of json ${file}`.quiet()
 	const info = JSON.parse(stdout.toString())
 	return {
-		width: info.streams[0].width,
+		duration: Number.parseFloat(info.format.duration),
 		height: info.streams[0].height,
-		duration: Number.parseFloat(info.format.duration)
+		width: info.streams[0].width
 	}
 }
 
@@ -102,16 +102,16 @@ export async function transcodeVideo(config: TranscodeConfig): Promise<void> {
 	// Create metadata file
 	const metadata = {
 		generatedAt: new Date().toISOString(),
-		sourceVideo: videoInfo,
+		hlsUrl: 'hls/master.m3u8',
+		mp4Url: 'preview.mp4',
 		qualities: availableQualities.map(q => ({
-			name: q.name,
-			resolution: q.resolution,
 			bitrate: q.bitrate,
-			codec: 'AVC/H.264', // Always H.264 for all streams
+			codec: 'AVC/H.264',
+			name: q.name,
+			resolution: q.resolution, // Always H.264 for all streams
 			url: `hls/${q.name}.m3u8`
 		})),
-		hlsUrl: 'hls/master.m3u8',
-		mp4Url: 'preview.mp4'
+		sourceVideo: videoInfo
 	}
 
 	await writeFile(path.join(config.outputDir, 'metadata.json'), JSON.stringify(metadata, null, 2))

@@ -8,9 +8,9 @@ import { useInView } from 'react-intersection-observer'
 import { cn } from '~/lib/utils/cn'
 import { Button } from '../button'
 import { CrossIcon } from '../icons/cross'
+import { PlayIcon } from '../icons/play'
 import { useVideoPlayer } from './useVideoPlayer'
 import { VideoControls } from './video-controls'
-import { PlayIcon } from '../icons/play'
 
 interface VideoProps {
 	hlsUrl: string
@@ -65,8 +65,8 @@ export function Video({ hlsUrl, mp4Url, className = '', posterUrl, transcription
 			if (!Hls.isSupported() || !video) return false
 
 			const hls = new Hls({
-				maxBufferLength: 30,
-				enableWorker: true
+				enableWorker: true,
+				maxBufferLength: 30
 			})
 
 			hlsRef.current = hls

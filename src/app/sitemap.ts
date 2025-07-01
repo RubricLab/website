@@ -13,15 +13,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 	 */
 	const pages = [
 		{
-			url: `${base}`,
+			changeFrequency: 'monthly' as const,
 			lastModified: new Date(),
-			changeFrequency: 'monthly' as const
+			url: `${base}`
 		},
 		// Core pages
 		...corePages.map(page => ({
-			url: `${base}/${page}`,
+			changeFrequency: 'weekly' as const,
 			lastModified: new Date(),
-			changeFrequency: 'weekly' as const
+			url: `${base}/${page}`
 		}))
 	]
 

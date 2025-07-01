@@ -12,8 +12,8 @@ const rehypeOptions = {
 }
 
 const nextConfig = {
-	reactStrictMode: true,
-	pageExtensions: ['md', 'mdx', 'ts', 'tsx']
+	pageExtensions: ['md', 'mdx', 'ts', 'tsx'],
+	reactStrictMode: true
 } satisfies NextConfig
 
 const withMDX = createMDX({

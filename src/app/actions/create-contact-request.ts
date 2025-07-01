@@ -4,19 +4,19 @@ import { z } from 'zod'
 import { env } from '~/lib/env'
 
 const schema = z.object({
-	name: z.string().min(1),
-	email: z.string().email(),
 	company: z.string().optional(),
-	message: z.string().min(1).max(1000)
+	email: z.string().email(),
+	message: z.string().min(1).max(1000),
+	name: z.string().min(1)
 })
 
 export async function createContactRequest(_: unknown, formData: FormData) {
 	try {
 		const { data, success, error } = schema.safeParse({
-			name: formData.get('name'),
+			company: formData.get('company'),
 			email: formData.get('email'),
 			message: formData.get('message'),
-			company: formData.get('company')
+			name: formData.get('name')
 		})
 
 		if (!success) {
@@ -27,17 +27,17 @@ export async function createContactRequest(_: unknown, formData: FormData) {
 		}
 
 		const response = await fetch(`${env.ROS_API_URL}/lead`, {
-			method: 'POST',
 			body: new URLSearchParams({
-				message: data.message,
+				company: data.company || '',
 				email: data.email,
-				name: data.name,
-				company: data.company || ''
+				message: data.message,
+				name: data.name
 			}),
 			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded',
-				Authorization: `Bearer ${env.ROS_SECRET}`
-			}
+				Authorization: `Bearer ${env.ROS_SECRET}`,
+				'Content-Type': 'application/x-www-form-urlencoded'
+			},
+			method: 'POST'
 		})
 
 		if (!response.ok) {
@@ -45,7 +45,7 @@ export async function createContactRequest(_: unknown, formData: FormData) {
 		}
 
 		return { success: true }
-	} catch (error) {
+	} catch (_error) {
 		return { error: 'Failed to send message' }
 	}
 }

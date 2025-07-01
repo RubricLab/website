@@ -207,7 +207,9 @@
 		height: 3px;
 		background: rgba(255, 255, 255, 0.2);
 		cursor: pointer;
-		transition: height 0.15s ease, transform 0.15s ease;
+		transition:
+			height 0.15s ease,
+			transform 0.15s ease;
 		margin: 0 16px;
 		border-radius: 3px;
 	}
@@ -273,7 +275,9 @@
 			height: 10rem;
 			z-index: 999;
 			border-radius: 0.5rem;
-			box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+			box-shadow:
+				0 10px 15px -3px rgba(0, 0, 0, 0.1),
+				0 4px 6px -2px rgba(0, 0, 0, 0.05);
 			background-color: transparent;
 			padding: 0;
 		}
@@ -286,7 +290,9 @@
 			height: 10rem;
 			z-index: 999;
 			border-radius: 0.5rem;
-			box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+			box-shadow:
+				0 10px 15px -3px rgba(0, 0, 0, 0.1),
+				0 4px 6px -2px rgba(0, 0, 0, 0.05);
 			background-color: transparent;
 			padding: 0;
 		}

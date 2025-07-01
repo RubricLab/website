@@ -2,18 +2,18 @@ import { cn } from '~/lib/utils/cn'
 
 const variants = {
 	default: 'bg-subtle dark:enabled:hover:bg-white/20 enabled:hover:bg-black/20 rounded-full',
-	outline:
-		'border-subtle border dark:enabled:hover:border-white/20 enabled:hover:border-black/20 rounded-full',
 	ghost: 'dark:enabled:hover:bg-white/20 enabled:hover:bg-black/20 rounded-full',
-	link: 'text-secondary enabled:hover:text-primary focus:ring-0 !p-0',
 	icon:
-		'focus:ring-0 !px-1.5 !py-1.5 rounded dark:enabled:hover:bg-white/20 enabled:hover:bg-black/20'
+		'focus:ring-0 !px-1.5 !py-1.5 rounded dark:enabled:hover:bg-white/20 enabled:hover:bg-black/20',
+	link: 'text-secondary enabled:hover:text-primary focus:ring-0 !p-0',
+	outline:
+		'border-subtle border dark:enabled:hover:border-white/20 enabled:hover:border-black/20 rounded-full'
 } as const
 
 const sizes = {
-	sm: 'p-2 px-4 text-xs',
+	lg: 'p-4 px-8 text-base',
 	md: 'p-3 px-6 text-sm',
-	lg: 'p-4 px-8 text-base'
+	sm: 'p-2 px-4 text-xs'
 } as const
 
 export const Button = ({

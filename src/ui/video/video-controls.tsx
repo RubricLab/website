@@ -106,6 +106,7 @@ export function VideoControls({
 	}, [])
 
 	return (
+		// biome-ignore lint/a11y/noStaticElementInteractions: custom video interactions
 		<div
 			className={`video-controls z-20 bg-gradient-to-t from-black/60 to-transparent pt-12 pb-3 ${
 				showControls ? 'always-show' : ''
