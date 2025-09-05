@@ -43,7 +43,13 @@ Source: OpenAI structured outputs guide. See details and limits [in the docs](ht
 
 ## Everything is Schema
 
-## How It Works (Step by Step)
+Let me put it plainly. When you strip away the paint, UI is just data. Components, props, layout, bindings, even interactions can all be expressed as a schema. If we agree on that schema up front, we get a single source of truth that both the model and the renderer understand. No guesswork. No hidden magic.
+
+This schema first approach works because it is predictable and safe. The same input always renders the same UI. Every change is validated by Zod before it reaches the screen. You can update only a small part of the tree, merge it back, and keep going. The JSON travels well too. The same structure can render on the web, on mobile, or on the server. And once you have a schema, you unlock tooling like visual editors, diffs, and automatic migrations.
+
+Structured outputs are the bridge between the idea and the pixels. The model does not send prose, it sends JSON that targets your schema. You validate it on the server, then render it if it passes. If it does not pass, you show the issues or ask the model for a smaller, focused fix. Simple contract, tight loop.
+
+## How It Works
 
 ### Define your components with Zod
 - Give every UI primitive its own props schema.
@@ -73,8 +79,8 @@ Source: OpenAI structured outputs guide. See details and limits [in the docs](ht
 
 [image] Data flow at a glance: User prompt → API route → Model with JSON Schema → JSON output → Zod validation → UI render.
 
-## Lessons from Scaling
+## Lessons from scaling
 
-## Why This Matters
+## Why this matters
 
 
