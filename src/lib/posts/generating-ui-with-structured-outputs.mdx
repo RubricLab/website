@@ -8,7 +8,7 @@ export const metadata = {
 }
 
 <Callout>
-**TLDR:** Generate UI from schema-validated JSON, not code. It's fast, safe, and production-ready. Try it in our [playground](https://views.rubric.sh/).
+**TLDR:** Try it for yourself in this [playground](https://views.rubric.sh/).
 </Callout>
 
 It's easy to start building AI-generated UI, but hard to ship.
@@ -33,7 +33,6 @@ LLMs are good at JSON when you give them a schema. You can validate it, render i
 ### Define your components with Zod
 - Give every UI primitive its own props schema.
 - Combine them into a master `ComponentsSchema` that describes valid UI trees.
-- Add `variables`, `queries`, and `repeat` so the UI can bind data and render lists.
 
 ### Prepare the schema for the model
 - Turn your Zod schema into JSON Schema with `z.toJSONSchema(..., { metadata: SchemaRegistry })`.
@@ -55,6 +54,7 @@ LLMs are good at JSON when you give them a schema. You can validate it, render i
 ### Iterate safely
 - For each edit, send the current state and the user’s change.
 - The model updates the existing tree instead of starting from scratch.
+- Support incremental updates: point the model at a specific subtree (by id or path) and ask for only that part to be regenerated. Merge the validated diff back into the current state.
 
 [image] Data flow at a glance: User prompt → API route → Model with JSON Schema → JSON output → Zod validation → UI render.
 
