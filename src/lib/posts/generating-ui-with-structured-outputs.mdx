@@ -26,6 +26,21 @@ A better approach is to generate JSON, not code.
 
 LLMs are good at JSON when you give them a schema. You can validate it, render it, and recover when something goes wrong.
 
+## Structured outputs, briefly
+
+Structured outputs are responses that match a schema you define, like JSON objects with specific fields and types. Instead of free text, you get machine-checkable data.
+
+Why this works well with LLMs
+- LLMs can follow constraints when you give them a clear target. A JSON Schema is that target.
+- With tooling, you can ask for exact shapes, enums, and nested structures and reject anything that does not match.
+
+Practical constraints to keep in mind
+- Objects have limits on nesting depth and size. Plan for truncation or progressive disclosure of detail.
+- Use focused schemas for each task. Smaller schemas are easier for the model to satisfy.
+- Always validate on the server before rendering. Treat the model output like user input.
+
+Source: OpenAI structured outputs guide. See details and limits [in the docs](https://platform.openai.com/docs/guides/structured-outputs?api-mode=responses&example=ui-generation#objects-have-limitations-on-nesting-depth-and-size).
+
 ## Everything is Schema
 
 ## How It Works (Step by Step)
