@@ -1,6 +1,6 @@
 'use client'
 
-import { createNewsletterSubscriber } from '~/app/actions/create-newsletter-subscriber'
+import { createNewsletterSubscriber } from '~/lib/actions/create-newsletter-subscriber'
 import { cn } from '~/lib/utils/cn'
 import { Button } from '~/ui/button'
 import { Form } from '~/ui/form'

@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef } from 'react'
-import { createContactRequest } from '~/app/actions/create-contact-request'
+import { createContactRequest } from '~/lib/actions/create-contact-request'
 import { useShortcut } from '~/lib/hooks/use-shortcut'
 import { Button } from '~/ui/button'
 import { Form } from '~/ui/form'
