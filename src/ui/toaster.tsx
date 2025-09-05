@@ -13,7 +13,6 @@ export const Toaster = () => {
 			toastOptions={{
 				classNames: {
 					description: '!font-light',
-					icon: '!w-fit',
 					title: '!font-normal',
 					toast:
 						'!rounded !border-subtle !rounded-full !min-h-12 !py-2 !px-4 !bg-background !text-primary'
