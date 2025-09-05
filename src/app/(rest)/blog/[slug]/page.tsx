@@ -54,7 +54,7 @@ export default async function Page({ params }: Props) {
 						{metadata.subtitle ? <h3 className="text-secondary">{metadata.subtitle}</h3> : null}
 					</div>
 					<Post />
-					<CTA />
+					<CTA className="pt-16" />
 					<NextPost date={metadata.date} />
 				</article>
 			</div>

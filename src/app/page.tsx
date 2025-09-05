@@ -53,7 +53,7 @@ export default function Page() {
 				<TrustedBy />
 				<Testimonials />
 				<Partners />
-				<CTA />
+				<CTA hook="We don't have a sales team. Let's talk." />
 			</Section>
 			<Footer />
 		</div>

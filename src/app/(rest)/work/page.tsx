@@ -10,7 +10,7 @@ export default function Page() {
 					<p className="text-secondary">Our past projects and technical writing</p>
 				</div>
 				<WorkTable />
-				<CTA />
+				<CTA hook="We don't have a sales team. Let's talk." />
 			</div>
 		</div>
 	)
