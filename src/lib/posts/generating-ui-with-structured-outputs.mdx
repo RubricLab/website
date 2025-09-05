@@ -30,6 +30,34 @@ LLMs are good at JSON when you give them a schema. You can validate it, render i
 
 ## How It Works (Step by Step)
 
+### Define your components with Zod
+- Give every UI primitive its own props schema.
+- Combine them into a master `ComponentsSchema` that describes valid UI trees.
+- Add `variables`, `queries`, and `repeat` so the UI can bind data and render lists.
+
+### Prepare the schema for the model
+- Turn your Zod schema into JSON Schema with `z.toJSONSchema(..., { metadata: SchemaRegistry })`.
+- Optionally limit which components are allowed and set sensible defaults.
+
+### Ask the model for structured output
+- Send a simple system prompt that explains the job: “turn requests into a UI.”
+- Include the current UI state so the model can update in place.
+- Request output that matches your JSON Schema.
+
+### Validate the result
+- Parse the model’s JSON and run `ComponentsSchema.safeParse(...)`.
+- If it fails validation, return the issues and do not render.
+
+### Render the UI
+- Map the validated JSON tree to your React components at runtime.
+- No code generation. No build step. It renders immediately.
+
+### Iterate safely
+- For each edit, send the current state and the user’s change.
+- The model updates the existing tree instead of starting from scratch.
+
+[image] Data flow at a glance: User prompt → API route → Model with JSON Schema → JSON output → Zod validation → UI render.
+
 ## Lessons from Scaling
 
 ## Why This Matters
