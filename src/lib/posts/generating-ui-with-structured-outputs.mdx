@@ -7,8 +7,20 @@ export const metadata = {
     description: "Learn how to leverage structured outputs from LLMs to dynamically generate user interfaces, including practical techniques, schema design, and real-world examples for building adaptive, data-driven UIs."
 }
 
-Building user interfaces with AI is easy to imagine but hard to execute. The main problem: how do you reliably go from natural language → code → working UI? If you’ve ever tried to generate UI with an AI writing code, you’ve probably ended up in the bg-
+It's easy to start building AI-generated UI, but hard to ship.
 
+Here's the core problem: how do we reliably go from natural language to code to a working UI? And even if the UI is functional, how do we make it pleasant to use?
+
+If you ask a model to write UI code, you often end up in [purple hell](https://x.com/ryandavogel/status/1956365206147244167). It all looks the same and you immediately know it's AI generated. Simon Willison would describe this as ["slop"](https://simonwillison.net/2024/May/8/slop/).
+
+[image]: a generic prompt and the generated UI 
+
+Even with strong primitives like [shadcn/ui](https://ui.shadcn.com/), code generation can improve how it looks, but it is still brittle and tied to your environment.
+Generating code on the fly is not viable for end users. It is slow: write, build, bundle. It is also failure prone: type errors, missing imports, and runtime mismatches.
+
+A better approach is to generate JSON, not code.
+
+LLMs are good at JSON when you give them a schema. You can validate it, render it, and recover when something goes wrong.
 
 ## Everything is Schema
 
