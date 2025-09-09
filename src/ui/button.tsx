@@ -1,6 +1,7 @@
 import { cn } from '~/lib/utils/cn'
 
 const variants = {
+	brand: 'bg-black dark:bg-white text-white dark:text-black rounded-full hover:',
 	default: 'bg-subtle dark:enabled:hover:bg-white/20 enabled:hover:bg-black/20 rounded-full',
 	ghost: 'dark:enabled:hover:bg-white/20 enabled:hover:bg-black/20 rounded-full',
 	icon:
