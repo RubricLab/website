@@ -2,6 +2,7 @@
 
 import Hls from 'hls.js'
 import Image from 'next/image'
+import { usePostHog } from 'posthog-js/react'
 import type React from 'react'
 import { useEffect, useRef } from 'react'
 import { useInView } from 'react-intersection-observer'
@@ -48,6 +49,7 @@ export function Video({ hlsUrl, mp4Url, className = '', posterUrl, transcription
 		setIsFloating
 	} = useVideoPlayer(videoRef as React.RefObject<HTMLVideoElement>)
 
+	const posthog = usePostHog()
 	// Setup video player
 	useEffect(() => {
 		const video = videoRef.current
@@ -222,7 +224,10 @@ export function Video({ hlsUrl, mp4Url, className = '', posterUrl, transcription
 				{showPlayButton && (
 					<div
 						className="absolute inset-0 z-10 cursor-pointer"
-						onClick={playWithSound}
+						onClick={() => {
+							playWithSound()
+							posthog.capture('play_video.clicked')
+						}}
 						onKeyDown={e => e.key === 'Enter' && playWithSound()}
 						tabIndex={0}
 						role="button"
@@ -232,11 +237,11 @@ export function Video({ hlsUrl, mp4Url, className = '', posterUrl, transcription
 
 				{/* Play with sound button */}
 				{showPlayButton && (
-					<div className="absolute bottom-4 left-4 z-20">
+					<div className="-translate-x-1/2 -translate-y-1/2 absolute top-[50%] left-[50%] z-20">
 						<Button
 							variant="default"
 							size="sm"
-							className="bg-black/30 text-white backdrop-blur-sm transition-all hover:bg-black/40"
+							className="bg-black/30 text-md text-white backdrop-blur-sm transition-all hover:bg-black/40"
 							onClick={playWithSound}
 						>
 							<PlayIcon className="size-4" />

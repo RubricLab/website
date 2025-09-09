@@ -6,7 +6,7 @@ import { Button } from './button'
 import { Arrow } from './icons/arrow'
 
 export const CTA = () => {
-	const hook = "We don't have a sales team. Let's talk."
+	const hook = 'Production AI builds in 90 days.'
 	const posthog = usePostHog()
 
 	return (
@@ -24,7 +24,9 @@ export const CTA = () => {
 						})
 					}
 				>
-					<Button className="w-full sm:w-fit">Get in touch</Button>
+					<Button variant="brand" className="w-full sm:w-fit">
+						Get in touch
+					</Button>
 				</Link>
 				<Link
 					href="/blog/introducing-rubric-labs"
