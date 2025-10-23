@@ -2,6 +2,7 @@
 
 import { z } from 'zod'
 import { env } from '~/lib/env'
+import { getClientIpAddress } from '../utils/api'
 
 const schema = z.object({
 	company: z.string().optional(),
@@ -26,10 +27,13 @@ export async function createContactRequest(_: unknown, formData: FormData) {
 			return { error: errorMessage }
 		}
 
+		const ipAddress = await getClientIpAddress()
+
 		const response = await fetch(`${env.ROS_API_URL}/lead`, {
 			body: new URLSearchParams({
 				company: data.company || '',
 				email: data.email,
+				ip: ipAddress || 'unknown',
 				message: data.message,
 				name: data.name
 			}),
