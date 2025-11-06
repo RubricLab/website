@@ -43,15 +43,15 @@ export default async function Page({ params }: Props) {
 						className="object-cover object-middle"
 					/>
 				</div>
-				<div className="grid w-full grid-cols-3 text-secondary text-sm">
+				<div className="flex w-full flex-col justify-between text-secondary sm:flex-row">
+					<p>{formatDate(metadata.date)}</p>
+					<p>by {metadata.author}</p>
 					<p>{metadata.category}</p>
-					<p className="text-center">by {metadata.author}</p>
-					<p className="text-right">{formatDate(metadata.date)}</p>
 				</div>
 				<article className="mx-auto max-w-full sm:max-w-2xl">
 					<div className="flex flex-col gap-2">
 						<h1>{metadata.title}</h1>
-						{metadata.subtitle ? <h3 className="text-secondary">{metadata.subtitle}</h3> : null}
+						{metadata.subtitle ? <h3 className="mt-0 text-secondary">{metadata.subtitle}</h3> : null}
 					</div>
 					<Post />
 					<CTA />
