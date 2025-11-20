@@ -89,6 +89,10 @@
 		@apply text-secondary;
 	}
 
+	article blockquote {
+		@apply border-l-4 border-secondary/20 pl-4 font-light text-lg italic;
+	}
+
 	li {
 		@apply list-disc list-inside;
 	}

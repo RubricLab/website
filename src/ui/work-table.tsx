@@ -27,6 +27,24 @@ type Work = {
 
 const works = [
 	{
+		backgroundImageUrl: '/images/gumloop-marketplace-screenshot.png',
+		category: 'Client',
+		date: '2025',
+		description:
+			'Gumloop is a YC-backed AI automation platform that enables non-technical users to build sophisticated workflows through a visual, no-code interface. We worked with them to build the v1 of a public template directory.',
+		image: <div className="aspect-square" />,
+		link: {
+			href: '/blog/gumloop-marketplace',
+			label: 'Read case study'
+		},
+		name: 'Gumloop',
+		secondaryLink: {
+			href: 'https://gumloop.com/marketplace',
+			label: 'Visit marketplace',
+			target: '_blank'
+		}
+	},
+	{
 		category: 'Client',
 		date: '2025',
 		description:
