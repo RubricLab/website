@@ -1,3 +1,4 @@
+import type { PostHog } from 'posthog-js'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 interface DocumentWithFullscreen extends Document {
@@ -20,7 +21,7 @@ interface HTMLVideoElementWithFullscreen extends HTMLVideoElement {
 	webkitExitFullscreen?: () => void
 }
 
-export function useVideoPlayer(videoRef: React.RefObject<HTMLVideoElement>) {
+export function useVideoPlayer(videoRef: React.RefObject<HTMLVideoElement>, posthog: PostHog) {
 	// Core state
 	const [status, setStatus] = useState<'loading' | 'playing' | 'playing-with-sound'>('loading')
 	const [isFloating, setIsFloating] = useState(false)
@@ -61,10 +62,19 @@ export function useVideoPlayer(videoRef: React.RefObject<HTMLVideoElement>) {
 
 		if (isPlaying) {
 			video.pause()
+			posthog.capture('video.paused', {
+				currentTime: video.currentTime,
+				duration: video.duration,
+				percentWatched: (video.currentTime / video.duration) * 100
+			})
 		} else {
 			video.play().catch(err => console.log('Play failed:', err))
+			posthog.capture('video.resumed', {
+				currentTime: video.currentTime,
+				duration: video.duration
+			})
 		}
-	}, [isPlaying, videoRef])
+	}, [isPlaying, videoRef, posthog])
 
 	// Toggle captions
 	const toggleCaptions = useCallback(() => {
@@ -76,12 +86,14 @@ export function useVideoPlayer(videoRef: React.RefObject<HTMLVideoElement>) {
 			if (track && track.mode === 'showing') {
 				track.mode = 'hidden'
 				setIsCaptionsOn(false)
+				posthog.capture('video.captions_disabled')
 			} else if (track) {
 				track.mode = 'showing'
 				setIsCaptionsOn(true)
+				posthog.capture('video.captions_enabled')
 			}
 		}
-	}, [videoRef])
+	}, [videoRef, posthog])
 
 	// Toggle fullscreen
 	const toggleFullscreen = useCallback(() => {
@@ -96,6 +108,7 @@ export function useVideoPlayer(videoRef: React.RefObject<HTMLVideoElement>) {
 			(document as DocumentWithFullscreen).msFullscreenElement
 
 		if (!isFullscreen) {
+			posthog.capture('video.fullscreen_entered')
 			// Try different fullscreen methods
 			if (container.requestFullscreen) {
 				container.requestFullscreen()
@@ -138,8 +151,9 @@ export function useVideoPlayer(videoRef: React.RefObject<HTMLVideoElement>) {
 					video.webkitExitFullscreen()
 				}
 			}
+			posthog.capture('video.fullscreen_exited')
 		}
-	}, [videoRef])
+	}, [videoRef, posthog])
 
 	// Play with sound handler
 	const playWithSound = useCallback(() => {
@@ -161,19 +175,25 @@ export function useVideoPlayer(videoRef: React.RefObject<HTMLVideoElement>) {
 				.then(() => {
 					setStatus('playing-with-sound')
 					setIsPlaying(true)
+					posthog.capture('video.played')
 				})
 				.catch(err => console.log('Play with sound failed:', err))
 		}
-	}, [videoRef])
+	}, [videoRef, posthog])
 
 	// Close floating video
 	const closeFloating = useCallback(() => {
 		setIsFloating(false)
 		if (videoRef.current) {
 			videoRef.current.pause()
+			posthog.capture('video.floating_closed', {
+				currentTime: videoRef.current.currentTime,
+				duration: videoRef.current.duration,
+				percentWatched: (videoRef.current.currentTime / videoRef.current.duration) * 100
+			})
 		}
 		setIsPlaying(false)
-	}, [videoRef])
+	}, [videoRef, posthog])
 
 	// Control visibility management
 	const showControlsTemporarily = useCallback(() => {
@@ -215,6 +235,9 @@ export function useVideoPlayer(videoRef: React.RefObject<HTMLVideoElement>) {
 				video.muted = true
 				setStatus('playing')
 				setIsPlaying(false)
+				posthog.capture('video.completed', {
+					duration: video.duration
+				})
 			}
 		}
 
@@ -243,7 +266,7 @@ export function useVideoPlayer(videoRef: React.RefObject<HTMLVideoElement>) {
 			video.removeEventListener('pause', handlePause)
 			video.removeEventListener('loadedmetadata', handleLoadedMetadata)
 		}
-	}, [status, videoRef])
+	}, [status, videoRef, posthog])
 
 	// Add fullscreen change event listeners
 	useEffect(() => {

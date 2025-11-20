@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { cn } from '~/lib/utils/cn'
 import { Button } from '../button'
+import { CaptionsIcon } from '../icons/captions'
 import { Demaximize } from '../icons/demaximize'
 import { Maximize } from '../icons/maximize'
 import { PauseIcon } from '../icons/pause'
@@ -146,6 +147,7 @@ export function VideoControls({
 					<Button
 						variant="icon"
 						size="sm"
+						className="text-white"
 						onClick={onPlayPause}
 						aria-label={isPlaying ? 'Pause' : 'Play'}
 					>
@@ -158,11 +160,11 @@ export function VideoControls({
 					<Button
 						variant="icon"
 						size="sm"
-						className={cn('!py-1', isCaptionsOn ? 'bg-white/30' : 'opacity-70')}
+						className={cn('text-white', isCaptionsOn ? 'bg-white/30' : '')}
 						onClick={onToggleCaptions}
 						aria-label="Toggle Captions"
 					>
-						CC
+						<CaptionsIcon className="size-5" />
 					</Button>
 
 					{/* Fullscreen Button */}

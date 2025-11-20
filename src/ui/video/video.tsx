@@ -2,6 +2,7 @@
 
 import Hls from 'hls.js'
 import Image from 'next/image'
+import { usePostHog } from 'posthog-js/react'
 import type React from 'react'
 import { useEffect, useRef } from 'react'
 import { useInView } from 'react-intersection-observer'
@@ -27,6 +28,8 @@ export function Video({ hlsUrl, mp4Url, className = '', posterUrl, transcription
 	const videoContainerRef = useRef<HTMLDivElement>(null)
 	const hlsRef = useRef<Hls | null>(null)
 
+	const posthog = usePostHog()
+
 	// Detect when video is scrolled out of view
 	const [inViewRef, inView] = useInView({ threshold: 0.3 })
 
@@ -46,7 +49,7 @@ export function Video({ hlsUrl, mp4Url, className = '', posterUrl, transcription
 		closeFloating,
 		handleTimeUpdate,
 		setIsFloating
-	} = useVideoPlayer(videoRef as React.RefObject<HTMLVideoElement>)
+	} = useVideoPlayer(videoRef as React.RefObject<HTMLVideoElement>, posthog)
 
 	// Setup video player
 	useEffect(() => {
