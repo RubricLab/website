@@ -35,13 +35,13 @@ const works = [
 		image: <div className="aspect-square" />,
 		link: {
 			href: '/blog/gumloop-templates',
-			label: 'Read case study'
+			label: 'Learn more'
 		},
 		name: 'Gumloop',
 		quote: 'Enabling creators to showcase their AI workflows',
 		secondaryLink: {
 			href: 'https://gumloop.com/templates',
-			label: 'Visit website',
+			label: 'Try it out',
 			target: '_blank'
 		}
 	},
@@ -89,24 +89,16 @@ const works = [
 			</div>
 		),
 		link: {
-			href: 'https://year-in-code.com',
-			label: 'Try it out',
-			target: '_blank'
+			href: '/blog/personalized-video-at-scale',
+			label: 'Learn more'
 		},
 		name: 'Graphite',
 		quote: 'Scaling personalized, generative video to 1000s of users',
 		secondaryLink: {
-			href: '/blog/personalized-video-at-scale',
-			label: 'Read technical report'
+			href: 'https://year-in-code.com',
+			label: 'Try it out',
+			target: '_blank'
 		}
-	},
-	{
-		category: 'Client',
-		date: '2023',
-		description:
-			'Gumloop is an AI-native automation platform. The founders, Rahul and Max, came to us with an impossible task — to rebuild their landing page and platform frontend in a few weeks. This was one of the most fun projects we have worked on.',
-		link: { href: 'https://gumloop.com', label: 'Visit website', target: '_blank' },
-		name: 'Gumloop'
 	},
 	{
 		category: 'Client',
@@ -155,7 +147,7 @@ const works = [
 		),
 		link: {
 			href: 'https://blog.langchain.dev/how-to-design-an-agent-for-production/',
-			label: 'Read technical report',
+			label: 'Learn more',
 			target: '_blank'
 		},
 		name: 'Cal.com',
@@ -301,7 +293,7 @@ export const WorkTable = () => {
 										</Link>
 									)}
 									{work.secondaryLink && (
-										<Link href={work.secondaryLink.href} target="_self">
+										<Link href={work.secondaryLink.href} target={work.secondaryLink.target ?? '_self'}>
 											<Button variant="ghost">{work.secondaryLink.label}</Button>
 										</Link>
 									)}
