@@ -1,6 +1,6 @@
 import { readdir } from 'node:fs/promises'
 import path from 'node:path'
-import type { Author } from '~/lib/constants/authors'
+import type { Author } from '~/lib/constants/blog'
 
 export type Post = {
 	title: string

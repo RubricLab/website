@@ -20,4 +20,12 @@ export const AUTHORS = {
 		name: 'Ted Spare',
 		url: 'https://x.com/tedspare'
 	}
-}
+} as const
+
+export const CATEGORIES = {
+	AI: 'AI',
+	CASE_STUDY: 'Case study',
+	DEVOPS: 'DevOps',
+	LAUNCH: 'Launch',
+	TEAM: 'Team'
+} as const
