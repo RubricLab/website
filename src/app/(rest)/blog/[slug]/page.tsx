@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import { formatDate } from '~/lib/utils/date'
 import { getPost, getPostSlugs } from '~/lib/utils/posts'
 import { CTA } from '~/ui/cta'
@@ -45,7 +46,12 @@ export default async function Page({ params }: Props) {
 				</div>
 				<div className="flex w-full flex-col justify-between text-secondary sm:flex-row">
 					<p>{formatDate(metadata.date)}</p>
-					<p>by {metadata.author}</p>
+					<p>
+						by{' '}
+						<Link href={metadata.author.url} target="_blank" rel="noopener noreferrer">
+							{metadata.author.name}
+						</Link>
+					</p>
 					<p>{metadata.category}</p>
 				</div>
 				<article className="mx-auto max-w-full sm:max-w-2xl">
