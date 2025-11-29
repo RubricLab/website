@@ -3,7 +3,7 @@ import { getBaseUrl } from '~/lib/utils'
 import { Rubric } from '~/ui/logos/rubric'
 
 export const runtime = 'edge'
-export const alt = 'Applied AI lab helping companies get intelligence to production'
+export const alt = 'Applied AI lab helping companies build intelligent applications'
 export const contentType = 'image/png'
 export const size = {
 	height: 630,

@@ -28,7 +28,7 @@ const Hero = () => {
 			<div className="flex h-full w-full flex-col items-center justify-center">
 				<div className="w-fit max-w-5xl">
 					<h2 className="mb-4 text-2xl">
-						We&apos;re an applied AI Lab helping companies get intelligence to production.
+						We&apos;re an applied AI Lab helping companies build intelligent applications.
 					</h2>
 					<Video
 						hlsUrl="https://d2os0zhpsj02b0.cloudfront.net/hero/hls/master.m3u8"
