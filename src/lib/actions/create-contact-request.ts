@@ -7,7 +7,7 @@ import { getClientIpAddress } from '../utils/api'
 const schema = z.object({
 	company: z.string().optional(),
 	email: z.string().email(),
-	message: z.string().min(1).max(1000),
+	message: z.string().min(1).max(500),
 	name: z.string().min(1)
 })
 

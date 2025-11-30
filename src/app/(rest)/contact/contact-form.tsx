@@ -35,7 +35,7 @@ export const ContactForm = () => {
 								name="message"
 								required
 								className="resize-none"
-								maxLength={300}
+								maxLength={500}
 							/>
 						</div>
 					</div>
