@@ -35,7 +35,7 @@ const works = [
 		image: <div className="aspect-square" />,
 		link: {
 			href: '/blog/gumloop-templates',
-			label: 'Learn more'
+			label: 'Read case study'
 		},
 		name: 'Gumloop',
 		quote: 'Enabling creators to showcase their AI workflows',

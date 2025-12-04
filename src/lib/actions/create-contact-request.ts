@@ -45,11 +45,13 @@ export async function createContactRequest(_: unknown, formData: FormData) {
 		})
 
 		if (!response.ok) {
+			console.error(await response.text())
 			return { error: 'Failed to send message' }
 		}
 
 		return { success: true }
-	} catch (_error) {
+	} catch (error) {
+		console.error(error)
 		return { error: 'Failed to send message' }
 	}
 }
