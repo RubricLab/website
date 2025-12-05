@@ -1,348 +1,551 @@
-import { AUTHORS, CATEGORIES } from '~/lib/constants/blog'
-
-export const metadata = {
-  title: 'Working with OAI Realtime API',
-  subtitle: 'Lilac — an experimental conversational translator + language playground',
-  date: '2025-03-10',
-  author: AUTHORS.DEXTER_STOREY,
-  bannerImageUrl: '/images/realtime-flow.svg',
-  category: CATEGORIES.AI,
-  description:
-    'Hands-on guide to building Lilac’s Realtime translation workflow with client secrets, WebRTC, and session steering.'
-}
-
-# Working with OAI Realtime API
-
-Lilac started as a side quest: **make conversational translation feel like an actual conversation**—not an awkward “speak… wait… read… repeat” loop.
-
-It’s experimental. It’s a little chaotic. It’s also *weirdly* good.
-
-## TL;DR
-
-- **Realtime is a transport**, not a chatbot UI: WebRTC (browser), WebSocket (servers), SIP (phone calls).
-- You mint a short-lived **client secret** server-side, then use it in the browser to create a **WebRTC call**.
-- After the SDP handshake, you drive everything with JSON **events** (session updates, responses, interruptions).
-- Rubric scaffolding (create-rubric-app) keeps the whole thing **type-safe and shippable** without turning it into a Big Project™.
-
+---
+title: Building Voice Agents with OpenAI's Realtime API
+description: A production-focused guide to speech-to-speech AI — architecture, typed events, and the patterns that actually matter
 ---
 
-## Why we ditched “traditional translation”
+# Building Voice Agents with OpenAI's Realtime API
 
-Google Translate is fine for menus. In conversation, it’s… not.
+OpenAI's Realtime API is the first production-grade speech-to-speech interface that doesn't feel like you're talking to a pipeline. Unlike traditional voice AI (STT → LLM → TTS), the Realtime API processes audio natively — which means latency drops from seconds to hundreds of milliseconds, and nuance like tone, hesitation, and interruption flow through without getting flattened into text.
 
-What we kept running into:
+This guide covers what you actually need to know to ship something.
 
-- **Back-channels get lost** (“mm”, “ah”, “wait wait”, “yeah yeah”) so turns feel cold.
-- **Code-switching** (English + a dialect word + Mandarin filler) comes back mangled.
-- **Long turns become summaries** when you wanted a faithful, *human* rendition.
-- **Timing matters**: the pause before a sentence, the self-correction mid-phrase—those are meaning.
+> **Context**: This research came out of building [Lilac](https://lilac.chat) — a voice-to-voice translation and language learning app. The thesis: translation isn't a string function, it's a conversation. Back-channels ("mm", "ah", "wait wait"), code-switching between languages, self-corrections mid-sentence — these carry meaning that traditional translate APIs discard. The Realtime API made it possible to build something that feels like talking, not transcribing.
 
-Lilac’s bet is simple: if we can do *speech-to-speech* with low latency, the translation stops feeling like “input → output” and starts feeling like “talking”.
+## The Mental Model
 
----
+The Realtime API is **not** a REST endpoint. It's a stateful, bidirectional event protocol over WebRTC (browser) or WebSocket (server-to-server). Think of it as opening a phone call to GPT-4o where:
 
-## Three real-world workflows (how Lilac gets used)
+1. You stream audio in
+2. It streams audio back
+3. Control happens through JSON events on a data channel
+4. The server manages conversation state for you
 
-### 1) Dexter + a friend (taking turns)
-They pass the phone back and forth. Dexter speaks English, the model answers in Teochew (or Teochew-ish), and the vibe stays intact because the model is responding *as the other person*, not as a translator bot.
+![Realtime API Architecture](./assets/realtime-architecture.svg)
 
-What matters here:
-- low-latency turn handoff
-- voice that doesn’t sound like it’s reading a caption
+The server maintains conversation history, handles turn detection (when the user stops talking), and manages interruptions automatically. Your job is to:
 
-### 2) Ted, the self-learner
-Ted uses Lilac like a private tutor:
-- he speaks in a target language,
-- asks for corrections,
-- gets rephrases inline,
-- keeps talking without “ending the session” to do grammar homework.
+1. Mint a short-lived credential
+2. Establish the WebRTC connection
+3. Configure the session
+4. Handle events
 
-What matters here:
-- visible corrections (data channel events)
-- consistent “teacher persona” prompts
-- quick mid-session instruction tweaks
+## Why WebRTC (and When to Use WebSocket)
 
-### 3) Dexter’s friend, custom dialect support (Teochew from a Mandarin base)
-She uses **custom instructions** like a dialect adapter:
-- start from Mandarin-ish defaults,
-- add a doc describing pronunciation + word choices,
-- steer output toward Teochew without rebuilding the app.
+**WebRTC for browsers/mobile apps**. It handles network jitter, packet loss, echo cancellation, and automatic gain control. TCP-based WebSockets will accumulate latency under real network conditions.
 
-What matters here:
-- instructions that live at the session boundary (so you can change them on the fly)
-- “prompt as config” instead of “prompt baked into code”
+**WebSocket for server-to-server**. When you're building a phone integration (via SIP) or need a backend to handle tool calls securely, WebSocket is appropriate since you control the network path.
 
----
+**Sideband connections** let you do both: browser connects via WebRTC for audio, your server connects via WebSocket to the same session for monitoring and tool handling.
 
-## The Realtime mental model (what you’re actually building)
+## Authentication: Ephemeral Tokens
 
-Here’s the shape we keep in our heads:
+Never ship your API key to the browser. Mint short-lived client secrets server-side:
 
-![Realtime data flow](/images/realtime-flow.svg)
+```typescript
+// server/api/realtime/session.ts
+import { z } from "zod/v4";
 
-1. **Server minting**: your server creates a short-lived client secret (do *not* ship your real API key).
-2. **WebRTC handshake**: browser creates an SDP offer; OpenAI returns an SDP answer.
-3. **Media + events**: audio flows as WebRTC media; control plane flows as JSON events in a data channel.
-4. **Session steering**: you can update instructions, tools, turn detection, etc. mid-call.
-5. **Interruptions are a feature**: you’ll want to cancel, truncate, and clear output audio.
-
----
-
-## GA vs Beta (and why you should care)
-
-Realtime has had multiple “shapes” over time. Today there’s a **GA interface** and an older **beta interface**.
-
-Our advice:
-- build against GA,
-- keep a mental map of beta, because you’ll see older examples floating around.
-
-Lilac is small enough that swapping shapes is feasible, and Rubric’s schema-first boundaries make it harder to accidentally break the client when OpenAI shifts an object shape.
-
----
-
-## Using Realtime in practice: the small, correct happy path
-
-### Step 1 — Server: create a client secret (typed)
-
-You want a server-only endpoint that:
-- validates input with Zod,
-- calls OpenAI to mint a short-lived client secret,
-- returns only what the browser needs.
-
-```ts
-// app/api/realtime/secret/route.ts
-import { NextResponse } from 'next/server'
-import { z } from 'zod'
-
-const CreateSecretInputSchema = z.object({
-  model: z.string().default('gpt-realtime'),
+const SessionConfigSchema = z.object({
+  model: z.string().default("gpt-realtime-2025-08-28"),
+  voice: z.enum(["alloy", "ash", "ballad", "coral", "echo", "sage", "shimmer", "verse", "cedar", "marin"]).default("marin"),
   instructions: z.string().optional(),
-  voice: z.string().optional(),
-  ttlSeconds: z.number().int().min(30).max(60 * 30).default(60 * 10)
-})
+  ttlSeconds: z.number().int().min(30).max(1800).default(600),
+});
 
-const ClientSecretResponseSchema = z.object({
-  value: z.string(),
-  expires_at: z.number(),
-  session: z
-    .object({
-      id: z.string(),
-      model: z.string(),
-      type: z.string()
-    })
-    .passthrough()
-})
+const ClientSecretSchema = z.object({
+  client_secret: z.object({
+    value: z.string(),
+    expires_at: z.number(),
+  }),
+  session: z.object({
+    id: z.string(),
+    model: z.string(),
+  }),
+});
 
-export async function POST(request: Request) {
-  const input = CreateSecretInputSchema.parse(await request.json().catch(() => ({})))
+type SessionConfig = z.infer<typeof SessionConfigSchema>;
+type ClientSecretResponse = z.infer<typeof ClientSecretSchema>;
 
-  const response = await fetch('https://api.openai.com/v1/realtime/client_secrets', {
-    method: 'POST',
+async function createRealtimeSession(config: SessionConfig): Promise<ClientSecretResponse> {
+  const validatedConfig = SessionConfigSchema.parse(config);
+  
+  const response = await fetch("https://api.openai.com/v1/realtime/sessions", {
+    method: "POST",
     headers: {
       Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-      'Content-Type': 'application/json'
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      expires_after: { anchor: 'created_at', seconds: input.ttlSeconds },
-      session: {
-        type: 'realtime',
-        model: input.model,
-        ...(input.instructions ? { instructions: input.instructions } : {}),
-        ...(input.voice ? { audio: { output: { voice: input.voice } } } : {})
-      }
-    })
-  })
+      model: validatedConfig.model,
+      voice: validatedConfig.voice,
+      instructions: validatedConfig.instructions,
+      input_audio_transcription: { model: "gpt-4o-transcribe" },
+      turn_detection: {
+        type: "server_vad",
+        threshold: 0.5,
+        prefix_padding_ms: 300,
+        silence_duration_ms: 500,
+      },
+    }),
+  });
 
   if (!response.ok) {
-    return NextResponse.json({ error: await response.text() }, { status: 500 })
+    throw new Error(`Session creation failed: ${await response.text()}`);
   }
 
-  const json = await response.json()
-  const parsed = ClientSecretResponseSchema.parse(json)
-
-  return NextResponse.json({
-    clientSecret: parsed.value,
-    expiresAt: parsed.expires_at,
-    session: parsed.session
-  })
+  return ClientSecretSchema.parse(await response.json());
 }
 ```
 
-Rubric pattern: **schemas at boundaries**, and the browser only gets the ephemeral secret.
+The `cedar` and `marin` voices are exclusive to the Realtime API and have the most natural speech quality.
 
----
+## WebRTC Connection (Browser)
 
-### Step 2 — Client: WebRTC handshake + data channel
+The handshake is three steps: create peer, exchange SDP, open data channel.
 
-This is the part everyone overcomplicates. Keep it boring.
+```typescript
+// client/realtime.ts
+interface RealtimeConnection {
+  peerConnection: RTCPeerConnection;
+  dataChannel: RTCDataChannel;
+  audioElement: HTMLAudioElement;
+  disconnect: () => void;
+}
 
-```ts
-async function connectRealtime() {
-  const secret = await fetch('/api/realtime/secret', { method: 'POST' }).then(r => r.json())
-  const clientSecret = secret.clientSecret as string
+async function connectToRealtime(clientSecret: string): Promise<RealtimeConnection> {
+  const peerConnection = new RTCPeerConnection();
+  
+  // Capture microphone
+  const localStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  for (const track of localStream.getTracks()) {
+    peerConnection.addTrack(track, localStream);
+  }
+  
+  // Set up playback for model audio
+  const audioElement = document.createElement("audio");
+  audioElement.autoplay = true;
+  
+  peerConnection.ontrack = (event) => {
+    audioElement.srcObject = event.streams[0];
+  };
+  
+  // Create data channel for events (must be named "oai-events")
+  const dataChannel = peerConnection.createDataChannel("oai-events");
+  
+  // Create and send SDP offer
+  const offer = await peerConnection.createOffer();
+  await peerConnection.setLocalDescription(offer);
+  
+  const sdpResponse = await fetch("https://api.openai.com/v1/realtime?model=gpt-realtime-2025-08-28", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${clientSecret}`,
+      "Content-Type": "application/sdp",
+    },
+    body: offer.sdp,
+  });
+  
+  if (!sdpResponse.ok) {
+    throw new Error(`SDP exchange failed: ${await sdpResponse.text()}`);
+  }
+  
+  const answerSdp = await sdpResponse.text();
+  await peerConnection.setRemoteDescription({ type: "answer", sdp: answerSdp });
+  
+  function disconnect() {
+    localStream.getTracks().forEach(track => track.stop());
+    peerConnection.close();
+  }
+  
+  return { peerConnection, dataChannel, audioElement, disconnect };
+}
+```
 
-  const peer = new RTCPeerConnection()
-  const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+Wait for `dataChannel.onopen` before sending events.
 
-  for (const track of stream.getTracks()) peer.addTrack(track, stream)
+## Typed Event System
 
-  const events = peer.createDataChannel('oai-events')
+The Realtime API has 9 client events and 28+ server events. Type them properly:
 
-  events.addEventListener('message', ev => {
+```typescript
+// shared/realtime-events.ts
+import { z } from "zod/v4";
+
+// ─────────────────────────────────────────────────────────────
+// Client Events (what you send)
+// ─────────────────────────────────────────────────────────────
+
+const SessionUpdateEventSchema = z.object({
+  type: z.literal("session.update"),
+  session: z.object({
+    instructions: z.string().optional(),
+    voice: z.string().optional(),
+    input_audio_transcription: z.object({ model: z.string() }).optional(),
+    turn_detection: z.object({
+      type: z.enum(["server_vad", "none"]),
+      threshold: z.number().optional(),
+      prefix_padding_ms: z.number().optional(),
+      silence_duration_ms: z.number().optional(),
+      create_response: z.boolean().optional(),
+    }).optional(),
+    tools: z.array(z.object({
+      type: z.literal("function"),
+      name: z.string(),
+      description: z.string(),
+      parameters: z.record(z.unknown()),
+    })).optional(),
+  }),
+});
+
+const ResponseCreateEventSchema = z.object({
+  type: z.literal("response.create"),
+  response: z.object({
+    modalities: z.array(z.enum(["text", "audio"])).optional(),
+    instructions: z.string().optional(),
+    conversation: z.enum(["auto", "none"]).optional(),
+  }).optional(),
+});
+
+const ResponseCancelEventSchema = z.object({
+  type: z.literal("response.cancel"),
+});
+
+const ConversationItemTruncateSchema = z.object({
+  type: z.literal("conversation.item.truncate"),
+  item_id: z.string(),
+  content_index: z.number(),
+  audio_end_ms: z.number(),
+});
+
+const ClientEventSchema = z.discriminatedUnion("type", [
+  SessionUpdateEventSchema,
+  ResponseCreateEventSchema,
+  ResponseCancelEventSchema,
+  ConversationItemTruncateSchema,
+]);
+
+type ClientEvent = z.infer<typeof ClientEventSchema>;
+
+// ─────────────────────────────────────────────────────────────
+// Server Events (what you receive)
+// ─────────────────────────────────────────────────────────────
+
+const ServerEventBaseSchema = z.object({
+  event_id: z.string(),
+});
+
+const SessionCreatedEventSchema = ServerEventBaseSchema.extend({
+  type: z.literal("session.created"),
+  session: z.object({
+    id: z.string(),
+    model: z.string(),
+    expires_at: z.number(),
+  }).passthrough(),
+});
+
+const ResponseCreatedEventSchema = ServerEventBaseSchema.extend({
+  type: z.literal("response.created"),
+  response: z.object({
+    id: z.string(),
+    status: z.enum(["in_progress", "completed", "cancelled", "failed", "incomplete"]),
+  }).passthrough(),
+});
+
+const ResponseDoneEventSchema = ServerEventBaseSchema.extend({
+  type: z.literal("response.done"),
+  response: z.object({
+    id: z.string(),
+    status: z.string(),
+    output: z.array(z.object({
+      type: z.string(),
+      id: z.string(),
+    }).passthrough()).optional(),
+  }).passthrough(),
+});
+
+const InputAudioBufferSpeechStartedSchema = ServerEventBaseSchema.extend({
+  type: z.literal("input_audio_buffer.speech_started"),
+  audio_start_ms: z.number(),
+});
+
+const InputAudioBufferSpeechStoppedSchema = ServerEventBaseSchema.extend({
+  type: z.literal("input_audio_buffer.speech_stopped"),
+  audio_end_ms: z.number(),
+});
+
+const ConversationItemInputAudioTranscriptionCompletedSchema = ServerEventBaseSchema.extend({
+  type: z.literal("conversation.item.input_audio_transcription.completed"),
+  item_id: z.string(),
+  transcript: z.string(),
+});
+
+const ResponseAudioTranscriptDeltaSchema = ServerEventBaseSchema.extend({
+  type: z.literal("response.audio_transcript.delta"),
+  response_id: z.string(),
+  delta: z.string(),
+});
+
+const ResponseFunctionCallArgumentsDoneSchema = ServerEventBaseSchema.extend({
+  type: z.literal("response.function_call_arguments.done"),
+  call_id: z.string(),
+  name: z.string(),
+  arguments: z.string(),
+});
+
+const ErrorEventSchema = ServerEventBaseSchema.extend({
+  type: z.literal("error"),
+  error: z.object({
+    type: z.string(),
+    code: z.string().optional(),
+    message: z.string(),
+  }),
+});
+
+const ServerEventSchema = z.discriminatedUnion("type", [
+  SessionCreatedEventSchema,
+  ResponseCreatedEventSchema,
+  ResponseDoneEventSchema,
+  InputAudioBufferSpeechStartedSchema,
+  InputAudioBufferSpeechStoppedSchema,
+  ConversationItemInputAudioTranscriptionCompletedSchema,
+  ResponseAudioTranscriptDeltaSchema,
+  ResponseFunctionCallArgumentsDoneSchema,
+  ErrorEventSchema,
+]).passthrough(); // Allow unknown event types to pass through
+
+type ServerEvent = z.infer<typeof ServerEventSchema>;
+
+export { 
+  ClientEventSchema, 
+  ServerEventSchema, 
+  type ClientEvent, 
+  type ServerEvent 
+};
+```
+
+## Event Handler Pattern
+
+Wrap the data channel in a typed interface:
+
+```typescript
+// client/realtime-channel.ts
+import { ClientEvent, ServerEvent, ServerEventSchema } from "./realtime-events";
+
+type ServerEventHandler = (event: ServerEvent) => void;
+
+interface RealtimeChannel {
+  send: (event: ClientEvent) => void;
+  onEvent: (handler: ServerEventHandler) => void;
+  onError: (handler: (error: Error) => void) => void;
+}
+
+function createRealtimeChannel(dataChannel: RTCDataChannel): RealtimeChannel {
+  const eventHandlers: ServerEventHandler[] = [];
+  const errorHandlers: ((error: Error) => void)[] = [];
+
+  dataChannel.onmessage = (messageEvent) => {
     try {
-      const event = JSON.parse(ev.data)
-      console.log('realtime:event', event.type, event)
-    } catch {}
-  })
-
-  const offer = await peer.createOffer()
-  await peer.setLocalDescription(offer)
-
-  const form = new FormData()
-  form.append('sdp', new Blob([offer.sdp ?? ''], { type: 'application/sdp' }))
-
-  const answerResponse = await fetch('https://api.openai.com/v1/realtime/calls', {
-    method: 'POST',
-    headers: { Authorization: `Bearer ${clientSecret}` },
-    body: form
-  })
-
-  if (!answerResponse.ok) throw new Error(await answerResponse.text())
-
-  const answerSdp = await answerResponse.text()
-  await peer.setRemoteDescription({ type: 'answer', sdp: answerSdp })
-
-  return { peer, events }
-}
-```
-
-Once `setRemoteDescription` succeeds, you’re “in the call”: audio track in, audio track out, plus an event stream in the data channel.
-
----
-
-## Session steering: “custom instructions” is just session.update
-
-Lilac’s custom instructions UI maps directly to one idea:
-**change the session config without restarting the call**.
-
-```ts
-function sessionUpdate(events: RTCDataChannel, patch: unknown) {
-  events.send(JSON.stringify({ type: 'session.update', session: patch }))
-}
-
-sessionUpdate(events, {
-  type: 'realtime',
-  instructions: [
-    'You are a real-time conversational translator.',
-    'Keep the cadence and intent. Don’t over-explain.',
-    'Prefer Teochew. If uncertain, fall back to Mandarin.',
-    'Return short turns. Match the speaker’s tone.'
-  ].join('\n')
-})
-```
-
-A practical trick: keep a few “personas” on the client and flip between them mid-session:
-
-* translation-first
-* teacher-first
-* roleplay / immersion mode
-
----
-
-## Turning model inference on (response.create)
-
-In many setups, the server will create responses automatically when turn detection is enabled. But it’s still worth understanding the explicit control:
-
-```ts
-events.send(JSON.stringify({ type: 'response.create' }))
-
-events.send(
-  JSON.stringify({
-    type: 'response.create',
-    response: {
-      conversation: 'none',
-      output_modalities: ['text'],
-      instructions: 'Summarize in one sentence.',
-      metadata: { purpose: 'summarization' },
-      input: [
-        {
-          type: 'message',
-          role: 'user',
-          content: [{ type: 'input_text', text: 'Summarize what we said.' }]
-        }
-      ]
+      const rawEvent = JSON.parse(messageEvent.data);
+      const parsedEvent = ServerEventSchema.parse(rawEvent);
+      
+      for (const handler of eventHandlers) {
+        handler(parsedEvent);
+      }
+    } catch (error) {
+      for (const handler of errorHandlers) {
+        handler(error instanceof Error ? error : new Error(String(error)));
+      }
     }
-  })
-)
+  };
+
+  return {
+    send(event: ClientEvent) {
+      dataChannel.send(JSON.stringify(event));
+    },
+    onEvent(handler: ServerEventHandler) {
+      eventHandlers.push(handler);
+    },
+    onError(handler: (error: Error) => void) {
+      errorHandlers.push(handler);
+    },
+  };
+}
 ```
 
-This is the “you can do more than phone-call UX” moment: you can run side tasks next to the live conversation.
+## Session Configuration
 
----
+Configure the session after connection:
 
-## Interruptions: cancelling, truncating, and cutting off audio
+```typescript
+function configureSession(channel: RealtimeChannel, instructions: string) {
+  channel.send({
+    type: "session.update",
+    session: {
+      instructions,
+      voice: "marin",
+      input_audio_transcription: { model: "gpt-4o-transcribe" },
+      turn_detection: {
+        type: "server_vad",
+        threshold: 0.5,
+        prefix_padding_ms: 300,
+        silence_duration_ms: 500, // 500ms works for most cases
+        create_response: true,    // Auto-trigger response when user stops
+      },
+    },
+  });
+}
+```
 
-Real speech is messy: people interrupt, laugh, restart, bail mid-sentence.
+`silence_duration_ms` controls how long the system waits after speech stops before triggering a response. 500ms is a good default. For interview or educational contexts, 800–1000ms gives users more time to think.
 
-A few “must-have” controls:
+## Function Calling
 
-* `response.cancel` — stop the model response
-* `conversation.item.truncate` — tell the server what audio you actually played (important when the user interrupts)
-* `output_audio_buffer.clear` — **WebRTC-only** cutoff for audio output
+Tools are defined in the session config and invoked via events:
 
-That’s how you get “natural” barge-in behavior instead of two voices yelling over each other.
+```typescript
+const tools = [
+  {
+    type: "function" as const,
+    name: "get_weather",
+    description: "Get current weather for a location",
+    parameters: {
+      type: "object",
+      properties: {
+        location: { type: "string", description: "City and state, e.g. San Francisco, CA" },
+      },
+      required: ["location"],
+    },
+  },
+];
 
----
+// Configure session with tools
+channel.send({
+  type: "session.update",
+  session: { tools },
+});
 
-## How Rubric infra makes this fast (and boring)
+// Handle function calls
+channel.onEvent((event) => {
+  if (event.type === "response.function_call_arguments.done") {
+    const args = JSON.parse(event.arguments);
+    
+    // Execute the function
+    const result = await executeFunction(event.name, args);
+    
+    // Send result back
+    channel.send({
+      type: "conversation.item.create",
+      item: {
+        type: "function_call_output",
+        call_id: event.call_id,
+        output: JSON.stringify(result),
+      },
+    });
+    
+    // Trigger model to continue
+    channel.send({ type: "response.create" });
+  }
+});
+```
 
-Lilac is built on create-rubric-app energy:
+The GA model supports **async function calling** — the model can continue speaking while waiting for function results instead of blocking.
 
-* opinionated app scaffolding (Next.js + TS + Biome + Zod)
-* schemas everywhere, so your client doesn’t guess shapes
-* event streaming patterns that don’t degrade into “JSON.parse() spaghetti”
-* quick deploy defaults, so a weekend prototype can become “send a link”
+## Handling Interruptions
 
-The point is not that Lilac is “enterprise ready.”
-The point is that your experiments can still have **good bones**.
+When users interrupt, you need to:
 
----
+1. Cancel the current response
+2. Truncate the conversation to what was actually heard
+3. Clear the audio buffer
 
-## How we used Codex (the teammate who never sleeps)
+```typescript
+function handleInterruption(
+  channel: RealtimeChannel, 
+  currentItemId: string, 
+  audioPlayedMs: number
+) {
+  // Stop generation
+  channel.send({ type: "response.cancel" });
+  
+  // Sync server context with what user actually heard
+  channel.send({
+    type: "conversation.item.truncate",
+    item_id: currentItemId,
+    content_index: 0,
+    audio_end_ms: audioPlayedMs,
+  });
+  
+  // Clear any buffered audio (WebRTC only)
+  channel.send({ type: "output_audio_buffer.clear" });
+}
+```
 
-We leaned on Codex in a very specific way:
+This is critical for natural conversation. The model generates audio faster than realtime playback, so without truncation, the conversation context includes text the user never heard.
 
-1. **Bootstrap**: generated the app with `create-rubric-app`.
-2. **Deploy**: used the same Rubric workflow to bring up infra fast (so we could test on real phones, not just localhost).
-3. **Codex environment**: configured Codex with
+## Context and Token Management
 
-   * the repo commands to install/run/test,
-   * the environment variables it needs to actually start the app,
-   * custom instructions describing Lilac’s architecture and “don’t touch the secret key boundaries”.
+Key limits:
 
-The best part wasn’t “Codex wrote code for us.”
-It was that we could say: “stand this up, reproduce the bug, and fix it *without changing the shape of the types*.”
-That’s a very Rubric way to move.
+| Constraint | Value |
+|------------|-------|
+| Context window | 32,768 tokens |
+| Max response tokens | 4,096 tokens |
+| Max instructions + tools | 16,384 tokens |
+| Session duration | 60 minutes |
+| Audio token rate | ~800 tokens/minute |
 
----
+When context fills up, the API automatically truncates (drops) oldest messages. Configure this behavior:
 
-## Presentation-ready nits (if you want Lilac to read like a real OSS project)
+```typescript
+channel.send({
+  type: "session.update",
+  session: {
+    truncation: {
+      type: "retention_ratio",
+      retention_ratio: 0.8, // Drop 20% when truncating (better for cache hits)
+    },
+  },
+});
+```
 
-If you’re polishing the repo, these changes are high leverage:
+Setting `retention_ratio: 0.8` means when truncation triggers, it drops more than the minimum needed. This preserves prompt caching (which requires identical prefixes) better than truncating one message at a time.
 
-* Add a README section called **“Realtime API shape (GA vs beta)”** with a one-paragraph migration note.
-* Centralize the Realtime event types into a single `realtimeEvents.ts` with a Zod discriminated union.
-* Wrap the data channel in a tiny typed adapter: `sendEvent(event)` + `onEvent(handler)`.
-* Add a tiny “debug overlay” showing:
+## Cost Model
 
-  * connection state
-  * last server event type
-  * current persona / instructions hash
-* Document the “custom instructions” format (especially for dialect docs) and include one example.
+Audio tokens are priced differently than text:
 
----
+| Type | Price per 1M tokens | ~Per minute |
+|------|--------------------:|------------:|
+| Audio input | $40 (cached: $2.50) | ~$0.03 |
+| Audio output | $80 | ~$0.06 |
+| Text input | $2.50 | — |
+| Text output | $10 | — |
 
-Lilac is a side project, but it’s also a pretty honest answer to a real problem:
-**translation isn’t a string function, it’s a conversation.**
+For a 10-minute conversation with ~70% talk time, expect roughly $2–3. The automatic context caching helps significantly for longer sessions.
 
-Peace nerds (:
+## Production Checklist
+
+1. **Never expose your API key** — mint ephemeral client secrets
+2. **Handle reconnection** — sessions can drop; implement exponential backoff
+3. **Track audio playback position** — needed for accurate truncation on interrupts  
+4. **Log events** — the `event_id` field helps correlate issues
+5. **Set idle timeouts** — use `idle_timeout_ms` in VAD config to handle silent users
+6. **Test with network throttling** — WebRTC handles jitter well, but test your UI
+7. **Implement mute/unmute** — VAD can trigger on background noise
+8. **Show connection state** — users need feedback when connecting
+
+## When Not to Use Realtime
+
+The Realtime API is optimized for low-latency conversation. Consider alternatives when:
+
+- **You need deterministic output** — temperature is fixed at 0.8, no way to reduce variance
+- **Latency doesn't matter** — Chat Completions API with audio is cheaper for async use cases
+- **You need long context** — 32k tokens is the ceiling; for long documents, use text models
+- **You're doing batch processing** — Realtime is priced for interactive use
+
+## Further Reading
+
+- [OpenAI Realtime API Docs](https://platform.openai.com/docs/guides/realtime)
+- [OpenAI Realtime API Reference](https://platform.openai.com/docs/api-reference/realtime)
+- [Realtime Console (Reference Implementation)](https://github.com/openai/openai-realtime-console)
+- [Pipecat (Open Source Voice AI Framework)](https://github.com/pipecat-ai/pipecat)
