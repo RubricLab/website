@@ -1,7 +1,15 @@
----
-title: Working with OAI Realtime API
-description: Lilac — an experimental conversational translator + language playground
----
+import { AUTHORS, CATEGORIES } from '~/lib/constants/blog'
+
+export const metadata = {
+  title: 'Working with OAI Realtime API',
+  subtitle: 'Lilac — an experimental conversational translator + language playground',
+  date: '2025-03-10',
+  author: AUTHORS.DEXTER_STOREY,
+  bannerImageUrl: '/images/realtime-flow.svg',
+  category: CATEGORIES.AI,
+  description:
+    'Hands-on guide to building Lilac’s Realtime translation workflow with client secrets, WebRTC, and session steering.'
+}
 
 # Working with OAI Realtime API
 
@@ -70,7 +78,7 @@ What matters here:
 
 Here’s the shape we keep in our heads:
 
-![Realtime data flow](./assets/realtime-flow.svg)
+![Realtime data flow](/images/realtime-flow.svg)
 
 1. **Server minting**: your server creates a short-lived client secret (do *not* ship your real API key).
 2. **WebRTC handshake**: browser creates an SDP offer; OpenAI returns an SDP answer.
@@ -110,18 +118,19 @@ const CreateSecretInputSchema = z.object({
   model: z.string().default('gpt-realtime'),
   instructions: z.string().optional(),
   voice: z.string().optional(),
-  // keep this short: it’s a browser token, not your auth system
-  ttlSeconds: z.number().int().min(30).max(60 * 30).default(60 * 10),
+  ttlSeconds: z.number().int().min(30).max(60 * 30).default(60 * 10)
 })
 
 const ClientSecretResponseSchema = z.object({
-  value: z.string(),       // looks like ek_...
-  expires_at: z.number(),  // epoch seconds
-  session: z.object({
-    id: z.string(),
-    model: z.string(),
-    type: z.string(),
-  }).passthrough(),
+  value: z.string(),
+  expires_at: z.number(),
+  session: z
+    .object({
+      id: z.string(),
+      model: z.string(),
+      type: z.string()
+    })
+    .passthrough()
 })
 
 export async function POST(request: Request) {
@@ -131,7 +140,7 @@ export async function POST(request: Request) {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify({
       expires_after: { anchor: 'created_at', seconds: input.ttlSeconds },
@@ -139,9 +148,9 @@ export async function POST(request: Request) {
         type: 'realtime',
         model: input.model,
         ...(input.instructions ? { instructions: input.instructions } : {}),
-        ...(input.voice ? { audio: { output: { voice: input.voice } } } : {}),
-      },
-    }),
+        ...(input.voice ? { audio: { output: { voice: input.voice } } } : {})
+      }
+    })
   })
 
   if (!response.ok) {
@@ -154,7 +163,7 @@ export async function POST(request: Request) {
   return NextResponse.json({
     clientSecret: parsed.value,
     expiresAt: parsed.expires_at,
-    session: parsed.session,
+    session: parsed.session
   })
 }
 ```
@@ -169,42 +178,33 @@ This is the part everyone overcomplicates. Keep it boring.
 
 ```ts
 async function connectRealtime() {
-  // 1) Ask our server for a short-lived secret
   const secret = await fetch('/api/realtime/secret', { method: 'POST' }).then(r => r.json())
   const clientSecret = secret.clientSecret as string
 
-  // 2) WebRTC peer + mic
   const peer = new RTCPeerConnection()
   const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
 
   for (const track of stream.getTracks()) peer.addTrack(track, stream)
 
-  // 3) Data channel for events
   const events = peer.createDataChannel('oai-events')
 
-  events.addEventListener('message', (ev) => {
-    // server events arrive as JSON
+  events.addEventListener('message', ev => {
     try {
       const event = JSON.parse(ev.data)
-      // route into your typed event handler here
       console.log('realtime:event', event.type, event)
-    } catch {
-      // ignore
-    }
+    } catch {}
   })
 
-  // 4) Create SDP offer
   const offer = await peer.createOffer()
   await peer.setLocalDescription(offer)
 
-  // 5) Send offer to OpenAI, get SDP answer back
   const form = new FormData()
   form.append('sdp', new Blob([offer.sdp ?? ''], { type: 'application/sdp' }))
 
   const answerResponse = await fetch('https://api.openai.com/v1/realtime/calls', {
     method: 'POST',
     headers: { Authorization: `Bearer ${clientSecret}` },
-    body: form,
+    body: form
   })
 
   if (!answerResponse.ok) throw new Error(await answerResponse.text())
@@ -230,15 +230,14 @@ function sessionUpdate(events: RTCDataChannel, patch: unknown) {
   events.send(JSON.stringify({ type: 'session.update', session: patch }))
 }
 
-// Example: translation-first persona
 sessionUpdate(events, {
   type: 'realtime',
   instructions: [
     'You are a real-time conversational translator.',
     'Keep the cadence and intent. Don’t over-explain.',
     'Prefer Teochew. If uncertain, fall back to Mandarin.',
-    'Return short turns. Match the speaker’s tone.',
-  ].join('\n'),
+    'Return short turns. Match the speaker’s tone.'
+  ].join('\n')
 })
 ```
 
@@ -255,22 +254,26 @@ A practical trick: keep a few “personas” on the client and flip between them
 In many setups, the server will create responses automatically when turn detection is enabled. But it’s still worth understanding the explicit control:
 
 ```ts
-// simplest form: “please respond now”
 events.send(JSON.stringify({ type: 'response.create' }))
 
-// out-of-band response (e.g. summarization) that doesn’t write to the main conversation
-events.send(JSON.stringify({
-  type: 'response.create',
-  response: {
-    conversation: 'none',
-    output_modalities: ['text'],
-    instructions: 'Summarize in one sentence.',
-    metadata: { purpose: 'summarization' },
-    input: [
-      { type: 'message', role: 'user', content: [{ type: 'input_text', text: 'Summarize what we said.' }] },
-    ],
-  },
-}))
+events.send(
+  JSON.stringify({
+    type: 'response.create',
+    response: {
+      conversation: 'none',
+      output_modalities: ['text'],
+      instructions: 'Summarize in one sentence.',
+      metadata: { purpose: 'summarization' },
+      input: [
+        {
+          type: 'message',
+          role: 'user',
+          content: [{ type: 'input_text', text: 'Summarize what we said.' }]
+        }
+      ]
+    }
+  })
+)
 ```
 
 This is the “you can do more than phone-call UX” moment: you can run side tasks next to the live conversation.
@@ -343,4 +346,3 @@ Lilac is a side project, but it’s also a pretty honest answer to a real proble
 **translation isn’t a string function, it’s a conversation.**
 
 Peace nerds (:
-
