@@ -211,24 +211,20 @@ export function Video({ hlsUrl, mp4Url, className = '', posterUrl, transcription
 
 				{/* Clickable overlay for play/pause when in playing-with-sound mode */}
 				{status === 'playing-with-sound' && (
-					<div
+					<button
+						type="button"
 						className="absolute inset-0 z-[5] cursor-pointer"
 						onClick={togglePlayPause}
-						onKeyDown={e => e.key === 'Enter' && togglePlayPause()}
-						tabIndex={0}
-						role="button"
 						aria-label="Play or pause video"
 					/>
 				)}
 
 				{/* Clickable overlay for the entire video when not in playing-with-sound mode */}
 				{showPlayButton && (
-					<div
+					<button
+						type="button"
 						className="absolute inset-0 z-10 cursor-pointer"
 						onClick={playWithSound}
-						onKeyDown={e => e.key === 'Enter' && playWithSound()}
-						tabIndex={0}
-						role="button"
 						aria-label="Play with sound"
 					/>
 				)}
