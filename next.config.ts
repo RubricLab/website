@@ -13,7 +13,14 @@ const rehypeOptions = {
 
 const nextConfig = {
 	pageExtensions: ['md', 'mdx', 'ts', 'tsx'],
-	reactStrictMode: true
+	reactStrictMode: true,
+	transpilePackages: [
+		'@rubriclab/actions',
+		'@rubriclab/agents',
+		'@rubriclab/blocks',
+		'@rubriclab/events',
+		'@rubriclab/ui'
+	]
 } satisfies NextConfig
 
 const withMDX = createMDX({

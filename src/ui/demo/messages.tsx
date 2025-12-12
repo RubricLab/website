@@ -22,7 +22,6 @@ const SCRIPT: ScriptItem[] = [
 	},
 	{ at: 1000, hideAfter: 1500, node: <Message type={'reasoning'} text="Thinking..." /> },
 	{ at: 2500, hideAfter: 1000, node: <Message type={'reasoning'} text="Querying database..." /> },
-
 	{
 		at: 3500,
 		node: (

@@ -10,14 +10,18 @@ export const env = createEnv({
 		NEXT_PUBLIC_POSTHOG_HOST: process.env.NEXT_PUBLIC_POSTHOG_HOST,
 		NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
 		NODE_ENV: process.env.NODE_ENV,
+		OPENAI_API_KEY: process.env.OPENAI_API_KEY,
 		ROS_API_URL: process.env.ROS_API_URL,
 		ROS_SECRET: process.env.ROS_SECRET,
+		UPSTASH_REDIS_URL: process.env.UPSTASH_REDIS_URL,
 		VERCEL_URL: process.env.VERCEL_URL
 	},
 	server: {
 		NODE_ENV: z.string().min(1),
+		OPENAI_API_KEY: z.string().min(1),
 		ROS_API_URL: z.string().min(1),
 		ROS_SECRET: z.string().min(1),
+		UPSTASH_REDIS_URL: z.string().min(1),
 		VERCEL_URL: z.string().min(1)
 	}
 })

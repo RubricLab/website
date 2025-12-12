@@ -1,10 +1,9 @@
 'use client'
 
+import { Button } from '@rubriclab/ui'
 import { createNewsletterSubscriber } from '~/lib/actions/create-newsletter-subscriber'
 import { cn } from '~/lib/utils/cn'
-import { Button } from '~/ui/button'
 import { Form } from '~/ui/form'
-import { Arrow } from '~/ui/icons/arrow'
 
 export const NewsletterForm = ({ className }: { className?: string }) => {
 	return (
@@ -21,13 +20,11 @@ export const NewsletterForm = ({ className }: { className?: string }) => {
 				<div className="relative flex w-full items-center">
 					<input placeholder="Email" className="w-full" name="email" type="email" required />
 					<Button
+						label="Subscribe"
 						type="submit"
+						icon="arrowRight"
 						disabled={pending || !!state?.success}
-						variant="icon"
-						className="-translate-y-1/2 absolute top-1/2 right-2"
-					>
-						<Arrow />
-					</Button>
+					/>
 				</div>
 			)}
 		</Form>

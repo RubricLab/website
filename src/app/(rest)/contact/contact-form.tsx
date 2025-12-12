@@ -1,9 +1,9 @@
 'use client'
 
+import { Button } from '@rubriclab/ui'
 import { useRef } from 'react'
 import { createContactRequest } from '~/lib/actions/create-contact-request'
 import { useShortcut } from '~/lib/hooks/use-shortcut'
-import { Button } from '~/ui/button'
 import { Form } from '~/ui/form'
 
 export const ContactForm = () => {
@@ -39,13 +39,7 @@ export const ContactForm = () => {
 							/>
 						</div>
 					</div>
-					<Button type="submit" disabled={pending || !!state?.success} className="w-full">
-						<p>Submit</p>
-						<div className="ml-auto hidden items-center gap-0.5 sm:flex">
-							<kbd>⌘</kbd>
-							<kbd>⏎</kbd>
-						</div>
-					</Button>
+					<Button type="submit" disabled={pending || !!state?.success} label="Submit ⌘+⏎" />
 				</>
 			)}
 		</Form>

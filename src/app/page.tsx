@@ -2,9 +2,7 @@
 
 // import { useFold } from '~/lib/hooks/use-fold'
 import { cn } from '~/lib/utils/cn'
-// import { Button } from '~/ui/button'
 import { CTA } from '~/ui/cta'
-import { Chat } from '~/ui/demo/chat'
 import { Footer } from '~/ui/footer'
 // import { Arrow } from '~/ui/icons/arrow'
 import { Partners } from '~/ui/partners'
@@ -44,7 +42,7 @@ const Hero = () => {
 						</h1>
 					</div>
 
-					<Chat />
+					{/* <Chart /> */}
 				</div>
 			</div>
 			<TrustedBy />
