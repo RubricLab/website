@@ -373,3 +373,53 @@
 		display: none !important;
 	}
 }
+
+/* Shiki syntax highlighting styles */
+.shiki-wrapper {
+	@apply overflow-x-auto rounded-lg;
+}
+
+.shiki-wrapper pre {
+	@apply p-4 !bg-transparent;
+	margin: 0;
+	background: transparent !important;
+}
+
+.shiki-wrapper code {
+	@apply font-mono text-sm;
+	background: transparent !important;
+}
+
+/* Light theme */
+@media (prefers-color-scheme: light) {
+	.shiki-wrapper .github-dark-dimmed {
+		display: none;
+	}
+}
+
+/* Dark theme */
+@media (prefers-color-scheme: dark) {
+	.shiki-wrapper .github-light {
+		display: none;
+	}
+}
+
+/* Default: show light theme */
+.shiki-wrapper .github-dark-dimmed {
+	display: none;
+}
+
+.shiki-wrapper .github-light {
+	display: block;
+}
+
+/* In dark mode: show dark theme */
+@media (prefers-color-scheme: dark) {
+	.shiki-wrapper .github-dark-dimmed {
+		display: block;
+	}
+	
+	.shiki-wrapper .github-light {
+		display: none;
+	}
+}

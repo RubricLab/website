@@ -8,10 +8,8 @@ const nextConfig = {
 
 const withMDX = createMDX({
 	extension: /\.mdx?$/
-	// TODO: Re-enable syntax highlighting once Turbopack supports non-serializable
-	// rehype/remark plugins. Consider using client-side syntax highlighting libraries
-	// like Prism.js or Shiki as an alternative.
-	// Previous config used: rehypePlugins: [[rehypePrettyCode, { keepBackground: false, theme: { dark: 'github-dark-dimmed', light: 'github-light' }}]]
+	// Note: Syntax highlighting is implemented client-side using Shiki in the CodeBlock component
+	// to avoid Turbopack serialization issues with rehype/remark plugins at build time.
 })
 
 export default withMDX(nextConfig)
