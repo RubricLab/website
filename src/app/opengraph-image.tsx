@@ -10,10 +10,6 @@ export const size = {
 	width: 1200
 }
 
-export type ImageProps = {
-	params: object
-}
-
 export const Component = () => {
 	return (
 		<div
@@ -47,9 +43,11 @@ export const Component = () => {
 	)
 }
 
-export default async function Response(_: ImageProps) {
-	const localFont = await fetch(new URL('/src/app/fonts/matter-regular.woff', import.meta.url)).then(
-		res => res.arrayBuffer()
+export default async function Response() {
+	const baseUrl = getBaseUrl()
+
+	const localFont = await fetch(`${baseUrl}/fonts/matter-regular.woff`).then(res =>
+		res.arrayBuffer()
 	)
 
 	return new ImageResponse(<Component />, {

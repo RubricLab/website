@@ -1,8 +1,8 @@
 {
 	"dependencies": {
-		"@mdx-js/loader": "^3.1.0",
-		"@mdx-js/react": "^3.1.0",
-		"@next/mdx": "^15.2.2",
+		"@mdx-js/loader": "^3.1.1",
+		"@mdx-js/react": "^3.1.1",
+		"@next/mdx": "^16.0.10",
 		"@rubriclab/config": "*",
 		"@t3-oss/env-nextjs": "^0.13.8",
 		"@tailwindcss/postcss": "^4.0.10",

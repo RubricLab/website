@@ -94,7 +94,7 @@ export default async function Response({
 
 	const [{ metadata }, localFont] = await Promise.all([
 		getPost(slug),
-		fetch(new URL(`${baseUrl}/fonts/matter-regular.woff`)).then(res => res.arrayBuffer())
+		fetch(`${baseUrl}/fonts/matter-regular.woff`).then(res => res.arrayBuffer())
 	])
 
 	return new ImageResponse(

@@ -1,6 +1,5 @@
 import createMDX from '@next/mdx'
 import type { NextConfig } from 'next'
-import rehypePrettyCode from 'rehype-pretty-code'
 
 const rehypeOptions = {
 	keepBackground: false,
@@ -17,9 +16,9 @@ const nextConfig = {
 } satisfies NextConfig
 
 const withMDX = createMDX({
-	extension: /\.mdx?$/,
+	extension: /\.(mdx)$/,
 	options: {
-		rehypePlugins: [[rehypePrettyCode, rehypeOptions]]
+		rehypePlugins: [['rehype-pretty-code', rehypeOptions]]
 	}
 })
 
