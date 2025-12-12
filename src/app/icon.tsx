@@ -10,6 +10,7 @@ export const size = {
 
 export default async function Icon() {
 	return new ImageResponse(
+		// biome-ignore lint/a11y/noSvgWithoutTitle: renders visually
 		<svg width="32" height="32" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<rect width="64" height="64" fill="black" />
 			<path

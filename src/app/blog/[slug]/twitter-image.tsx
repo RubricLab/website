@@ -1,4 +1,5 @@
 import { ImageResponse } from 'next/og'
+import { env } from '~/lib/env'
 import { getBaseUrl } from '~/lib/utils'
 import { getPost } from '~/lib/utils/posts'
 import { Rubric } from '~/ui/logos/rubric'
@@ -89,6 +90,8 @@ export default async function Response({
 	params: Promise<{ slug: string }>
 }) {
 	const baseUrl = getBaseUrl()
+
+	console.log({ baseUrl, env: env.NODE_ENV })
 
 	const { slug } = await params
 
