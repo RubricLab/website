@@ -48,9 +48,8 @@ export const Component = () => {
 }
 
 export default async function Response(_: ImageProps) {
-	const localFont = await fetch(new URL('/src/app/fonts/matter-regular.woff', import.meta.url)).then(
-		res => res.arrayBuffer()
-	)
+	const baseUrl = getBaseUrl()
+	const localFont = await fetch(`${baseUrl}/fonts/matter-regular.woff`).then(res => res.arrayBuffer())
 
 	return new ImageResponse(<Component />, {
 		...size,

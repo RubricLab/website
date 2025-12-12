@@ -85,9 +85,7 @@ export default async function Response({ params }: { id: string; params: { slug:
 
 	const [{ metadata }, localFont] = await Promise.all([
 		getPost(slug),
-		fetch(new URL(`${baseUrl}/fonts/matter-regular.woff`, import.meta.url)).then(res =>
-			res.arrayBuffer()
-		)
+		fetch(`${baseUrl}/fonts/matter-regular.woff`).then(res => res.arrayBuffer())
 	])
 
 	return new ImageResponse(
