@@ -5,10 +5,8 @@ export default {
 	darkMode: 'class',
 	theme: {
 		extend: {
-			colors: {
-				radius: {
-					custom: '5rem'
-				}
+			borderRadius: {
+				custom: '5rem'
 			}
 		}
 	}

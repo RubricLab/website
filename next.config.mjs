@@ -8,9 +8,10 @@ const nextConfig = {
 
 const withMDX = createMDX({
 	extension: /\.mdx?$/
-	// Note: rehype/remark plugins are not supported with Turbopack in Next.js 16
-	// due to serialization requirements. Syntax highlighting can be implemented
-	// using client-side libraries or by waiting for Turbopack plugin support.
+	// TODO: Re-enable syntax highlighting once Turbopack supports non-serializable
+	// rehype/remark plugins. Consider using client-side syntax highlighting libraries
+	// like Prism.js or Shiki as an alternative.
+	// Previous config used: rehypePlugins: [[rehypePrettyCode, { keepBackground: false, theme: { dark: 'github-dark-dimmed', light: 'github-light' }}]]
 })
 
 export default withMDX(nextConfig)

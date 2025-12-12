@@ -83,22 +83,32 @@ export default async function Response({ params }: { id: string; params: { slug:
 
 	const { slug } = await params
 
-	const [{ metadata }, localFont] = await Promise.all([
-		getPost(slug),
-		fetch(`${baseUrl}/fonts/matter-regular.woff`).then(res => res.arrayBuffer())
-	])
+	const { metadata } = await getPost(slug)
+	
+	// Fetch font with error handling
+	let localFont: ArrayBuffer | undefined
+	try {
+		localFont = await fetch(`${baseUrl}/fonts/matter-regular.woff`).then(res => {
+			if (!res.ok) throw new Error(`Failed to fetch font: ${res.status}`)
+			return res.arrayBuffer()
+		})
+	} catch (error) {
+		console.error('Failed to load font for blog twitter image:', error)
+	}
 
 	return new ImageResponse(
 		<Component title={metadata.title} backgroundImageUrl={`${baseUrl}${metadata.bannerImageUrl}`} />,
 		{
-			fonts: [
-				{
-					data: localFont,
-					name: 'Matter',
-					style: 'normal',
-					weight: 400
-				}
-			]
+			...(localFont && {
+				fonts: [
+					{
+						data: localFont,
+						name: 'Matter',
+						style: 'normal',
+						weight: 400
+					}
+				]
+			})
 		}
 	)
 }

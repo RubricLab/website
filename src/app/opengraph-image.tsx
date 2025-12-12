@@ -49,7 +49,19 @@ export const Component = () => {
 
 export default async function Response(_: ImageProps) {
 	const baseUrl = getBaseUrl()
-	const localFont = await fetch(`${baseUrl}/fonts/matter-regular.woff`).then(res => res.arrayBuffer())
+	
+	// Fetch font with error handling
+	let localFont: ArrayBuffer
+	try {
+		localFont = await fetch(`${baseUrl}/fonts/matter-regular.woff`).then(res => {
+			if (!res.ok) throw new Error(`Failed to fetch font: ${res.status}`)
+			return res.arrayBuffer()
+		})
+	} catch (error) {
+		console.error('Failed to load font for OG image:', error)
+		// Return image without custom font if fetch fails
+		return new ImageResponse(<Component />, { ...size })
+	}
 
 	return new ImageResponse(<Component />, {
 		...size,
