@@ -10,6 +10,7 @@ type TestimonialItem = {
 
 const testimonials: TestimonialItem[] = [
 	{
+		author: 'Max Brodeur-Urbas',
 		body: (
 			<>
 				<span className="text-secondary/50">"Rubric gave us the </span>
@@ -21,12 +22,12 @@ const testimonials: TestimonialItem[] = [
 				</span>
 			</>
 		),
-		author: 'Max Brodeur-Urbas',
-		title: 'CEO',
 		company: 'Gumloop',
-		href: '/work#Gumloop'
+		href: '/work#Gumloop',
+		title: 'CEO'
 	},
 	{
+		author: 'Daniel Bevan',
 		body: (
 			<>
 				<span className="text-secondary/50">
@@ -40,12 +41,12 @@ const testimonials: TestimonialItem[] = [
 				</span>
 			</>
 		),
-		author: 'Daniel Bevan',
-		title: 'CTO',
 		company: 'Sligo',
-		href: '/work#Sligo'
+		href: '/work#Sligo',
+		title: 'CTO'
 	},
 	{
+		author: 'Merrill Lutsky',
 		body: (
 			<>
 				<span className="text-secondary/50">
@@ -59,12 +60,12 @@ const testimonials: TestimonialItem[] = [
 				</span>
 			</>
 		),
-		author: 'Merrill Lutsky',
-		title: 'CEO',
 		company: 'Graphite',
-		href: '/work#Graphite'
+		href: '/work#Graphite',
+		title: 'CEO'
 	},
 	{
+		author: 'Mitchell White',
 		body: (
 			<>
 				<span className="text-secondary/50">
@@ -78,10 +79,9 @@ const testimonials: TestimonialItem[] = [
 				</span>
 			</>
 		),
-		author: 'Mitchell White',
-		title: 'Founder',
 		company: 'Weave',
-		href: '/work#Weave'
+		href: '/work#Weave',
+		title: 'Founder'
 	}
 ]
 

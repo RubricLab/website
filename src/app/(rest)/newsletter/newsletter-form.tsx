@@ -24,7 +24,7 @@ export const NewsletterForm = ({ className }: { className?: string }) => {
 						type="submit"
 						disabled={pending || !!state?.success}
 						variant="icon"
-						className="-translate-y-1/2 absolute top-1/2 right-2"
+						className="absolute top-1/2 right-2 -translate-y-1/2"
 					>
 						<Arrow />
 					</Button>

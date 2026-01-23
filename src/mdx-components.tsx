@@ -21,9 +21,15 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 
 	return {
 		...components,
-		h1: props => <CopiableHeading as="h1" id={props.id ?? slugger.slug(getText(props.children))} {...props} />,
-		h2: props => <CopiableHeading as="h2" id={props.id ?? slugger.slug(getText(props.children))} {...props} />,
-		h3: props => <CopiableHeading as="h3" id={props.id ?? slugger.slug(getText(props.children))} {...props} />,
+		h1: props => (
+			<CopiableHeading as="h1" id={props.id ?? slugger.slug(getText(props.children))} {...props} />
+		),
+		h2: props => (
+			<CopiableHeading as="h2" id={props.id ?? slugger.slug(getText(props.children))} {...props} />
+		),
+		h3: props => (
+			<CopiableHeading as="h3" id={props.id ?? slugger.slug(getText(props.children))} {...props} />
+		),
 		img: CustomImage,
 		pre: CodeBlock
 	}
