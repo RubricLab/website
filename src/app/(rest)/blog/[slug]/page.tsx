@@ -5,6 +5,7 @@ import { getPost, getPostSlugs } from '~/lib/utils/posts'
 import { CTA } from '~/ui/cta'
 import { CustomImage } from '~/ui/custom-image'
 import { NextPost } from '~/ui/next-post'
+import { TableOfContents } from '~/ui/table-of-contents'
 
 export const dynamicParams = false
 
@@ -30,7 +31,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function Page({ params }: Props) {
 	const { slug } = await params
-	const { Post, metadata } = await getPost(slug)
+	const { Post, metadata, toc } = await getPost(slug)
 
 	if (!Post || !metadata) return <div>Post not found</div>
 
@@ -59,6 +60,7 @@ export default async function Page({ params }: Props) {
 						<h1>{metadata.title}</h1>
 						{metadata.subtitle ? <h3 className="mt-0 text-secondary">{metadata.subtitle}</h3> : null}
 					</div>
+					<TableOfContents items={toc} />
 					<Post />
 					<CTA />
 					<NextPost date={metadata.date} />

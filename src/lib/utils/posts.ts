@@ -1,6 +1,7 @@
-import { readdir } from 'node:fs/promises'
+import { readdir, readFile } from 'node:fs/promises'
 import path from 'node:path'
 import type { Author } from '~/lib/constants/blog'
+import { createSlugger } from '~/lib/utils/slugger'
 
 export type Post = {
 	title: string
@@ -13,15 +14,21 @@ export type Post = {
 	bannerImageUrl: string
 }
 
+export type TocItem = {
+	id: string
+	title: string
+	level: number
+}
+
 // Helper function to get all post slugs
-export async function getPostSlugs(): Promise<string[]> {
+const getPostSlugs = async (): Promise<string[]> => {
 	const files = await readdir(path.join(process.cwd(), 'src/lib/posts'))
 	return files
 		.filter(file => file.endsWith('.mdx'))
 		.map((file: string) => path.basename(file, '.mdx'))
 }
 
-export async function getPostMetadata(): Promise<Post[]> {
+const getPostMetadata = async (): Promise<Post[]> => {
 	const slugs = await getPostSlugs()
 
 	const metadata = await Promise.all(
@@ -39,13 +46,49 @@ export async function getPostMetadata(): Promise<Post[]> {
 	return posts
 }
 
-export async function getPost(
+const getPost = async (
 	slug: string
-): Promise<{ Post: React.ComponentType; metadata: Post }> {
+): Promise<{ Post: React.ComponentType; metadata: Post; toc: TocItem[] }> => {
 	const { default: Post, metadata } = await import(`~/lib/posts/${slug}.mdx`)
 
 	return {
 		metadata,
-		Post
+		Post,
+		toc: await getPostToc(slug)
 	}
 }
+
+const getPostToc = async (slug: string): Promise<TocItem[]> => {
+	const mdxPath = path.join(process.cwd(), 'src/lib/posts', `${slug}.mdx`)
+	const content = await readFile(mdxPath, 'utf8')
+
+	const slugger = createSlugger()
+	const items: TocItem[] = []
+
+	let inFence = false
+	for (const line of content.split('\n')) {
+		const trimmed = line.trim()
+
+		if (trimmed.startsWith('```')) {
+			inFence = !inFence
+			continue
+		}
+		if (inFence) continue
+
+		const match = /^(#{2,3})\s+(.+?)\s*$/.exec(trimmed)
+		if (!match) continue
+
+		const level = match[1]?.length
+		const title = match[2]?.replaceAll(/\s+/g, ' ').trim()
+		if (!level || !title) continue
+
+		const id = slugger.slug(title)
+		if (!id) continue
+
+		items.push({ id, level, title })
+	}
+
+	return items
+}
+
+export { getPost, getPostMetadata, getPostSlugs, getPostToc }
