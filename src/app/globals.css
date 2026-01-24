@@ -87,7 +87,7 @@
 	}
 
 	article p,
-	li {
+	article li {
 		@apply text-secondary;
 	}
 
@@ -95,12 +95,20 @@
 		@apply border-l-4 border-secondary/20 pl-4 font-light text-lg italic;
 	}
 
-	li {
-		@apply list-disc list-inside;
+	article ul {
+		@apply pl-6;
 	}
 
-	ol li {
-		@apply list-decimal list-inside;
+	article ol {
+		@apply pl-6;
+	}
+
+	article ul > li {
+		@apply list-disc list-outside;
+	}
+
+	article ol > li {
+		@apply list-decimal list-outside;
 	}
 
 	img,
