@@ -1,0 +1,84 @@
+import { AUTHORS, CATEGORIES } from '~/lib/constants/blog'
+import { QueryComparison } from '~/ui/blog/claude-code/query-comparison'
+import { SystemArchitecture } from '~/ui/blog/claude-code/system-architecture'
+import { ToolsTable } from '~/ui/blog/claude-code/tools-table'
+import { Caption, Figure } from '~/ui/figure'
+
+export const metadata = {
+    title: "How does Claude Code actually work?",
+    date: "2026-01-30",
+    subtitle: "A first-principles understanding of the most powerful coding agent",
+    author: AUTHORS.SARIM_MALIK,
+    bannerImageUrl: "/images/monolith.png",
+    category: CATEGORIES.BREAKDOWN,
+    description: "Understanding Claude Code from first-principles to better understand system design for building intelligent applications"
+}
+
+Claude Code has quickly become the default coding agent since being [announced](https://www.anthropic.com/news/claude-3-7-sonnet) less than a year ago by Anthropic. 
+
+If you’ve tried Claude Code, you’ve probably had the same reaction: *wait, this actually works*. And once you feel that, it’s easy to imagine agents like this spreading far beyond code.
+
+Naturally, we became curious and wanted to understand how the system works, dig through the [Claude Code docs](https://code.claude.com/docs/en/overview) and study the [Claude Agent SDK](https://platform.claude.com/docs/en/agent-sdk/overview) (Claude Code’s API surface).
+
+Some of the things we wanted to know: How does the core agent work? Is it a single agent or multi-agent system? What is the underlying system design? Which tools does it use? How are these tools designed? How is Claude able to run long conversations and still not lose context? How is the context window managed?
+
+## What is Claude Code, really?
+
+Claude Code is a [coding agent](https://docs.aws.amazon.com/prescriptive-guidance/latest/agentic-ai-patterns/coding-agents.html) which runs in your terminal. You can invoke It to tackle coding tasks, but you can also ask for help with non-coding tasks such as writing docs, searching files, researching topics, and more.
+
+This seems to be emergent behaviour as it was [originally designed](https://youtu.be/zDmW5hJPsvQ?si=Lh9ZSEYFS6_RodVo&t=132) to be an internal coding agent for Anthropic, but quickly found product-market fit internally and eventually became a core offering of the company.
+
+Much of Claude Code's capabilities can be attributed to the **built-in agentic loop** which alternates between three phases:
+
+- **Gather context** (read): It gathers context for e.g. read files, search the repo, and pull in terminal output to build a working set.
+- **Take actions** (write): It takes actions for e.g. edit files and run commands to move the task forward.
+- **Verify the results** (test): It checks results for e.g. look at errors, diffs, and tests to decide what to do next.
+
+Now here’s the key idea: **the loop stretches or shrinks based on what you ask**. A small request might be “read once, answer, done.” A bigger request usually turns into a back-and-forth: read a bit, change something, check it, repeat until it’s correct.
+
+That’s what the figure below is showing: one task that only relies on gathering context finishes quickly, while the other keeps looping because each change creates something new to verify.
+
+<Figure>
+  <QueryComparison />
+  <Caption>Same loop, different paths. The query dictates the decision tree.</Caption>
+</Figure>
+
+Almost everything Claude Code does is one of three things: gather, act, or verify. Small tasks stop early. Bigger ones loop until they’re solid. 
+
+## The core system
+
+Let's zoom in on how a single request flows through the system. Claude Code has a few key pieces working together:
+
+- **The model**: Which Claude model is doing the reasoning (Sonnet, Opus, etc.)
+- **The context window**: The conversation so far — system prompt, user messages, Claude's responses, and tool results
+- **The tools catalog**: A set of capabilities Claude can invoke (read files, run commands, search the web, etc.)
+- **The CLI environment**: Where everything runs — your terminal
+
+Here's how they connect in a typical transaction:
+
+<Figure>
+  <SystemArchitecture />
+  <Caption>One transaction: the context window grows as Claude gathers, acts, and verifies.</Caption>
+</Figure>
+
+## Tools: the building blocks
+
+Claude Code comes with a set of built-in tools that fall into the three phases we discussed earlier. Here's what's available:
+
+<ToolsTable />
+
+A few interesting observations:
+
+- The [Text Editor tool](https://platform.claude.com/docs/en/agents-and-tools/tool-use/text-editor-tool) uses `str_replace` for surgical edits — it finds an exact match of old text and swaps it with new text. This avoids rewriting entire files and reduces the chance of accidental changes.
+- There's a [Tool Search tool](https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-search-tool) that lets Claude dynamically discover tools from a large catalog. Instead of loading all tool definitions upfront (which can eat up context), Claude searches for what it needs on-demand.
+
+## Context: what Claude Code sees (and what it can’t)
+
+## Environment: command line interface
+
+## System optimizations
+- CLAUDE.md
+- Skills
+- MCP
+
+## Why this matters
