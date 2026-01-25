@@ -6,6 +6,8 @@
 	--background: #f5f0ec;
 	--negative: #222;
 	--subtle: #0000001a; /* black/10 */
+	--accent: #dedad7; /* black/20 on background */
+	--accent-foreground: black;
 	--danger: red;
 }
 
@@ -16,6 +18,8 @@
 		--background: black;
 		--negative: #ddd;
 		--subtle: #ffffff1a; /* white/10 */
+		--accent: #1d1d1d; /* white/20 on black */
+		--accent-foreground: white;
 		--danger: red;
 	}
 }
@@ -26,6 +30,8 @@
 	--color-subtle: var(--subtle);
 	--color-negative: var(--negative);
 	--color-secondary: var(--secondary);
+	--color-accent: var(--accent);
+	--color-accent-foreground: var(--accent-foreground);
 	--color-danger: var(--danger);
 	--radius-custom: 1.625rem;
 }
@@ -89,6 +95,10 @@
 	article p,
 	article li {
 		@apply text-secondary;
+	}
+
+	article :is(strong, b) {
+		@apply text-primary font-semibold;
 	}
 
 	article blockquote {
