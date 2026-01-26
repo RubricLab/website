@@ -7,7 +7,9 @@ type Phase = 'gather' | 'action' | 'verify'
 type Tool = {
 	name: string
 	description: string
-	phase: Phase
+	phases: Phase[]
+	permissionRequired: boolean
+	group: 'core' | 'tasks' | 'mcp' | 'editing' | 'skills' | 'control' | 'intelligence'
 	examples?: string[]
 	docUrl?: string
 }
@@ -15,45 +17,174 @@ type Tool = {
 const DOCS_BASE = 'https://platform.claude.com/docs/en/agents-and-tools/tool-use'
 
 const TOOLS: Tool[] = [
-	{ description: 'Read any file in the working directory', name: 'Read', phase: 'gather' },
-	{ description: 'Create new files', name: 'Write', phase: 'action' },
+	// Core tools (the loop spends most of its time here)
 	{
-		description: 'Make precise edits to existing files',
-		docUrl: `${DOCS_BASE}/text-editor-tool`,
-		name: 'Edit',
-		phase: 'action'
-	},
-	{
-		description: 'Run terminal commands, scripts, git operations',
-		docUrl: `${DOCS_BASE}/bash-tool`,
-		name: 'Bash',
-		phase: 'action'
-	},
-	{
-		description: 'Find files by pattern',
-		examples: ['**/*.ts', 'src/**/*.py'],
-		name: 'Glob',
-		phase: 'gather'
-	},
-	{ description: 'Search file contents with regex', name: 'Grep', phase: 'gather' },
-	{
-		description: 'Search the web for current information',
-		docUrl: `${DOCS_BASE}/web-search-tool`,
-		name: 'WebSearch',
-		phase: 'gather'
-	},
-	{
-		description: 'Fetch and parse web page content',
-		docUrl: `${DOCS_BASE}/web-fetch-tool`,
-		name: 'WebFetch',
-		phase: 'gather'
-	},
-	{
-		description: 'Ask clarifying questions with multiple choice',
+		description: 'Asks multiple-choice questions to gather requirements or clarify ambiguity',
+		group: 'core',
 		name: 'AskUserQuestion',
-		phase: 'gather'
+		permissionRequired: false,
+		phases: ['gather']
+	},
+	{
+		description: 'Executes shell commands in your environment',
+		docUrl: `${DOCS_BASE}/bash-tool`,
+		group: 'core',
+		name: 'Bash',
+		permissionRequired: true,
+		phases: ['action', 'verify']
+	},
+	{
+		description: 'Makes targeted edits to specific files',
+		docUrl: `${DOCS_BASE}/text-editor-tool`,
+		group: 'core',
+		name: 'Edit',
+		permissionRequired: true,
+		phases: ['action']
+	},
+	{
+		description: 'Finds files based on pattern matching',
+		examples: ['**/*.ts', 'src/**/*.py'],
+		group: 'core',
+		name: 'Glob',
+		permissionRequired: false,
+		phases: ['gather', 'verify']
+	},
+	{
+		description: 'Searches for patterns in file contents',
+		group: 'core',
+		name: 'Grep',
+		permissionRequired: false,
+		phases: ['gather', 'verify']
+	},
+	{
+		description: 'Reads the contents of files',
+		group: 'core',
+		name: 'Read',
+		permissionRequired: false,
+		phases: ['gather', 'verify']
+	},
+	{
+		description: 'Fetches content from a specified URL',
+		docUrl: `${DOCS_BASE}/web-fetch-tool`,
+		group: 'core',
+		name: 'WebFetch',
+		permissionRequired: true,
+		phases: ['gather', 'verify']
+	},
+	{
+		description: 'Performs web searches with domain filtering',
+		docUrl: `${DOCS_BASE}/web-search-tool`,
+		group: 'core',
+		name: 'WebSearch',
+		permissionRequired: true,
+		phases: ['gather', 'verify']
+	},
+	{
+		description: 'Creates or overwrites files',
+		group: 'core',
+		name: 'Write',
+		permissionRequired: true,
+		phases: ['action']
+	},
+
+	// Task / subagent workflow tools
+	{
+		description: 'Runs a sub-agent to handle complex, multi-step tasks',
+		group: 'tasks',
+		name: 'Task',
+		permissionRequired: false,
+		phases: ['gather']
+	},
+	{
+		description: 'Creates a new task in the task list',
+		group: 'tasks',
+		name: 'TaskCreate',
+		permissionRequired: false,
+		phases: ['gather']
+	},
+	{
+		description: 'Retrieves full details for a specific task',
+		group: 'tasks',
+		name: 'TaskGet',
+		permissionRequired: false,
+		phases: ['gather']
+	},
+	{
+		description: 'Lists all tasks with their current status',
+		group: 'tasks',
+		name: 'TaskList',
+		permissionRequired: false,
+		phases: ['gather']
+	},
+	{
+		description: 'Retrieves output from a background task (bash shell or subagent)',
+		group: 'tasks',
+		name: 'TaskOutput',
+		permissionRequired: false,
+		phases: ['verify']
+	},
+	{
+		description: 'Updates task status, dependencies, or details',
+		group: 'tasks',
+		name: 'TaskUpdate',
+		permissionRequired: false,
+		phases: ['action']
+	},
+
+	// MCP-related tools
+	{
+		description: 'Searches for and loads MCP tools when tool search is enabled',
+		group: 'mcp',
+		name: 'MCPSearch',
+		permissionRequired: false,
+		phases: ['gather']
+	},
+
+	// Editing helpers beyond core file edits
+	{
+		description: 'Modifies Jupyter notebook cells',
+		group: 'editing',
+		name: 'NotebookEdit',
+		permissionRequired: true,
+		phases: ['action']
+	},
+
+	// Skills / guidance
+	{
+		description: 'Executes a skill within the main conversation',
+		group: 'skills',
+		name: 'Skill',
+		permissionRequired: true,
+		phases: ['gather']
+	},
+
+	// Session/control helpers
+	{
+		description: 'Prompts the user to exit plan mode and start coding',
+		group: 'control',
+		name: 'ExitPlanMode',
+		permissionRequired: true,
+		phases: ['action']
+	},
+	{
+		description: 'Kills a running background bash shell by its ID',
+		group: 'control',
+		name: 'KillShell',
+		permissionRequired: false,
+		phases: ['verify']
+	},
+
+	// Code intelligence
+	{
+		description: 'Code intelligence via language servers (type errors, go-to-def, references, etc.)',
+		group: 'intelligence',
+		name: 'LSP',
+		permissionRequired: false,
+		phases: ['verify']
 	}
 ]
+
+const CORE_TOOLS = TOOLS.filter(t => t.group === 'core')
 
 const phaseColors: Record<Phase, string> = {
 	action: 'bg-amber-500/20 text-amber-600 dark:text-amber-400',
@@ -79,8 +210,8 @@ export const ToolsTable = () => {
 					</tr>
 				</thead>
 				<tbody>
-					{TOOLS.map((tool, idx) => (
-						<tr key={tool.name} className={cn('border-subtle', idx !== TOOLS.length - 1 && 'border-b')}>
+					{CORE_TOOLS.map((tool, idx) => (
+						<tr key={tool.name} className={cn('border-subtle', idx !== CORE_TOOLS.length - 1 && 'border-b')}>
 							<td className="px-4 py-3 font-medium">
 								{tool.docUrl ? (
 									<a
@@ -111,14 +242,19 @@ export const ToolsTable = () => {
 								)}
 							</td>
 							<td className="px-4 py-3">
-								<span
-									className={cn(
-										'inline-block rounded-full px-2 py-0.5 font-medium text-xs',
-										phaseColors[tool.phase]
-									)}
-								>
-									{phaseLabels[tool.phase]}
-								</span>
+								<div className="flex flex-wrap gap-1">
+									{tool.phases.map(phase => (
+										<span
+											key={`${tool.name}-${phase}`}
+											className={cn(
+												'inline-block rounded-full px-2 py-0.5 font-medium text-xs',
+												phaseColors[phase]
+											)}
+										>
+											{phaseLabels[phase]}
+										</span>
+									))}
+								</div>
 							</td>
 						</tr>
 					))}

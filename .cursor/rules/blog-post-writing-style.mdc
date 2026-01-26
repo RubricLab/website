@@ -1,0 +1,31 @@
+---
+description: Writing style guidelines for blog post MDX
+globs: src/lib/posts/**/*.mdx
+alwaysApply: false
+---
+
+# Blog post writing style
+
+- **Start with motivation**: Open with 2–4 sentences: what you wanted to understand/build, who it’s for, and what they’ll get out of it.
+- **Anchor with “why this matters”**: Early, explain the practical stakes (performance, cost, reliability, user experience) in plain language.
+- **Teach via definitions and contrasts**: Define key terms briefly, then contrast them (e.g., “A vs B”) before going deeper.
+- **Use tight sections**: Prefer many short headings over a few long ones; keep paragraphs to 1–3 sentences.
+- **Explain step-by-step**: Break processes into numbered lists; name each step and say what changes and why.
+- **Quantify when possible**: Use concrete numbers and quick math to build intuition (include units; show the calculation).
+- **Use examples immediately**: After introducing a concept, provide a small example (input → output, “imagine X”, or a tiny scenario).
+- **Prefer intuitive mental models**: Use simple analogies to demystify (“think of it like…”) but keep them technically honest.
+- **Reveal the mechanism**: After intuition, add the “under the hood” explanation (what the system does internally).
+- **Surface tradeoffs explicitly**: Call out what you gain/lose (quality vs size, speed vs cost, determinism vs creativity).
+- **Highlight key phrases**: Use **bold** for the 1–2 most important words per paragraph; avoid over-highlighting.
+- **Use em dashes sparingly**: Prefer commas or parentheses; only use em dashes when absolutely necessary to emphasize a key point.
+- **Use light asides**: Add short “Aside:” sections for optional depth; keep the main narrative unbroken.
+- **Cite sources sparingly**: Link only where it adds real value (docs/papers/tools); don’t overload the reader.
+- **Link naturally**: In MDX, prefer markdown links (`[text](url)`) where the clickable text is a **1–3 word phrase** (no “see this link”) that's part of a sentence already.
+- **Close with synthesis**: End with a short “why this matters” recap, plus 1–3 next steps or resources.
+
+## Mini-template
+
+- **Intro**: “I wanted to understand X… This is for Y… By the end you’ll know Z.”
+- **Core idea**: Define terms → contrast approaches → explain the pipeline in steps.
+- **Depth**: Show one mechanism + one worked example with numbers.
+- **Wrap**: Tradeoffs + practical implications + resources.
