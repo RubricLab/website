@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import { useClipboard } from '~/lib/hooks/use-clipboard'
 import { cn } from '~/lib/utils/cn'
+import { CORE_TOOL_NAMES } from '~/ui/blog/claude-code/tools-table'
 import { Button } from '~/ui/button'
 import { PauseIcon } from '~/ui/icons/pause'
 import { PlayIcon } from '~/ui/icons/play'
@@ -27,12 +28,12 @@ const SYSTEM_MESSAGE: Message = {
 
 const MESSAGES: Message[] = [
 	{ content: 'How does login work?', role: 'user' },
-	{ content: 'Let me find the relevant code.', role: 'assistant', toolCall: 'read_file' },
+	{ content: 'Let me find the relevant code.', role: 'assistant', toolCall: 'Read' },
 	{ content: 'Found authentication logic', role: 'tool' },
 	{ content: 'Login validates credentials and creates a session.', role: 'assistant' }
 ]
 
-const TOOLS = ['read_file', 'write_file', 'search_files', 'run_command', 'web_search']
+const TOOLS = CORE_TOOL_NAMES
 
 type ModelConfig = {
 	id: string
@@ -336,7 +337,7 @@ export const SystemArchitecture = () => {
 			{/* CLI label */}
 			<div className="mt-3 flex items-center justify-center">
 				<span className="rounded-full bg-subtle px-3 py-1 font-mono text-[10px] text-secondary">
-					CLI Environment
+					Terminal Environment
 				</span>
 			</div>
 

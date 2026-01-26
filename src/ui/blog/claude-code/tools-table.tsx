@@ -186,6 +186,8 @@ const TOOLS: Tool[] = [
 
 const CORE_TOOLS = TOOLS.filter(t => t.group === 'core')
 
+export const CORE_TOOL_NAMES = CORE_TOOLS.map(t => t.name)
+
 const phaseColors: Record<Phase, string> = {
 	action: 'bg-amber-500/20 text-amber-600 dark:text-amber-400',
 	gather: 'bg-sky-500/20 text-sky-600 dark:text-sky-400',

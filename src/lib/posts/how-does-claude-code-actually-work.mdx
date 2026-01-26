@@ -1,4 +1,5 @@
 import { AUTHORS, CATEGORIES } from '~/lib/constants/blog'
+import { AgentLoopCards } from '~/ui/blog/claude-code/agent-loop-cards'
 import { QueryComparison } from '~/ui/blog/claude-code/query-comparison'
 import { SystemArchitecture } from '~/ui/blog/claude-code/system-architecture'
 import { ToolsTable } from '~/ui/blog/claude-code/tools-table'
@@ -21,9 +22,14 @@ If you’ve tried Claude Code, you’ve probably had the same reaction: *wait, t
 
 Naturally, we became curious and wanted to understand how the system works, dig through the [Claude Code docs](https://code.claude.com/docs/en/overview) and study the [Claude Agent SDK](https://platform.claude.com/docs/en/agent-sdk/overview) (Claude Code’s API surface).
 
-Claude Code is **closed source**, so we can’t inspect its internals directly. Instead, we have to infer the system from its **public surface area**, mainly the SDK’s tool catalog and docs.
+Claude Code is **closed source**, so we can’t inspect its internals directly. Instead, we have to infer the system from its **public surface area**, mainly the SDK and docs.
 
-Some of the things we wanted to know: How does the core agent work? Is it a single agent or multi-agent system? What is the underlying system design? Which tools does it use? How are these tools designed? How is Claude able to run long conversations and still not lose context? How is the context window managed?
+We had a few questions in mind:
+
+- What’s the agent actually doing step-by-step?
+- Is it a single-agent or multi-agent, and how are decisions made?
+- Which tools does Claude Code use, and why are they designed the way they are?
+- How does it run long conversations without losing the plot?
 
 ## What is Claude Code, really?
 
@@ -33,9 +39,10 @@ This seems to be emergent behaviour as it was [originally designed](https://yout
 
 Much of Claude Code's capabilities can be attributed to the **built-in agentic loop** which alternates between three phases:
 
-- **Gather context** (read): It gathers context for e.g. read files, search the directory, and pull in terminal output to build a working set.
-- **Take actions** (write): It takes actions for e.g. edit files and run commands to move the task forward.
-- **Verify the results** (test): It checks results for e.g. look at errors, diffs, and tests to decide what to do next.
+<Figure>
+  <AgentLoopCards />
+  <Caption>The phases Claude Code cycles through</Caption>
+</Figure>
 
 Now here’s the key idea: **the loop stretches or shrinks based on what you ask**. A small request might be “read once, answer, done.” A bigger request usually turns into a back-and-forth: read a bit, change something, check it, repeat until it’s correct.
 
@@ -43,7 +50,7 @@ That’s what the figure below is showing: one task that only relies on gatherin
 
 <Figure>
   <QueryComparison />
-  <Caption>Same loop, different paths. The query dictates the decision tree.</Caption>
+  <Caption>Same loop, different paths. The query dictates the number of steps.</Caption>
 </Figure>
 
 Almost everything Claude Code does is one of three things: gather, act, or verify. Small tasks stop early. Bigger ones loop until they’re solid. 
@@ -62,14 +69,14 @@ Here’s the flow the diagram is showing:
 
 1. **Start state**: your request, plus the current **context window** (system instructions, prior messages, recent tool results).
 2. **Decision**: the model reads that state and chooses the next move, either answer now or call a tool to reduce uncertainty.
-3. **Execution**: tools run in the **CLI environment** (read files, search, run commands) and return results.
+3. **Execution**: tools run in the **terminal environment** (read files, search, run commands) and return results.
 4. **Update**: those results get appended back into the context window, and the loop repeats until Claude can stop confidently.
 
 That’s the whole transaction: **context → decide → tool → result → context**, repeated until the evidence is strong enough.
 
 ### The model
 
-At the center of Claude Code is… Claude. The model reads your project, keeps a mental map of how things connect, and decides what to do next.
+At the center of Claude Code is… Claude, the AI model. The model reads your project, keeps a mental map of how things connect, and decides what to do next.
 
 Given what it sees in the context window, it chooses the next move: **gather more context**, **take an action**, or **verify what changed**.
 
@@ -92,7 +99,7 @@ Next, let’s define what “the context window” actually contains.
 
 If you look back at [the diagram above](#core-system-diagram), the loop is powered by one constraint: **whatever fits in the model’s context window is what exists for this step**.
 
-Claude doesn’t have magical access to your whole project. It only sees what Claude Code has loaded into the window right now, and as the window fills up, older details get compacted.
+Claude doesn’t have magical access to your whole project. It only sees what Claude Code has loaded into the window right now, and as the window fills up, older details get compacted (more on this later).
 
 So what’s inside the window?
 
@@ -103,7 +110,7 @@ So what’s inside the window?
 - **Loaded skills and tool definitions**: extra capabilities you’ve enabled that Claude can call.
 
 <Collapsible title={<>What is <code>CLAUDE.md</code></>}>
-    <code>CLAUDE.md</code> is a plain markdown file you add to your project to tell Claude Code “here’s how we do things here”. Unlike conversation history, which can be compacted, this is a set of fixed instructions always loaded into the context window.
+    <code>CLAUDE.md</code> is a plain markdown file you add to your project to tell Claude Code “here’s how we do things here”. Unlike conversation history, which is ephemeral, this is a set of fixed instructions always loaded into the context window.
 </Collapsible>
 
 <Collapsible title="What is a Skill?">
@@ -128,7 +135,7 @@ You can group the core tools into three buckets:
 - **Web tools**: `WebSearch` and `WebFetch` let Claude pull in external context when the answer isn’t in your repo.
 - **Interaction tool**: `AskUserQuestion` is how Claude gets unstuck when a required detail is missing.
 
-Here’s the tool set Claude Code exposes, mapped to the gather/action/verify loop:
+Here are the core tools Claude Code uses most often in the gather/action/verify loop:
 
 <Figure>
   <ToolsTable />
@@ -137,19 +144,24 @@ Here’s the tool set Claude Code exposes, mapped to the gather/action/verify lo
   </Caption>
 </Figure>
 
-Beyond these core tools, Claude Code has a bunch of “niche” helpers that expand what it can do without changing the mental model. There are orchestration tools for delegation and tracking (`Task`, `TaskList`, `TaskOutput`), integrations via Model Context Protocol (MCP), notebook editing, and even language-server (LSP) code intelligence. You don’t use these every turn, but they’re what let Claude scale from “edit a file” to “run a workflow” when the task gets bigger.
+Beyond the core loop, Claude Code also has supporting tools that expand its surface area without changing the mental model:
+
+- **Orchestration**: task and delegation helpers like `Task`, `TaskList`, and `TaskOutput`.
+- **Integrations**: `MCPSearch` for [Model Context Protocol (MCP)](#mcp) tool discovery and loading.
+- **Editing**: `NotebookEdit` for notebooks and `LSP` for language-server powered code intelligence.
+- **Control utilities**: things like `ExitPlanMode` and `KillShell` to manage the session.
 
 One subtle enabler here is **tool search**: instead of preloading a huge tool catalog (which can eat your context window), Claude can search for the right tool and load only what it needs on demand ([tool search](https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-search-tool)).
 
-Under the hood, the [text editor tool](https://platform.claude.com/docs/en/agents-and-tools/tool-use/text-editor-tool) is a great example of the design philosophy here: edits are **constrained**. Instead of “rewrite this file”, Claude is limited to a small command set (`view`, `create`, `insert`, `str_replace`), and the core edit primitive, `str_replace`, requires an **exact match** (including whitespace) so the change is surgically targeted.
+Under the hood, the [text editor tool](https://platform.claude.com/docs/en/agents-and-tools/tool-use/text-editor-tool) is a great example of the design philosophy of tools here: edits are **constrained**. Instead of “rewrite this file”, Claude is limited to a small command set (`view`, `create`, `insert`, `str_replace`), and the core edit primitive, [str_replace](https://platform.claude.com/docs/en/agents-and-tools/tool-use/text-editor-tool#str-replace), requires an **exact match** (including whitespace) so the change is surgically targeted.
 
-That constraint matters because it fails loudly: if the old snippet doesn’t exist, or appears multiple times, your tool implementation should return an error, forcing Claude to go back and fetch more context until the edit is unambiguous. You can also cap what `view` returns with `max_characters` to keep large files from eating your context window.
+That constraint matters because it fails loudly: if the old snippet doesn’t exist, or appears multiple times, your tool implementation should return an error. The agent is forced back into “gather”, which is exactly what you want when a change would otherwise be ambiguous.
 
-A few high-signal takeaways that explain why this table matters.
+Once you see the loop through that lens, a few things jump out.
 
-First, `Bash` is what makes Claude Code feel “real”. It’s a persistent session, so Claude can run a sequence like “install deps → run tests → check diffs” and each step actually changes the same environment you’re working in.
+First, `Bash` is what makes Claude Code feel “real”. Each command runs in your environment in a fresh shell, but the working directory and filesystem state carry forward, so sequences like “install deps → run tests → check diffs” operate on the same repo.
 
-Second, the web tools are powerful. `WebSearch` is great for freshness (and comes with citations), while `WebFetch` is for pulling in full pages, but even a normal doc page can add thousands of tokens and seconds of waiting.
+Second, the web tools are powerful. `WebSearch` is great for freshness (and comes with citations), while `WebFetch` is for pulling in full pages, but bear in mind that even a normal doc page can add thousands of tokens and seconds of waiting.
 
 What’s most insightful about Claude Code isn’t any single tool, it’s the **shape** of the interfaces. The model is responsible for deciding *what to do next* and proposing a small, well-scoped action, but the tool layer is responsible for *doing it safely*: validating inputs, enforcing constraints, and returning errors when an action is ambiguous.
 
@@ -167,9 +179,11 @@ That’s why the same agent in a generic cloud environment is often less effecti
 
 ## System optimizations
 
+Claude Code’s baseline loop is simple, but real projects are not. These “system optimizations” are the pieces that help the agent scale: doing more work (and deeper work) without flooding the main **context window** with every intermediate step, and without turning integrations into a pile of bespoke glue code.
+
 ### Sub-agents
 
-Sub-agents are how Claude Code does more work without blowing up the main **context window**. Instead of forcing one agent to hold every intermediate thought and tool result, the main agent can spawn a separate agent instance for a focused subtask, then pull back a condensed result ([subagents](https://platform.claude.com/docs/en/agent-sdk/subagents#invoking-subagents)).
+[Sub-agents](https://platform.claude.com/docs/en/agent-sdk/subagents#invoking-subagents) are how Claude Code does more work without blowing up the main **context window**. Instead of forcing one agent to hold every intermediate thought and tool result, the main agent can spawn a separate agent instance for a focused subtask, then pull back a condensed result. This pattern is showing up across agent products as Cursor [recently shipped](https://cursor.com/changelog/2-4) subagents for parallel, context-isolated work streams.
 
 This helps in three ways:
 
@@ -177,17 +191,15 @@ This helps in three ways:
 - **Parallelism**: you can run multiple sub-agents at once (for example, “find files”, “check tests”, “review diffs”), then merge the outcomes.
 - **Tool scoping**: sub-agents can be restricted to a smaller tool set (read-only review, test runner), which reduces risk.
 
-The mental model is simple: the main agent stays “in charge” of the narrative and the final decision, while sub-agents are disposable workers that return a summary you can keep.
+The mental model is simple: the main agent stays “in charge” of the narrative and the final decision. Sub-agents are disposable workers that hand back a condensed result to the main agent the same way a tool returns output.
 
 ### MCP
 
-The Model Context Protocol (MCP) is a standard way to plug external systems into an agent as tools, like GitHub, Slack, databases, browsers, and internal APIs ([MCP](https://platform.claude.com/docs/en/agent-sdk/mcp)).
+The [Model Context Protocol (MCP)](https://platform.claude.com/docs/en/agent-sdk/mcp) is a standard way to plug external systems into an agent as tools, like GitHub, Slack, databases, browsers, and internal APIs.
 
 MCP interacts with the context window in an unintuitive way: it’s not the tool *results* that usually hurt first, it’s the tool *definitions*. If you dump hundreds of tool schemas into the prompt, you spend your budget on plumbing instead of reasoning.
 
-Claude’s approach is “load tools on demand”. In the Agent SDK, MCP tool search can automatically defer loading tool definitions and only expand the ones Claude actually needs, keeping the active context focused on the task ([MCP tool search](https://platform.claude.com/docs/en/agent-sdk/mcp)).
-
-Finally, MCP fits the same safety story as the terminal: tools require explicit permission (for example via `allowedTools`), and you can scope what Claude is allowed to touch so the agent’s reach matches your comfort level.
+Claude’s approach is “load tools on demand”. In the Agent SDK, [MCP tool search](https://platform.claude.com/docs/en/agent-sdk/mcp#mcp-tool-search) can automatically defer loading tool definitions and only expand the ones Claude actually needs, keeping the active context focused on the task.
 
 ## Why this matters
 
@@ -203,4 +215,9 @@ If you’re building your own agent, start here:
 - **Constrain tools on purpose**: let the large language model (LLM) choose the action, but let the tool enforce correctness and fail loudly.
 - **Scale with isolation**: use sub-agents to keep context clean, and Model Context Protocol (MCP) when you need external systems without rewriting integrations.
 
-If you want to go deeper, the best references are the [Agent SDK](https://platform.claude.com/docs/en/agent-sdk/overview) and the [tool use docs](https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview).
+If you want to go deeper, the best references are the [Agent SDK](https://platform.claude.com/docs/en/agent-sdk/overview) and the [Claude Code docs](https://code.claude.com/docs/en/how-claude-code-works).
+
+<hr className="border border-subtle" />
+
+*Thanks to [Lee Robinson](https://leerob.com) for inspiring the writing style of this post, and to the Anthropic team for publishing such great docs.*
+
