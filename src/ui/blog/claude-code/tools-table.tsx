@@ -208,7 +208,7 @@ export const ToolsTable = () => {
 					<tr className="border-subtle border-b bg-subtle/30">
 						<th className="px-4 py-3 font-medium text-secondary">Tool</th>
 						<th className="px-4 py-3 font-medium text-secondary">What it does</th>
-						<th className="px-4 py-3 font-medium text-secondary">Phase</th>
+						<th className="w-40 px-4 py-3 font-medium text-secondary">Phase</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -243,8 +243,8 @@ export const ToolsTable = () => {
 									</span>
 								)}
 							</td>
-							<td className="px-4 py-3">
-								<div className="flex flex-wrap gap-1">
+							<td className="w-40 px-4 py-3">
+								<div className="flex gap-1 whitespace-nowrap">
 									{tool.phases.map(phase => (
 										<span
 											key={`${tool.name}-${phase}`}
