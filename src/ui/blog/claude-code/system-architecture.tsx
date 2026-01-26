@@ -109,14 +109,14 @@ const MessageBlock = ({
 
 const ToolsCatalog = ({ activeToolIndex }: { activeToolIndex: number | null }) => {
 	return (
-		<div className="flex flex-col gap-2">
+		<div className="flex min-w-0 flex-col gap-2">
 			<p className="font-medium text-[10px] text-secondary uppercase tracking-wide">Tools Catalog</p>
-			<div className="flex flex-col gap-1">
+			<div className="flex min-w-0 flex-col gap-1">
 				{TOOLS.map(tool => (
 					<div
 						key={tool}
 						className={cn(
-							'rounded border px-2 py-1 font-mono text-[11px] transition-all duration-300',
+							'w-full truncate rounded border px-2 py-1 font-mono text-[11px] transition-all duration-300',
 							activeToolIndex !== null && TOOLS[activeToolIndex] === tool
 								? 'border-amber-500/60 bg-amber-500/20 text-amber-600 dark:text-amber-400'
 								: 'border-subtle bg-subtle/30 text-secondary'
