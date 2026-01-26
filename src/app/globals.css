@@ -105,10 +105,7 @@
 		@apply border-l-4 border-secondary/20 pl-4 font-light text-lg italic;
 	}
 
-	article ul {
-		@apply pl-6;
-	}
-
+	article ul,
 	article ol {
 		@apply pl-6;
 	}
@@ -117,8 +114,22 @@
 		@apply list-disc list-outside;
 	}
 
+	article ol {
+		list-style: none;
+		counter-reset: list-counter;
+	}
+
 	article ol > li {
-		@apply list-decimal list-outside;
+		counter-increment: list-counter;
+		position: relative;
+	}
+
+	article ol > li::before {
+		content: counter(list-counter) ".";
+		position: absolute;
+		right: 100%;
+		margin-right: 0.35rem;
+		@apply text-secondary;
 	}
 
 	img,
