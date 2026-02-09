@@ -224,10 +224,4 @@ The practical takeaway is that agent quality is mostly systems design. If you wa
 
 This is also why “agents in the cloud” often disappoint. If the environment is generic, the agent can’t lean on your existing workflow, so it spends more tokens guessing and less time executing and verifying.
 
-If you’re building your own agent, start here:
-
-- **Design the environment first**: make “verify” easy (tests, linters, `git diff`) and safe (permissions, allowlists).
-- **Constrain tools on purpose**: let the model choose the action, but let the tool enforce correctness and fail loudly.
-- **Scale with isolation**: use sub-agents to keep context clean, and MCP when you need external systems without rewriting integrations.
-
 If you want to go deeper, the best references are the [Agent SDK](https://platform.claude.com/docs/en/agent-sdk/overview) and the [Claude Code docs](https://code.claude.com/docs/en/how-claude-code-works).
