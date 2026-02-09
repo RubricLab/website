@@ -43,20 +43,18 @@ Much of Claude Code's capabilities can be attributed to the built-in agentic loo
   <Caption>The phases Claude Code cycles through</Caption>
 </Figure>
 
-Now here’s the key idea: the loop stretches or shrinks based on what you ask. A small request might be “read once, answer, done.” A bigger request usually turns into a back-and-forth: read a bit, change something, check it, repeat until it’s correct.
+Now here’s the key idea: the loop stretches or shrinks based on what you ask. A small request might complete in a few steps. A bigger request usually turns into a back-and-forth: read some files, change something, review it, repeat until it’s correct.
 
 Almost everything Claude Code does is one of three things: gather, act, or verify. Small tasks stop early. Bigger ones loop until they’re solid. 
 
 ## The landscape
 
-The loop is the core mental model, but the loop alone is not enough. To operate on a real project, Claude Code runs inside an **agent harness** that gives the model tools, state, and permission boundaries.
-
-This matters because most of the practical value comes from the harness layer, not just the base model.
+The loop is the core mental model, but the loop alone is not enough. To operate on a real project, Claude Code runs inside an **agent harness** that gives the model tools, state, and permission boundaries. This matters because most of the practical value comes from the harness layer, not just the base model.
 
 ### What is an agent harness? 
 An *agent harness* is the runtime layer around a language model that lets it call tools safely, keep working state, and take actions in an environment.
 
-Think of it as the bridge between model intent and real execution. In Claude Code, that execution environment is your filesystem, terminal commands, and test/build tooling.
+Think of it as the bridge between model intent and real execution. In Claude Code, that execution environment is your filesystem, terminal commands, and test tooling.
 
 ### Where does Claude Code sit?
 
@@ -68,9 +66,7 @@ One useful way to bucket coding tools is by how much of the gather/act/verify lo
 
 This maps to what Andrej Karpathy calls an [autonomy slider](https://youtu.be/LCEmiRjPEtQ?si=P6uxaPlH06uYM86f&t=1222): the industry has moved from autocomplete, to chat copilots, to longer-running agents that can own larger parts of the loop.
 
-Claude Code sits near the semi-autonomous end. It is terminal-native, strongly harnessed, and opinionated about verification (tests, diffs, builds), while still asking for explicit approval on risky actions.
-
-So what does this architecture look like for a single request in practice? 
+Claude Code sits near the agentic end. It is terminal-native, strongly harnessed, and opinionated about verification (tests, diffs, builds), while still asking for explicit approval on risky actions. So what does this architecture look like for a single request in practice? 
 
 ## The core system
 
@@ -78,7 +74,7 @@ Let’s zoom in on a single request. Claude Code doesn’t answer in one shot, i
 
 <Figure>
   <SystemArchitecture />
-  <Caption>One request, many steps. The context window grows as Claude gathers, acts, and verifies.</Caption>
+  <Caption>The context window grows as Claude gathers, acts, and verifies.</Caption>
 </Figure>
 
 Here’s the flow:
@@ -198,16 +194,16 @@ That constraint matters because it fails loudly: if the old snippet doesn’t ex
 
 Two other tools are worth calling out because they shape how real the agent feels:
 
-- **`Bash`**: commands run in your environment. That makes verification concrete (run tests, check diffs), not rhetorical.
-- **Web tools**: `WebSearch` is great for freshness and citations, while `WebFetch` pulls full pages. Both can be slow and token-heavy, so you want tight queries and bounded outputs.
+- **`Bash`**: commands run in your environment. That makes verification factual (run tests, check diffs).
+- **Web tools**: `WebSearch` is great for freshness and citations, while `WebFetch` pulls full pages.
 
-The punchline is that agent quality is mostly interface design. The model proposes a small, well-scoped action, and the tool layer makes that action safe by enforcing constraints and returning errors when the action would be ambiguous.
+Put together, this is how Claude Code stays reliable: the model proposes a small next step, and the tool layer turns that step into evidence or a clear error.
 
-That’s a useful mental model when you design your own tools. Let the model generate the intent (which file, which command, which URL), and make your tools handle the mechanics (execution, guardrails, retries, truncation, and fail loudly behavior), so the agent spends tokens on reasoning instead of reinventing implementation details.
+The remaining ingredient is the environment those tools run in.
 
 ## Terminal as an environment
 
-A huge part of Claude Code is the environment it lives in: your terminal, pointed at your project, with your tooling already wired up.
+An underrated part of Claude Code's power comes from the environment it lives in, your terminal pointed at your project, with your tooling already wired up.
 
 The terminal creates a clean permission boundary. Claude doesn’t get magic access, it inherits whatever your shell user can do, and every meaningful action routes through explicit tool calls you can audit, constrain, or deny.
 
@@ -217,12 +213,12 @@ That’s why the same agent in a generic cloud environment is often less effecti
 
 ## Why this matters
 
-Claude Code feels powerful because it is a tight system, and the biggest reason is the **environment** it lives in. Running in your terminal means it can reuse the primitives you already trust: files, diffs, tests, scripts, and your existing build tooling.
+Claude Code feels powerful for a simple reason: it gets to live in an environment, the terminal, with the same primitives you already trust: files, diffs, tests, scripts, and your build tooling.
 
-That is the practical takeaway: agent quality is mostly systems design. If you want an agent to be reliable, give it good primitives, small tool interfaces, clear permission boundaries, and a loop that makes verification cheap.
+Studying the docs also made me realize that agent quality is mostly about clear contracts. Reliable agents come from tight tool interfaces, bounded outputs, and fail-loudly behavior that turns intent into evidence inside real workflows.
 
-The second takeaway is that no task is too difficult if you can keep the loop moving. Break hard work into parallel sub-tasks, spin up sub-agents via `Task`, pull back condensed results, and use context compaction to keep the main thread focused as the work scales.
+The other thing that surprised me is how scalable the loop is. Break work into parallel sub-tasks, spin up sub-agents via `Task`, pull back condensed results, and let context compaction keep the main thread focused as scope grows.
 
-Zooming out, expect the autonomy slider to keep climbing. Agents will run longer, coordinate more parallel work, and take on larger end-to-end slices of projects as tool ecosystems mature and verification and permissions become more robust.
+And this is where it is going next. Agents will run longer, coordinate more parallel work, and take on larger end-to-end slices of projects as tool ecosystems mature and permissioning and verification get stronger.
 
 If you want to go deeper, the best references are the [Agent SDK](https://platform.claude.com/docs/en/agent-sdk/overview) and the [Claude Code docs](https://code.claude.com/docs/en/how-claude-code-works).

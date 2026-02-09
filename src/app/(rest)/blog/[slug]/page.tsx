@@ -2,10 +2,10 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { formatDate } from '~/lib/utils/date'
 import { getPost, getPostSlugs } from '~/lib/utils/posts'
-import { CTA } from '~/ui/cta'
 import { CustomImage } from '~/ui/custom-image'
 import { NextPost } from '~/ui/next-post'
 import { TableOfContents } from '~/ui/table-of-contents'
+import { PostCTA } from './post-cta'
 
 export const dynamicParams = false
 
@@ -62,7 +62,7 @@ export default async function Page({ params }: Props) {
 					</div>
 					<TableOfContents items={toc} />
 					<Post />
-					<CTA />
+					<PostCTA />
 					<NextPost date={metadata.date} />
 				</article>
 			</div>

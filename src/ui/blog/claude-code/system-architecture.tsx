@@ -268,7 +268,7 @@ export const SystemArchitecture = () => {
 			{/* Main diagram */}
 			<div className="relative flex gap-4">
 				{/* Context Window */}
-				<div className="flex min-w-0 flex-1 flex-col gap-2 rounded-lg border border-secondary/30 border-dashed p-3">
+				<div className="flex min-w-0 flex-1 flex-col gap-2 self-start rounded-lg border border-secondary/30 border-dashed p-3">
 					<div className="flex items-center justify-between">
 						<p className="font-medium text-[10px] text-secondary uppercase tracking-wide">
 							Context Window
