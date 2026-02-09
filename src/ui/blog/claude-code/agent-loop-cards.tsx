@@ -34,7 +34,7 @@ const CARDS: Card[] = [
 	},
 	{
 		description:
-			'Confirm it worked: inspect diffs, check errors, and run tests until the evidence is clean.',
+			'Confirm it worked: inspect changes, check errors, and run tests until the evidence is clean.',
 		phase: 'verify',
 		subtitle: '(test)',
 		title: 'Verify'

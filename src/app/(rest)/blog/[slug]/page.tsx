@@ -45,7 +45,7 @@ export default async function Page({ params }: Props) {
 						className="object-cover object-middle"
 					/>
 				</div>
-				<div className="flex w-full flex-col justify-between text-secondary sm:flex-row">
+				<div className="flex w-full flex-col justify-between text-secondary sm:flex-row sm:items-center">
 					<p>{formatDate(metadata.date)}</p>
 					<p>
 						by{' '}

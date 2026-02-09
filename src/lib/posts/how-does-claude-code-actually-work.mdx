@@ -25,14 +25,14 @@ Claude Code is closed source, so we can’t inspect its internals directly. Inst
 
 We had a few questions in mind:
 
-- What’s the agent actually doing step-by-step?
+- What is the agent actually doing step-by-step?
 - Is it a single-agent or multi-agent, and how are decisions made?
 - Which tools does Claude Code use, and why are they designed the way they are?
 - How does it run long conversations without losing the plot?
 
 ## What is Claude Code, really?
 
-Claude Code is a [coding agent](https://docs.aws.amazon.com/prescriptive-guidance/latest/agentic-ai-patterns/coding-agents.html) which runs in your terminal. You can invoke it to tackle coding tasks, but you can also ask for help with non-coding tasks such as writing docs, searching files, researching topics, and more.
+Claude Code is a coding agent which runs in your terminal. You can invoke it to tackle coding tasks, but you can also ask for help with non-coding tasks such as writing docs, searching files, researching topics, and more.
 
 This seems to be emergent behaviour as it was [originally designed](https://youtu.be/zDmW5hJPsvQ?si=Lh9ZSEYFS6_RodVo&t=132) to be an internal coding agent for Anthropic, but quickly found product-market fit internally and eventually became a core offering of the company.
 
@@ -47,13 +47,30 @@ Now here’s the key idea: the loop stretches or shrinks based on what you ask. 
 
 Almost everything Claude Code does is one of three things: gather, act, or verify. Small tasks stop early. Bigger ones loop until they’re solid. 
 
-## Where Claude Code sits in the landscape
+## The landscape
 
-Before we go deeper, it helps to understand what kind of system Claude Code is and how it compares to alternatives.
+Before we go deeper, it helps to understand what kind of system Claude Code is and where it sits in the landscape.
 
-**What is an agent harness?**
+We said above that Claude Code is a coding agent that runs in your terminal. The important bit is that it can operate on your actual project by cycling through gather → act → verify, because it runs inside an agent harness.
 
-*[...to add...]*
+### What is an agent harness? 
+An *agent harness* is the layer around a language model that lets it use tools safely, keep state, and take real actions.
+
+Think of it as the bridge between the model and an environment. In Claude Code, that environment is your filesystem, terminal commands, and test suite.
+
+### Where does it sit?
+
+One simple way to bucket coding tools is by how much of the agentic loop they can own:
+
+- **Autocomplete**: suggests the next lines
+- **Copilot**: helps you edit, but you still run and verify on your own
+- **Agent**: can run the loop against a real project. Autonomy is a slider, and most tools move along it incrementally as permissions and verification improve.
+
+That maps nicely to what Andrej Karpathy calls an [autonomy slider](https://youtu.be/LCEmiRjPEtQ?si=mMbOGKFrRf_esI2S&t=1228): the industry has moved from autocomplete, to chat copilots, to longer-running agents that can take on more of the loop.
+
+Where Claude Code stands out is that it defaults near the autonomous agent end: terminal-native, harnessed, and opinionated about verification (tests, diffs, builds) with explicit permissions for risky actions.
+
+So what does that look like in practice? 
 
 ## The core system
 
@@ -73,7 +90,7 @@ Here’s the flow:
 
 That’s the whole transaction: context → decide → tool → result → context, repeated until the evidence is strong enough.
 
-## The model
+### The model
 
 At the center of Claude Code is Claude, the model. The model reads your project, keeps a mental map of how things connect, and decides what to do next.
 
@@ -93,7 +110,7 @@ Today’s state of the art is **Sonnet 4.5** and **Opus 4.5**, and these models 
 
 Next, let’s define what “the context window” actually contains.
 
-## Context window: what Claude Code sees (and what it can’t)
+### Context window: what Claude Code sees (and what it can’t)
 
 The loop is powered by one constraint: whatever fits in the model’s context window is what exists for this step.
 
@@ -123,7 +140,7 @@ When the window fills up, Claude Code manages it automatically: it clears older 
 
 Next up, let’s look at the tools that generate most of that evidence.
 
-## Tools: the building blocks
+### Tools: the building blocks
 
 When you ask Claude Code to do real work, it’s mostly using a small, sharp set of tools. Anthropic publishes the canonical list in the Claude Code docs under [Tools available to Claude](https://code.claude.com/docs/en/settings#tools-available-to-claude).
 
@@ -165,7 +182,7 @@ What’s most insightful about Claude Code isn’t any single tool, it’s the s
 
 That’s a useful mental model when you design your own tools. Let the model generate the intent (which file, which command, which URL), and make your tools handle the mechanics (execution, guardrails, retries, truncation, and “fail loudly” behavior), so the agent spends tokens on reasoning instead of reinventing implementation details.
 
-## Terminal as an environment
+### Terminal as an environment
 
 A huge part of Claude Code is the environment it lives in: your terminal, pointed at your project, with your tooling already wired up.
 
