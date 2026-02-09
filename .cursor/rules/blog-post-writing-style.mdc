@@ -9,6 +9,7 @@ alwaysApply: false
 - **Start with motivation**: Open with 2–4 sentences: what you wanted to understand/build, who it’s for, and what they’ll get out of it.
 - **Anchor with “why this matters”**: Early, explain the practical stakes (performance, cost, reliability, user experience) in plain language.
 - **Teach via definitions and contrasts**: Define key terms briefly, then contrast them (e.g., “A vs B”) before going deeper.
+- **Don’t overuse “not A, it’s B”**: Contrasts are useful, but avoid leaning on the “it’s not X, it’s Y” construction repeatedly. Prefer direct statements, or use contrast once and then move on.
 - **Use tight sections**: Prefer many short headings over a few long ones; keep paragraphs to 1–3 sentences.
 - **Explain step-by-step**: Break processes into numbered lists; name each step and say what changes and why.
 - **Quantify when possible**: Use concrete numbers and quick math to build intuition (include units; show the calculation).

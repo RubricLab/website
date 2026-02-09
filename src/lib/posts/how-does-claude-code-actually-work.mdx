@@ -178,7 +178,7 @@ First, `Bash` is what makes Claude Code feel “real”. Each command runs in yo
 
 Second, the web tools are powerful. `WebSearch` is great for freshness (and comes with citations), while `WebFetch` is for pulling in full pages, but bear in mind that even a normal doc page can add thousands of tokens and seconds of waiting.
 
-What’s most insightful about Claude Code isn’t any single tool, it’s the shape of the interfaces. The model is responsible for deciding what to do next and proposing a small, well-scoped action, but the tool layer is responsible for doing it safely: validating inputs, enforcing constraints, and returning errors when an action is ambiguous.
+The most important part of Claude Code is the shape of the interfaces. The model decides what to do next and proposes a small, well-scoped action. The tool layer makes that action safe by validating inputs, enforcing constraints, and returning errors when an action is ambiguous.
 
 That’s a useful mental model when you design your own tools. Let the model generate the intent (which file, which command, which URL), and make your tools handle the mechanics (execution, guardrails, retries, truncation, and “fail loudly” behavior), so the agent spends tokens on reasoning instead of reinventing implementation details.
 
@@ -188,7 +188,7 @@ A huge part of Claude Code is the environment it lives in: your terminal, pointe
 
 The terminal creates a clean permission boundary. Claude doesn’t get magic access, it inherits whatever your shell user can do, and every meaningful action routes through explicit tool calls you can audit, constrain, or deny.
 
-Just as importantly, it lets Claude interact with the same primitives you already trust: files, diffs, tests, and commands. Claude isn’t inventing a new workflow, it’s orchestrating the one you already have.
+Just as importantly, it lets Claude interact with the same primitives you already trust: files, diffs, tests, and commands, working inside your existing workflow.
 
 That’s why the same agent in a generic cloud environment is often less effective. Without your project’s existing scripts, linters, and build/test commands, “take action” becomes guesswork, and “verify” becomes weak. Claude Code feels strong because the environment provides the primitives, and the model composes them.
 
@@ -212,7 +212,7 @@ The mental model is simple: the main agent stays “in charge” of the narrativ
 
 The [Model Context Protocol (MCP)](https://platform.claude.com/docs/en/agent-sdk/mcp) is a standard way to plug external systems into an agent as tools, like GitHub, Slack, databases, browsers, and internal APIs.
 
-MCP interacts with the context window in an unintuitive way: it’s not the tool results that usually hurt first, it’s the tool definitions. If you dump hundreds of tool schemas into the prompt, you spend your budget on plumbing instead of reasoning.
+MCP interacts with the context window in an unintuitive way: tool definitions usually hurt before tool results. If you dump hundreds of tool schemas into the prompt, you spend your budget on plumbing instead of reasoning.
 
 Claude’s approach is “load tools on demand”. In the Agent SDK, [MCP tool search](https://platform.claude.com/docs/en/agent-sdk/mcp#mcp-tool-search) can automatically defer loading tool definitions and only expand the ones Claude actually needs, keeping the active context focused on the task.
 
