@@ -1,4 +1,22 @@
+import { META } from '~/lib/constants/metadata'
+import { createMetadata } from '~/lib/utils/create-metadata'
 import { ContactForm } from './contact-form'
+
+const title = `Contact | ${META.title}`
+const description = `Get in touch to discuss AI product strategy, implementation, and collaboration. ${META.description}`
+
+export const metadata = createMetadata({
+	description,
+	openGraph: {
+		description,
+		title
+	},
+	title,
+	twitter: {
+		description,
+		title
+	}
+})
 
 export default function Page() {
 	return (
