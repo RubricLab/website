@@ -24,6 +24,7 @@ export const AUTHORS = {
 
 export const CATEGORIES = {
 	AI: 'AI',
+	BREAKDOWN: 'Breakdown',
 	CASE_STUDY: 'Case study',
 	DEVOPS: 'DevOps',
 	LAUNCH: 'Launch',

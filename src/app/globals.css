@@ -105,6 +105,18 @@
 		@apply border-l-4 border-secondary/20 pl-4 font-light text-lg italic;
 	}
 
+	article aside {
+		@apply w-full rounded-custom border border-subtle bg-subtle/20 dark:bg-subtle/70 p-6;
+	}
+
+	article aside > :first-child {
+		@apply mt-0;
+	}
+
+	article aside > :last-child {
+		@apply mb-0;
+	}
+
 	article ul,
 	article ol {
 		@apply pl-6;
@@ -395,6 +407,21 @@
 
 	.hide-on-small-height {
 		display: block;
+	}
+
+	@keyframes slide-in {
+		from {
+			opacity: 0;
+			transform: translateY(-8px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	.animate-slide-in {
+		animation: slide-in 0.3s ease-out;
 	}
 }
 

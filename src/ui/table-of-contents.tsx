@@ -21,7 +21,7 @@ export const TableOfContents = ({
 	if (visibleItems.length === 0) return null
 
 	return (
-		<div className="flex flex-col rounded-custom border border-subtle bg-subtle/20 px-5 py-4">
+		<div className="flex flex-col gap-3 rounded-custom border border-subtle bg-subtle/20 px-5 py-4 transition-height dark:bg-subtle/70">
 			<button
 				type="button"
 				className="flex w-full items-center justify-between gap-4 text-left focus:outline-none"
