@@ -32,17 +32,28 @@ export const TableOfContents = ({
 					className={cn('size-4 text-secondary transition-transform', open ? 'rotate-180' : '')}
 				/>
 			</button>
-			{open ? (
-				<ul className="space-y-2 p-0">
-					{visibleItems.map(item => (
-						<li key={item.id} className={cn('list-none text-sm', item.level === 3 ? 'pl-6' : '')}>
-							<a href={`#${item.id}`} className="flex items-start gap-3 no-underline hover:underline">
-								<span className="leading-6">{item.title}</span>
-							</a>
-						</li>
-					))}
-				</ul>
-			) : null}
+			<div
+				className="grid transition-[grid-template-rows] duration-300 ease-in-out"
+				style={{ gridTemplateRows: open ? '1fr' : '0fr' }}
+			>
+				<div className="overflow-hidden">
+					<ul className="mt-3 space-y-2 p-0">
+						{visibleItems.map(item => (
+							<li
+								key={item.id}
+								className={cn('list-none text-sm', item.level === 3 ? 'pl-6' : '')}
+							>
+								<a
+									href={`#${item.id}`}
+									className="flex items-start gap-3 no-underline hover:underline"
+								>
+									<span className="leading-6">{item.title}</span>
+								</a>
+							</li>
+						))}
+					</ul>
+				</div>
+			</div>
 		</div>
 	)
 }

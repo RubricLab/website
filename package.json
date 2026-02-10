@@ -11,7 +11,7 @@
 		"framer-motion": "^12.23.26",
 		"hls.js": "^1.5.20",
 		"next": "^16.0.10",
-		"posthog-js": "^1.232.7",
+		"posthog-js": "1.335.3",
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0",
 		"react-intersection-observer": "^9.16.0",
