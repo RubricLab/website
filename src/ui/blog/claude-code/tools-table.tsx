@@ -200,68 +200,111 @@ const phaseLabels: Record<Phase, string> = {
 	verify: 'Verify'
 }
 
+const ToolName = ({ docUrl, name }: { docUrl: string | undefined; name: string }) => {
+	if (!docUrl) return name
+
+	return (
+		<a
+			href={docUrl}
+			target="_blank"
+			rel="noopener noreferrer"
+			className="underline decoration-secondary/50 underline-offset-2 transition-colors hover:text-sky-500"
+		>
+			{name}
+		</a>
+	)
+}
+
+const ToolPhaseBadges = ({ phases, toolName }: { phases: Phase[]; toolName: string }) => {
+	return (
+		<div className="flex flex-wrap gap-1 whitespace-nowrap">
+			{phases.map(phase => (
+				<span
+					key={`${toolName}-${phase}`}
+					className={cn('inline-block rounded-full px-2 py-0.5 font-medium text-xs', phaseColors[phase])}
+				>
+					{phaseLabels[phase]}
+				</span>
+			))}
+		</div>
+	)
+}
+
 export const ToolsTable = () => {
 	return (
-		<div className="overflow-x-auto rounded-lg border border-subtle">
-			<table className="w-full text-left text-sm">
-				<thead>
-					<tr className="border-subtle border-b bg-subtle/30">
-						<th className="px-4 py-3 font-medium text-secondary">Tool</th>
-						<th className="px-4 py-3 font-medium text-secondary">What it does</th>
-						<th className="w-40 px-4 py-3 font-medium text-secondary">Phase</th>
-					</tr>
-				</thead>
-				<tbody>
-					{CORE_TOOLS.map((tool, idx) => (
-						<tr key={tool.name} className={cn('border-subtle', idx !== CORE_TOOLS.length - 1 && 'border-b')}>
-							<td className="px-4 py-3 font-medium">
-								{tool.docUrl ? (
-									<a
-										href={tool.docUrl}
-										target="_blank"
-										rel="noopener noreferrer"
-										className="underline decoration-secondary/50 underline-offset-2 transition-colors hover:text-sky-500"
-									>
-										{tool.name}
-									</a>
-								) : (
-									tool.name
-								)}
-							</td>
-							<td className="px-4 py-3 text-secondary">
-								{tool.description}
-								{tool.examples && (
-									<span className="ml-1">
-										(
-										{tool.examples.map((ex, i, arr) => (
-											<span key={ex}>
-												<code className="rounded bg-subtle px-1 py-0.5 font-mono text-xs">{ex}</code>
-												{i < arr.length - 1 && ', '}
-											</span>
-										))}
-										)
-									</span>
-								)}
-							</td>
-							<td className="w-40 px-4 py-3">
-								<div className="flex gap-1 whitespace-nowrap">
-									{tool.phases.map(phase => (
-										<span
-											key={`${tool.name}-${phase}`}
-											className={cn(
-												'inline-block rounded-full px-2 py-0.5 font-medium text-xs',
-												phaseColors[phase]
-											)}
-										>
-											{phaseLabels[phase]}
+		<div className="rounded-lg border border-subtle">
+			<div className="space-y-0 sm:hidden">
+				{CORE_TOOLS.map((tool, idx) => (
+					<div
+						key={tool.name}
+						className={cn('p-4', idx !== CORE_TOOLS.length - 1 && 'border-subtle border-b')}
+					>
+						<div className="flex items-start justify-between gap-3">
+							<p className="font-medium text-sm">
+								<ToolName docUrl={tool.docUrl} name={tool.name} />
+							</p>
+							<ToolPhaseBadges phases={tool.phases} toolName={tool.name} />
+						</div>
+						<p className="mt-2 text-secondary text-sm">
+							{tool.description}
+							{tool.examples && (
+								<span className="ml-1">
+									(
+									{tool.examples.map((ex, i, arr) => (
+										<span key={ex}>
+											<code className="rounded bg-subtle px-1 py-0.5 font-mono text-xs">{ex}</code>
+											{i < arr.length - 1 && ', '}
 										</span>
 									))}
-								</div>
-							</td>
+									)
+								</span>
+							)}
+						</p>
+					</div>
+				))}
+			</div>
+
+			<div className="hidden overflow-x-auto sm:block">
+				<table className="w-full text-left text-sm">
+					<thead>
+						<tr className="border-subtle border-b bg-subtle/30">
+							<th className="px-4 py-3 font-medium text-secondary">Tool</th>
+							<th className="px-4 py-3 font-medium text-secondary">What it does</th>
+							<th className="w-40 px-4 py-3 font-medium text-secondary">Phase</th>
 						</tr>
-					))}
-				</tbody>
-			</table>
+					</thead>
+					<tbody>
+						{CORE_TOOLS.map((tool, idx) => (
+							<tr
+								key={tool.name}
+								className={cn('border-subtle', idx !== CORE_TOOLS.length - 1 && 'border-b')}
+							>
+								<td className="px-4 py-3 font-medium">
+									<ToolName docUrl={tool.docUrl} name={tool.name} />
+								</td>
+								<td className="px-4 py-3 text-secondary">
+									{tool.description}
+									{tool.examples && (
+										<span className="ml-1">
+											(
+											{tool.examples.map((ex, i, arr) => (
+												<span key={ex}>
+													<code className="rounded bg-subtle px-1 py-0.5 font-mono text-xs">{ex}</code>
+													{i < arr.length - 1 && ', '}
+												</span>
+											))}
+											)
+										</span>
+									)}
+								</td>
+								<td className="w-40 px-4 py-3">
+									<ToolPhaseBadges phases={tool.phases} toolName={tool.name} />
+								</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
+			</div>
 		</div>
 	)
 }
