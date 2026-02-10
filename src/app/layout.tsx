@@ -1,7 +1,7 @@
 import localFont from 'next/font/local'
 import type { Metadata } from 'next/types'
 import Providers from '~/app/providers'
-import { DEFAULT_META } from '~/lib/constants/metadata'
+import { META } from '~/lib/constants/metadata'
 import './globals.css'
 import { getBaseUrl } from '~/lib/utils'
 import { Nav } from '~/ui/nav'
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 		}
 	},
 	metadataBase: new URL(getBaseUrl()),
-	...DEFAULT_META
+	...META
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

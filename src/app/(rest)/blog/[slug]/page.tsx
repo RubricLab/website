@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { META } from '~/lib/constants/metadata'
+import { createMetadata } from '~/lib/utils/create-metadata'
 import { formatDate } from '~/lib/utils/date'
 import { getPost, getPostSlugs } from '~/lib/utils/posts'
 import { CustomImage } from '~/ui/custom-image'
@@ -23,10 +25,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 	const { metadata } = await getPost(slug)
 
-	return {
-		description: metadata.description,
-		title: metadata.title
-	}
+	const title = `${metadata.title} | ${META.title}`
+	const description = metadata.description
+
+	return createMetadata({
+		description,
+		openGraph: {
+			description,
+			title
+		},
+		title,
+		twitter: {
+			description,
+			title
+		}
+	})
 }
 
 export default async function Page({ params }: Props) {
