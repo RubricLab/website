@@ -1,34 +1,38 @@
 import type { MetadataRoute } from 'next'
+import { getBaseUrl } from '~/lib/utils'
+import { getPostMetadata } from '~/lib/utils/posts'
 
-/**
- * For automatic indexing of new pages
- */
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-	const base = 'https://rubriclabs.com'
+const createEntry = (
+	url: string,
+	changeFrequency: MetadataRoute.Sitemap[number]['changeFrequency'],
+	priority: number,
+	lastModified = new Date()
+): MetadataRoute.Sitemap[number] => ({
+	changeFrequency,
+	lastModified,
+	priority,
+	url
+})
 
-	const corePages = ['blog', 'contact']
+const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
+	const base = getBaseUrl()
+	const now = new Date()
 
-	/**
-	 * In order of priority
-	 */
-	const pages = [
-		{
-			changeFrequency: 'monthly' as const,
-			lastModified: new Date(),
-			url: `${base}`
-		},
-		// Core pages
-		...corePages.map(page => ({
-			changeFrequency: 'weekly' as const,
-			lastModified: new Date(),
-			url: `${base}/${page}`
-		}))
+	const staticEntries: MetadataRoute.Sitemap = [
+		createEntry(`${base}`, 'weekly', 1, now),
+		createEntry(`${base}/blog`, 'daily', 0.9, now),
+		createEntry(`${base}/work`, 'monthly', 0.8, now),
+		createEntry(`${base}/contact`, 'monthly', 0.7, now),
+		createEntry(`${base}/privacy`, 'yearly', 0.3, now)
 	]
 
-	const withPriority = pages.map((page, i) => ({
-		...page,
-		priority: Math.max(1 - i / 10, 0.1) // minimum 0.1
-	}))
+	const posts = await getPostMetadata()
 
-	return withPriority
+	const postEntries: MetadataRoute.Sitemap = posts.map(post =>
+		createEntry(`${base}/blog/${post.slug}`, 'monthly', 0.75, new Date(post.date))
+	)
+
+	return [...staticEntries, ...postEntries]
 }
+
+export default sitemap
