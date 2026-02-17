@@ -91,4 +91,77 @@ const getPostToc = async (slug: string): Promise<TocItem[]> => {
 	return items
 }
 
-export { getPost, getPostMetadata, getPostSlugs, getPostToc }
+export type SectionContent = {
+	title: string
+	content: string
+}
+
+const getPostSectionContent = async (
+	slug: string,
+	sectionId: string
+): Promise<SectionContent | null> => {
+	const mdxPath = path.join(process.cwd(), 'src/lib/posts', `${slug}.mdx`)
+	const content = await readFile(mdxPath, 'utf8')
+
+	const slugger = createSlugger()
+	const lines = content.split('\n')
+
+	let inFence = false
+	let foundSection = false
+	let sectionTitle = ''
+	const sectionContent: string[] = []
+
+	for (const line of lines) {
+		const trimmed = line.trim()
+
+		if (trimmed.startsWith('```')) {
+			inFence = !inFence
+			if (foundSection) sectionContent.push(line)
+			continue
+		}
+
+		if (inFence) {
+			if (foundSection) sectionContent.push(line)
+			continue
+		}
+
+		const match = /^(#{1,6})\s+(.+?)\s*$/.exec(trimmed)
+		if (match) {
+			const title = match[2]?.replaceAll(/\s+/g, ' ').trim()
+			if (!title) continue
+
+			const id = slugger.slug(title)
+
+			if (foundSection) {
+				// We hit the next heading, stop collecting
+				break
+			}
+
+			if (id === sectionId) {
+				foundSection = true
+				sectionTitle = title
+			}
+		} else if (foundSection) {
+			sectionContent.push(line)
+		}
+	}
+
+	if (!foundSection) return null
+
+	// Clean up the content: remove empty lines at start/end, remove JSX/import lines
+	const cleanedContent = sectionContent
+		.join('\n')
+		.trim()
+		// Remove JSX components (lines starting with <)
+		.split('\n')
+		.filter(line => !line.trim().startsWith('<'))
+		.join('\n')
+		.trim()
+
+	return {
+		content: cleanedContent,
+		title: sectionTitle
+	}
+}
+
+export { getPost, getPostMetadata, getPostSlugs, getPostToc, getPostSectionContent }

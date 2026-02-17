@@ -13,6 +13,7 @@ export const dynamicParams = false
 
 type Props = {
 	params: Promise<{ slug: string }>
+	searchParams: Promise<{ section?: string }>
 }
 
 export async function generateStaticParams() {
@@ -20,23 +21,28 @@ export async function generateStaticParams() {
 	return slugs.map(slug => ({ slug }))
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
 	const { slug } = await params
+	const { section } = await searchParams
 
 	const { metadata } = await getPost(slug)
 
 	const title = `${metadata.title} | ${META.title}`
 	const description = metadata.description
 
+	const imageSearchParams = section ? `?section=${encodeURIComponent(section)}` : ''
+
 	return createMetadata({
 		description,
 		openGraph: {
 			description,
+			images: [`/blog/${slug}/opengraph-image${imageSearchParams}`],
 			title
 		},
 		title,
 		twitter: {
 			description,
+			images: [`/blog/${slug}/twitter-image${imageSearchParams}`],
 			title
 		}
 	})
