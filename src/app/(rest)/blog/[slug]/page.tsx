@@ -1,11 +1,13 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { Suspense } from 'react'
 import { META } from '~/lib/constants/metadata'
 import { createMetadata } from '~/lib/utils/create-metadata'
 import { formatDate } from '~/lib/utils/date'
 import { getPost, getPostSlugs } from '~/lib/utils/posts'
 import { CustomImage } from '~/ui/custom-image'
 import { NextPost } from '~/ui/next-post'
+import { SectionRedirect } from '~/ui/section-redirect'
 import { TableOfContents } from '~/ui/table-of-contents'
 import { PostCTA } from './post-cta'
 
@@ -36,13 +38,29 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
 		description,
 		openGraph: {
 			description,
-			images: [`/blog/${slug}/opengraph-image${imageSearchParams}`],
-			title
+			images: [
+				{
+					alt: metadata.title,
+					height: 630,
+					url: `/blog/${slug}/opengraph-image${imageSearchParams}`,
+					width: 1200
+				}
+			],
+			title,
+			type: 'article'
 		},
 		title,
 		twitter: {
+			card: 'summary_large_image',
 			description,
-			images: [`/blog/${slug}/twitter-image${imageSearchParams}`],
+			images: [
+				{
+					alt: metadata.title,
+					height: 1200,
+					url: `/blog/${slug}/twitter-image${imageSearchParams}`,
+					width: 1200
+				}
+			],
 			title
 		}
 	})
@@ -56,6 +74,9 @@ export default async function Page({ params }: Props) {
 
 	return (
 		<div className="flex min-h-screen flex-col items-center gap-16 p-4 py-32">
+			<Suspense fallback={null}>
+				<SectionRedirect />
+			</Suspense>
 			<div className="flex w-full max-w-5xl flex-col items-start space-y-6">
 				<div className="relative h-96 w-full overflow-hidden">
 					<CustomImage

@@ -4,6 +4,7 @@ import { getPost, getPostSectionContent } from '~/lib/utils/posts'
 import { Rubric } from '~/ui/logos/rubric'
 
 export const runtime = 'nodejs'
+export const alt = 'Rubric Labs Blog'
 export const contentType = 'image/png'
 export const size = {
 	height: 1200,
