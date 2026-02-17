@@ -9,8 +9,7 @@ import { CustomImage } from './ui/custom-image'
 export function useMDXComponents(components: MDXComponents): MDXComponents {
 	const slugger = createSlugger()
 
-	const isExternalHref = (href: string) =>
-		href.startsWith('http://') || href.startsWith('https://') || href.startsWith('//')
+	const isExternalHref = (href: string) => href.startsWith('http://') || href.startsWith('https://') || href.startsWith('//')
 
 	const getText = (node: ReactNode): string => {
 		if (node == null || typeof node === 'boolean') return ''
@@ -28,12 +27,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 		a: ({ children, className, href, rel, ...props }: ComponentPropsWithoutRef<'a'>) => {
 			if (!href || typeof href !== 'string') return <a href={href} {...props} />
 			if (href.startsWith('#')) return <a href={href} {...props} />
-			if (href.startsWith('/'))
-				return (
-					<Link href={href} className={className}>
-						{children}
-					</Link>
-				)
+			if (href.startsWith('/')) return <Link href={href} className={className}>{children}</Link>
 			if (isExternalHref(href)) {
 				const safeRel = rel ? `${rel} noopener noreferrer` : 'noopener noreferrer'
 				return (
