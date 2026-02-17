@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/og'
 import { getBaseUrl } from '~/lib/utils'
-import { getPost, getPostSectionContent } from '~/lib/utils/posts'
+import { getPost } from '~/lib/utils/posts'
 import { Rubric } from '~/ui/logos/rubric'
 
 export const runtime = 'nodejs'
@@ -13,17 +13,11 @@ export const size = {
 
 export const Component = ({
 	title,
-	backgroundImageUrl,
-	sectionTitle,
-	sectionContent
+	backgroundImageUrl
 }: {
 	title: string
 	backgroundImageUrl: string
-	sectionTitle?: string
-	sectionContent?: string
 }) => {
-	const isSection = sectionTitle && sectionContent
-
 	return (
 		<div
 			style={{
@@ -70,86 +64,37 @@ export const Component = ({
 				<Rubric style={{ height: 48, width: 48 }} />
 				<div style={{ fontSize: 48 }}>Rubric Labs Blog</div>
 			</div>
-			{isSection ? (
-				<div
-					style={{
-						background: 'rgba(0, 0, 0, 0.75)',
-						bottom: 0,
-						color: 'white',
-						display: 'flex',
-						flexDirection: 'column',
-						gap: 16,
-						left: 0,
-						padding: 48,
-						position: 'absolute',
-						width: '100%'
-					}}
-				>
-					<div style={{ fontSize: 56, fontWeight: 600, lineHeight: 1.2 }}>{sectionTitle}</div>
-					<div
-						style={{
-							display: '-webkit-box',
-							fontSize: 28,
-							lineHeight: 1.4,
-							opacity: 0.9,
-							overflow: 'hidden',
-							textOverflow: 'ellipsis',
-							WebkitBoxOrient: 'vertical',
-							WebkitLineClamp: 3
-						}}
-					>
-						{sectionContent}
-					</div>
-				</div>
-			) : (
-				<div
-					style={{
-						backgroundImage: 'linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0))',
-						bottom: 0,
-						color: 'white',
-						display: 'flex',
-						justifyContent: 'space-between',
-						left: 0,
-						padding: 48,
-						position: 'absolute',
-						width: '100%'
-					}}
-				>
-					<div style={{ fontSize: 80 }}>{title}</div>
-				</div>
-			)}
+			<div
+				style={{
+					backgroundImage: 'linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0))',
+					bottom: 0,
+					color: 'white',
+					display: 'flex',
+					justifyContent: 'space-between',
+					left: 0,
+					padding: 48,
+					position: 'absolute',
+					width: '100%'
+				}}
+			>
+				<div style={{ fontSize: 80 }}>{title}</div>
+			</div>
 		</div>
 	)
 }
 
-export default async function Image({
-	params,
-	searchParams
-}: {
-	id: string
-	params: Promise<{ slug: string }>
-	searchParams: Promise<{ section?: string }>
-}) {
+export default async function Image({ params }: { id: string; params: Promise<{ slug: string }> }) {
 	const baseUrl = getBaseUrl()
 
 	const { slug } = await params
-	const { section } = await searchParams
 
-	const [{ metadata }, localFont, sectionData] = await Promise.all([
+	const [{ metadata }, localFont] = await Promise.all([
 		getPost(slug),
-		fetch(`${baseUrl}/fonts/matter-regular.woff`).then(res => res.arrayBuffer()),
-		section ? getPostSectionContent(slug, section) : Promise.resolve(null)
+		fetch(`${baseUrl}/fonts/matter-regular.woff`).then(res => res.arrayBuffer())
 	])
 
 	return new ImageResponse(
-		<Component
-			title={metadata.title}
-			backgroundImageUrl={`${baseUrl}${metadata.bannerImageUrl}`}
-			{...(sectionData && {
-				sectionContent: sectionData.content,
-				sectionTitle: sectionData.title
-			})}
-		/>,
+		<Component title={metadata.title} backgroundImageUrl={`${baseUrl}${metadata.bannerImageUrl}`} />,
 		{
 			...size,
 			fonts: [
