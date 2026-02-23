@@ -5,7 +5,7 @@ import { cn } from '~/lib/utils/cn'
 import { Button } from './button'
 import { Arrow } from './icons/arrow'
 
-const body = 'See our work'
+const body = 'What people say'
 
 export const ScrollButton = ({ className }: { className?: string }) => {
 	const posthog = usePostHog()
