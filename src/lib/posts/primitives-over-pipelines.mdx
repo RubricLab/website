@@ -1,0 +1,40 @@
+import { AUTHORS, CATEGORIES } from '~/lib/constants/blog'
+
+export const metadata = {
+  title: "Primitives over pipelines",
+  subtitle: "Your agent needs dynamic context",
+  date: "2026-03-02",
+  author: AUTHORS.SARIM_MALIK,
+  bannerImageUrl: "/images/claude-code.png",
+  category: CATEGORIES.THOUGHT,
+  description: "When to build end-to-end pipelines versus reusable primitives in AI and software systems."
+}
+
+If you've read our latest post on <a href="/blog/how-does-claude-code-actually-work">how Claude Code works</a>, or designed an AI agent, you'll notice that an agent operates in three modes: gathering context, taking action, and verifying outcomes.
+
+Gathering context is perhaps the most important (and often overlooked) mode because without good context, your agent will confidently reason over the wrong state. With good context, you can steer the agent to ground its decisions in what's actually true, which is where "agent reliability" really comes from.
+
+There are many ways to provide context to an agent, you can hardcode it into the system prompt, front-load it via a preprocessing step, or fetch it at runtime using tools. On top of that, every agent inherits a set of priors from the model's training. The difference is whether your context is static (baked) or dynamic (assembled).
+
+Part of providing good context also relies on the environment you choose to deploy your agent in, for example the terminal is a great environment for a coding agent because your file tree is literally one command away.
+
+In the <a href="https://karpathy.medium.com/software-2-0-a64152b37c35">Software 1.0</a> era, we got comfortable with pipelines: a tidy sequence of deterministic steps that run top-to-bottom. But agents don't thrive on prescriptive flowcharts, they thrive when they can query for the minimum context required, right at the point of uncertainty.
+
+The style of agent design that we gravitate towards these days is less "precompute everything" and more "equip the agent with primitives."
+
+A thin system prompt, which is more taste than state. It should encode the goal, boundaries, and voice, not be a pile of facts. Everything else should be discovered on demand.
+The best agents don't carry the full picture in their prompt, they reconstruct the smallest slice of relevant reality, on demand.
+
+One simple pattern for implementing dynamic context management is: list and inspect.
+
+[fig: listing items, then inspecting one in detail, two columns, on one side we get list and it returns 10 items, then on the right we inspect one of them and it shows full metadata for that item]
+
+This usually looks like a loop: first you list what might be relevant to your domain (files, emails, records, events), then you inspect the one or two candidates that matter, and only then do you answer or act.
+
+An analogy, think about how a good doctor diagnoses something. They could either recommend you to opt into a program for people that report the same symptoms as you and there is a chance your problem will be resolved, or they could instead choose to do full body vitals, understand each item and then suggest further tests to study the core deficiencies.
+
+Coding agents are the cleanest example. They use tools like grep and glob to enumerate candidates, and then open the one file that actually matters. Web agents follow the same shape: search returns a ranked list, then a fetch tool retrieves a single page in full fidelity. In both cases, the agent is doing triage
+
+Most discoveries in traditional systems can be boiled into this "list and inspect" pattern. For example, if your agent tracks user preferences or memories, you could either preload everything you know about the user, or give the agent the capability to retrieve the one memory that matters for this question. The second approach stays fast, stays current, and avoids contaminating the agent with irrelevant state.
+
+Pipelines assume the right context is knowable upfront. Primitives assume it isn't, so they keep the agent in a tight loop of "list, inspect, decide." That's what dynamic context really means: don't preload reality. Give the agent instruments to query it and the discipline to only pull what it needs.

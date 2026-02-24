@@ -28,5 +28,6 @@ export const CATEGORIES = {
 	CASE_STUDY: 'Case study',
 	DEVOPS: 'DevOps',
 	LAUNCH: 'Launch',
-	TEAM: 'Team'
+	TEAM: 'Team',
+	THOUGHT: 'Thought'
 } as const
