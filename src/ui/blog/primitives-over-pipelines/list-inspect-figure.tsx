@@ -35,8 +35,7 @@ const ITEMS = [
 	}
 ] as const
 
-const INSPECT_ORDER = [1, 3] as const
-const PHASE_DURATIONS = [2200, 1800, 2200, 1800, 2200] as const
+const INSPECTION_INTERVAL_MS = 1400
 const FIGURE_H = 300
 const CONTENT_TOP = 48
 const LIST_TOP = CONTENT_TOP
@@ -46,25 +45,25 @@ const DETAIL_TOP = CONTENT_TOP
 const LIST_TOTAL_H = ITEMS.length * LIST_ROW_H + (ITEMS.length - 1) * LIST_GAP
 const CONTROLS_LEFT = 8
 const CONTROLS_BOTTOM = 10
+const ITEM_COUNT = [...ITEMS].length
 
-const getActiveIndex = (phase: number) => {
-	if (phase === 1 || phase === 2) return INSPECT_ORDER[0]
-	if (phase === 3 || phase === 4) return INSPECT_ORDER[1]
-	return null
-}
+const randomInt = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min
 
-const getDetailIndex = (phase: number) => {
-	if (phase === 2) return INSPECT_ORDER[0]
-	if (phase === 4) return INSPECT_ORDER[1]
-	return null
+const getNextIndex = (current: number | null) => {
+	if (ITEM_COUNT === 0) return null
+	if (ITEM_COUNT === 1) return 0
+
+	let next = randomInt(0, ITEM_COUNT - 1)
+	while (next === current) next = randomInt(0, ITEM_COUNT - 1)
+	return next
 }
 
 export const ListInspectFigure = () => {
-	const [phase, setPhase] = useState(0)
+	const [activeIndex, setActiveIndex] = useState<number | null>(0)
 	const [isPlaying, setIsPlaying] = useState(true)
 
 	const reset = useCallback(() => {
-		setPhase(0)
+		setActiveIndex(0)
 		setIsPlaying(true)
 	}, [])
 
@@ -75,21 +74,17 @@ export const ListInspectFigure = () => {
 	useEffect(() => {
 		if (!isPlaying) return
 
-		const timer = setTimeout(() => {
-			setPhase(prev => (prev + 1) % PHASE_DURATIONS.length)
-		}, PHASE_DURATIONS[phase] ?? 2000)
-		return () => clearTimeout(timer)
-	}, [isPlaying, phase])
+		const timer = setInterval(() => {
+			setActiveIndex(prev => getNextIndex(prev))
+		}, INSPECTION_INTERVAL_MS)
+		return () => clearInterval(timer)
+	}, [isPlaying])
 
-	const activeIndex = getActiveIndex(phase)
-	const detailIndex = getDetailIndex(phase)
-	const detailItem = detailIndex === null ? null : ITEMS[detailIndex]
+	const detailItem = activeIndex === null ? null : ITEMS[activeIndex]
 
 	return (
 		<div className="w-full rounded-xl border border-subtle bg-subtle/10 px-4 pt-4 pb-3">
 			<div className="relative w-full overflow-hidden" style={{ height: FIGURE_H }}>
-				<div className="absolute top-0 bottom-0 w-px bg-subtle" style={{ left: '50%' }} />
-
 				<p
 					className="absolute font-mono text-secondary/50 text-xs"
 					style={{ left: '25%', top: 12, transform: 'translateX(-50%)' }}
@@ -125,19 +120,29 @@ export const ListInspectFigure = () => {
 
 				<div
 					className={cn(
-						'absolute right-[6%] left-[56%] rounded-lg border transition-all duration-700 ease-in-out',
-						detailItem
-							? 'translate-y-0 border-subtle bg-background/50 opacity-100'
-							: 'translate-y-2 border-subtle bg-background/50 opacity-0'
+						'absolute right-[6%] left-[56%] transition-all duration-700 ease-in-out',
+						detailItem ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-0'
 					)}
 					style={{ height: LIST_TOTAL_H, top: DETAIL_TOP }}
 				>
 					{detailItem && (
-						<div className="p-3">
-							<p className="font-mono text-[11px] text-primary">{detailItem.filename}</p>
-							<pre className="mt-2 whitespace-pre-wrap font-mono text-[10px] text-secondary/90">
-								{detailItem.preview}
-							</pre>
+						<div className="h-full w-full overflow-hidden rounded-md border border-subtle/80 bg-background/70">
+							<div className="border-subtle border-b px-2 py-1 font-mono text-[10px] text-primary/90">
+								{detailItem.filename}
+							</div>
+							<div className="px-1 py-1">
+								{detailItem.preview.split('\n').map((line, index) => (
+									<div
+										key={`${detailItem.id}-${String(index)}`}
+										className="grid grid-cols-[20px_1fr] items-start px-1.5 py-0.5 font-mono text-[10px]"
+									>
+										<span className="pt-px pr-2 text-right text-secondary/45 leading-4">{index + 1}</span>
+										<span className="block whitespace-pre-wrap text-secondary/90 leading-4">
+											{line || ' '}
+										</span>
+									</div>
+								))}
+							</div>
 						</div>
 					)}
 				</div>
