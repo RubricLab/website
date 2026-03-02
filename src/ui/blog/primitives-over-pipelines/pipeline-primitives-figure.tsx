@@ -19,7 +19,8 @@ const MIN_ASSEMBLY_LENGTH = 2
 const INITIAL_MAX_ASSEMBLY_LENGTH = 4
 const ABSOLUTE_MAX_ASSEMBLY_LENGTH = 8
 const ASSEMBLY_INTERVAL_MS = 1800
-const FIGURE_PADDING_X = 12
+const FIGURE_PADDING_X = 16
+const CONTROLS_LEFT = 8
 const HEADING_TOP = 12
 const CONTROLS_ROW_CENTER_Y = H - 20
 const CONTROL_BUTTON_SIZE = 22
@@ -162,7 +163,15 @@ const Block = ({
 	)
 }
 
-const DownArrow = ({ left, top, visible }: { left: number | string; top: number; visible: boolean }) => (
+const DownArrow = ({
+	left,
+	top,
+	visible
+}: {
+	left: number | string
+	top: number
+	visible: boolean
+}) => (
 	<svg
 		className="absolute text-secondary transition-all duration-700 ease-in-out"
 		style={{
@@ -287,7 +296,7 @@ export const PipelinePrimitivesFigure = () => {
 
 				{/* Pipeline footer label */}
 				<p
-					className="absolute font-mono text-secondary/50 text-xs transition-all duration-700"
+					className="absolute text-secondary/50 transition-all duration-700"
 					style={{ left: pipelineCenterX, top: HEADING_TOP, transform: 'translateX(-50%)' }}
 				>
 					Pipeline
@@ -310,7 +319,7 @@ export const PipelinePrimitivesFigure = () => {
 
 				{/* Right half heading */}
 				<p
-					className="absolute font-mono text-secondary/50 text-xs transition-all duration-700"
+					className="absolute text-secondary/50 transition-all duration-700"
 					style={{
 						left: rightCenterX,
 						opacity: 1,
@@ -333,11 +342,7 @@ export const PipelinePrimitivesFigure = () => {
 							label={label}
 							size={ASSEMBLY_SIZE}
 							left={assemblyLeft}
-							top={
-								isActive
-									? assemblyY(i, total, assemblyCenterY)
-									: assemblyCenterY - ASSEMBLY_SIZE / 2
-							}
+							top={isActive ? assemblyY(i, total, assemblyCenterY) : assemblyCenterY - ASSEMBLY_SIZE / 2}
 							hidden={!isActive}
 						/>
 					)
@@ -362,7 +367,7 @@ export const PipelinePrimitivesFigure = () => {
 				<div
 					className="absolute flex items-center gap-2"
 					style={{
-						left: FIGURE_PADDING_X,
+						left: CONTROLS_LEFT,
 						top: CONTROLS_ROW_CENTER_Y - CONTROL_BUTTON_SIZE / 2
 					}}
 				>
@@ -373,7 +378,6 @@ export const PipelinePrimitivesFigure = () => {
 						<RestartIcon className="h-4 w-4" />
 					</Button>
 				</div>
-
 			</div>
 		</div>
 	)
