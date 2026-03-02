@@ -4,8 +4,8 @@ import { Caption, Figure } from '~/ui/figure'
 
 export const metadata = {
   title: "Primitives over pipelines",
-  subtitle: "Your agent needs dynamic context",
-  date: "2026-03-02",
+  subtitle: "Your agent needs to be general purpose",
+  date: "2026-03-03",
   author: AUTHORS.SARIM_MALIK,
   bannerImageUrl: "/images/claude-code.png",
   category: CATEGORIES.THOUGHT,
@@ -17,29 +17,34 @@ export const metadata = {
   <Caption>A pipeline is rigid; primitives compose to fit each scenario.</Caption>
 </Figure>
 
-If you've read our latest post on <a href="/blog/how-does-claude-code-actually-work">how Claude Code works</a>, or designed an AI agent, you'll notice that an agent operates in three modes: gathering context, taking action, and verifying outcomes.
+If you’ve read our latest post on [how Claude Code works](/blog/how-does-claude-code-actually-work), or built an AI agent, then you’ve probably noticed that an agent has three modes: gathering context, taking action, and verifying results.
 
-Gathering context is perhaps the most important (and often overlooked) mode because without good context, your agent will confidently reason over the wrong state. With good context, you can steer the agent to ground its decisions in what's actually true, which is where "agent reliability" really comes from.
+Gathering context is perhaps the most important (and often overlooked) mode because without good context, your agent will confidently reason over the wrong state. With good context, you can steer the agent to ground its decisions in what’s actually true, which is where “agent reliability” comes from. 
 
-There are many ways to provide context to an agent, you can hardcode it into the system prompt, front-load it via a preprocessing step, or fetch it at runtime using tools. On top of that, every agent inherits a set of priors from the model's training. The difference is whether your context is static (baked) or dynamic (assembled).
+There are many ways to provide context to an agent: you can hardcode it into the system prompt, front-load it via a preprocessing step, or fetch it at runtime, a pattern formalized in Retrieval Augmented Generation (RAG). RAG builds upon decades of work in information retrieval and recommendation systems (RecSys), where the core challenge was always the same: given a large corpus of data, efficiently retrieve the small subset that actually matters. 
 
-Part of providing good context also relies on the environment you choose to deploy your agent in, for example the terminal is a great environment for a coding agent because your file tree is literally one command away.
+On top of that, every agent also inherits a set of priors from the model’s training. Ultimately, the difference in context comes down to whether it is **static** (baked) or **dynamic** (assembled).
 
-In the <a href="https://karpathy.medium.com/software-2-0-a64152b37c35">Software 1.0</a> era, we got comfortable with pipelines: a tidy sequence of deterministic steps that run top-to-bottom. But agents don't thrive on prescriptive flowcharts, they thrive when they can query for the minimum context required, right at the point of uncertainty.
+In the [classic software era](https://karpathy.medium.com/software-2-0-a64152b37c35), we got comfortable with pipelines: a tidy sequence of deterministic steps that run top-to-bottom. Pipelines were our response to shipping one solution to many people. To scale, they compress reality into a single “best effort” flow with generic defaults, minimal branching, and assumptions that usually hold. 
 
-The style of agent design that we gravitate towards these days is less "precompute everything" and more "equip the agent with primitives."
+Agents don't behave the same way. Agents don’t thrive on prescriptive flowcharts, they instead thrive when they can query for the minimum context required, right at the point of uncertainty to act in a truly personalized way. 
 
-A thin system prompt, which is more taste than state. It should encode the goal, boundaries, and voice, not be a pile of facts. Everything else should be discovered on demand.
-The best agents don't carry the full picture in their prompt, they reconstruct the smallest slice of relevant reality, on demand.
+The style of agent design that we gravitate towards these days is less “precompute everything” and more “equip the agent with primitives.” We think of this as **Primitive-Oriented Agent Design**, a model where the agent is given a small set of composable capabilities and allowed to assemble context dynamically at runtime, rather than being forced through a pre-baked pipeline.
 
-One simple pattern for implementing dynamic context management is: list and inspect.
+In this style of agent design, we believe the system prompt should be thin, and be more about taste than state. It should encode the goal, boundaries, and voice, and not be a pile of facts. Everything else should be discovered on demand.
 
-This usually looks like a loop: first you list what might be relevant to your domain (files, emails, records, events), then you inspect the one or two candidates that matter, and only then do you answer or act.
+One simple pattern for implementing dynamic context discovery is **list and inspect**, which mirrors how large-scale search systems work. As Jeff Dean, Google’s Chief Scientist, [explains](https://open.substack.com/pub/swyx/p/jeffdean?selection=3fbc0847-8c55-4541-a16d-e649bd500ba0) that modern search systems don’t reason over everything at once. Instead, they begin by identifying a large candidate set using lightweight methods (i.e. listing) and then progressively using more sophisticated methods to narrow that set down to a handful that are worth inspecting in detail. 
 
-An analogy, think about how a good doctor diagnoses something. They could either recommend you to opt into a program for people that report the same symptoms as you and there is a chance your problem will be resolved, or they could instead choose to do full body vitals, understand each item and then suggest further tests to study the core deficiencies.
+Agents follow a similar pattern, as Large Language Models (LLMs) cannot attend to trillions of tokens at once, so instead they first list a broad set of candidates relevant to your domain (files, emails, records, events) and then inspect a smaller subset of candidates that matter. “List and inspect” is simply the conventional search pipeline compressed into a reusable primitive.
 
-Coding agents are the cleanest example. They use tools like grep and glob to enumerate candidates, and then open the one file that actually matters. Web agents follow the same shape: search returns a ranked list, then a fetch tool retrieves a single page in full fidelity. In both cases, the agent is doing triage
+Coding agents are the cleanest example of this pattern. They use tools like “grep” and “glob” to enumerate candidate files, and then use the “read” tool to open the files that actually matter. Web agents follow the same shape where search returns a ranked list, then a fetch tool retrieves a single page in full fidelity. In both cases, the agent is doing a search.
 
-Most discoveries in traditional systems can be boiled into this "list and inspect" pattern. For example, if your agent tracks user preferences or memories, you could either preload everything you know about the user, or give the agent the capability to retrieve the one memory that matters for this question. The second approach stays fast, stays current, and avoids contaminating the agent with irrelevant state.
+This bias toward search over hand-crafted structure echoes what Richard Sutton famously called [*The Bitter Lesson:*](http://www.incompleteideas.net/IncIdeas/BitterLesson.html) that general methods which leverage computation and scale tend to outperform systems built around human-designed heuristics. Instead of hardcoding the “right” path (or a pipeline), we give the agent the ability to search the space efficiently via primitives and let compute do the narrowing.
 
-Pipelines assume the right context is knowable upfront. Primitives assume it isn't, so they keep the agent in a tight loop of "list, inspect, decide." That's what dynamic context really means: don't preload reality. Give the agent instruments to query it and the discipline to only pull what it needs.
+Let’s look at another example. If your agent tracks user preferences for online shopping, you could either preload everything you know about the user for every request, or give the agent the capability to retrieve the relevant preferences. 
+
+The second approach stays fast because LLMs do not process context linearly, instead compute and memory scale roughly quadratically (n²) with context length. Doubling the context window can quadruple the work. More tokens also directly increase cost, since most APIs price by input and output token count.
+
+By retrieving only what’s relevant, you reduce latency, reduce RAM pressure, reduce token spend, and improve reasoning quality. The model has less noise to sift through. The result is a system that stays current, stays efficient, and avoids contaminating the agent with irrelevant state.
+
+Primitive-Oriented Agent Design is ultimately a shift in how we think about building intelligent systems. Instead of anticipating every path and encoding deterministic workflows, our goal is to design a small set of composable primitives with clear boundaries that let the agent explore the largest possible surface area of your domain at runtime.
