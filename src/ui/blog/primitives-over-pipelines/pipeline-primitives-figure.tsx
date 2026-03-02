@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { cn } from '~/lib/utils/cn'
 import { Button } from '~/ui/button'
+import { Figure } from '~/ui/figure'
 import { PauseIcon } from '~/ui/icons/pause'
 import { PlayIcon } from '~/ui/icons/play'
 import { RestartIcon } from '~/ui/icons/restart'
@@ -265,12 +266,6 @@ export const PipelinePrimitivesFigure = () => {
 	return (
 		<div className="w-full rounded-xl border border-subtle bg-subtle/10 px-4 pt-4 pb-3">
 			<div className="relative w-full overflow-hidden" style={{ height: H }}>
-				{/* Divider line between halves */}
-				<div
-					className="absolute top-0 bottom-0 w-px bg-subtle transition-opacity duration-700"
-					style={{ left: '50%', opacity: 1 }}
-				/>
-
 				{/* === LEFT HALF: Pipeline (always visible) === */}
 
 				{/* Pipeline blocks */}
@@ -377,6 +372,7 @@ export const PipelinePrimitivesFigure = () => {
 					<Button size="sm" variant="icon" onClick={resetAssembly}>
 						<RestartIcon className="h-4 w-4" />
 					</Button>
+					<Figure.Share />
 				</div>
 			</div>
 		</div>

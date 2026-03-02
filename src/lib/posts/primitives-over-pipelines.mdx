@@ -1,6 +1,5 @@
 import { AUTHORS, CATEGORIES } from '~/lib/constants/blog'
 import { ListInspectFigure, PipelinePrimitivesFigure } from '~/ui/blog/primitives-over-pipelines'
-import { Caption, Figure } from '~/ui/figure'
 
 export const metadata = {
   title: "Primitives over pipelines",
@@ -12,9 +11,9 @@ export const metadata = {
   description: "Primitive-oriented agent design: equip agents with composable tools to assemble dynamic context at runtime instead of rigid pipelines."
 }
 
-<Figure>
+<Figure id="pipeline-primitives-figure">
   <PipelinePrimitivesFigure />
-  <Caption>A pipeline is rigid; primitives compose to fit each scenario.</Caption>
+  <Figure.Caption>A pipeline is rigid; primitives compose to fit each scenario.</Figure.Caption>
 </Figure>
 
 If you’ve read our latest post on [how Claude Code works](/blog/how-does-claude-code-actually-work), or built an AI agent, then you’ve probably noticed that an agent has three modes: gathering context, taking action, and verifying results.
@@ -35,9 +34,9 @@ In this style of agent design, we believe the system prompt should be thin, and 
 
 One simple pattern for implementing dynamic context discovery is **list and inspect**, which mirrors how large-scale search systems work. As Jeff Dean, Google’s Chief Scientist, [explains](https://open.substack.com/pub/swyx/p/jeffdean?selection=3fbc0847-8c55-4541-a16d-e649bd500ba0) that modern search systems don’t reason over everything at once. Instead, they begin by identifying a large candidate set using lightweight methods (i.e. listing) and then progressively using more sophisticated methods to narrow that set down to a handful that are worth inspecting in detail. 
 
-<Figure>
+<Figure id="list-inspect-figure">
   <ListInspectFigure />
-  <Caption>A coding agent lists files first, then inspects one file in detail.</Caption>
+  <Figure.Caption>A coding agent lists files first, then inspects one file in detail.</Figure.Caption>
 </Figure>
 
 Agents follow a similar pattern, as Large Language Models (LLMs) cannot attend to trillions of tokens at once, so instead they first list a broad set of candidates relevant to your domain (files, emails, records, events) and then inspect a smaller subset of candidates that matter. “List and inspect” is simply the conventional search pipeline compressed into a reusable primitive.

@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { cn } from '~/lib/utils/cn'
 import { Button } from '~/ui/button'
+import { Figure } from '~/ui/figure'
 import { PauseIcon } from '~/ui/icons/pause'
 import { PlayIcon } from '~/ui/icons/play'
 import { RestartIcon } from '~/ui/icons/restart'
@@ -157,6 +158,7 @@ export const ListInspectFigure = () => {
 					<Button size="sm" variant="icon" onClick={reset}>
 						<RestartIcon className="h-4 w-4" />
 					</Button>
+					<Figure.Share />
 				</div>
 			</div>
 		</div>
