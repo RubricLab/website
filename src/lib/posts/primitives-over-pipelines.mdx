@@ -1,4 +1,6 @@
 import { AUTHORS, CATEGORIES } from '~/lib/constants/blog'
+import { PipelinePrimitivesFigure } from '~/ui/blog/primitives-over-pipelines'
+import { Caption, Figure } from '~/ui/figure'
 
 export const metadata = {
   title: "Primitives over pipelines",
@@ -9,6 +11,11 @@ export const metadata = {
   category: CATEGORIES.THOUGHT,
   description: "When to build end-to-end pipelines versus reusable primitives in AI and software systems."
 }
+
+<Figure>
+  <PipelinePrimitivesFigure />
+  <Caption>A pipeline is rigid; primitives compose to fit each scenario.</Caption>
+</Figure>
 
 If you've read our latest post on <a href="/blog/how-does-claude-code-actually-work">how Claude Code works</a>, or designed an AI agent, you'll notice that an agent operates in three modes: gathering context, taking action, and verifying outcomes.
 
@@ -26,8 +33,6 @@ A thin system prompt, which is more taste than state. It should encode the goal,
 The best agents don't carry the full picture in their prompt, they reconstruct the smallest slice of relevant reality, on demand.
 
 One simple pattern for implementing dynamic context management is: list and inspect.
-
-[fig: listing items, then inspecting one in detail, two columns, on one side we get list and it returns 10 items, then on the right we inspect one of them and it shows full metadata for that item]
 
 This usually looks like a loop: first you list what might be relevant to your domain (files, emails, records, events), then you inspect the one or two candidates that matter, and only then do you answer or act.
 
