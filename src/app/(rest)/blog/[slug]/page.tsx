@@ -58,15 +58,15 @@ export default async function Page({ params }: Props) {
 						className="object-cover object-middle"
 					/>
 				</div>
-				<div className="flex w-full flex-col justify-between text-secondary sm:flex-row sm:items-center">
-					<p>{formatDate(metadata.date)}</p>
-					<p>
+				<div className="grid w-full grid-cols-1 gap-1 text-secondary sm:grid-cols-[1fr_auto_1fr] sm:items-center">
+					<p className="sm:justify-self-start">{formatDate(metadata.date)}</p>
+					<p className="sm:justify-self-center">
 						by{' '}
 						<Link href={metadata.author.url} target="_blank" rel="noopener noreferrer">
 							{metadata.author.name}
 						</Link>
 					</p>
-					<p>{metadata.category}</p>
+					<p className="sm:justify-self-end">{metadata.category}</p>
 				</div>
 				<article className="mx-auto max-w-full sm:max-w-2xl">
 					<div className="flex flex-col gap-2">
