@@ -13,6 +13,7 @@ export const env = createEnv({
 		ROS_API_URL: process.env.ROS_API_URL,
 		ROS_SECRET: process.env.ROS_SECRET,
 		URL: process.env.URL,
+		VERCEL_PROJECT_PRODUCTION_URL: process.env.VERCEL_PROJECT_PRODUCTION_URL,
 		VERCEL_URL: process.env.VERCEL_URL
 	},
 	server: {
@@ -20,6 +21,7 @@ export const env = createEnv({
 		ROS_API_URL: z.string().min(1),
 		ROS_SECRET: z.string().min(1),
 		URL: z.string().min(1),
+		VERCEL_PROJECT_PRODUCTION_URL: z.string().min(1).optional(),
 		VERCEL_URL: z.string().min(1).optional()
 	}
 })

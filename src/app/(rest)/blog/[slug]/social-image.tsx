@@ -1,14 +1,12 @@
 import { readFile } from 'node:fs/promises'
 import path from 'node:path'
 import { ImageResponse } from 'next/og'
-import { getPost, getPostSlugs } from '~/lib/utils/posts'
+import { getPost } from '~/lib/utils/posts'
 import { Rubric } from '~/ui/logos/rubric'
 
-export const runtime = 'nodejs'
-export const revalidate = 86400
-export const alt = 'Applied AI lab helping companies build intelligent applications'
-export const contentType = 'image/png'
-export const size = {
+export const BLOG_SOCIAL_IMAGE_ALT =
+	'Applied AI lab helping companies build intelligent applications'
+export const BLOG_SOCIAL_IMAGE_SIZE = {
 	height: 630,
 	width: 1200
 }
@@ -16,12 +14,7 @@ export const size = {
 const fontDataPromise = readFile(path.join(process.cwd(), 'src/app/fonts/matter-regular.woff'))
 const bannerSrcCache = new Map<string, string>()
 
-export async function generateStaticParams() {
-	const slugs = await getPostSlugs()
-	return slugs.map(slug => ({ slug }))
-}
-
-export const Component = ({
+const BlogSocialImage = ({
 	title,
 	backgroundImageUrl
 }: {
@@ -114,14 +107,12 @@ const getBannerSrc = async (bannerImageUrl: string) => {
 	return bannerSrc
 }
 
-export default async function Image({ params }: { params: Promise<{ slug: string }> }) {
-	const { slug } = await params
-
+export const getBlogSocialImageResponse = async (slug: string) => {
 	const [{ metadata }, localFont] = await Promise.all([getPost(slug), fontDataPromise])
 	const bannerSrc = await getBannerSrc(metadata.bannerImageUrl)
 
-	return new ImageResponse(<Component title={metadata.title} backgroundImageUrl={bannerSrc} />, {
-		...size,
+	return new ImageResponse(<BlogSocialImage title={metadata.title} backgroundImageUrl={bannerSrc} />, {
+		...BLOG_SOCIAL_IMAGE_SIZE,
 		fonts: [
 			{
 				data: localFont,

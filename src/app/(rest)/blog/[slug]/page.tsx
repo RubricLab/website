@@ -24,12 +24,25 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	const { slug } = await params
 
 	const { metadata } = await getPost(slug)
-
-	return createMetadata({
+	const socialImageAlt = metadata.title
+	const socialMetadataPath = `/blog/${slug}`
+	const baseMetadata = createMetadata({
 		description: metadata.description,
-		pathname: `/blog/${slug}`,
+		pathname: socialMetadataPath,
 		title: `${metadata.title} | ${META.title}`
 	})
+
+	return {
+		...baseMetadata,
+		openGraph: {
+			...(baseMetadata.openGraph ?? {}),
+			images: [{ alt: socialImageAlt, url: `${socialMetadataPath}/opengraph-image` }]
+		},
+		twitter: {
+			...(baseMetadata.twitter ?? {}),
+			images: [{ alt: socialImageAlt, url: `${socialMetadataPath}/twitter-image` }]
+		}
+	}
 }
 
 export default async function Page({ params }: Props) {
