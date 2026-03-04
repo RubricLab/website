@@ -10,13 +10,11 @@ export const metadata = createMetadata({
 	description,
 	openGraph: {
 		description,
-		images: [{ alt: title, url: '/opengraph-image' }],
 		title
 	},
 	title,
 	twitter: {
 		description,
-		images: [{ alt: title, url: '/twitter-image' }],
 		title
 	}
 }, '/blog')
