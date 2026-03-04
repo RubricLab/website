@@ -25,21 +25,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 	const { metadata } = await getPost(slug)
 
-	const title = `${metadata.title} | ${META.title}`
-	const description = metadata.description
-
 	return createMetadata({
-		description,
-		openGraph: {
-			description,
-			title
-		},
-		title,
-		twitter: {
-			description,
-			title
-		}
-	}, `/blog/${slug}`)
+		description: metadata.description,
+		pathname: `/blog/${slug}`,
+		title: `${metadata.title} | ${META.title}`
+	})
 }
 
 export default async function Page({ params }: Props) {

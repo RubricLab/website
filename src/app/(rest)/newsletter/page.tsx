@@ -4,21 +4,11 @@ import { createMetadata } from '~/lib/utils/create-metadata'
 import { getNewsletterMetadata } from '~/lib/utils/newsletters'
 import { NewsletterList } from './newsletter-list'
 
-const title = `The Grid | ${META.title}`
-const description = `The Grid is a newsletter by Rubric Labs with three actionable insights on building, shipping, and scaling intelligent products. ${META.description}`
-
 export const metadata = createMetadata({
-	description,
-	openGraph: {
-		description,
-		title
-	},
-	title,
-	twitter: {
-		description,
-		title
-	}
-}, '/newsletter')
+	description: `The Grid is a newsletter by Rubric Labs with three actionable insights on building, shipping, and scaling intelligent products. ${META.description}`,
+	pathname: '/newsletter',
+	title: `The Grid | ${META.title}`
+})
 
 export default async function Page() {
 	const newsletters = await getNewsletterMetadata()

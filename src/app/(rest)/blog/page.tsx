@@ -3,21 +3,11 @@ import { createMetadata } from '~/lib/utils/create-metadata'
 import { getPostMetadata } from '~/lib/utils/posts'
 import { Card } from '~/ui/card'
 
-const description = `The latest from our team. ${META.description}`
-const title = `Blog | ${META.title}`
-
 export const metadata = createMetadata({
-	description,
-	openGraph: {
-		description,
-		title
-	},
-	title,
-	twitter: {
-		description,
-		title
-	}
-}, '/blog')
+	description: `The latest from our team. ${META.description}`,
+	pathname: '/blog',
+	title: `Blog | ${META.title}`
+})
 
 export default async function Page() {
 	const posts = await getPostMetadata()
