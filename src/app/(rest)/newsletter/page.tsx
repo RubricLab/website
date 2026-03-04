@@ -18,7 +18,7 @@ export const metadata = createMetadata({
 		description,
 		title
 	}
-})
+}, '/newsletter')
 
 export default async function Page() {
 	const newsletters = await getNewsletterMetadata()

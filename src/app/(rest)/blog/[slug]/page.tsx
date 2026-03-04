@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 			images: [{ alt: title, url: `/blog/${slug}/twitter-image` }],
 			title
 		}
-	})
+	}, `/blog/${slug}`)
 }
 
 export default async function Page({ params }: Props) {

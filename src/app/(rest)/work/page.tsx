@@ -17,7 +17,7 @@ export const metadata = createMetadata({
 		description,
 		title
 	}
-})
+}, '/work')
 
 export default function Page() {
 	return (

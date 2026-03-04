@@ -19,7 +19,7 @@ export const metadata = createMetadata({
 		images: [{ alt: title, url: '/twitter-image' }],
 		title
 	}
-})
+}, '/blog')
 
 export default async function Page() {
 	const posts = await getPostMetadata()

@@ -3,7 +3,12 @@ import type { Metadata } from 'next'
 type AppMetadata = Metadata & {
 	title: string
 	description: string
-	openGraph: NonNullable<Metadata['openGraph']> & { title: string; description: string }
+	openGraph: NonNullable<Metadata['openGraph']> & {
+		title: string
+		description: string
+		siteName: string
+		url: string
+	}
 	twitter: NonNullable<Metadata['twitter']> & {
 		title: string
 		description: string
@@ -17,7 +22,9 @@ const META: AppMetadata = {
 	openGraph: {
 		description: 'Rubric is an applied AI lab helping companies build intelligent applications.',
 		images: [{ alt: 'Rubric Labs', url: '/opengraph-image' }],
-		title: 'Rubric Labs'
+		siteName: 'Rubric Labs',
+		title: 'Rubric Labs',
+		url: '/'
 	},
 	title: 'Rubric Labs',
 	twitter: {

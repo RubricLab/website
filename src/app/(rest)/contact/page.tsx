@@ -16,7 +16,7 @@ export const metadata = createMetadata({
 		description,
 		title
 	}
-})
+}, '/contact')
 
 export default function Page() {
 	return (
