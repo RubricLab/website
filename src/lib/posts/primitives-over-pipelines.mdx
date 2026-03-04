@@ -2,7 +2,7 @@ import { AUTHORS, CATEGORIES } from '~/lib/constants/blog'
 import { PipelinePrimitivesFigure } from '~/ui/blog/primitives-over-pipelines'
 
 export const metadata = {
-  title: "Primitives over pipelines",
+  title: "Primitives over Pipelines",
   subtitle: "Give agents modular functions instead of prescriptive workflows",
   date: "2026-03-04",
   author: AUTHORS.SARIM_MALIK,
@@ -11,9 +11,9 @@ export const metadata = {
   description: "Primitive-Oriented Agent Design: replace rigid AI workflows with thin prompts and modular primitives so agents can assemble better, faster paths for user intent."
 }
 
-A lot of early AI systems that got built at orgs were built under an old era where models didn't know how to follow instructions, drifted off task, and hallucinated. 
+A lot of early AI systems that got built at orgs were built under an old era where models didn't know how to follow instructions, drifted off task, and hallucinated.
 
-To ensure these systems delivered value, we created rigid guardrails, prescriptive pipelines, and step-by-step orchestrations. The goal was to force user intent onto a predetermined path that the designer had already foreseen. In many ways, we were force-fitting our insights from the [classic software era](https://karpathy.medium.com/software-2-0-a64152b37c35) in this new age of AI-native software.
+To ensure these systems delivered value, we created rigid guardrails, prescriptive pipelines, and step-by-step orchestrations. The goal was to force user intent onto a predetermined path that the designer had already foreseen. In many ways, we were force-fitting our insights from the [classic software era](https://karpathy.medium.com/software-2-0-a64152b37c35) in this new age of AI-native software.  
 
 However, as of gpt-5.2 and opus-4.6, models exhibit improved instruction following and significantly reduced hallucination. The addition of native reasoning capabilities has enhanced the models' ability to admit uncertainty and, consequently, [decrease hallucination](https://openai.com/index/why-language-models-hallucinate/#:~:text=most%20evaluations%20measure%20model%20performance%20in%20a%20way%20that%20encourages%20guessing%20rather%20than%20honesty%20about%20uncertainty.) by better saying "I don't know" when lacking context. The models also have better planning capabilities and are able to break down complex tasks into smaller chunks without losing sight of the broader goal.
 
@@ -58,27 +58,29 @@ The prompt defines how the agent should think and behave, while primitives suppl
 
 ## A practical example
 
-Consider a feature that displays a skeleton view of some inventory or content. There are two ways to build it.
+Consider a shopping agent responsible for helping a user browse and inspect items in an online store. A user might ask to see what products are available, inspect the details of a specific item, or render a list of results in a structured UI. The agent’s job is to retrieve the relevant records and present them in a usable format.
+
+There are two ways to build this system.
 
 **Pipeline approach**
 
-You prescribe a fixed “search workflow.” The agent lists the skeleton, calls a search tool, maybe passes through a result-correction step, and finally renders the result. Every request follows the same sequence.
+You prescribe a fixed “search workflow.” The agent lists the product skeleton, calls a search tool, maybe passes through a result-correction step, and finally renders the result. Every request follows the same sequence.
 
-This produces predictable UI behavior, but it also inherits the limitations of the workflow itself. If the underlying inventory doesn’t match the use case you anticipated, the pipeline still executes the same steps. The agent cannot adapt the strategy to the situation. It simply walks the path it was given. Latency also accumulates because each stage runs even when it isn’t necessary.
+This produces predictable UI behavior, but it also inherits the limitations of the workflow itself. If the underlying catalog doesn’t match the use case you anticipated, the pipeline still executes the same steps. The agent cannot adapt the strategy to the situation. It simply walks the path it was given. Latency also accumulates because each stage runs even when it isn’t necessary.
 
 **Primitives approach**
 
 Instead of prescribing the workflow, you expose a small set of primitives:
-- **render_skeleton**: Renders the basic structure of an object or data.
-- **list**: Retrieves a collection of items with options for filtering and pagination.
-- **get**: Retrieves a single, specific item by its identifier.
-- **render[]**: Renders a collection of items using a specified rendering logic.
+- **render_skeleton**: Renders the basic structure of a product or collection.
+- **list**: Retrieves a collection of products with options for filtering and pagination.
+- **get**: Retrieves a single, specific product by its identifier.
+- **render[]**: Renders a collection of products using a specified rendering logic.
 
 None of these dictate order. They simply expose capabilities. Given these primitives, the agent can assemble its own workflow at runtime. For example:
-- It might list first, retrieve a subset with get, then render.
-- If the user asks for nested data, it may recurse and fetch deeper levels.
-- If multiple records are needed, it can parallelize retrieval before rendering.
-- If the answer is already known from context, it might skip listing entirely.
+- It might **list** available products, retrieve a few with **get**, then render them.
+- If the user asks for details about a specific product, it might skip listing and call **get** directly.
+- If the user asks to compare multiple products, it could retrieve them in parallel before rendering.
+- If the agent already knows which item the user means from prior context, it may go straight to rendering.
 
 The same primitives support many different execution paths. This is the core advantage of primitive-oriented systems: the designer **defines capabilities, not trajectories**. Each primitive remains simple and predictable, but together they give the agent the freedom to construct the right workflow for each request.
 
@@ -88,6 +90,6 @@ The result is a system that adapts to the user’s intent, avoids unnecessary st
 
 The core problem is that the pipeline encodes one trajectory through the solution space, while user intent and real-world data rarely follow a single predictable path.
 
-The skeleton example is one instance of a broader pattern. When the system can navigate the space itself, prescribing the path gets in the way. We're used to designing systems where we control the flow; with capable models, the leverage is in giving them room to assemble. 
+The shopping example is one instance of a broader pattern. When the system can navigate the space itself, prescribing the path gets in the way. We're used to designing systems where we control the flow; with capable models, the leverage is in giving them room to assemble. 
 
 Don't try to anticipate every path. Give primitives and let the agent figure it out.
