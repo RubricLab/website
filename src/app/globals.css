@@ -37,6 +37,14 @@
 }
 
 @layer base {
+	::selection {
+		@apply bg-primary text-background;
+	}
+
+	::-moz-selection {
+		@apply bg-primary text-background;
+	}
+
 	html {
 		@apply bg-background text-primary;
 		scroll-behavior: smooth;
