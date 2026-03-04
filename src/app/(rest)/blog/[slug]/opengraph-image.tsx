@@ -2,7 +2,6 @@ import { readFile } from 'node:fs/promises'
 import path from 'node:path'
 import { ImageResponse } from 'next/og'
 import { getPost, getPostSlugs } from '~/lib/utils/posts'
-import { getBaseUrl } from '~/lib/utils'
 import { Rubric } from '~/ui/logos/rubric'
 
 export const runtime = 'nodejs'
@@ -16,7 +15,6 @@ export const size = {
 
 const fontDataPromise = readFile(path.join(process.cwd(), 'src/app/fonts/matter-regular.woff'))
 const bannerSrcCache = new Map<string, string>()
-const ABSOLUTE_URL_PATTERN = /^https?:\/\//i
 
 export async function generateStaticParams() {
 	const slugs = await getPostSlugs()
@@ -98,11 +96,11 @@ export const Component = ({
 // Builds a cached data URI for banner images; input '/images/primitives.png' -> output 'data:image/png;base64,...'.
 const getBannerSrc = async (bannerImageUrl: string) => {
 	const cached = bannerSrcCache.get(bannerImageUrl)
-	if (cached !== undefined) return cached
+	if (cached) return cached
 
 	const bannerPath = bannerImageUrl.replace(/^\//, '')
 	const extension = path.extname(bannerPath).toLowerCase()
-	const fallbackMimeType =
+	const mimeType =
 		extension === '.png'
 			? 'image/png'
 			: extension === '.jpg' || extension === '.jpeg'
@@ -110,56 +108,27 @@ const getBannerSrc = async (bannerImageUrl: string) => {
 				: extension === '.webp'
 					? 'image/webp'
 					: 'image/png'
-
-	try {
-		const bannerData = await readFile(path.join(process.cwd(), 'public', bannerPath), 'base64')
-		const bannerSrc = `data:${fallbackMimeType};base64,${bannerData}`
-		bannerSrcCache.set(bannerImageUrl, bannerSrc)
-		return bannerSrc
-	} catch {
-		// Local assets may not exist in every environment. Try HTTP as a fallback.
-	}
-
-	const bannerUrl = ABSOLUTE_URL_PATTERN.test(bannerImageUrl)
-		? bannerImageUrl
-		: new URL(bannerImageUrl, getBaseUrl()).toString()
-
-	try {
-		const response = await fetch(bannerUrl, { next: { revalidate } })
-		if (!response.ok) throw new Error('Failed to fetch banner image')
-		const contentType = response.headers.get('content-type')?.split(';')[0] || fallbackMimeType
-		const bannerData = Buffer.from(await response.arrayBuffer()).toString('base64')
-		const bannerSrc = `data:${contentType};base64,${bannerData}`
-		bannerSrcCache.set(bannerImageUrl, bannerSrc)
-		return bannerSrc
-	} catch {
-		// Keep image generation resilient even if banner lookup fails.
-		bannerSrcCache.set(bannerImageUrl, '')
-		return ''
-	}
+	const bannerData = await readFile(path.join(process.cwd(), 'public', bannerPath), 'base64')
+	const bannerSrc = `data:${mimeType};base64,${bannerData}`
+	bannerSrcCache.set(bannerImageUrl, bannerSrc)
+	return bannerSrc
 }
 
 export default async function Image({ params }: { params: Promise<{ slug: string }> }) {
 	const { slug } = await params
 
-	const [{ metadata }, localFont] = await Promise.all([
-		getPost(slug),
-		fontDataPromise
-	])
+	const [{ metadata }, localFont] = await Promise.all([getPost(slug), fontDataPromise])
 	const bannerSrc = await getBannerSrc(metadata.bannerImageUrl)
 
-	return new ImageResponse(
-		<Component title={metadata.title} backgroundImageUrl={bannerSrc} />,
-		{
-			...size,
-			fonts: [
-				{
-					data: localFont,
-					name: 'Matter',
-					style: 'normal',
-					weight: 400
-				}
-			]
-		}
-	)
+	return new ImageResponse(<Component title={metadata.title} backgroundImageUrl={bannerSrc} />, {
+		...size,
+		fonts: [
+			{
+				data: localFont,
+				name: 'Matter',
+				style: 'normal',
+				weight: 400
+			}
+		]
+	})
 }
