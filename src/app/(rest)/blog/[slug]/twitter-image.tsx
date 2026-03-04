@@ -7,7 +7,7 @@ import { Rubric } from '~/ui/logos/rubric'
 export const runtime = 'nodejs'
 export const contentType = 'image/png'
 export const size = {
-	height: 1200,
+	height: 630,
 	width: 1200
 }
 
@@ -60,7 +60,7 @@ export const Component = ({
 					display: 'flex',
 					justifyContent: 'space-between',
 					left: 0,
-					padding: 48,
+					padding: 64,
 					position: 'absolute',
 					top: 0,
 					width: '100%'
@@ -77,12 +77,12 @@ export const Component = ({
 					display: 'flex',
 					justifyContent: 'space-between',
 					left: 0,
-					padding: 48,
+					padding: '48px 64px 72px',
 					position: 'absolute',
 					width: '100%'
 				}}
 			>
-				<div style={{ fontSize: 80 }}>{title}</div>
+				<div style={{ fontSize: 80, lineHeight: 1 }}>{title}</div>
 			</div>
 		</div>
 	)
