@@ -4,12 +4,16 @@ import { ImageResponse } from 'next/og'
 import { Rubric } from '~/ui/logos/rubric'
 
 export const runtime = 'nodejs'
+export const revalidate = 86400
 export const alt = 'Applied AI lab helping companies build intelligent applications'
 export const contentType = 'image/png'
 export const size = {
 	height: 630,
 	width: 1200
 }
+
+const fontDataPromise = readFile(path.join(process.cwd(), 'src/app/fonts/matter-regular.woff'))
+const rootImageDataPromise = readFile(path.join(process.cwd(), 'public/images/seedling.png'), 'base64')
 
 export const Component = ({ rootImageSrc }: { rootImageSrc: string }) => {
 	return (
@@ -46,8 +50,8 @@ export const Component = ({ rootImageSrc }: { rootImageSrc: string }) => {
 
 export default async function Response() {
 	const [localFont, rootImageData] = await Promise.all([
-		readFile(path.join(process.cwd(), 'src/app/fonts/matter-regular.woff')),
-		readFile(path.join(process.cwd(), 'public/images/seedling.png'), 'base64')
+		fontDataPromise,
+		rootImageDataPromise
 	])
 	const rootImageSrc = `data:image/png;base64,${rootImageData}`
 

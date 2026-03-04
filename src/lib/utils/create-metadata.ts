@@ -9,6 +9,7 @@ type CreateMetadataParams = {
 
 const createMetadata = ({ title, description, pathname = '/' }: CreateMetadataParams): Metadata => {
 	const canonical = pathname
+	const useDefaultSocialImages = !pathname.startsWith('/blog/')
 
 	return {
 		...META,
@@ -20,6 +21,7 @@ const createMetadata = ({ title, description, pathname = '/' }: CreateMetadataPa
 		openGraph: {
 			...(META.openGraph ?? {}),
 			description,
+			...(useDefaultSocialImages ? { images: [{ alt: title, url: '/opengraph-image' }] } : {}),
 			siteName: META.openGraph.siteName,
 			title,
 			url: canonical
@@ -28,6 +30,7 @@ const createMetadata = ({ title, description, pathname = '/' }: CreateMetadataPa
 		twitter: {
 			...(META.twitter ?? {}),
 			description,
+			...(useDefaultSocialImages ? { images: [{ alt: title, url: '/twitter-image' }] } : {}),
 			title
 		}
 	}
