@@ -13,11 +13,13 @@ export const metadata = {
 
 A lot of early AI systems that got built at orgs were built under an old era where models didn't know how to follow instructions, drifted off task, and hallucinated. 
 
-To ensure these systems delivered value, we created rigid guardrails, prescriptive pipelines, and step-by-step orchestrations. The goal was to force user intent onto a predetermined path that the designer had already foreseen. In many ways, we were force-fitting our insights from the [classic software era](https://karpathy.medium.com/software-2-0-a64152b37c35) in this new age of AI-native software.  
+To ensure these systems delivered value, we created rigid guardrails, prescriptive pipelines, and step-by-step orchestrations. The goal was to force user intent onto a predetermined path that the designer had already foreseen. In many ways, we were force-fitting our insights from the [classic software era](https://karpathy.medium.com/software-2-0-a64152b37c35) in this new age of AI-native software.
 
 However, as of gpt-5.2 and opus-4.6, models exhibit improved instruction following and significantly reduced hallucination. The addition of native reasoning capabilities has enhanced the models' ability to admit uncertainty and, consequently, [decrease hallucination](https://openai.com/index/why-language-models-hallucinate/#:~:text=most%20evaluations%20measure%20model%20performance%20in%20a%20way%20that%20encourages%20guessing%20rather%20than%20honesty%20about%20uncertainty.) by better saying "I don't know" when lacking context. The models also have better planning capabilities and are able to break down complex tasks into smaller chunks without losing sight of the broader goal.
 
 Paradoxically, the quality-control pipelines that were once protective are now becoming obstacles, as they impose a rigid trajectory through a solution space that the models are now capable of navigating more effectively on their own.
+
+> "In many ways, we were force-fitting our insights from the classic software era in this new age of AI-native software."
 
 ## Primitive-Oriented Agent Design
 
@@ -51,6 +53,8 @@ Instead, primitive-oriented systems favor thin system prompts. A thin prompt def
 In other words, the system prompt encodes **taste, not state**.
 
 The prompt defines how the agent should think and behave, while primitives supply the information required to act. This keeps the prompt small, keeps the system flexible, and ensures the agent reasons over fresh context rather than static assumptions.
+
+> "A thin system prompt encodes taste, not state."
 
 ## A practical example
 
