@@ -78,7 +78,7 @@ export default async function Page({ params }: Props) {
 						<Post />
 					</div>
 					<div className="flex flex-col gap-4 pt-8">
-						<CTA />
+						<CTA category={metadata.category} />
 						<NextPost slug={slug} />
 					</div>
 				</article>

@@ -30,5 +30,7 @@ const CATEGORIES = {
 	EXPERIMENT: 'Experiment'
 } as const
 
+type Category = (typeof CATEGORIES)[keyof typeof CATEGORIES]
+
 export { AUTHORS, CATEGORIES }
-export type { Author }
+export type { Author, Category }
