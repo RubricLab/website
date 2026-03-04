@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/og'
 import { getBaseUrl } from '~/lib/utils'
-import { getPost } from '~/lib/utils/posts'
+import { getPost, getPostSlugs } from '~/lib/utils/posts'
 import { Rubric } from '~/ui/logos/rubric'
 
 export const runtime = 'nodejs'
@@ -8,6 +8,11 @@ export const contentType = 'image/png'
 export const size = {
 	height: 1200,
 	width: 1200
+}
+
+export async function generateStaticParams() {
+	const slugs = await getPostSlugs()
+	return slugs.map(slug => ({ slug }))
 }
 
 export const Component = ({
@@ -85,7 +90,6 @@ export const Component = ({
 export default async function Response({
 	params
 }: {
-	id: string
 	params: Promise<{ slug: string }>
 }) {
 	const baseUrl = getBaseUrl()
