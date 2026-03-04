@@ -11,7 +11,7 @@ export const CTA = () => {
 
 	return (
 		<div className="flex flex-col gap-8">
-			<h2 className="max-w-2xl text-4xl sm:text-7xl">{hook}</h2>
+			<h2 className="max-w-2xl text-4xl sm:text-5xl">{hook}</h2>
 			<div className="flex flex-col items-center gap-4 sm:flex-row">
 				<Link
 					href="/contact"

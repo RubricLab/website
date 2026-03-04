@@ -4,10 +4,10 @@ import { META } from '~/lib/constants/metadata'
 import { createMetadata } from '~/lib/utils/create-metadata'
 import { formatDate } from '~/lib/utils/date'
 import { getPost, getPostSlugs } from '~/lib/utils/posts'
+import { CTA } from '~/ui/cta'
 import { CustomImage } from '~/ui/custom-image'
 import { NextPost } from '~/ui/next-post'
 import { TableOfContents } from '~/ui/table-of-contents'
-import { PostCTA } from './post-cta'
 
 export const dynamicParams = false
 
@@ -69,14 +69,18 @@ export default async function Page({ params }: Props) {
 					<p className="sm:justify-self-end">{metadata.category}</p>
 				</div>
 				<article className="mx-auto max-w-full sm:max-w-2xl">
-					<div className="flex flex-col gap-2">
-						<h1>{metadata.title}</h1>
-						{metadata.subtitle ? <h3 className="mt-0 text-secondary">{metadata.subtitle}</h3> : null}
+					<div className="flex flex-col gap-4">
+						<div className="flex flex-col gap-2">
+							<h1>{metadata.title}</h1>
+							{metadata.subtitle ? <h3 className="mt-0 text-secondary">{metadata.subtitle}</h3> : null}
+						</div>
+						<TableOfContents items={toc} />
+						<Post />
 					</div>
-					<TableOfContents items={toc} />
-					<Post />
-					<PostCTA />
-					<NextPost date={metadata.date} />
+					<div className="flex flex-col gap-4 pt-8">
+						<CTA />
+						<NextPost date={metadata.date} />
+					</div>
 				</article>
 			</div>
 		</div>
