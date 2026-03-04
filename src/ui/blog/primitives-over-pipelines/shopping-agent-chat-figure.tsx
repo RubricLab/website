@@ -188,8 +188,14 @@ export const ShoppingAgentChatFigure = () => {
 	}, [isPlaying, isComplete, totalTimelineSteps])
 
 	useEffect(() => {
-		if (isComplete) setIsPlaying(false)
-	}, [isComplete])
+		if (!isPlaying || !isComplete) return
+
+		const timer = setTimeout(() => {
+			setVisibleSteps(0)
+		}, STEP_INTERVAL_MS)
+
+		return () => clearTimeout(timer)
+	}, [isPlaying, isComplete])
 
 	const handleTogglePlay = useCallback(() => {
 		if (isComplete) {
