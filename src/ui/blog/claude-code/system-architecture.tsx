@@ -1,15 +1,13 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { toast } from 'sonner'
-import { useClipboard } from '~/lib/hooks/use-clipboard'
 import { cn } from '~/lib/utils/cn'
 import { CORE_TOOL_NAMES } from '~/ui/blog/claude-code/tools-table'
 import { Button } from '~/ui/button'
+import { Figure } from '~/ui/figure'
 import { PauseIcon } from '~/ui/icons/pause'
 import { PlayIcon } from '~/ui/icons/play'
 import { RestartIcon } from '~/ui/icons/restart'
-import { ShareIcon } from '~/ui/icons/share'
 
 const COMPONENT_ID = 'system-architecture'
 
@@ -137,7 +135,6 @@ export const SystemArchitecture = () => {
 	const [selectedModel, setSelectedModel] = useState<string>('sonnet-4')
 	const [isModelDropdownOpen, setIsModelDropdownOpen] = useState(false)
 
-	const { copied, handleCopy } = useClipboard()
 	const stepIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
 	const scrollContainerRef = useRef<HTMLDivElement>(null)
 
@@ -155,15 +152,6 @@ export const SystemArchitecture = () => {
 			scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight
 		}
 	}, [currentStep])
-
-	const copyLink = useCallback(() => {
-		const url = `${window.location.origin}${window.location.pathname}#${COMPONENT_ID}`
-		handleCopy(url)
-	}, [handleCopy])
-
-	useEffect(() => {
-		if (copied) toast.success('Link copied')
-	}, [copied])
 
 	const visibleMessages = MESSAGES.slice(0, currentStep + 1)
 
@@ -361,9 +349,7 @@ export const SystemArchitecture = () => {
 						<RestartIcon className="h-4 w-4" />
 					</Button>
 				</div>
-				<Button size="sm" variant="icon" onClick={copyLink}>
-					<ShareIcon className="h-4 w-4" />
-				</Button>
+				<Figure.Share id={COMPONENT_ID} />
 			</div>
 		</section>
 	)

@@ -3,7 +3,6 @@ import { AgentLoopCards } from '~/ui/blog/claude-code/agent-loop-cards'
 import { SystemArchitecture } from '~/ui/blog/claude-code/system-architecture'
 import { ToolsTable } from '~/ui/blog/claude-code/tools-table'
 import { Collapsible } from '~/ui/collapsible'
-import { Caption, Figure } from '~/ui/figure'
 
 export const metadata = {
   title: "How does Claude Code actually work?",
@@ -38,9 +37,9 @@ This seems to be emergent behaviour as it was [originally designed](https://yout
 
 Much of Claude Code's capabilities can be attributed to the built-in agentic loop which alternates between three phases:
 
-<Figure>
+<Figure id="phases">
   <AgentLoopCards />
-  <Caption>The phases Claude Code cycles through</Caption>
+  <Figure.Caption>The phases Claude Code cycles through</Figure.Caption>
 </Figure>
 
 Now here’s the key idea: the loop stretches or shrinks based on what you ask. A small request might complete in a few steps. A bigger request usually turns into a back-and-forth: read some files, change something, review it, repeat until it’s correct.
@@ -72,9 +71,9 @@ Claude Code sits near the agentic end. It is terminal-native, strongly harnessed
 
 Let’s zoom in on a single request. Claude Code doesn’t answer in one shot, it runs a tight transaction loop: decide what to do next, do it, then use the result as new evidence.
 
-<Figure>
+<Figure id="system-architecture">
   <SystemArchitecture />
-  <Caption>The context window grows as Claude gathers, acts, and verifies.</Caption>
+  <Figure.Caption>The context window grows as Claude gathers, acts, and verifies.</Figure.Caption>
 </Figure>
 
 Here’s the flow:
@@ -150,11 +149,11 @@ You can group the core tools into three buckets:
 
 Here are the core tools Claude Code uses most often in the gather/action/verify loop:
 
-<Figure>
+<Figure id="list-of-tools">
   <ToolsTable />
-  <Caption>
+  <Figure.Caption>
     Tools available to Claude Code
-  </Caption>
+  </Figure.Caption>
 </Figure>
 
 Beyond the core loop, Claude Code also has supporting tools that expand its surface area without changing the mental model:

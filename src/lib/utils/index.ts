@@ -1,5 +1,7 @@
 import { env } from '~/lib/env'
 
 export const getBaseUrl = () => {
-	return `http${env.NODE_ENV === 'production' ? 's' : ''}://${env.URL}`
+	const host = env.VERCEL_URL ?? env.URL
+	const protocol = host.includes('localhost') ? 'http' : 'https'
+	return `${protocol}://${host}`
 }

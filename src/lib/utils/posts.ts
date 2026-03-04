@@ -1,6 +1,6 @@
 import { readdir, readFile } from 'node:fs/promises'
 import path from 'node:path'
-import type { Author } from '~/lib/constants/blog'
+import type { Author, Category } from '~/lib/constants/blog'
 import { createSlugger } from '~/lib/utils/slugger'
 
 export type Post = {
@@ -9,7 +9,7 @@ export type Post = {
 	subtitle?: string
 	date: string
 	author: Author
-	category: string
+	category: Category
 	slug: string
 	bannerImageUrl: string
 }

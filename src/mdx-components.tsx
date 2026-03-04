@@ -5,11 +5,14 @@ import { createSlugger } from './lib/utils/slugger'
 import { CodeBlock } from './ui/codeblock'
 import { CopiableHeading } from './ui/copiable-heading'
 import { CustomImage } from './ui/custom-image'
+import { Figure, FigureCaption, FigureShare } from './ui/figure'
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
 	const slugger = createSlugger()
+	const figureComponents = Object.assign(Figure, { Caption: FigureCaption, Share: FigureShare })
 
-	const isExternalHref = (href: string) => href.startsWith('http://') || href.startsWith('https://') || href.startsWith('//')
+	const isExternalHref = (href: string) =>
+		href.startsWith('http://') || href.startsWith('https://') || href.startsWith('//')
 
 	const getText = (node: ReactNode): string => {
 		if (node == null || typeof node === 'boolean') return ''
@@ -27,7 +30,12 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 		a: ({ children, className, href, rel, ...props }: ComponentPropsWithoutRef<'a'>) => {
 			if (!href || typeof href !== 'string') return <a href={href} {...props} />
 			if (href.startsWith('#')) return <a href={href} {...props} />
-			if (href.startsWith('/')) return <Link href={href} className={className}>{children}</Link>
+			if (href.startsWith('/'))
+				return (
+					<Link href={href} className={className}>
+						{children}
+					</Link>
+				)
 			if (isExternalHref(href)) {
 				const safeRel = rel ? `${rel} noopener noreferrer` : 'noopener noreferrer'
 				return (
@@ -42,6 +50,9 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 				</a>
 			)
 		},
+		Figure: figureComponents,
+		'Figure.Caption': FigureCaption,
+		'Figure.Share': FigureShare,
 		h1: props => (
 			<CopiableHeading as="h1" id={props.id ?? slugger.slug(getText(props.children))} {...props} />
 		),

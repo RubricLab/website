@@ -1,18 +1,37 @@
 import type { Metadata } from 'next'
 import { META } from '~/lib/constants/metadata'
 
-const createMetadata = (overrides: Metadata = {}): Metadata => {
-	const { openGraph, twitter, ...rest } = overrides
+type CreateMetadataParams = {
+	title: string
+	description: string
+	pathname?: string
+}
+
+const createMetadata = ({ title, description, pathname = '/' }: CreateMetadataParams): Metadata => {
+	const canonical = pathname
+	const useDefaultSocialImages = !pathname.startsWith('/blog/')
+
 	return {
 		...META,
-		...rest,
+		alternates: {
+			...(META.alternates ?? {}),
+			canonical
+		},
+		description,
 		openGraph: {
 			...(META.openGraph ?? {}),
-			...(openGraph ?? {})
+			description,
+			...(useDefaultSocialImages ? { images: [{ alt: title, url: '/opengraph-image' }] } : {}),
+			siteName: META.openGraph.siteName,
+			title,
+			url: canonical
 		},
+		title,
 		twitter: {
 			...(META.twitter ?? {}),
-			...(twitter ?? {})
+			description,
+			...(useDefaultSocialImages ? { images: [{ alt: title, url: '/twitter-image' }] } : {}),
+			title
 		}
 	}
 }

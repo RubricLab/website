@@ -1,14 +1,24 @@
+import { readFile } from 'node:fs/promises'
+import path from 'node:path'
 import { ImageResponse } from 'next/og'
-import { getBaseUrl } from '~/lib/utils'
-import { getPost } from '~/lib/utils/posts'
+import { getPost, getPostSlugs } from '~/lib/utils/posts'
 import { Rubric } from '~/ui/logos/rubric'
 
 export const runtime = 'nodejs'
+export const revalidate = 86400
 export const alt = 'Applied AI lab helping companies build intelligent applications'
 export const contentType = 'image/png'
 export const size = {
 	height: 630,
 	width: 1200
+}
+
+const fontDataPromise = readFile(path.join(process.cwd(), 'src/app/fonts/matter-regular.woff'))
+const bannerSrcCache = new Map<string, string>()
+
+export async function generateStaticParams() {
+	const slugs = await getPostSlugs()
+	return slugs.map(slug => ({ slug }))
 }
 
 export const Component = ({
@@ -55,7 +65,7 @@ export const Component = ({
 					display: 'flex',
 					justifyContent: 'space-between',
 					left: 0,
-					padding: 48,
+					padding: 64,
 					position: 'absolute',
 					top: 0,
 					width: '100%'
@@ -72,29 +82,49 @@ export const Component = ({
 					display: 'flex',
 					justifyContent: 'space-between',
 					left: 0,
-					padding: 48,
+					padding: '48px 64px 72px',
 					position: 'absolute',
 					width: '100%'
 				}}
 			>
-				<div style={{ fontSize: 80 }}>{title}</div>
+				<div style={{ fontSize: 80, lineHeight: 1 }}>{title}</div>
 			</div>
 		</div>
 	)
 }
 
-export default async function Image({ params }: { id: string; params: Promise<{ slug: string }> }) {
-	const baseUrl = getBaseUrl()
+// Builds a cached data URI for banner images; input '/images/primitives.png' -> output 'data:image/png;base64,...'.
+const getBannerSrc = async (bannerImageUrl: string) => {
+	const cached = bannerSrcCache.get(bannerImageUrl)
+	if (cached) return cached
 
+	const bannerPath = bannerImageUrl.replace(/^\//, '')
+	const extension = path.extname(bannerPath).toLowerCase()
+	const mimeType =
+		extension === '.png'
+			? 'image/png'
+			: extension === '.jpg' || extension === '.jpeg'
+				? 'image/jpeg'
+				: extension === '.webp'
+					? 'image/webp'
+					: 'image/png'
+	const bannerData = await readFile(path.join(process.cwd(), 'public', bannerPath), 'base64')
+	const bannerSrc = `data:${mimeType};base64,${bannerData}`
+	bannerSrcCache.set(bannerImageUrl, bannerSrc)
+	return bannerSrc
+}
+
+export default async function Image({ params }: { params: Promise<{ slug: string }> }) {
 	const { slug } = await params
 
 	const [{ metadata }, localFont] = await Promise.all([
 		getPost(slug),
-		fetch(`${baseUrl}/fonts/matter-regular.woff`).then(res => res.arrayBuffer())
+		fontDataPromise
 	])
+	const bannerSrc = await getBannerSrc(metadata.bannerImageUrl)
 
 	return new ImageResponse(
-		<Component title={metadata.title} backgroundImageUrl={`${baseUrl}${metadata.bannerImageUrl}`} />,
+		<Component title={metadata.title} backgroundImageUrl={bannerSrc} />,
 		{
 			...size,
 			fonts: [
