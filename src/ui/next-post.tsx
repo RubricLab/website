@@ -14,7 +14,7 @@ export const NextPost = async ({ date }: { date: string }) => {
 		)
 
 	return (
-		<div className="flex flex-col gap-8 py-16">
+		<div className="flex flex-col gap-8">
 			<h2>Keep reading</h2>
 			<div className="grid max-w-4xl gap-8 sm:grid-cols-2">
 				{otherPosts.slice(0, 2).map(post => (

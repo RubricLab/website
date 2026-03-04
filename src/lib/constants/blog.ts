@@ -1,9 +1,9 @@
-export type Author = {
+type Author = {
 	name: string
 	url: string
 }
 
-export const AUTHORS = {
+const AUTHORS = {
 	ARIHAN_VARANASI: {
 		name: 'Arihan Varanasi',
 		url: 'https://x.com/arihanxv'
@@ -22,12 +22,13 @@ export const AUTHORS = {
 	}
 } as const
 
-export const CATEGORIES = {
-	AI: 'AI',
+const CATEGORIES = {
+	ANNOUNCEMENT: 'Announcement',
 	BREAKDOWN: 'Breakdown',
 	CASE_STUDY: 'Case study',
-	DEVOPS: 'DevOps',
-	LAUNCH: 'Launch',
-	TEAM: 'Team',
-	THOUGHT: 'Thought'
+	ESSAY: 'Essay',
+	EXPERIMENT: 'Experiment'
 } as const
+
+export { AUTHORS, CATEGORIES }
+export type { Author }
