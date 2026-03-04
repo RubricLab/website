@@ -1,3 +1,5 @@
+import { readFile } from 'node:fs/promises'
+import path from 'node:path'
 import { ImageResponse } from 'next/og'
 import { getBaseUrl } from '~/lib/utils'
 import { getPost, getPostSlugs } from '~/lib/utils/posts'
@@ -98,7 +100,7 @@ export default async function Response({
 
 	const [{ metadata }, localFont] = await Promise.all([
 		getPost(slug),
-		fetch(new URL(`${baseUrl}/fonts/matter-regular.woff`)).then(res => res.arrayBuffer())
+		readFile(path.join(process.cwd(), 'src/app/fonts/matter-regular.woff'))
 	])
 
 	return new ImageResponse(
