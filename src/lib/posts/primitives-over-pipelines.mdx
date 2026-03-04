@@ -1,5 +1,5 @@
 import { AUTHORS, CATEGORIES } from '~/lib/constants/blog'
-import { PipelinePrimitivesFigure } from '~/ui/blog/primitives-over-pipelines'
+import { PipelinePrimitivesFigure, ShoppingAgentChatFigure } from '~/ui/blog/primitives-over-pipelines'
 
 export const metadata = {
   title: "Primitives over Pipelines",
@@ -71,16 +71,20 @@ This produces predictable UI behavior, but it also inherits the limitations of t
 **Primitives approach**
 
 Instead of prescribing the workflow, you expose a small set of primitives:
-- **render_skeleton**: Renders the basic structure of a product or collection.
 - **list**: Retrieves a collection of products with options for filtering and pagination.
 - **get**: Retrieves a single, specific product by its identifier.
-- **render[]**: Renders a collection of products using a specified rendering logic.
+- **render**: Renders a collection of products using a specified rendering logic.
 
 None of these dictate order. They simply expose capabilities. Given these primitives, the agent can assemble its own workflow at runtime. For example:
 - It might **list** available products, retrieve a few with **get**, then render them.
 - If the user asks for details about a specific product, it might skip listing and call **get** directly.
 - If the user asks to compare multiple products, it could retrieve them in parallel before rendering.
 - If the agent already knows which item the user means from prior context, it may go straight to rendering.
+
+<Figure id="shopping-agent-chat-figure">
+  <ShoppingAgentChatFigure />
+  <Figure.Caption>One primitive set, multiple execution paths based on intent.</Figure.Caption>
+</Figure>
 
 The same primitives support many different execution paths. This is the core advantage of primitive-oriented systems: the designer **defines capabilities, not trajectories**. Each primitive remains simple and predictable, but together they give the agent the freedom to construct the right workflow for each request.
 
