@@ -1,5 +1,5 @@
 import { AUTHORS, CATEGORIES } from '~/lib/constants/blog'
-import { PipelinePrimitivesFigure } from '~/ui/blog/primitives-over-pipelines'
+import { AssemblyScenariosFigure, PipelinePrimitivesFigure } from '~/ui/blog/primitives-over-pipelines'
 
 export const metadata = {
   title: "Primitives over pipelines",
@@ -50,6 +50,8 @@ Instead, primitive-oriented systems favor thin system prompts. A thin prompt def
 
 In other words, the system prompt encodes **taste, not state**.
 
+> **Actionable insight:** "In other words, the system prompt encodes **taste, not state**."
+
 The prompt defines how the agent should think and behave, while primitives supply the information required to act. This keeps the prompt small, keeps the system flexible, and ensures the agent reasons over fresh context rather than static assumptions.
 
 ## A practical example
@@ -76,6 +78,11 @@ None of these dictate order. They simply expose capabilities. Given these primit
 - If multiple records are needed, it can parallelize retrieval before rendering.
 - If the answer is already known from context, it might skip listing entirely.
 
+<Figure id="assembly-scenarios-figure">
+  <AssemblyScenariosFigure />
+  <Figure.Caption>The same primitives can assemble different workflows at runtime.</Figure.Caption>
+</Figure>
+
 The same primitives support many different execution paths. This is the core advantage of primitive-oriented systems: the designer **defines capabilities, not trajectories**. Each primitive remains simple and predictable, but together they give the agent the freedom to construct the right workflow for each request.
 
 The result is a system that adapts to the user’s intent, avoids unnecessary steps, and reasons over the problem instead of replaying a predetermined script.
@@ -87,3 +94,5 @@ The core problem is that the pipeline encodes one trajectory through the solutio
 The skeleton example is one instance of a broader pattern. When the system can navigate the space itself, prescribing the path gets in the way. We're used to designing systems where we control the flow; with capable models, the leverage is in giving them room to assemble. 
 
 Don't try to anticipate every path. Give primitives and let the agent figure it out.
+
+> **Actionable insight:** "Don't try to anticipate every path. Give primitives and let the agent figure it out."
