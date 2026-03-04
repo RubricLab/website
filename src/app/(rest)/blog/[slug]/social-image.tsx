@@ -1,6 +1,7 @@
 import { readFile } from 'node:fs/promises'
 import path from 'node:path'
 import { ImageResponse } from 'next/og'
+import { toJpegImageResponse } from '~/lib/utils/og-image'
 import { getPost } from '~/lib/utils/posts'
 import { Rubric } from '~/ui/logos/rubric'
 
@@ -110,16 +111,20 @@ const getBannerSrc = async (bannerImageUrl: string) => {
 export const getBlogSocialImageResponse = async (slug: string) => {
 	const [{ metadata }, localFont] = await Promise.all([getPost(slug), fontDataPromise])
 	const bannerSrc = await getBannerSrc(metadata.bannerImageUrl)
+	const pngResponse = new ImageResponse(
+		<BlogSocialImage title={metadata.title} backgroundImageUrl={bannerSrc} />,
+		{
+			...BLOG_SOCIAL_IMAGE_SIZE,
+			fonts: [
+				{
+					data: localFont,
+					name: 'Matter',
+					style: 'normal',
+					weight: 400
+				}
+			]
+		}
+	)
 
-	return new ImageResponse(<BlogSocialImage title={metadata.title} backgroundImageUrl={bannerSrc} />, {
-		...BLOG_SOCIAL_IMAGE_SIZE,
-		fonts: [
-			{
-				data: localFont,
-				name: 'Matter',
-				style: 'normal',
-				weight: 400
-			}
-		]
-	})
+	return toJpegImageResponse(pngResponse)
 }

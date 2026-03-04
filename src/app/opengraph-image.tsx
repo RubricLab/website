@@ -1,12 +1,13 @@
 import { readFile } from 'node:fs/promises'
 import path from 'node:path'
 import { ImageResponse } from 'next/og'
+import { toJpegImageResponse } from '~/lib/utils/og-image'
 import { Rubric } from '~/ui/logos/rubric'
 
 export const runtime = 'nodejs'
 export const revalidate = 86400
 export const alt = 'Applied AI lab helping companies build intelligent applications'
-export const contentType = 'image/png'
+export const contentType = 'image/jpeg'
 export const size = {
 	height: 630,
 	width: 1200
@@ -48,14 +49,13 @@ export const Component = ({ rootImageSrc }: { rootImageSrc: string }) => {
 	)
 }
 
-export default async function Response() {
+export default async function Image() {
 	const [localFont, rootImageData] = await Promise.all([
 		fontDataPromise,
 		rootImageDataPromise
 	])
 	const rootImageSrc = `data:image/png;base64,${rootImageData}`
-
-	return new ImageResponse(<Component rootImageSrc={rootImageSrc} />, {
+	const pngResponse = new ImageResponse(<Component rootImageSrc={rootImageSrc} />, {
 		...size,
 		fonts: [
 			{
@@ -66,4 +66,5 @@ export default async function Response() {
 			}
 		]
 	})
+	return toJpegImageResponse(pngResponse)
 }
