@@ -1,7 +1,6 @@
 import { readFile } from 'node:fs/promises'
 import path from 'node:path'
 import { ImageResponse } from 'next/og'
-import { getBaseUrl } from '~/lib/utils'
 import { getPost, getPostSlugs } from '~/lib/utils/posts'
 import { Rubric } from '~/ui/logos/rubric'
 
@@ -91,17 +90,27 @@ export const Component = ({
 }
 
 export default async function Image({ params }: { params: Promise<{ slug: string }> }) {
-	const baseUrl = getBaseUrl()
-
 	const { slug } = await params
 
 	const [{ metadata }, localFont] = await Promise.all([
 		getPost(slug),
 		readFile(path.join(process.cwd(), 'src/app/fonts/matter-regular.woff'))
 	])
+	const bannerPath = metadata.bannerImageUrl.replace(/^\//, '')
+	const extension = path.extname(bannerPath).toLowerCase()
+	const mimeType =
+		extension === '.png'
+			? 'image/png'
+			: extension === '.jpg' || extension === '.jpeg'
+				? 'image/jpeg'
+				: extension === '.webp'
+					? 'image/webp'
+					: 'image/png'
+	const bannerData = await readFile(path.join(process.cwd(), 'public', bannerPath), 'base64')
+	const bannerSrc = `data:${mimeType};base64,${bannerData}`
 
 	return new ImageResponse(
-		<Component title={metadata.title} backgroundImageUrl={`${baseUrl}${metadata.bannerImageUrl}`} />,
+		<Component title={metadata.title} backgroundImageUrl={bannerSrc} />,
 		{
 			...size,
 			fonts: [
