@@ -36,7 +36,7 @@ export function FeaturedWork() {
 								<p className="font-mono text-[11px] text-text-tertiary tracking-wide">
 									{study.client} · {study.context}
 								</p>
-								<h3 className="mt-2 font-normal font-sans text-xl text-text-primary transition-colors duration-200 group-hover:text-white">
+								<h3 className="mt-2 font-normal font-sans text-xl text-text-primary transition-colors duration-200 group-hover:text-text-accent">
 									{study.title}
 								</h3>
 								<p className="mt-2 font-sans text-[15px] text-text-secondary leading-relaxed">

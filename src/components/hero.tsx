@@ -1,11 +1,11 @@
 import Link from 'next/link'
-import { ContractTrace } from './contract-trace'
 import { FadeIn } from './fade-in'
+import { IntelligenceFlow } from './intelligence-flow'
 
 export function Hero() {
 	return (
 		<section className="relative flex min-h-svh flex-col justify-end pb-24 md:justify-center md:pb-0">
-			<ContractTrace />
+			<IntelligenceFlow />
 			<div className="relative z-10 mx-auto w-full max-w-[1200px] px-6 md:px-10">
 				<FadeIn>
 					<h1 className="font-normal font-sans text-[clamp(40px,8vw,80px)] text-text-primary leading-[1.05] tracking-tight">

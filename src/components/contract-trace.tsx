@@ -32,8 +32,8 @@ function TraceBlock() {
 		<div className="space-y-3 py-6">
 			{traceLines.map(line => (
 				<div key={line.num} className="flex gap-4 whitespace-nowrap">
-					<span className="w-6 text-right text-code-green/20">{line.num}</span>
-					<span className="text-code-green/10">
+					<span className="w-6 text-right text-text-tertiary/30">{line.num}</span>
+					<span className="text-text-tertiary/15">
 						{line.label.padEnd(24)}
 						{line.desc}
 					</span>
