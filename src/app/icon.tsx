@@ -10,15 +10,23 @@ export const size = {
 
 export default async function Icon() {
 	return new ImageResponse(
-		// biome-ignore lint/a11y/noSvgWithoutTitle: renders visually
-		<svg width="32" height="32" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-			<rect width="64" height="64" fill="black" />
-			<path
-				d="M12.7998 12.7998H25.5998V25.5998H38.3998V38.3998H25.5998V51.1998H12.7998V12.7998Z"
-				fill="white"
-			/>
-			<path d="M38.3998 25.5998V12.7998H51.1998V25.5998H38.3998Z" fill="white" />
-		</svg>,
+		<div
+			style={{
+				alignItems: 'center',
+				background: '#0A0A0A',
+				color: '#EDEDED',
+				display: 'flex',
+				fontFamily: 'monospace',
+				fontSize: 22,
+				fontWeight: 500,
+				height: '100%',
+				justifyContent: 'center',
+				letterSpacing: '0.05em',
+				width: '100%'
+			}}
+		>
+			R
+		</div>,
 		{ ...size }
 	)
 }

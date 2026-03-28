@@ -9,6 +9,7 @@
 		"@vimeo/player": "^2.26.0",
 		"clsx": "^2.1.1",
 		"framer-motion": "^12.23.26",
+		"geist": "^1.7.0",
 		"hls.js": "^1.5.20",
 		"next": "^16.0.10",
 		"posthog-js": "1.335.3",

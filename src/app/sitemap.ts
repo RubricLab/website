@@ -1,8 +1,10 @@
 import type { MetadataRoute } from 'next'
-import { getBaseUrl } from '~/lib/utils'
-import { getPostMetadata } from '~/lib/utils/posts'
+import { caseStudies } from '~/lib/case-studies'
+import { getPostMetadata } from '~/lib/posts'
 
-const createEntry = (
+const BASE = 'https://rubriclabs.com'
+
+const entry = (
 	url: string,
 	changeFrequency: MetadataRoute.Sitemap[number]['changeFrequency'],
 	priority: number,
@@ -15,24 +17,25 @@ const createEntry = (
 })
 
 const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
-	const base = getBaseUrl()
 	const now = new Date()
 
 	const staticEntries: MetadataRoute.Sitemap = [
-		createEntry(`${base}`, 'weekly', 1, now),
-		createEntry(`${base}/blog`, 'daily', 0.9, now),
-		createEntry(`${base}/work`, 'monthly', 0.8, now),
-		createEntry(`${base}/contact`, 'monthly', 0.7, now),
-		createEntry(`${base}/privacy`, 'yearly', 0.3, now)
+		entry(BASE, 'weekly', 1, now),
+		entry(`${BASE}/work`, 'monthly', 0.9, now),
+		entry(`${BASE}/lab`, 'daily', 0.9, now),
+		entry(`${BASE}/contact`, 'monthly', 0.7, now)
 	]
 
-	const posts = await getPostMetadata()
-
-	const postEntries: MetadataRoute.Sitemap = posts.map(post =>
-		createEntry(`${base}/blog/${post.slug}`, 'monthly', 0.75, new Date(post.date))
+	const caseStudyEntries: MetadataRoute.Sitemap = caseStudies.map(study =>
+		entry(`${BASE}/work/${study.slug}`, 'monthly', 0.8, now)
 	)
 
-	return [...staticEntries, ...postEntries]
+	const posts = await getPostMetadata()
+	const postEntries: MetadataRoute.Sitemap = posts.map(post =>
+		entry(`${BASE}/lab/${post.slug}`, 'monthly', 0.75, new Date(post.date))
+	)
+
+	return [...staticEntries, ...caseStudyEntries, ...postEntries]
 }
 
 export default sitemap

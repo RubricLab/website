@@ -1,11 +1,11 @@
 import type { MDXComponents } from 'mdx/types'
 import Link from 'next/link'
 import type { ComponentPropsWithoutRef, ReactNode } from 'react'
+import { CodeBlock } from './components/codeblock'
+import { CopiableHeading } from './components/copiable-heading'
+import { CustomImage } from './components/custom-image'
+import { Figure, FigureCaption, FigureShare } from './components/figure'
 import { createSlugger } from './lib/utils/slugger'
-import { CodeBlock } from './ui/codeblock'
-import { CopiableHeading } from './ui/copiable-heading'
-import { CustomImage } from './ui/custom-image'
-import { Figure, FigureCaption, FigureShare } from './ui/figure'
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
 	const slugger = createSlugger()
