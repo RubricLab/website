@@ -4,7 +4,6 @@ import { Graphite } from '~/components/logos/graphite'
 import { Gumloop } from '~/components/logos/gumloop'
 import { Langchain } from '~/components/logos/langchain'
 import { Vercel } from '~/components/logos/vercel'
-import { FadeIn } from './fade-in'
 
 const logos = [
 	{ Component: Vercel, name: 'Vercel' },
@@ -17,22 +16,19 @@ const logos = [
 
 export function LogoBar() {
 	return (
-		<FadeIn>
-			<div className="mx-auto max-w-[1200px] px-6 md:px-10">
-				<p className="mb-8 text-center font-mono text-[11px] text-text-tertiary uppercase tracking-[0.15em]">
-					Trusted by
-				</p>
-				<div className="flex flex-wrap items-center justify-center gap-10 md:gap-14">
+		<div className="border-y border-[#1A1A1A] py-6">
+			<div className="mx-auto max-w-[1200px] px-6 md:px-8">
+				<div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">
 					{logos.map(logo => (
 						<div
 							key={logo.name}
-							className="flex items-center opacity-40 transition-opacity duration-300 hover:opacity-80"
+							className="flex items-center opacity-40 hover:opacity-70 transition-opacity duration-200"
 						>
-							<logo.Component className="h-5 w-auto max-w-[100px] text-text-primary" />
+							<logo.Component className="h-[24px] w-auto text-white" />
 						</div>
 					))}
 				</div>
 			</div>
-		</FadeIn>
+		</div>
 	)
 }

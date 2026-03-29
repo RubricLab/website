@@ -3,9 +3,10 @@
   "configurations": [
     {
       "name": "dev",
-      "runtimeExecutable": "pnpm",
-      "runtimeArgs": ["dev", "--port", "3456"],
-      "port": 3456
+      "runtimeExecutable": "bun",
+      "runtimeArgs": ["dev"],
+      "port": 3456,
+      "autoPort": true
     }
   ]
 }

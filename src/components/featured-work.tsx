@@ -1,62 +1,56 @@
 import Link from 'next/link'
 import { getFeaturedCaseStudies } from '~/lib/case-studies'
 import { FadeIn } from './fade-in'
-import { Section } from './section'
 
 export function FeaturedWork() {
 	const featured = getFeaturedCaseStudies()
 
 	return (
-		<Section>
+		<section className="max-w-[1200px] mx-auto px-6 md:px-8 py-24">
 			<FadeIn>
-				<div className="mb-12 flex items-center justify-between">
-					<span className="font-mono text-[11px] text-text-tertiary uppercase tracking-[0.15em]">
+				<div className="flex items-center justify-between mb-8">
+					<span className="font-mono text-xs text-[#555555] tracking-widest uppercase">
 						Work
 					</span>
 					<Link
 						href="/work"
-						className="group inline-flex items-center gap-2 font-mono text-[12px] text-text-tertiary transition-colors duration-200 hover:text-text-secondary"
+						className="group inline-flex items-center gap-2 font-mono text-sm text-[#888888] transition-colors duration-200 hover:text-[#EDEDED]"
 					>
 						<span>See all</span>
 						<span className="transition-transform duration-200 group-hover:translate-x-0.5">
-							&rarr;
+							→
 						</span>
 					</Link>
 				</div>
 			</FadeIn>
-			<div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 				{featured.map((study, i) => (
 					<FadeIn key={study.slug} delay={i * 0.08}>
 						<Link
 							href={`/work/${study.slug}`}
-							className="group block overflow-hidden rounded-xl border border-border bg-surface/30 transition-all duration-300 hover:border-border-hover hover:bg-surface/60"
+							className="group block overflow-hidden rounded-lg border border-[#1A1A1A] bg-[#111111] hover:border-[#2A2A2A] transition-colors duration-200"
 						>
-							<div className="visual-placeholder aspect-[16/10]" />
+							<div className="aspect-video bg-[#0A0A0A] rounded-t-lg flex items-center justify-center">
+								<span className="font-mono text-sm text-[#555555]">[ Visual ]</span>
+							</div>
 							<div className="p-6">
-								<p className="font-mono text-[11px] text-text-tertiary tracking-wide">
+								<p className="font-mono text-xs text-[#888888]">
 									{study.client} · {study.context}
 								</p>
-								<h3 className="mt-2 font-normal font-sans text-xl text-text-primary transition-colors duration-200 group-hover:text-text-accent">
+								<h3 className="font-sans text-2xl text-[#EDEDED] font-normal mt-1">
 									{study.title}
 								</h3>
-								<p className="mt-2 font-sans text-[15px] text-text-secondary leading-relaxed">
+								<p className="font-sans text-base text-[#888888] mt-2 leading-relaxed">
 									{study.description}
 								</p>
-								<div className="mt-4 flex flex-wrap gap-2">
-									{study.tags.slice(0, 3).map(tag => (
-										<span
-											key={tag}
-											className="rounded-full border border-border px-2.5 py-0.5 font-mono text-[10px] text-text-tertiary"
-										>
-											{tag}
-										</span>
-									))}
+								<div className="font-mono text-[11px] text-[#555555] mt-4">
+									{study.tags.slice(0, 4).join(' · ')}
 								</div>
 							</div>
 						</Link>
 					</FadeIn>
 				))}
 			</div>
-		</Section>
+		</section>
 	)
 }

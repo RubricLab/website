@@ -1,26 +1,29 @@
 @import "tailwindcss";
 
-/* Dark theme (default — "The City") */
-:root,
-[data-theme="dark"] {
-	/* Background */
-	--bg: #0c0a09;
-	--surface: #1c1917;
-	--surface-hover: #292524;
-	--border: #292524;
-	--border-hover: #44403c;
-	--border-subtle: #1c1917;
+/* ═══════════════════════════════════════════════════════════════════════
+   LIGHT MODE (default — warm, soft, daylight)
+   ═══════════════════════════════════════════════════════════════════════ */
+:root {
+	--bg: #F5F2ED;
+	--surface: #FFFFFF;
+	--surface-hover: #FAF8F5;
+	--border: #E6E1D9;
+	--border-hover: #D4CFC5;
+	--border-subtle: #EDE9E2;
 
-	/* Text */
-	--text-primary: #fafaf9;
-	--text-secondary: #d6d3d1;
-	--text-tertiary: #a8a29e;
-	--text-accent: #e7e5e4;
+	--text-primary: #2D2A24;
+	--text-secondary: #7A756B;
+	--text-tertiary: #A9A39A;
+	--text-accent: #3D3830;
 
-	/* Special */
-	--code-green: #4ade80;
+	--accent: #7C9A82;
+	--accent-soft: rgba(124, 154, 130, 0.12);
 
-	/* Spacing */
+	--code-green: #5A8F64;
+
+	--hero-grain: 0.3;
+	--hero-glow: none;
+
 	--max-width: 1200px;
 	--content-width: 720px;
 	--section-padding: 120px;
@@ -29,46 +32,72 @@
 	--card-gap: 16px;
 	--card-radius: 12px;
 
-	color-scheme: dark;
-}
-
-/* Light theme ("Outdoors") */
-[data-theme="light"] {
-	--bg: #fafaf9;
-	--surface: #f5f5f4;
-	--surface-hover: #e7e5e4;
-	--border: #e7e5e4;
-	--border-hover: #d6d3d1;
-	--border-subtle: #f5f5f4;
-
-	--text-primary: #1c1917;
-	--text-secondary: #57534e;
-	--text-tertiary: #a8a29e;
-	--text-accent: #292524;
-
-	--code-green: #16a34a;
-
 	color-scheme: light;
 }
 
-@media (prefers-color-scheme: light) {
-	:root:not([data-theme="dark"]) {
-		--bg: #fafaf9;
-		--surface: #f5f5f4;
-		--surface-hover: #e7e5e4;
-		--border: #e7e5e4;
-		--border-hover: #d6d3d1;
-		--border-subtle: #f5f5f4;
+/* ═══════════════════════════════════════════════════════════════════════
+   DARK MODE — dawn dark, warm, stars + horizon glow
+   ═══════════════════════════════════════════════════════════════════════ */
+@media (prefers-color-scheme: dark) {
+	:root {
+		--bg: #0E0D0A;
+		--surface: #181714;
+		--surface-hover: #1F1E1A;
+		--border: #2A2822;
+		--border-hover: #3A372F;
+		--border-subtle: #1F1E1A;
 
-		--text-primary: #1c1917;
-		--text-secondary: #57534e;
-		--text-tertiary: #a8a29e;
-		--text-accent: #292524;
+		--text-primary: #E8E3D9;
+		--text-secondary: #8A847A;
+		--text-tertiary: #5A564F;
+		--text-accent: #D4CFC5;
 
-		--code-green: #16a34a;
+		--accent: #A3C4A9;
+		--accent-soft: rgba(163, 196, 169, 0.1);
 
-		color-scheme: light;
+		--code-green: #A3C4A9;
+
+		--hero-grain: 0.4;
+
+		color-scheme: dark;
 	}
+}
+
+/* Also support explicit data-theme overrides */
+[data-theme="light"] {
+	--bg: #F5F2ED;
+	--surface: #FFFFFF;
+	--surface-hover: #FAF8F5;
+	--border: #E6E1D9;
+	--border-hover: #D4CFC5;
+	--border-subtle: #EDE9E2;
+	--text-primary: #2D2A24;
+	--text-secondary: #7A756B;
+	--text-tertiary: #A9A39A;
+	--text-accent: #3D3830;
+	--accent: #7C9A82;
+	--accent-soft: rgba(124, 154, 130, 0.12);
+	--code-green: #5A8F64;
+	--hero-grain: 0.3;
+	color-scheme: light;
+}
+
+[data-theme="dark"] {
+	--bg: #0E0D0A;
+	--surface: #181714;
+	--surface-hover: #1F1E1A;
+	--border: #2A2822;
+	--border-hover: #3A372F;
+	--border-subtle: #1F1E1A;
+	--text-primary: #E8E3D9;
+	--text-secondary: #8A847A;
+	--text-tertiary: #5A564F;
+	--text-accent: #D4CFC5;
+	--accent: #A3C4A9;
+	--accent-soft: rgba(163, 196, 169, 0.1);
+	--code-green: #A3C4A9;
+	--hero-grain: 0.4;
+	color-scheme: dark;
 }
 
 @theme inline {
@@ -82,6 +111,8 @@
 	--color-text-secondary: var(--text-secondary);
 	--color-text-tertiary: var(--text-tertiary);
 	--color-text-accent: var(--text-accent);
+	--color-accent: var(--accent);
+	--color-accent-soft: var(--accent-soft);
 	--color-code-green: var(--code-green);
 	--font-sans: var(--font-geist-sans);
 	--font-mono: var(--font-mono);
@@ -97,15 +128,17 @@ html {
 	scroll-behavior: smooth;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+	overflow-x: clip;
 }
 
 body {
 	background: var(--bg);
 	color: var(--text-primary);
+	overflow-x: clip;
 }
 
 ::selection {
-	background: var(--text-primary);
+	background: var(--accent);
 	color: var(--bg);
 }
 
@@ -119,6 +152,63 @@ body {
 ::-webkit-scrollbar-thumb {
 	background: var(--border-hover);
 	border-radius: 3px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   DARK MODE ATMOSPHERE — dawn horizon glow + stars
+   ═══════════════════════════════════════════════════════════════════════ */
+@media (prefers-color-scheme: dark) {
+	body::after {
+		content: '';
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		height: 40vh;
+		z-index: 0;
+		pointer-events: none;
+		background: linear-gradient(
+			to top,
+			rgba(163, 130, 82, 0.08) 0%,
+			rgba(163, 150, 110, 0.04) 30%,
+			rgba(163, 150, 110, 0.01) 60%,
+			transparent 100%
+		);
+	}
+}
+
+[data-theme="dark"] body::after {
+	content: '';
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 40vh;
+	z-index: 0;
+	pointer-events: none;
+	background: linear-gradient(
+		to top,
+		rgba(163, 130, 82, 0.08) 0%,
+		rgba(163, 150, 110, 0.04) 30%,
+		rgba(163, 150, 110, 0.01) 60%,
+		transparent 100%
+	);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   GRAIN OVERLAY
+   ═══════════════════════════════════════════════════════════════════════ */
+body::before {
+	content: '';
+	position: fixed;
+	inset: 0;
+	z-index: 9999;
+	pointer-events: none;
+	opacity: var(--hero-grain);
+	background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+	background-repeat: repeat;
+	background-size: 200px 200px;
+	mix-blend-mode: overlay;
 }
 
 /* Article typography */
@@ -404,17 +494,55 @@ video::-webkit-media-text-track-container {
 	filter: grayscale(100%);
 }
 
-/* Contract trace animation */
-@keyframes scroll-trace {
-	0% {
-		transform: translateY(0);
-	}
-	100% {
-		transform: translateY(-33.33%);
-	}
+/* Animations */
+@keyframes blink {
+	0%, 100% { opacity: 1; }
+	50% { opacity: 0; }
 }
 
-/* Visual placeholder gradient */
+@keyframes fadeIn {
+	from { opacity: 0; transform: translateY(4px); }
+	to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes bounce-gentle {
+	0%, 100% { transform: translateY(0); }
+	50% { transform: translateY(4px); }
+}
+
+.animate-blink {
+	animation: blink 1.06s step-end infinite;
+}
+
+.animate-fadeIn {
+	animation: fadeIn 300ms ease-out forwards;
+}
+
+.animate-bounce-gentle {
+	animation: bounce-gentle 1.5s ease-in-out infinite;
+}
+
+@keyframes scroll-trace {
+	0% { transform: translateY(0); }
+	100% { transform: translateY(-33.33%); }
+}
+
+@keyframes shimmer {
+	0% { background-position: -200% 0; }
+	100% { background-position: 200% 0; }
+}
+
+.animate-shimmer {
+	background: linear-gradient(90deg, var(--border) 25%, var(--border-hover) 50%, var(--border) 75%);
+	background-size: 200% 100%;
+	animation: shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+	0%, 80%, 100% { opacity: 0.2; transform: scale(0.8); }
+	40% { opacity: 1; transform: scale(1.2); }
+}
+
 .visual-placeholder {
 	background: linear-gradient(135deg, var(--surface) 0%, var(--border) 50%, var(--surface) 100%);
 	position: relative;

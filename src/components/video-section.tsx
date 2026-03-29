@@ -1,28 +1,38 @@
 'use client'
 
-import { Section } from './section'
+import { useState } from 'react'
+import { FadeIn } from './fade-in'
 
 export function VideoSection() {
+	const [playing, setPlaying] = useState(false)
+
 	return (
-		<Section>
-			<div className="mx-auto max-w-[960px]">
-				<div className="overflow-hidden rounded-xl border border-border">
-					<div className="relative flex aspect-video items-center justify-center bg-surface/50">
-						<button
-							type="button"
-							className="flex h-14 w-14 items-center justify-center rounded-full border border-white/10 bg-white/5 transition-all duration-300 hover:scale-105 hover:border-white/20 hover:bg-white/10"
-							aria-label="Play video"
-						>
-							<svg width="16" height="16" viewBox="0 0 20 20" fill="none">
-								<path d="M6 4L16 10L6 16V4Z" fill="white" fillOpacity="0.8" />
-							</svg>
-						</button>
-					</div>
+		<section className="max-w-[1200px] mx-auto px-6 md:px-8 py-24">
+			<FadeIn>
+				<div className="relative rounded-lg overflow-hidden aspect-video bg-[#0A0A0A] border border-[#1A1A1A]">
+					{!playing ? (
+						<div className="absolute inset-0 flex items-center justify-center">
+							<button
+								type="button"
+								onClick={() => setPlaying(true)}
+								className="flex items-center justify-center w-[60px] h-[60px] rounded-full bg-white/10 border border-white/20 hover:bg-white/15 transition-all duration-200"
+								aria-label="Play video"
+							>
+								<svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+									<path d="M6 4l10 6-10 6V4z" fill="white" fillOpacity="0.9" />
+								</svg>
+							</button>
+						</div>
+					) : (
+						<div className="absolute inset-0 flex items-center justify-center text-[#555555] font-mono text-sm">
+							Video player placeholder
+						</div>
+					)}
 				</div>
-				<p className="mt-6 text-center font-mono text-[11px] text-text-tertiary uppercase tracking-[0.15em]">
-					How we work
+				<p className="font-mono text-sm text-[#555555] text-center mt-4">
+					How we work.
 				</p>
-			</div>
-		</Section>
+			</FadeIn>
+		</section>
 	)
 }

@@ -21,7 +21,7 @@ export function AnnouncementBar() {
 	if (dismissed) return null
 
 	return (
-		<div className="relative z-50 flex h-10 w-full items-center justify-center border-white/[0.06] border-b bg-white/[0.03]">
+		<div className="relative flex h-10 w-full items-center justify-center border-white/[0.06] border-b bg-white/[0.03]">
 			<Link
 				href={ANNOUNCEMENT.href}
 				className="font-mono text-text-secondary text-xs tracking-wide transition-colors hover:text-text-primary"
