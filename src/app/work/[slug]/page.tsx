@@ -1,8 +1,15 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import type { ComponentType } from 'react'
 import { FadeIn } from '~/components/fade-in'
-import { caseStudies, getCaseStudy } from '~/lib/case-studies'
+import { Albertsons } from '~/components/logos/albertsons'
+import { Cal } from '~/components/logos/cal'
+import { Graphite } from '~/components/logos/graphite'
+import { Gumloop } from '~/components/logos/gumloop'
+import { Langchain } from '~/components/logos/langchain'
+import { TableOfContents } from '~/components/table-of-contents'
+import { caseStudies, getCaseStudy, getCaseStudyContent } from '~/lib/case-studies'
 
 export const dynamicParams = false
 
@@ -12,6 +19,17 @@ export function generateStaticParams() {
 
 type Props = {
 	params: Promise<{ slug: string }>
+}
+
+const studyLogos: Record<string, ComponentType<{ className?: string }>> = {
+	'cal-ai': Cal,
+	'gumloop-marketplace': Gumloop,
+	'safeway-ai': Albertsons,
+	'year-in-code': Graphite
+}
+
+const coPostLogos: Record<string, { Component: React.FC<{ className?: string }>; w: string }> = {
+	LangChain: { Component: Langchain, w: 'w-[64px]' }
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -34,12 +52,16 @@ export default async function CaseStudyPage({ params }: Props) {
 	const study = getCaseStudy(slug)
 	if (!study) notFound()
 
+	const content = await getCaseStudyContent(slug)
+	const Logo = studyLogos[study.slug]
+	const coPostLogo = study.coPost ? coPostLogos[study.coPost.label] : null
+
 	return (
 		<div className="mx-auto max-w-[720px] px-6 pt-40 pb-32 md:px-10">
 			<FadeIn>
 				<Link
 					href="/work"
-					className="group inline-flex items-center gap-2 font-mono text-[12px] text-text-tertiary transition-colors duration-200 hover:text-text-secondary"
+					className="group inline-flex items-center gap-2 font-mono text-xs text-secondary transition-colors duration-200 hover:text-primary"
 				>
 					<span className="transition-transform duration-200 group-hover:-translate-x-0.5">
 						&larr;
@@ -47,96 +69,95 @@ export default async function CaseStudyPage({ params }: Props) {
 					<span>Work</span>
 				</Link>
 
-				<h1 className="mt-10 font-normal font-sans text-[clamp(36px,6vw,52px)] text-text-primary leading-tight tracking-tight">
-					{study.title}
-				</h1>
-				<div className="mt-4 flex items-center gap-3">
-					<p className="font-mono text-[12px] text-text-secondary">
-						{study.client}
+				<header className="mt-10 relative">
+					{Logo && (
+						<div className="absolute top-0 right-0 hidden md:block">
+							<Logo className="w-[100px] text-primary opacity-[0.06]" />
+						</div>
+					)}
+					<p className="font-mono text-[11px] text-tint uppercase tracking-[0.15em]">
+						{study.category}
 					</p>
-					<span className="text-text-tertiary">/</span>
-					<p className="font-mono text-[12px] text-text-tertiary">
-						{study.context}
+					<h1 className="mt-3 font-normal font-sans text-[clamp(36px,6vw,52px)] text-primary leading-tight tracking-tight">
+						{study.title}
+					</h1>
+					<p className="mt-3 font-sans text-xl text-secondary leading-relaxed">
+						{study.subtitle}
 					</p>
-				</div>
-				<div className="mt-6 flex flex-wrap gap-2">
-					{study.tags.map(tag => (
-						<span
-							key={tag}
-							className="rounded-full border border-border px-3 py-1 font-mono text-[11px] text-text-tertiary"
+
+					<div className="mt-6 flex items-center gap-3 font-mono text-xs text-secondary">
+						<span>{study.client}</span>
+						<span className="text-subtle">·</span>
+						<span className="text-secondary/60">{study.context}</span>
+					</div>
+
+					{coPostLogo && study.coPost && (
+						<a
+							href={study.coPost.url}
+							target="_blank"
+							rel="noopener noreferrer"
+							className="mt-4 inline-flex items-center gap-2.5 rounded-lg border border-subtle px-3 py-2 transition-colors duration-200 hover:border-subtle/60 hover:bg-accent"
 						>
-							{tag}
-						</span>
-					))}
-				</div>
-			</FadeIn>
+							<span className="font-mono text-[11px] text-secondary">
+								Also published on
+							</span>
+							<coPostLogo.Component
+								className={`h-auto text-primary opacity-40 ${coPostLogo.w}`}
+							/>
+						</a>
+					)}
 
-			<FadeIn delay={0.05}>
-				<div className="visual-placeholder mt-12 aspect-video rounded-xl" />
-			</FadeIn>
-
-			<FadeIn delay={0.1}>
-				<div className="mt-20 border-border/50 border-t pt-10">
-					<h2 className="font-mono text-[11px] text-text-tertiary uppercase tracking-[0.15em]">
-						The Problem
-					</h2>
-					<div className="mt-6 space-y-5">
-						{study.problem.split('\n\n').map((p, i) => (
-							<p key={i} className="font-sans text-[17px] text-text-secondary leading-[1.7]">
-								{p}
-							</p>
+					<div className="mt-6 flex flex-wrap gap-2">
+						{study.tags.map(tag => (
+							<span
+								key={tag}
+								className="rounded-full border border-subtle px-3 py-1 font-mono text-[11px] text-secondary"
+							>
+								{tag}
+							</span>
 						))}
 					</div>
-				</div>
+				</header>
 			</FadeIn>
 
-			<FadeIn>
-				<div className="mt-20 border-border/50 border-t pt-10">
-					<h2 className="font-mono text-[11px] text-text-tertiary uppercase tracking-[0.15em]">
-						The System
-					</h2>
-					<div className="mt-6 space-y-5">
-						{study.system.split('\n\n').map((p, i) => (
-							<p key={i} className="font-sans text-[17px] text-text-secondary leading-[1.7]">
-								{p}
-							</p>
-						))}
-					</div>
-				</div>
-			</FadeIn>
-
-			<FadeIn>
-				<div className="mt-20 border-border/50 border-t pt-10">
-					<h2 className="font-mono text-[11px] text-text-tertiary uppercase tracking-[0.15em]">
-						The Outcome
-					</h2>
-					<div className="mt-6 space-y-5">
-						{study.outcome.split('\n\n').map((p, i) => (
-							<p key={i} className="font-sans text-[17px] text-text-primary leading-[1.7]">
-								{p}
-							</p>
-						))}
-					</div>
-				</div>
-			</FadeIn>
-
-			{study.quote && (
-				<FadeIn>
-					<div className="mt-20 rounded-xl border border-border bg-surface/30 p-8">
-						<p className="font-sans text-lg text-text-secondary italic leading-relaxed">
-							"{study.quote.text}"
+			{content ? (
+				<FadeIn delay={0.1}>
+					<div className="mt-12 border-t border-subtle pt-8">
+						<p className="font-sans text-[15px] text-secondary leading-relaxed">
+							{study.scope}
 						</p>
-						<p className="mt-4 font-mono text-[12px] text-text-tertiary">
-							— {study.quote.attribution}
+					</div>
+
+					<article className="mt-12">
+						<TableOfContents items={content.toc} defaultOpen={false} />
+						<content.Content />
+					</article>
+
+					{study.quote && (
+						<div className="mt-20 border-t border-subtle pt-10">
+							<blockquote className="font-sans text-lg text-secondary italic leading-relaxed">
+								&ldquo;{study.quote.text}&rdquo;
+							</blockquote>
+							<p className="mt-4 font-mono text-xs text-secondary/60">
+								— {study.quote.attribution}
+							</p>
+						</div>
+					)}
+				</FadeIn>
+			) : (
+				<FadeIn delay={0.1}>
+					<div className="mt-20 border-t border-subtle pt-10">
+						<p className="font-sans text-[17px] text-secondary leading-[1.7]">
+							{study.description}
 						</p>
 					</div>
 				</FadeIn>
 			)}
 
-			<div className="mt-20 border-border/50 border-t pt-8">
+			<div className="mt-20 border-t border-subtle pt-8">
 				<Link
 					href="/work"
-					className="group inline-flex items-center gap-2 font-mono text-[12px] text-text-tertiary transition-colors duration-200 hover:text-text-secondary"
+					className="group inline-flex items-center gap-2 font-mono text-xs text-secondary transition-colors duration-200 hover:text-primary"
 				>
 					<span className="transition-transform duration-200 group-hover:-translate-x-0.5">
 						&larr;

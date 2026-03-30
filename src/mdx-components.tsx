@@ -1,6 +1,13 @@
 import type { MDXComponents } from 'mdx/types'
 import Link from 'next/link'
 import type { ComponentPropsWithoutRef, ReactNode } from 'react'
+import {
+	CalAgentLoop,
+	GumloopTimeline,
+	SafewayMemory,
+	SafewaySearchLoop,
+	YicFlow
+} from './components/case-study-diagrams'
 import { CodeBlock } from './components/codeblock'
 import { CopiableHeading } from './components/copiable-heading'
 import { CustomImage } from './components/custom-image'
@@ -27,6 +34,11 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 
 	return {
 		...components,
+		CalAgentLoop,
+		GumloopTimeline,
+		SafewayMemory,
+		SafewaySearchLoop,
+		YicFlow,
 		a: ({ children, className, href, rel, ...props }: ComponentPropsWithoutRef<'a'>) => {
 			if (!href || typeof href !== 'string') return <a href={href} {...props} />
 			if (href.startsWith('#')) return <a href={href} {...props} />
