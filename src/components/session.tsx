@@ -37,7 +37,7 @@ const TIMELINE = [
 type Phase = 'empty' | 'typing' | 'sent' | 'thinking' | 'tools' | 'ui' | 'complete'
 
 function BlinkingCursor() {
-	return <span className="inline-block w-[1px] h-[14px] bg-[#888888] animate-blink ml-1 align-middle" />
+	return <span className="inline-block w-[1px] h-[14px] bg-secondary animate-blink ml-1 align-middle" />
 }
 
 function useTypingAnimation(text: string, startDelay: number, speed = 35) {
@@ -185,15 +185,15 @@ export function Session() {
 
 					{/* Left: Headline */}
 					<div className="md:w-[35%] shrink-0 md:sticky md:top-[40%] md:-translate-y-1/2">
-						<h1 className="font-sans text-[clamp(36px,5vw,64px)] text-[#EDEDED] font-normal leading-[1.1] tracking-tight">
+						<h1 className="font-sans text-[clamp(36px,5vw,64px)] text-primary font-normal leading-[1.1] tracking-tight">
 							A lab that ships.
 						</h1>
-						<p className="mt-5 font-sans text-base md:text-lg text-[#888888] leading-relaxed max-w-[400px]">
+						<p className="mt-5 font-sans text-base md:text-lg text-secondary leading-relaxed max-w-[400px]">
 							We study how AI agents should be built — then we build them. For ourselves and for the companies that hire us.
 						</p>
 						<a
 							href="/work"
-							className="inline-flex items-center gap-2 mt-8 font-mono text-[13px] text-[#555555] hover:text-[#EDEDED] transition-colors duration-200"
+							className="inline-flex items-center gap-2 mt-8 font-mono text-[13px] text-secondary hover:text-primary transition-colors duration-200"
 						>
 							See the work <span>→</span>
 						</a>
@@ -201,15 +201,15 @@ export function Session() {
 
 					{/* Right: Chat Interface */}
 					<div className="md:w-[65%] min-w-0">
-						<div className="bg-[#111111] border border-[#1A1A1A] rounded-lg overflow-hidden">
+						<div className="bg-accent border border-subtle rounded-lg overflow-hidden">
 							{/* Header */}
-							<div className="flex items-center justify-between px-4 md:px-5 py-3 border-b border-[#1A1A1A]">
-								<span className="font-mono text-[10px] md:text-xs text-[#555555] tracking-widest uppercase">
+							<div className="flex items-center justify-between px-4 md:px-5 py-3 border-b border-subtle">
+								<span className="font-mono text-[10px] md:text-xs text-secondary tracking-widest uppercase">
 									Rubric Assistant
 								</span>
 								<span className="relative flex h-[6px] w-[6px]">
-									<span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#4ADE80] opacity-50" />
-									<span className="relative inline-flex rounded-full h-[6px] w-[6px] bg-[#4ADE80]" />
+									<span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-50" />
+									<span className="relative inline-flex rounded-full h-[6px] w-[6px] bg-primary" />
 								</span>
 							</div>
 
@@ -218,8 +218,8 @@ export function Session() {
 								{/* User message */}
 								{showUserMessage && (
 									<div className="flex flex-col gap-1 animate-fadeIn">
-										<span className="font-mono text-[10px] text-[#555555] tracking-widest uppercase">You</span>
-										<p className="font-sans text-sm md:text-[15px] text-[#EDEDED] leading-relaxed">
+										<span className="font-mono text-[10px] text-secondary tracking-widest uppercase">You</span>
+										<p className="font-sans text-sm md:text-[15px] text-primary leading-relaxed">
 											{phase === 'typing' ? (
 												<>{typedMessage}<BlinkingCursor /></>
 											) : (
@@ -232,14 +232,14 @@ export function Session() {
 								{/* Assistant response */}
 								{showAssistant && (
 									<div className="flex flex-col gap-1 animate-fadeIn">
-										<span className="font-mono text-[10px] text-[#555555] tracking-widest uppercase">Rubric</span>
+										<span className="font-mono text-[10px] text-secondary tracking-widest uppercase">Rubric</span>
 										<div className="space-y-4">
 											{/* Reasoning trace */}
-											<div data-explode="reasoning" className="border-l-2 border-[#1A1A1A] pl-3 py-1">
-												<span className="font-mono text-[10px] text-[#555555] tracking-widest uppercase block mb-2">
+											<div data-explode="reasoning" className="border-l-2 border-subtle pl-3 py-1">
+												<span className="font-mono text-[10px] text-secondary tracking-widest uppercase block mb-2">
 													Thinking
 												</span>
-												<div className="font-mono text-[11px] md:text-[12px] text-[#888888] leading-relaxed space-y-1.5">
+												<div className="font-mono text-[11px] md:text-[12px] text-secondary leading-relaxed space-y-1.5">
 													{REASONING_LINES.slice(0, visibleReasoningLines).map((line) => (
 														<p key={line} className="animate-fadeIn">{line}</p>
 													))}
@@ -251,9 +251,9 @@ export function Session() {
 											{visibleTools > 0 && (
 												<div data-explode="tools" className="flex flex-wrap gap-1.5">
 													{TOOLS.slice(0, visibleTools).map(tool => (
-														<div key={tool.name} className="bg-[#0A0A0A] border border-[#1A1A1A] rounded px-2 py-1.5 animate-fadeIn">
-															<div className="font-mono text-[11px] text-[#EDEDED]">{tool.name}</div>
-															<div className="font-mono text-[10px] text-[#555555] mt-0.5">{tool.time} ✓</div>
+														<div key={tool.name} className="bg-background border border-subtle rounded px-2 py-1.5 animate-fadeIn">
+															<div className="font-mono text-[11px] text-primary">{tool.name}</div>
+															<div className="font-mono text-[10px] text-secondary mt-0.5">{tool.time} ✓</div>
 														</div>
 													))}
 												</div>
@@ -261,19 +261,19 @@ export function Session() {
 
 											{/* Generative UI */}
 											{(showFit || showCaseStudy || showTimeline) && (
-												<div data-explode="generative-ui" className="bg-[#0A0A0A] border border-[#1A1A1A] rounded-lg p-3 md:p-4 space-y-4">
+												<div data-explode="generative-ui" className="bg-background border border-subtle rounded-lg p-3 md:p-4 space-y-4">
 													{/* Fit bars */}
 													{showFit && (
 														<div className="animate-fadeIn">
-															<div className="font-mono text-[10px] text-[#555555] tracking-widest uppercase mb-3">Project Fit</div>
+															<div className="font-mono text-[10px] text-secondary tracking-widest uppercase mb-3">Project Fit</div>
 															<div className="space-y-2">
 																{FIT_DATA.map(item => (
 																	<div key={item.label} className="flex items-center gap-2">
-																		<span className="font-mono text-[10px] md:text-[11px] text-[#888888] w-[100px] md:w-[140px] shrink-0 truncate">{item.label}</span>
-																		<div className="flex-1 h-[2px] bg-[#1A1A1A] rounded-full overflow-hidden">
-																			<div className="h-full bg-[#EDEDED] rounded-full transition-all duration-1000 ease-out" style={{ width: `${item.value}%` }} />
+																		<span className="font-mono text-[10px] md:text-[11px] text-secondary w-[100px] md:w-[140px] shrink-0 truncate">{item.label}</span>
+																		<div className="flex-1 h-[2px] bg-subtle rounded-full overflow-hidden">
+																			<div className="h-full bg-primary rounded-full transition-all duration-1000 ease-out" style={{ width: `${item.value}%` }} />
 																		</div>
-																		<span className="font-mono text-[10px] text-[#555555] w-[30px] text-right">{item.value}%</span>
+																		<span className="font-mono text-[10px] text-secondary w-[30px] text-right">{item.value}%</span>
 																	</div>
 																))}
 															</div>
@@ -282,30 +282,30 @@ export function Session() {
 
 													{/* Case study */}
 													{showCaseStudy && (
-														<div className="border border-[#1A1A1A] rounded p-3 animate-fadeIn">
-															<div className="font-mono text-[10px] text-[#555555] tracking-widest uppercase mb-1.5">Relevant Work</div>
-															<div className="font-sans text-sm text-[#EDEDED]">Safeway AI</div>
-															<div className="font-mono text-[10px] text-[#888888] mt-0.5">Albertsons · Fortune 500 · Production</div>
-															<p className="font-sans text-[12px] text-[#888888] mt-2 leading-relaxed">
+														<div className="border border-subtle rounded p-3 animate-fadeIn">
+															<div className="font-mono text-[10px] text-secondary tracking-widest uppercase mb-1.5">Relevant Work</div>
+															<div className="font-sans text-sm text-primary">Safeway AI</div>
+															<div className="font-mono text-[10px] text-secondary mt-0.5">Albertsons · Fortune 500 · Production</div>
+															<p className="font-sans text-[12px] text-secondary mt-2 leading-relaxed">
 																AI grocery agent with bespoke memory system and household preference mapping. 50K+ SKU catalog search.
 															</p>
-															<div className="font-mono text-[10px] text-[#555555] mt-2">Memory · Agents · Generative UI · Personalization</div>
+															<div className="font-mono text-[10px] text-secondary mt-2">Memory · Agents · Generative UI · Personalization</div>
 														</div>
 													)}
 
 													{/* Timeline */}
 													{showTimeline && (
 														<div className="animate-fadeIn">
-															<div className="font-mono text-[10px] text-[#555555] tracking-widest uppercase mb-2">Estimated Timeline</div>
+															<div className="font-mono text-[10px] text-secondary tracking-widest uppercase mb-2">Estimated Timeline</div>
 															<div className="space-y-1">
 																{TIMELINE.map(row => (
 																	<div key={row.week} className="flex gap-3">
-																		<span className="font-mono text-[10px] md:text-[11px] text-[#555555] w-[60px] shrink-0">{row.week}</span>
-																		<span className="font-sans text-[12px] text-[#888888]">{row.task}</span>
+																		<span className="font-mono text-[10px] md:text-[11px] text-secondary w-[60px] shrink-0">{row.week}</span>
+																		<span className="font-sans text-[12px] text-secondary">{row.task}</span>
 																	</div>
 																))}
 															</div>
-															<div className="font-mono text-[11px] text-[#4ADE80] mt-3">
+															<div className="font-mono text-[11px] text-primary mt-3">
 																6 weeks · High confidence based on prior work
 															</div>
 														</div>
@@ -316,8 +316,8 @@ export function Session() {
 											{/* Memory badge */}
 											{showMemory && (
 												<div data-explode="memory" className="flex items-center gap-2 animate-fadeIn">
-													<span className="font-mono text-[11px] text-[#888888]">↻</span>
-													<span className="font-mono text-[10px] text-[#555555]">
+													<span className="font-mono text-[11px] text-secondary">↻</span>
+													<span className="font-mono text-[10px] text-secondary">
 														Logged: e-commerce inquiry · 50K SKUs · personalization + memory + gen UI
 													</span>
 												</div>
@@ -328,7 +328,7 @@ export function Session() {
 							</div>
 
 							{/* Input */}
-							<div className="flex items-center gap-3 px-4 md:px-5 py-3 border-t border-[#1A1A1A]">
+							<div className="flex items-center gap-3 px-4 md:px-5 py-3 border-t border-subtle">
 								<input
 									ref={inputRef}
 									type="text"
@@ -338,12 +338,12 @@ export function Session() {
 									onFocus={() => setIsFocused(true)}
 									onBlur={() => setIsFocused(false)}
 									placeholder="Ask Rubric something..."
-									className="flex-1 bg-transparent font-sans text-sm text-[#EDEDED] placeholder:text-[#555555] outline-none"
+									className="flex-1 bg-transparent font-sans text-sm text-primary placeholder:text-secondary outline-none"
 								/>
 								<button
 									type="button"
 									onClick={handleSend}
-									className={`text-[#555555] hover:text-[#EDEDED] transition-all duration-150 ${input || isFocused ? 'opacity-100' : 'opacity-0'}`}
+									className={`text-secondary hover:text-primary transition-all duration-150 ${input || isFocused ? 'opacity-100' : 'opacity-0'}`}
 								>
 									<svg width="14" height="14" viewBox="0 0 16 16" fill="none">
 										<path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -355,7 +355,7 @@ export function Session() {
 						{/* Scroll prompt */}
 						{phase === 'complete' && (
 							<div className="text-center mt-6 animate-fadeIn">
-								<p className="font-mono text-xs text-[#555555]">↓ Scroll to see how we build</p>
+								<p className="font-mono text-xs text-secondary">↓ Scroll to see how we build</p>
 							</div>
 						)}
 					</div>

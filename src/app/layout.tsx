@@ -1,10 +1,16 @@
-import { GeistSans } from 'geist/font/sans'
+import localFont from 'next/font/local'
 import { JetBrains_Mono } from 'next/font/google'
 import type { Metadata } from 'next/types'
 import Providers from '~/app/providers'
+import { AnnouncementBar } from '~/components/announcement-bar'
 import { Footer } from '~/components/footer'
 import { Nav } from '~/components/nav'
 import './globals.css'
+
+const matter = localFont({
+	src: './fonts/matter-regular.woff',
+	variable: '--font-matter'
+})
 
 const mono = JetBrains_Mono({
 	subsets: ['latin'],
@@ -39,10 +45,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
-		<html lang="en" suppressHydrationWarning className={`${GeistSans.variable} ${mono.variable}`}>
-			<body className="font-sans bg-bg">
+		<html lang="en" suppressHydrationWarning className={`${matter.variable} ${mono.variable}`}>
+			<body className="font-sans bg-background">
 				<Providers>
 					<Nav />
+					<AnnouncementBar />
 					<main className="min-h-screen">{children}</main>
 					<Footer />
 				</Providers>

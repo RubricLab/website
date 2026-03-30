@@ -100,9 +100,9 @@ export function ExplodedView() {
 		<section className="md:hidden max-w-[1200px] mx-auto px-6 py-16">
 			<div className="grid grid-cols-1 gap-4">
 				{PIECES.map((piece) => (
-					<div key={piece.id} className="bg-[#111111] border border-[#1A1A1A] rounded-lg p-6">
-						<h3 className="font-mono text-xs text-[#555555] tracking-widest uppercase mb-3">{piece.label}</h3>
-						<p className="font-sans text-sm text-[#888888] leading-relaxed">{piece.body}</p>
+					<div key={piece.id} className="bg-accent border border-subtle rounded-lg p-6">
+						<h3 className="font-mono text-xs text-secondary tracking-widest uppercase mb-3">{piece.label}</h3>
+						<p className="font-sans text-sm text-secondary leading-relaxed">{piece.body}</p>
 					</div>
 				))}
 			</div>
@@ -120,13 +120,13 @@ export function ExplodedView() {
 						pointerEvents: 'none'
 					}}
 				>
-					<div className="bg-[#111111] border border-[#1A1A1A] rounded-lg w-[460px] h-[340px] flex flex-col items-center justify-center gap-2">
-						<span className="font-mono text-[10px] text-[#555555] tracking-widest uppercase">
+					<div className="bg-accent border border-subtle rounded-lg w-[460px] h-[340px] flex flex-col items-center justify-center gap-2">
+						<span className="font-mono text-[10px] text-secondary tracking-widest uppercase">
 							Rubric Assistant
 						</span>
 						<span className="relative flex h-[6px] w-[6px]">
-							<span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#4ADE80] opacity-50" />
-							<span className="relative inline-flex rounded-full h-[6px] w-[6px] bg-[#4ADE80]" />
+							<span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-25" />
+							<span className="relative inline-flex rounded-full h-[6px] w-[6px] bg-primary" />
 						</span>
 					</div>
 				</div>
@@ -147,14 +147,14 @@ export function ExplodedView() {
 									x1="50%" y1="50%"
 									x2={`calc(50% + ${cx}px)`}
 									y2={`calc(50% + ${cy}px)`}
-									stroke="#444444"
+									stroke="currentColor" strokeOpacity="0.3"
 									strokeWidth="1"
 									strokeDasharray="4 4"
 									opacity={guideOpacity}
 								/>
 							)
 						})}
-						<circle cx="50%" cy="50%" r="2.5" fill="#555555" />
+						<circle cx="50%" cy="50%" r="2.5" fill="currentColor" fillOpacity="0.4" />
 					</svg>
 				)}
 
@@ -187,9 +187,9 @@ export function ExplodedView() {
 								marginTop: -h / 2,
 								opacity,
 								transform: `translate(${cx}px, ${cy}px) perspective(800px) rotateY(${rotY}deg) rotateX(${rotX}deg)`,
-								border: `1px ${isDashed ? 'dashed' : 'solid'} ${isDashed ? '#666666' : '#2A2A2A'}`,
+								border: `1px ${isDashed ? 'dashed' : 'solid'} var(--subtle)`,
 								borderRadius: easedSettle > 0.3 ? '8px' : '3px',
-								backgroundColor: `rgba(17, 17, 17, ${bgAlpha})`,
+								backgroundColor: `color-mix(in srgb, var(--accent) ${Math.round(bgAlpha * 100)}%, transparent)`,
 								zIndex: 2,
 								pointerEvents: 'none'
 							}}
@@ -199,7 +199,7 @@ export function ExplodedView() {
 								className="absolute font-mono tracking-[0.1em] uppercase whitespace-nowrap"
 								style={{
 									fontSize: isDashed ? 10 : 11,
-									color: isDashed ? '#777777' : '#555555',
+									color: 'var(--secondary)',
 									top: isDashed ? -18 : 20,
 									left: isDashed ? 0 : 24,
 								}}
@@ -210,7 +210,7 @@ export function ExplodedView() {
 							{/* Body text */}
 							{easedSettle > 0.4 && (
 								<p
-									className="absolute left-6 right-6 font-sans text-[#888888] leading-relaxed"
+									className="absolute left-6 right-6 font-sans text-secondary leading-relaxed"
 									style={{
 										top: 48,
 										fontSize: 13 + easedSettle,
@@ -224,10 +224,10 @@ export function ExplodedView() {
 							{/* Corner markers */}
 							{isDashed && (
 								<>
-									<span className="absolute -top-px -left-px w-[8px] h-[8px] border-t border-l border-[#777777]" />
-									<span className="absolute -top-px -right-px w-[8px] h-[8px] border-t border-r border-[#777777]" />
-									<span className="absolute -bottom-px -left-px w-[8px] h-[8px] border-b border-l border-[#777777]" />
-									<span className="absolute -bottom-px -right-px w-[8px] h-[8px] border-b border-r border-[#777777]" />
+									<span className="absolute -top-px -left-px w-[8px] h-[8px] border-t border-l border-subtle" />
+									<span className="absolute -top-px -right-px w-[8px] h-[8px] border-t border-r border-subtle" />
+									<span className="absolute -bottom-px -left-px w-[8px] h-[8px] border-b border-l border-subtle" />
+									<span className="absolute -bottom-px -right-px w-[8px] h-[8px] border-b border-r border-subtle" />
 								</>
 							)}
 						</div>
@@ -248,13 +248,13 @@ export function ExplodedView() {
 							{PIECES.map((piece) => (
 								<div
 									key={piece.id}
-									className="bg-[#111111] border border-[#1A1A1A] rounded-lg p-8 hover:border-[#2A2A2A] transition-colors duration-200"
+									className="bg-accent border border-subtle rounded-lg p-8 hover:border-subtle/60 transition-colors duration-200"
 									style={{ minHeight: cardH }}
 								>
-									<h3 className="font-mono text-xs text-[#555555] tracking-widest uppercase mb-4">
+									<h3 className="font-mono text-xs text-secondary tracking-widest uppercase mb-4">
 										{piece.label}
 									</h3>
-									<p className="font-sans text-[15px] text-[#888888] leading-relaxed">
+									<p className="font-sans text-[15px] text-secondary leading-relaxed">
 										{piece.body}
 									</p>
 								</div>
@@ -266,8 +266,8 @@ export function ExplodedView() {
 				{/* Progress bar */}
 				{progress > 0.02 && progress < 0.98 && (
 					<div className="absolute bottom-8 left-1/2 -translate-x-1/2" style={{ zIndex: 4 }}>
-						<div className="w-[60px] h-[2px] bg-[#1A1A1A] rounded-full overflow-hidden">
-							<div className="h-full bg-[#444444] rounded-full" style={{ width: `${progress * 100}%` }} />
+						<div className="w-[60px] h-[2px] bg-subtle rounded-full overflow-hidden">
+							<div className="h-full bg-secondary rounded-full" style={{ width: `${progress * 100}%` }} />
 						</div>
 					</div>
 				)}

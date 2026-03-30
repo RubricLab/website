@@ -21,11 +21,11 @@ export function Process() {
 			<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 				{columns.map((col, i) => (
 					<FadeIn key={col.title} delay={i * 0.08}>
-						<div className="bg-[#111111] border border-[#1A1A1A] rounded-lg p-8 hover:border-[#2A2A2A] transition-colors duration-200 h-full">
-							<h3 className="font-mono text-xs text-[#555555] tracking-widest uppercase mb-4">
+						<div className="bg-accent border border-subtle rounded-lg p-8 hover:border-subtle/60 transition-colors duration-200 h-full">
+							<h3 className="font-mono text-xs text-secondary tracking-widest uppercase mb-4">
 								{col.title}
 							</h3>
-							<p className="font-sans text-base text-[#888888] leading-relaxed">
+							<p className="font-sans text-base text-secondary leading-relaxed">
 								{col.body}
 							</p>
 						</div>

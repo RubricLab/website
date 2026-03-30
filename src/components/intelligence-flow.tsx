@@ -127,9 +127,9 @@ export function IntelligenceFlow() {
 		if (!canvas) return
 		const s = getComputedStyle(canvas)
 		colorsRef.current = {
-			green: s.getPropertyValue('--code-green').trim() || '#4ade80',
-			muted: s.getPropertyValue('--text-tertiary').trim() || '#a8a29e',
-			bg: s.getPropertyValue('--bg').trim() || '#0c0a09',
+			green: s.getPropertyValue('--primary').trim() || '#4ade80',
+			muted: s.getPropertyValue('--secondary').trim() || '#a8a29e',
+			bg: s.getPropertyValue('--background').trim() || '#0c0a09',
 		}
 	}, [])
 
@@ -386,7 +386,7 @@ export function IntelligenceFlow() {
 				className="pointer-events-none absolute inset-0 z-10 hidden md:block"
 				style={{
 					background:
-						'linear-gradient(to right, var(--bg) 0%, var(--bg) 40%, transparent 52%)',
+						'linear-gradient(to right, var(--background) 0%, var(--background) 40%, transparent 52%)',
 				}}
 			/>
 			{/* Bottom + side fades (mobile) */}
@@ -394,7 +394,7 @@ export function IntelligenceFlow() {
 				className="pointer-events-none absolute inset-0 z-10 md:hidden"
 				style={{
 					background:
-						'linear-gradient(to bottom, transparent 0%, transparent 50%, var(--bg) 92%)',
+						'linear-gradient(to bottom, transparent 0%, transparent 50%, var(--background) 92%)',
 				}}
 			/>
 			<canvas

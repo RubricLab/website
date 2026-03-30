@@ -9,12 +9,12 @@ export function FeaturedWork() {
 		<section className="max-w-[1200px] mx-auto px-6 md:px-8 py-24">
 			<FadeIn>
 				<div className="flex items-center justify-between mb-8">
-					<span className="font-mono text-xs text-[#555555] tracking-widest uppercase">
+					<span className="font-mono text-xs text-secondary tracking-widest uppercase">
 						Work
 					</span>
 					<Link
 						href="/work"
-						className="group inline-flex items-center gap-2 font-mono text-sm text-[#888888] transition-colors duration-200 hover:text-[#EDEDED]"
+						className="group inline-flex items-center gap-2 font-mono text-sm text-secondary transition-colors duration-200 hover:text-primary"
 					>
 						<span>See all</span>
 						<span className="transition-transform duration-200 group-hover:translate-x-0.5">
@@ -28,22 +28,22 @@ export function FeaturedWork() {
 					<FadeIn key={study.slug} delay={i * 0.08}>
 						<Link
 							href={`/work/${study.slug}`}
-							className="group block overflow-hidden rounded-lg border border-[#1A1A1A] bg-[#111111] hover:border-[#2A2A2A] transition-colors duration-200"
+							className="group block overflow-hidden rounded-lg border border-subtle bg-accent hover:border-subtle/60 transition-colors duration-200"
 						>
-							<div className="aspect-video bg-[#0A0A0A] rounded-t-lg flex items-center justify-center">
-								<span className="font-mono text-sm text-[#555555]">[ Visual ]</span>
+							<div className="aspect-video bg-background rounded-t-lg flex items-center justify-center">
+								<span className="font-mono text-sm text-secondary">[ Visual ]</span>
 							</div>
 							<div className="p-6">
-								<p className="font-mono text-xs text-[#888888]">
+								<p className="font-mono text-xs text-secondary">
 									{study.client} · {study.context}
 								</p>
-								<h3 className="font-sans text-2xl text-[#EDEDED] font-normal mt-1">
+								<h3 className="font-sans text-2xl text-primary font-normal mt-1">
 									{study.title}
 								</h3>
-								<p className="font-sans text-base text-[#888888] mt-2 leading-relaxed">
+								<p className="font-sans text-base text-secondary mt-2 leading-relaxed">
 									{study.description}
 								</p>
-								<div className="font-mono text-[11px] text-[#555555] mt-4">
+								<div className="font-mono text-[11px] text-secondary mt-4">
 									{study.tags.slice(0, 4).join(' · ')}
 								</div>
 							</div>

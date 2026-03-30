@@ -12,7 +12,20 @@ export function useScrollProgress(sectionRef: RefObject<HTMLDivElement | null>) 
 	const [progress, setProgress] = useState(-1)
 	const prevProgress = useRef(-1)
 
+	// Debug override via URL param: ?progress=0.45
+	const debugOverride = useRef<number | null>(null)
 	useEffect(() => {
+		const params = new URLSearchParams(window.location.search)
+		const dbg = params.get('progress')
+		if (dbg !== null) debugOverride.current = parseFloat(dbg)
+	}, [])
+
+	useEffect(() => {
+		if (debugOverride.current !== null) {
+			setProgress(debugOverride.current)
+			return
+		}
+
 		const section = sectionRef.current
 		if (!section) return
 
@@ -31,7 +44,6 @@ export function useScrollProgress(sectionRef: RefObject<HTMLDivElement | null>) 
 				p = clamp01(scrolled / runway)
 			}
 
-			// Only update state if value actually changed (avoid unnecessary re-renders)
 			if (Math.abs(p - prevProgress.current) > 0.001) {
 				prevProgress.current = p
 				setProgress(p)

@@ -1,145 +1,116 @@
 @import "tailwindcss";
 
-/* ═══════════════════════════════════════════════════════════════════════
-   LIGHT MODE (default — warm, soft, daylight)
-   ═══════════════════════════════════════════════════════════════════════ */
 :root {
-	--bg: #F5F2ED;
-	--surface: #FFFFFF;
-	--surface-hover: #FAF8F5;
-	--border: #E6E1D9;
-	--border-hover: #D4CFC5;
-	--border-subtle: #EDE9E2;
-
-	--text-primary: #2D2A24;
-	--text-secondary: #7A756B;
-	--text-tertiary: #A9A39A;
-	--text-accent: #3D3830;
-
-	--accent: #7C9A82;
-	--accent-soft: rgba(124, 154, 130, 0.12);
-
-	--code-green: #5A8F64;
-
-	--hero-grain: 0.3;
-	--hero-glow: none;
-
-	--max-width: 1200px;
-	--content-width: 720px;
-	--section-padding: 120px;
-	--section-padding-mobile: 80px;
-	--card-padding: 32px;
-	--card-gap: 16px;
-	--card-radius: 12px;
-
-	color-scheme: light;
+	--primary: black;
+	--secondary: #666;
+	--background: #f5f0ec;
+	--negative: #222;
+	--subtle: #0000001a; /* black/10 */
+	--accent: #dedad7; /* black/20 on background */
+	--accent-foreground: black;
+	--danger: red;
 }
 
-/* ═══════════════════════════════════════════════════════════════════════
-   DARK MODE — dawn dark, warm, stars + horizon glow
-   ═══════════════════════════════════════════════════════════════════════ */
 @media (prefers-color-scheme: dark) {
 	:root {
-		--bg: #0E0D0A;
-		--surface: #181714;
-		--surface-hover: #1F1E1A;
-		--border: #2A2822;
-		--border-hover: #3A372F;
-		--border-subtle: #1F1E1A;
-
-		--text-primary: #E8E3D9;
-		--text-secondary: #8A847A;
-		--text-tertiary: #5A564F;
-		--text-accent: #D4CFC5;
-
-		--accent: #A3C4A9;
-		--accent-soft: rgba(163, 196, 169, 0.1);
-
-		--code-green: #A3C4A9;
-
-		--hero-grain: 0.4;
-
-		color-scheme: dark;
+		--primary: white;
+		--secondary: #999;
+		--background: black;
+		--negative: #ddd;
+		--subtle: #ffffff1a; /* white/10 */
+		--accent: #1d1d1d; /* white/20 on black */
+		--accent-foreground: white;
+		--danger: red;
 	}
 }
 
-/* Also support explicit data-theme overrides */
 [data-theme="light"] {
-	--bg: #F5F2ED;
-	--surface: #FFFFFF;
-	--surface-hover: #FAF8F5;
-	--border: #E6E1D9;
-	--border-hover: #D4CFC5;
-	--border-subtle: #EDE9E2;
-	--text-primary: #2D2A24;
-	--text-secondary: #7A756B;
-	--text-tertiary: #A9A39A;
-	--text-accent: #3D3830;
-	--accent: #7C9A82;
-	--accent-soft: rgba(124, 154, 130, 0.12);
-	--code-green: #5A8F64;
-	--hero-grain: 0.3;
+	--primary: black;
+	--secondary: #666;
+	--background: #f5f0ec;
+	--negative: #222;
+	--subtle: #0000001a;
+	--accent: #dedad7;
+	--accent-foreground: black;
+	--danger: red;
 	color-scheme: light;
 }
 
 [data-theme="dark"] {
-	--bg: #0E0D0A;
-	--surface: #181714;
-	--surface-hover: #1F1E1A;
-	--border: #2A2822;
-	--border-hover: #3A372F;
-	--border-subtle: #1F1E1A;
-	--text-primary: #E8E3D9;
-	--text-secondary: #8A847A;
-	--text-tertiary: #5A564F;
-	--text-accent: #D4CFC5;
-	--accent: #A3C4A9;
-	--accent-soft: rgba(163, 196, 169, 0.1);
-	--code-green: #A3C4A9;
-	--hero-grain: 0.4;
+	--primary: white;
+	--secondary: #999;
+	--background: black;
+	--negative: #ddd;
+	--subtle: #ffffff1a;
+	--accent: #1d1d1d;
+	--accent-foreground: white;
+	--danger: red;
 	color-scheme: dark;
 }
 
 @theme inline {
-	--color-bg: var(--bg);
-	--color-surface: var(--surface);
-	--color-surface-hover: var(--surface-hover);
-	--color-border: var(--border);
-	--color-border-hover: var(--border-hover);
-	--color-border-subtle: var(--border-subtle);
-	--color-text-primary: var(--text-primary);
-	--color-text-secondary: var(--text-secondary);
-	--color-text-tertiary: var(--text-tertiary);
-	--color-text-accent: var(--text-accent);
+	--color-primary: var(--primary);
+	--color-background: var(--background);
+	--color-subtle: var(--subtle);
+	--color-negative: var(--negative);
+	--color-secondary: var(--secondary);
 	--color-accent: var(--accent);
-	--color-accent-soft: var(--accent-soft);
-	--color-code-green: var(--code-green);
-	--font-sans: var(--font-geist-sans);
+	--color-accent-foreground: var(--accent-foreground);
+	--color-danger: var(--danger);
+	--radius-custom: 1.625rem;
+	--font-sans: var(--font-matter);
 	--font-mono: var(--font-mono);
 }
 
-*,
-*::before,
-*::after {
-	box-sizing: border-box;
-}
+@layer base {
+	::selection {
+		@apply bg-primary text-background;
+	}
 
-html {
-	scroll-behavior: smooth;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-	overflow-x: clip;
-}
+	::-moz-selection {
+		@apply bg-primary text-background;
+	}
 
-body {
-	background: var(--bg);
-	color: var(--text-primary);
-	overflow-x: clip;
-}
+	html {
+		@apply bg-background text-primary;
+		scroll-behavior: smooth;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+		overflow-x: clip;
+	}
 
-::selection {
-	background: var(--accent);
-	color: var(--bg);
+	body {
+		overflow-x: clip;
+	}
+
+	h1 {
+		@apply text-6xl;
+	}
+
+	h2 {
+		@apply text-4xl;
+	}
+
+	h3 {
+		@apply text-2xl;
+	}
+
+	a:not(:has(button)) {
+		@apply focus:outline-none text-secondary hover:text-primary transition-colors;
+	}
+
+	input,
+	textarea {
+		@apply border transition-colors rounded-full border-subtle hover:bg-subtle px-3.5 focus:outline-none focus:border-secondary/50 placeholder:text-secondary py-2;
+	}
+
+	textarea {
+		@apply min-h-36 rounded-3xl;
+	}
+
+	article {
+		@apply space-y-4;
+	}
 }
 
 /* Scrollbar */
@@ -147,75 +118,14 @@ body {
 	width: 6px;
 }
 ::-webkit-scrollbar-track {
-	background: var(--bg);
+	background: var(--background);
 }
 ::-webkit-scrollbar-thumb {
-	background: var(--border-hover);
+	background: var(--accent);
 	border-radius: 3px;
 }
 
-/* ═══════════════════════════════════════════════════════════════════════
-   DARK MODE ATMOSPHERE — dawn horizon glow + stars
-   ═══════════════════════════════════════════════════════════════════════ */
-@media (prefers-color-scheme: dark) {
-	body::after {
-		content: '';
-		position: fixed;
-		bottom: 0;
-		left: 0;
-		right: 0;
-		height: 40vh;
-		z-index: 0;
-		pointer-events: none;
-		background: linear-gradient(
-			to top,
-			rgba(163, 130, 82, 0.08) 0%,
-			rgba(163, 150, 110, 0.04) 30%,
-			rgba(163, 150, 110, 0.01) 60%,
-			transparent 100%
-		);
-	}
-}
-
-[data-theme="dark"] body::after {
-	content: '';
-	position: fixed;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	height: 40vh;
-	z-index: 0;
-	pointer-events: none;
-	background: linear-gradient(
-		to top,
-		rgba(163, 130, 82, 0.08) 0%,
-		rgba(163, 150, 110, 0.04) 30%,
-		rgba(163, 150, 110, 0.01) 60%,
-		transparent 100%
-	);
-}
-
-/* ═══════════════════════════════════════════════════════════════════════
-   GRAIN OVERLAY
-   ═══════════════════════════════════════════════════════════════════════ */
-body::before {
-	content: '';
-	position: fixed;
-	inset: 0;
-	z-index: 9999;
-	pointer-events: none;
-	opacity: var(--hero-grain);
-	background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-	background-repeat: repeat;
-	background-size: 200px 200px;
-	mix-blend-mode: overlay;
-}
-
 /* Article typography */
-article {
-	@apply space-y-4;
-}
-
 article h2 {
 	@apply text-2xl font-normal mt-12;
 	scroll-margin-top: 2rem;
@@ -227,28 +137,28 @@ article h3 {
 }
 
 article :is(h2, h3) {
-	@apply text-text-primary;
+	@apply text-primary;
 }
 
 article a:not(:has(button)) {
-	@apply text-text-secondary hover:text-text-primary underline underline-offset-3 decoration-1 transition-colors;
+	@apply text-secondary hover:text-primary underline underline-offset-3 decoration-1 transition-colors;
 }
 
 article p,
 article li {
-	@apply text-text-primary text-lg leading-relaxed;
+	@apply text-primary text-lg leading-relaxed;
 }
 
 article :is(strong, b) {
-	@apply text-text-primary font-semibold;
+	@apply text-primary font-semibold;
 }
 
 article blockquote {
-	@apply border-l-2 border-border-hover pl-6 text-lg text-text-secondary italic;
+	@apply border-l-2 border-subtle pl-6 text-lg text-secondary italic;
 }
 
 article aside {
-	@apply w-full rounded-xl border border-border bg-surface p-6;
+	@apply w-full rounded-xl border border-subtle bg-accent p-6;
 }
 
 article aside > :first-child {
@@ -283,16 +193,16 @@ article ol > li::before {
 	position: absolute;
 	right: 100%;
 	margin-right: 0.35rem;
-	@apply text-text-secondary;
+	@apply text-secondary;
 }
 
 /* Codeblocks */
 code {
-	@apply bg-surface rounded-md py-0.5 px-1.5 text-[13px];
+	@apply bg-accent rounded-md py-0.5 px-1.5 text-[13px];
 }
 
 code[data-theme] {
-	@apply overflow-x-auto rounded-xl border border-border p-4;
+	@apply overflow-x-auto rounded-xl border border-subtle p-4;
 	&,
 	& span {
 		@apply text-[var(--shiki-dark)];
@@ -302,7 +212,7 @@ code[data-theme] {
 		@apply bg-neutral-800;
 
 		&::before {
-			@apply text-text-primary;
+			@apply text-primary;
 		}
 	}
 }
@@ -314,7 +224,7 @@ code {
 code > [data-line]::before {
 	counter-increment: line;
 	content: counter(line);
-	@apply inline-block w-4 mr-6 text-right text-text-secondary;
+	@apply inline-block w-4 mr-6 text-right text-secondary;
 }
 
 /* Video player styles */
@@ -527,13 +437,18 @@ video::-webkit-media-text-track-container {
 	100% { transform: translateY(-33.33%); }
 }
 
+@keyframes scroll-logos {
+	0% { transform: translateX(0); }
+	100% { transform: translateX(-50%); }
+}
+
 @keyframes shimmer {
 	0% { background-position: -200% 0; }
 	100% { background-position: 200% 0; }
 }
 
 .animate-shimmer {
-	background: linear-gradient(90deg, var(--border) 25%, var(--border-hover) 50%, var(--border) 75%);
+	background: linear-gradient(90deg, var(--accent) 25%, var(--subtle) 50%, var(--accent) 75%);
 	background-size: 200% 100%;
 	animation: shimmer 1.5s ease-in-out infinite;
 }
@@ -544,7 +459,7 @@ video::-webkit-media-text-track-container {
 }
 
 .visual-placeholder {
-	background: linear-gradient(135deg, var(--surface) 0%, var(--border) 50%, var(--surface) 100%);
+	background: linear-gradient(135deg, var(--background) 0%, var(--accent) 50%, var(--background) 100%);
 	position: relative;
 	overflow: hidden;
 }
