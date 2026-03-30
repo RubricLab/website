@@ -1,0 +1,172 @@
+import { AUTHORS, CATEGORIES } from '~/lib/constants/blog'
+import { PermissionsTrapFigure, IsolationArchitectureFigure, VerificationLayersFigure } from '~/components/blog/unblocking-agents'
+
+export const metadata = {
+  title: "Unblocking Agents",
+  subtitle: "Isolation, verification, and persistence for autonomous agent environments",
+  date: "2026-03-30",
+  author: AUTHORS.DEXTER_STOREY,
+  category: CATEGORIES.ESSAY,
+  description: "The bottleneck isn't the model. It's the environment. An agent that can't deploy, can't receive a webhook, and loses its filesystem between runs will never produce reliable software.",
+}
+
+Everyone has had the same experience with an agent. It gets most of the way through the task, then hands the keyboard back to you.
+
+*"I've set up the OAuth flow. Can you create the Google Cloud project and add the redirect URI?"*
+
+*"I've written the tests. Go ahead and run them and let me know if they pass."*
+
+*"I've deployed to Vercel. Can you check if the layout looks right?"*
+
+*"I've implemented the webhook handler. You'll need to set up an ngrok tunnel so I can test it."*
+
+Each of these is the agent yielding control. Not because it can't reason about the task — because it can't finish it. It can write the code, but it can't provision what it needs, deploy what it built, or verify what it produced. You become the agent's hands, and that kills the thing people actually want: write a spec at night, wake up to working software.
+
+We've been running experiments toward this at Rubric for a while. What we keep finding is that the bottleneck isn't the model. It's the environment. An agent that can't deploy, can't receive a webhook, can't sign into a real OAuth provider, and loses its filesystem between runs is never going to produce reliable software — regardless of how good the model is.
+
+Unblocking an agent comes down to three things: isolation, verification, and persistence.
+
+## The Permissions Trap
+
+Most teams try to unblock the agent by giving it a seat in their own org. Their AWS account, their GitHub, their deploy pipeline. The agent can open PRs, use existing CI, and work where the team already works.
+
+Sensible on the surface. But once the agent touches real infrastructure, the risks are real. A bad migration is real. A runaway bill is real. A leaked secret is real.
+
+So permissions get scoped down. Read-only AWS. A GitHub token limited to one repo. No browser. No shell. No network.
+
+This creates a feedback loop: the more capable the agent, the more damage it could do in your org, so the tighter the constraints, so the less it can actually finish. The agent ends up with enough access to start work but not enough to complete it.
+
+<Figure id="permissions-trap">
+  <PermissionsTrapFigure />
+  <Figure.Caption>The agent writes the code, then yields. It can't create the GCP project it needs to continue.</Figure.Caption>
+</Figure>
+
+There's a second problem. Even when the agent can act, it often can't verify. It writes frontend code but can't open a browser to see it. It deploys but can't hit the URL. It writes to the database but can't query it to check the row exists. It's building blind.
+
+## Isolation
+
+The fix is not a better permission model. It's isolation.
+
+Don't give the agent a narrow slice of your infrastructure. Give it its own infrastructure. Its own GitHub account. Its own cloud projects. Its own email, domain, and phone number. Its own browser, shell, and network. Its own card with hard spending limits.
+
+Full permissions inside a world that cannot touch production.
+
+<Figure id="isolation-architecture">
+  <IsolationArchitectureFigure />
+  <Figure.Caption>Your org stays locked down. The agent gets its own world — forked from your project into a parallel set of accounts it controls completely.</Figure.Caption>
+</Figure>
+
+Our system prompts look like this:
+
+> You are set up for high-agency, human-out-of-the-loop software development end to end.
+>
+> You have been given full access to the GitHub CLI, Vercel CLI, Neon CLI, Upstash CLI, GCP CLI, AWS CLI with logged-in high-agency sessions. You also have access to all the below API keys, an email address, phone number, credit card, static IP, unique domain with DNS access, unrestricted network access, and a VM with full file system and shell access. You can use all of these resources in any way you want without asking for permission.
+
+None of these accounts touch production. They live in entirely separate orgs, workspaces, and billing accounts — a parallel set of disposable resources. The safety mechanism is the isolation boundary, not the permission model.
+
+### What isolation actually requires
+
+Saying "give the agent its own accounts" is easy. Making it work requires concrete infrastructure:
+
+**Identity.** The agent needs a real identity — a Google Workspace account with a recoverable email, an SSH key on its GitHub account, OAuth credentials that third-party services will accept. Bot detection is aggressive in 2026. A headless script with a free-tier email address gets blocked quickly. The agent's identity has to look and behave like a developer's.
+
+**Billing.** Every cloud account needs a payment method. We use dedicated cards with hard spending limits per agent environment — typically $50–100 per run. This caps the blast radius of a runaway provisioning loop. The card gets monitored, and any charge over a threshold triggers an alert. The agent can spend freely within the limit without asking.
+
+**Networking.** The agent needs real network access — outbound to call APIs, inbound to receive webhooks. We assign a static IP and a domain with DNS control so the agent can configure callback URLs, set up TLS, and receive traffic from the public internet. An agent behind a NAT with no inbound access can't test half the integrations that real applications require.
+
+**Provisioning automation.** Spinning up a fresh isolated environment can't take an hour of manual setup. We've built tooling that provisions a new agent environment — cloud accounts, identity, domain, card, VM — in minutes. Every environment is identical in structure, disposable by design, and completely disconnected from every other environment.
+
+The key insight: the more real you make the agent's environment, the fewer things block it. Every shortcut you take in isolation setup — a shared account here, a mock service there — shows up later as a point where the agent has to yield control.
+
+## Verification
+
+Isolation solves the first problem: the agent can act without stopping to ask for help. But an agent that can act freely and can't verify its own work is just building faster in the dark.
+
+Once the agent has its own accounts and infrastructure, it can verify against real services — not mocks, not stubs, the same way a developer would.
+
+<Figure id="verification-layers">
+  <VerificationLayersFigure />
+  <Figure.Caption>The agent deploys, an LLM judge scores the screenshot, finds an 80px spacing bug, and the agent patches and re-deploys until it passes.</Figure.Caption>
+</Figure>
+
+### Browser verification
+
+The agent has Playwright for browser automation. Building an OAuth flow? The agent opens a browser, signs into its own Google account, completes the actual consent screen, gets a real token, and verifies the session cookie is set.
+
+This matters more than it sounds. OAuth is one of the most common points where agents yield control — "I've set up the flow, can you go complete the consent screen?" With its own browser and its own Google account, the agent completes the flow end to end. No handoff.
+
+The same applies to any UI verification. The agent navigates pages, fills forms, clicks buttons, and checks results — with real data in a real database behind a real deployment. It's not testing against a mock. It's using the application.
+
+### Visual evaluation
+
+Screenshots at every meaningful state, scored by an LLM against the design system. This is a qualitative layer that sits on top of functional verification.
+
+The questions aren't "did the page render?" — they're specific: Is the spacing between the header and the first content block consistent with the design system? Is the loading state showing a spinner or is the button just disabled? Does the empty state have the right copy? Is the error message positioned correctly and readable?
+
+This catches the entire class of bugs that pass every unit test but look wrong to a human. A form that works perfectly but has 80px of unexplained padding at the top. A success toast that appears behind the modal. A table that renders but wraps its columns in a way that's unreadable. Functional correctness and visual correctness are different things, and agents need to check both.
+
+We score screenshots on a 1–10 scale against specific criteria. A score below the threshold for any criterion triggers a rework loop — the agent receives the score, the criterion it failed, and a screenshot showing the issue. It patches and re-verifies. This loop runs until the score passes or a retry limit is reached.
+
+### Infrastructure verification
+
+Full shell access means the agent can verify from outside the application. This is the layer that catches the "it returned 200 but nothing happened" class of bugs.
+
+The agent queries Postgres directly to check that a row was written. It inspects Redis to verify a cache key was set. It curls the API from the command line to test endpoints independent of the frontend. It tails logs to catch errors that the application swallowed.
+
+This is important because applications lie. A well-handled error might return a success response to the user while silently failing to complete a background operation. The only way to catch this is to verify from outside — check the database, check the queue, check the logs. The agent does this the same way a senior developer would during a code review: don't trust the application's self-report, check the actual state.
+
+### Network verification
+
+The agent has its own domain with DNS control and a stable HTTPS endpoint via tunnel. It can receive real webhooks, hit deployed URLs, and call external APIs.
+
+This is the verification layer that most sandbox environments miss entirely. When a webhook handler is working correctly, a real external service posts to a real URL, the handler processes it, and the result is visible in the database. You can't test this with mocks — the point is that the *external service* sends the event, the *network* delivers it, and the *handler* processes it correctly under real conditions.
+
+Our agent can register a webhook URL with Stripe, GitHub, or Gmail, wait for a real event, and verify the full chain: event received, parsed, validated, processed, state updated. If any link breaks, it knows.
+
+## Persistence
+
+The environment is persistent. This isn't an ephemeral container that vanishes between runs. The filesystem, databases, and running services all survive.
+
+### Why persistence changes the game
+
+Without persistence, the agent pays the setup cost every time. It rebuilds context, restarts services, reprovisions infrastructure, and loses the thread between runs. That's not iteration. That's repeated cold start.
+
+Consider a realistic development session. The agent scaffolds a project, installs dependencies, sets up a database, creates tables, seeds data, writes application code, deploys, and runs tests. If the environment vanishes after this run, the next run starts from nothing. The agent reinstalls everything. It recreates the database. It redeploys. Thirty minutes of setup before it can write a single line of new code.
+
+With persistence, the next run starts where the last one stopped. The dependencies are installed. The database has data. The deployment is live. The agent reads the logs from its last session, understands what it built, and starts iterating on what's already running.
+
+This is the difference between a notepad that erases itself after every sentence and a document that saves. Without persistence, the agent can demonstrate competence. With persistence, it can accumulate progress.
+
+### What needs to persist (and what doesn't)
+
+Not everything should survive between runs. We've learned to be deliberate about the persistence boundary:
+
+**Persist:** Filesystem (project code, config files), databases (schema + data), deployed services (running applications), environment variables and credentials, DNS records, build artifacts.
+
+**Reset:** Process state (running background tasks that might be in a bad state), temporary files (build caches, log files that could confuse context), browser state (cookies and sessions from verification runs — start clean to test login flows accurately).
+
+The agent has explicit commands to persist or reset specific resources. Before ending a run, it documents what it built and what state it expects to find on the next invocation. This documentation becomes part of the context for the next session.
+
+### Persistence enables real debugging
+
+Here's a concrete benefit that's easy to overlook. When a persistent agent deploys something and it breaks in production two hours later, the agent can come back and debug it. The database is still there. The logs accumulated while it was away. The deployment is running the exact code it pushed. It can diagnose and fix the issue with full context — not reconstruct what it might have done from memory.
+
+This is how human developers work. You ship something, you go home, you come back the next morning and check if anything broke overnight. An ephemeral agent can't do this. A persistent one can.
+
+## Unblocked, Not Done
+
+With this setup, the agent is no longer blocked. It has its own world, real verification tooling, and a persistent environment that survives between runs.
+
+But unblocked doesn't mean correct.
+
+The agent had everything it needed, ran freely, verified its own work, reported success — and sometimes the software is still wrong. Not because it was blocked, but because it didn't know what "correct" meant. Or it knew at the start but drifted. Or it checked its work but checked the wrong things.
+
+An unblocked agent with ad hoc verification will check whatever it thinks matters — and that changes every run. It verifies the happy path. It confirms the API returns 200. It skips the edge case, the error state, the thing that only breaks when two events arrive out of order.
+
+That's not an environment problem. That's a specification problem. The agent needs an explicit, exhaustive definition of "done" — written before it starts, not decided as it goes.
+
+We wrote about how we're approaching that in [Contract Engineering](/lab/contract-engineering).
+
+---
+
+We're building in the open at [github.com/rubriclabs](https://github.com/rubriclabs).
