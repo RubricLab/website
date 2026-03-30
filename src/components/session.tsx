@@ -107,6 +107,7 @@ export function Session() {
 			const t = setTimeout(() => setPhase('sent'), 400)
 			return () => clearTimeout(t)
 		}
+		return undefined
 	}, [typingDone, phase])
 
 	useEffect(() => {
@@ -115,6 +116,7 @@ export function Session() {
 			const t = setTimeout(() => setPhase('thinking'), 600)
 			return () => clearTimeout(t)
 		}
+		return undefined
 	}, [phase])
 
 	// Reasoning lines appear one by one
@@ -131,6 +133,7 @@ export function Session() {
 			}, 600)
 			return () => clearInterval(interval)
 		}
+		return undefined
 	}, [phase])
 
 	// Tools appear one by one
@@ -147,6 +150,7 @@ export function Session() {
 			}, 250)
 			return () => clearInterval(interval)
 		}
+		return undefined
 	}, [phase])
 
 	// Generative UI components appear sequentially
@@ -161,6 +165,7 @@ export function Session() {
 			}, 2000)
 			return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); clearTimeout(t4) }
 		}
+		return undefined
 	}, [phase])
 
 	const handleSend = useCallback(() => {

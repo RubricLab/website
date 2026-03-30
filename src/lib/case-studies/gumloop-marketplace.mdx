@@ -1,0 +1,61 @@
+export const metadata = {
+  slug: 'gumloop-marketplace',
+}
+
+## The Problem
+
+Gumloop is a no-code AI automation platform. Its community had built thousands of workflows — sophisticated automations that non-technical users could configure and run. But these lived behind the login wall. There was no public-facing way to discover, preview, or use a community-created workflow.
+
+The founders, Max and Rahul, wanted a public marketplace: a place where creators could publish their automations, new users could discover Gumloop through search, and the template ecosystem could become a growth channel rather than an internal catalog.
+
+This wasn't a design-then-build engagement. We flew to San Francisco, sat in Gumloop's office for a week, gathered context directly from their product and engineering teams, then sprinted for a month.
+
+## The Architecture
+
+### Data Model
+
+The first task wasn't code — it was figuring out what a "published template" actually is. Gumloop has three entity types: workflows (multi-step automations), flows (simpler sequences), and agents (autonomous AI workers). A marketplace listing needed to support all three, with different metadata, input schemas, and preview formats.
+
+We designed a unified template data model that wraps any of these entity types with publishing metadata: title, description, category tags, input parameters, creator attribution, and usage stats. This model extends rather than replaces the existing internal template system — every pre-built and internally published template is automatically compatible.
+
+### Creator Publishing
+
+The publishing flow needed to be low-friction for creators but maintain quality. When a creator publishes a workflow, the system auto-generates a description using an LLM that analyzes the workflow's structure, node types, and connections. The creator can edit this, add context, and categorize the template.
+
+The key constraint: creators should never have to leave the editor to publish. The publishing interface is embedded in the existing workflow builder — you build, you publish, you're done.
+
+### SEO Architecture
+
+Each published template gets a dedicated, server-rendered page optimized for search. The pages are built for two audiences: Gumloop users browsing for templates, and people who've never heard of Gumloop discovering it through a search like "automate Gmail summarization."
+
+The template pages are rendered at build time where possible and on-demand for new publications. Each page includes the template's description, input schema, node graph preview, creator info, and usage data. The URL structure is flat and descriptive: `/marketplace/gmail-summarizer`, `/agents/research-assistant`.
+
+We built this on Next.js with server-side rendering patterns that give search engines fully rendered HTML while keeping the interactive experience fast for users.
+
+### Scalability
+
+The architecture had to support an unknown growth curve — from hundreds of templates at launch to potentially tens of thousands. We built the listing pages with pagination, filtering, and category-based navigation that doesn't require re-rendering the entire catalog. Template metadata is indexed separately from the full workflow definitions, so browsing is fast even as the catalog grows.
+
+## How We Worked
+
+This project was forward deployed in a way that's unusual for an external team. We weren't working from a spec that was handed to us — we sat with Gumloop's designers (Gonzalo and Ren&eacute;) and engineers for a week, mapped the full user journey on a whiteboard, iterated on wireframes until the data model was settled, then sprinted on code.
+
+The week in-person wasn't a kickoff meeting. It was the design phase. By the time we flew home, we had a finalized data model, a component inventory, and a clear build plan. The remaining three weeks were execution — daily syncs, shared branches, and integrated deploys to Gumloop's existing infrastructure.
+
+Total time from first meeting to production: one month.
+
+## What We Learned
+
+**Forward deployment compresses context transfer.** The hardest part of any external engagement is understanding the client's system — not just the codebase, but the decisions behind it, the constraints that aren't documented, the things the team tried and abandoned. Sitting in the office for a week transferred more context than a month of Slack threads would have.
+
+**Extend, don't replace.** The marketplace needed to feel like a natural extension of Gumloop's existing product, not a separate app. That meant building on their authentication system, their data layer, and their design language. We wrote code that Gumloop's own engineers could maintain and extend without us. The goal was to leave infrastructure, not create dependency.
+
+**Auto-generated descriptions reduce publishing friction by more than you'd expect.** The LLM-generated template descriptions turned publishing from a 15-minute writing task into a 2-minute review-and-edit. Creator publishing rates increased significantly once the friction dropped.
+
+## Outcome
+
+Gumloop Templates launched as a public marketplace supporting workflows, flows, and agents. It transformed an internal catalog into a growth engine — community-driven content, organic search visibility, and the foundation for a creator economy within the platform.
+
+---
+
+*This was Rubric's second engagement with Gumloop. We first partnered two years earlier to build the v1 of their UI system and landing page during the company's early days.*

@@ -136,6 +136,7 @@ export function ExplodedView() {
 					<svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 1 }}>
 						{PIECES.map((piece) => {
 							const off = EXPLODE_OFFSETS[piece.id]
+							if (!off) return null
 							const grid = getGridPos(piece.gridCol, piece.gridRow)
 							const ex = off.x * easedSep
 							const ey = off.y * easedSep
@@ -161,6 +162,7 @@ export function ExplodedView() {
 				{/* Exploding pieces */}
 				{PIECES.map((piece) => {
 					const off = EXPLODE_OFFSETS[piece.id]
+					if (!off) return null
 					const grid = getGridPos(piece.gridCol, piece.gridRow)
 					const ex = off.x * easedSep
 					const ey = off.y * easedSep

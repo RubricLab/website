@@ -7,7 +7,7 @@ import { PHASES, phaseProgress, easeOut, easeOutCubic, easeInOut, lerp, clamp01 
 import { UserMessage } from './chat/user-message'
 import { ReasoningTrace } from './chat/reasoning-trace'
 import { SystemResponse } from './chat/system-response'
-import { GenerativeOutput, type CaseRef } from './chat/generative-output'
+import { type CaseRef } from './chat/generative-output'
 import { ChatInput } from './chat/chat-input'
 
 // ── Content ──────────────────────────────────────────────────────────────
@@ -57,7 +57,7 @@ function useAutoChat(scrollProgress: number): number {
 // + guide lines drawing in from different directions. Content stays visible.
 
 function Annotation({ sep, active, radius = 8 }: {
-	sep: number; active: boolean; radius?: number
+	sep: number; active: boolean; radius?: number | undefined
 }) {
 	const t = Math.min(1, sep * 2.5)
 	const op = Math.min(0.55, sep * 1.5) * (active ? 1.5 : 1)
@@ -172,7 +172,7 @@ export function HeroEngine() {
 	const pillSpread = sep * 14
 
 	const layerStyle = (i: number): React.CSSProperties => ({
-		transform: `translateY(${LAYER_GAP[i] * sep}px)`,
+		transform: `translateY(${(LAYER_GAP[i] ?? 0) * sep}px)`,
 		opacity: globalFade,
 		position: 'relative',
 		overflow: 'visible',
@@ -181,6 +181,7 @@ export function HeroEngine() {
 	const renderExplanation = () => {
 		if (!isHL) return null
 		const layer = LAYERS[activeLayer]
+		if (!layer) return null
 		const fadeIn = easeOutCubic(Math.min(1, layerLocal * 4))
 		const fadeOut = layerLocal > 0.75 ? 1 - easeOut((layerLocal - 0.75) / 0.25) : 1
 		const op = fadeIn * fadeOut * globalFade
@@ -202,7 +203,7 @@ export function HeroEngine() {
 	const renderLayer = (i: number, content: React.ReactNode, opts?: { fitWidth?: boolean; radius?: number }) => {
 		const active = isHL && i === activeLayer
 		return (
-			<div className="mt-3" style={{ ...layerStyle(i), width: opts?.fitWidth ? 'fit-content' : undefined }} key={LAYERS[i].id}>
+			<div className="mt-3" style={{ ...layerStyle(i), width: opts?.fitWidth ? 'fit-content' : undefined }} key={LAYERS[i]?.id ?? i}>
 				<div style={{ opacity: contentDim(i), transition: 'opacity 0.4s' }}>
 					{content}
 				</div>
