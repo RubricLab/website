@@ -3,6 +3,11 @@ type Author = {
 	url: string
 }
 
+type CoPost = {
+	partner: string
+	url: string
+}
+
 const AUTHORS = {
 	ARIHAN_VARANASI: {
 		name: 'Arihan Varanasi',
@@ -11,6 +16,10 @@ const AUTHORS = {
 	DEXTER_STOREY: {
 		name: 'Dexter Storey',
 		url: 'https://x.com/dexterstorey'
+	},
+	RUBRIC: {
+		name: 'Rubric',
+		url: 'https://rubriclabs.com'
 	},
 	SARIM_MALIK: {
 		name: 'Sarim Malik',
@@ -33,4 +42,4 @@ const CATEGORIES = {
 type Category = (typeof CATEGORIES)[keyof typeof CATEGORIES]
 
 export { AUTHORS, CATEGORIES }
-export type { Author, Category }
+export type { Author, Category, CoPost }
