@@ -7,8 +7,15 @@ export const metadata = {
   author: AUTHORS.DEXTER_STOREY,
   bannerImageUrl: "/images/rail.png",
   category: CATEGORIES.EXPERIMENT,
-  description: "How to use multi-staging workflows to build and test multiple full-stack changes in parallel."
+  description: "How to use multi-staging workflows to build and test multiple full-stack changes in parallel.",
+  coPost: {
+    partner: "Neon",
+    url: "https://neon.tech/blog/rubric-labs-can-make-your-ai-dreams-come-true"
+  }
 }
+
+
+> *This post describes a branch-per-developer database workflow we designed for human teams. We've since extended the same isolation principle to AI agents — giving each agent its own infrastructure instead of a shared sandbox. See [Unblocking Agents](/lab/unblocking-agents) for how that works.*
 
 At **Rubric**, we are constantly pushing full stack features in parallel. We strive to get high quality code to prod as fast as possible with minimal coordination. We developed the multi-staging workflow to address problems with webhooks in staging that created bottlenecks across the CI/CD pipeline.
 

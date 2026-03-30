@@ -1,6 +1,6 @@
 import { readdir, readFile } from 'node:fs/promises'
 import path from 'node:path'
-import type { Author, Category } from '~/lib/constants/blog'
+import type { Author, Category, CoPost } from '~/lib/constants/blog'
 import { createSlugger } from '~/lib/utils/slugger'
 
 export type Post = {
@@ -13,6 +13,8 @@ export type Post = {
 	category: Category
 	slug: string
 	bannerImageUrl: string
+	coPost?: CoPost
+	archived?: boolean
 }
 
 export type TocItem = {
@@ -42,6 +44,16 @@ export const getPostMetadata = async (): Promise<Post[]> => {
 	)
 
 	return metadata.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+}
+
+export const getMainFeedPosts = async (): Promise<Post[]> => {
+	const posts = await getPostMetadata()
+	return posts.filter(post => !post.archived)
+}
+
+export const getArchivedPosts = async (): Promise<Post[]> => {
+	const posts = await getPostMetadata()
+	return posts.filter(post => post.archived)
 }
 
 export const getPost = async (
