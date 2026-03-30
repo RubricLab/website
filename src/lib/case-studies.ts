@@ -1,7 +1,14 @@
 import { z } from 'zod'
 
 const caseStudySchema = z.object({
+	category: z.string(),
 	client: z.string(),
+	coPost: z
+		.object({
+			label: z.string(),
+			url: z.string()
+		})
+		.optional(),
 	context: z.string(),
 	description: z.string(),
 	outcome: z.string(),
@@ -23,10 +30,11 @@ type CaseStudy = z.infer<typeof caseStudySchema>
 
 export const caseStudies: CaseStudy[] = [
 	{
+		category: 'agentic systems',
 		client: 'Albertsons',
 		context: 'Fortune 500 · Production',
 		description:
-			'AI grocery agent with a bespoke memory system and household preference mapping. In production.',
+			'Agentic search and bespoke memory architecture for Albertsons/Safeway\u2019s 250k+ SKU grocery inventory. The agent remembers what it\u2019s already found, refines its own queries, and builds context across sessions. A full system \u2014 retrieval, memory, evaluation \u2014 designed for a Fortune 500 operation.',
 		outcome:
 			'Shipped to production. Serving real users through the Safeway ecosystem. A grocery shopping agent that remembers who you are and gets better every time you use it.',
 		problem: `Grocery shopping is personal. Every household has different dietary restrictions, budget constraints, brand preferences, and weekly rhythms. Static recommendation systems can surface popular products, but they can't plan a Tuesday dinner for a family where one kid is gluten-free and the other won't eat vegetables.
@@ -52,10 +60,38 @@ Edge cases are where this gets interesting. Multi-generational households with c
 		title: 'Safeway AI'
 	},
 	{
+		category: 'production agents',
+		client: 'Cal.com',
+		coPost: {
+			label: 'LangChain',
+				url: 'https://blog.langchain.com/how-to-design-an-agent-for-production/'
+		},
+		context: 'Open Source Scheduling',
+		description:
+			'One of the first AI agents to ship in production. An email-first scheduling assistant for Cal.com \u2014 six CRUD operations handled by an OpenAI functions agent, with structured tool use via LangChain, real calendar state, and zero UI. A proof that agents can run a critical user workflow unsupervised.',
+		outcome:
+			'Shipped as Cal.ai. An early proof point in what email-first AI agents could look like for productivity tools.',
+		problem: `Cal.com is the open-source scheduling platform. They wanted to explore what scheduling looks like when the interface is a conversation, not a calendar. The concept: an AI agent you can email naturally — "find time for a 30-minute call with Sarah next week" — and it handles the rest. No links. No back-and-forth. Just an email, and it's done.`,
+		slug: 'cal-ai',
+		system: `Cal.ai is an email-first AI scheduling agent. It parses natural language scheduling requests from inbound email, resolves them against your Cal.com availability, handles timezone conversions and constraint satisfaction, and books the meeting — all without the user touching a calendar.
+
+The agent manages ambiguity (when the user says "next week" but means "the week after"), multi-party scheduling (coordinating across multiple calendars), and preference inference (learning that "morning" means 9-11am for this user, not 6-8am).
+
+Built as an early exploration in conversational agent design for Cal.com's platform.`,
+		tags: ['AI Agent', 'Email-first', 'Natural Language', 'Scheduling'],
+		tier: 'strong',
+		title: 'Cal.ai'
+	},
+	{
+		category: 'generative video',
 		client: 'Graphite',
+		coPost: {
+			label: 'LangChain',
+				url: 'https://blog.langchain.com/rubric-labs-graphite-personalized-video-at-scale/'
+		},
 		context: 'Acquired by Cursor',
 		description:
-			'AI-generated personalized developer videos. Written, directed, and cut by AI. Scaled to peak traffic.',
+			'AI-directed personalized video for thousands of developers. LLM-generated scripts, function-calling for scene selection, Three.js rendering, and parallelized cloud encoding via AWS Lambda. Started as a marketing gift for Graphite \u2014 scaled from zero to crash to stable in weeks.',
 		outcome: `Shipped as Graphite's flagship year-end campaign. Users shared their videos across social media, driving organic reach. Graphite was subsequently acquired by Cursor.`,
 		problem: `Graphite wanted a year-end campaign that felt genuinely personal. Not a Spotify Wrapped clone with bar charts — something that captured what made each developer's year unique. The concept: an AI-generated video for every user, personalized to their GitHub contribution data. Every video different. Every video yours.
 
@@ -75,10 +111,11 @@ Mobile delivery required a separate pipeline for down-resolution, optimized for 
 		title: 'Year in Code'
 	},
 	{
+		category: 'forward deployed',
 		client: 'Gumloop',
-		context: 'YC-backed · $23M+ raised',
+		context: 'YC-backed \u00b7 $23M+ raised',
 		description:
-			'Turned an internal template directory into a public AI workflow marketplace and growth engine. Shipped in one month.',
+			'Flew to San Francisco to work embedded with Gumloop\u2019s team for a week, then sprinted for a month. Built a creator marketplace that turned their internal template catalog into a public growth engine \u2014 publishing workflows, SEO-optimized pages, and scalable architecture for workflows, flows, and agents.',
 		outcome: `Launched within one month. Transformed Gumloop's template directory into a public growth engine.`,
 		problem: `Gumloop is an AI automation platform. Users build workflows — chains of AI-powered steps that automate business tasks. Internally, Gumloop had a directory of template workflows, but it was a flat list. No discovery. No community contribution. No growth engine.
 
@@ -96,24 +133,7 @@ Every page is statically generated and SEO-optimized. Each workflow becomes a la
 The architecture needed to handle backward compatibility with existing workflows, a scalable publishing pipeline, and a creator experience that made publishing frictionless — one-click publish from the workflow editor.`,
 		tags: ['Marketplace', 'AI Automation', 'SEO', 'Platform Architecture'],
 		tier: 'strong',
-		title: 'AI Marketplace'
-	},
-	{
-		client: 'Cal.com',
-		context: 'Open Source Scheduling',
-		description: 'Email-first AI scheduling agent. Natural language in, booked meeting out.',
-		outcome:
-			'Shipped as Cal.ai. An early proof point in what email-first AI agents could look like for productivity tools.',
-		problem: `Cal.com is the open-source scheduling platform. They wanted to explore what scheduling looks like when the interface is a conversation, not a calendar. The concept: an AI agent you can email naturally — "find time for a 30-minute call with Sarah next week" — and it handles the rest. No links. No back-and-forth. Just an email, and it's done.`,
-		slug: 'cal-ai',
-		system: `Cal.ai is an email-first AI scheduling agent. It parses natural language scheduling requests from inbound email, resolves them against your Cal.com availability, handles timezone conversions and constraint satisfaction, and books the meeting — all without the user touching a calendar.
-
-The agent manages ambiguity (when the user says "next week" but means "the week after"), multi-party scheduling (coordinating across multiple calendars), and preference inference (learning that "morning" means 9-11am for this user, not 6-8am).
-
-Built as an early exploration in conversational agent design for Cal.com's platform.`,
-		tags: ['AI Agent', 'Email-first', 'Natural Language', 'Scheduling'],
-		tier: 'strong',
-		title: 'Cal.ai'
+		title: 'Gumloop Marketplace'
 	}
 ]
 

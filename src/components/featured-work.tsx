@@ -34,8 +34,8 @@ export function FeaturedWork() {
 								<span className="font-mono text-sm text-secondary">[ Visual ]</span>
 							</div>
 							<div className="p-6">
-								<p className="font-mono text-xs text-secondary">
-									{study.client} · {study.context}
+								<p className="font-mono text-xs text-secondary uppercase tracking-wider">
+									{study.category}
 								</p>
 								<h3 className="font-sans text-2xl text-primary font-normal mt-1">
 									{study.title}
