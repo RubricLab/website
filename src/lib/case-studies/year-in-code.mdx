@@ -1,0 +1,87 @@
+export const metadata = {
+  slug: 'year-in-code',
+}
+
+## The Problem
+
+Graphite wanted to celebrate developers at the end of 2023 — a personalized year-in-review that felt genuinely personal, not a templated infographic with your name swapped in.
+
+We'd built GitHub Wrapped in 2021 and scaled it to 10,000 users, so we knew the domain. But 2023 was the first year we could use LLMs in production. The question was whether we could use AI to *direct* a video — not generate the pixels, but make the creative decisions: which scenes to show, in what order, with what story arc, based on what a developer actually did that year.
+
+The goal: a 60-second personalized video for every user, with a narrative that felt authored, not assembled.
+
+## The Architecture
+
+The system has four stages: fetch stats, generate a script, render frames, encode video.
+
+### Fetching Stats
+
+When a user authenticates with GitHub, we pull their year's activity via the GitHub GraphQL API: commits, pull requests, top languages, contributed repositories, stars given and received, and new followers. We request minimal permissions — no code access. Stats are stored in Supabase (Postgres + auth).
+
+### AI as Director
+
+This is where the system gets interesting. We pass the user's stats to `gpt-4-turbo` with a prompt that defines the AI's role: generate a `video_manifest` — a 12-scene script for a 60-second video.
+
+The AI doesn't have full creative freedom. We learned quickly that unconstrained generation produced inconsistent quality. Instead, we built a bank of parameterized scene components — an intro with a selectable planet, a flashback with date ranges, a language breakdown, a people grid — and let the AI choose which scenes to use, in what order, with what text and parameters.
+
+The key mechanism: OpenAI function calling with a Zod schema using discriminated unions. Each scene type has a defined structure. The AI picks from the menu and fills in the blanks.
+
+```typescript
+z.discriminatedUnion('type', [
+  z.object({
+    type: z.enum(['intro']),
+    planet: z.enum(['mars', 'venus', 'moon', ...])
+  }),
+  z.object({
+    type: z.enum(['languages']),
+    languages: z.array(languageSchema)
+  }),
+  // ... 10+ scene types
+])
+```
+
+The output is a structured manifest — a JSON array of 12 scene objects, each with text and animation parameters. Every video has a unique sequence, unique narration, and a story arc that builds based on the user's actual activity. But every scene is a known component with predictable rendering behavior.
+
+This is the middle ground between "AI generates everything" (unpredictable) and "template with variables" (generic). The AI makes *editorial* decisions — what to emphasize, what order to tell the story, what tone to strike — while the rendering stays deterministic.
+
+### Rendering
+
+The manifest maps to React components via Remotion. Each scene type has a corresponding component that accepts the AI-selected parameters and renders frames.
+
+```typescript
+video.scenes.map(({ text, animation }, i) => {
+  switch (animation?.type) {
+    case 'languages': return <Languages from={i * fps * 5} ... />
+    case 'people':    return <People from={i * fps * 5} ... />
+    default:          return <Conclusion from={i * fps * 5} ... />
+  }
+})
+```
+
+We used Three.js for 3D elements — planets, wormhole effects, particle fields. These are pre-built geometries driven by scene parameters, not generated assets.
+
+The critical optimization: we store the manifest, not the video. The manifest is a few kilobytes of JSON. The video is megabytes. By rendering in the client via Remotion's player, we cut bandwidth and storage by two orders of magnitude. The video is also interactive — you can scrub, pause, replay — because it's rendered at runtime from components, not streamed as a flat file.
+
+### Scaling
+
+When users want to download an .mp4, we render server-side via Remotion Lambda across AWS — up to 10,000 concurrent Lambda instances encoding video in parallel, with outputs stored in S3.
+
+This was the stage that broke first. We launched, it went viral in the developer community, and the rendering pipeline buckled. We parallelized the Lambda architecture, added dynamic resolution downscaling for mobile, and built a queue system with per-user render-once caching (each user's download URL is stored in Supabase after first render).
+
+We also deliberately added friction to the download step — you can watch your video for free in the browser, but downloading triggers the expensive render. This kept costs manageable while ensuring the users who cared most about sharing got their file.
+
+## What We Learned
+
+**LLMs are better directors than artists.** Letting the AI make editorial decisions (scene selection, ordering, emphasis) while keeping rendering deterministic was the key insight. The AI is brilliant at personalization — figuring out that *this* developer's story should lead with their open-source contributions, not their commit count. It's unreliable at pixel-level generation. Play to the strength.
+
+**Structured output is non-negotiable for media.** The Zod schema + function calling combination meant every manifest was valid by construction. If the AI returned invalid JSON or an unknown scene type, the schema rejected it before it reached the renderer. We never had a "half-rendered broken video" in production.
+
+**Store the script, not the artifact.** The manifest-first architecture made everything cheaper and more flexible. Updating a scene component retroactively improved every video that used it — without re-running the AI or re-rendering.
+
+## Outcome
+
+Year in Code was used by thousands of developers. It demonstrated that LLMs could drive creative production at scale — not by generating media directly, but by making structured editorial decisions that feed deterministic rendering pipelines.
+
+---
+
+*Built in partnership with Graphite. Also published on [LangChain](https://blog.langchain.com/rubric-labs-graphite-personalized-video-at-scale/).*
