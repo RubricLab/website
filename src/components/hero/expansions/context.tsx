@@ -14,10 +14,10 @@ const SOURCES = [
 const SCHEMA = { label: 'schema', detail: '2 sentences', detail2: '+ citations' }
 const DISCARDED = { label: 'discarded ✗', detail: 'gumloop case study', detail2: 'rel: 0.64 — low signal' }
 
-const BLOCK_W = 140
-const BLOCK_H = 64
-const BLOCK_GAP = 16
-const DROP_Y = 40  // vertical distance from connector to first row
+const BLOCK_W = 130
+const BLOCK_H = 56
+const BLOCK_GAP = 12
+const DROP_Y = 32  // vertical distance from connector to first row
 
 function SourceBlock({ x, y, label, detail, detail2, progress, discarded }: {
 	x: number; y: number; label: string; detail: string; detail2: string

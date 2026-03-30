@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { FadeIn } from './fade-in'
 
 const MP4_URL = 'https://d2os0zhpsj02b0.cloudfront.net/hero/preview.mp4'
@@ -18,11 +18,6 @@ export function VideoSection() {
 		setPlaying(true)
 	}
 
-	useEffect(() => {
-		// Autoplay muted
-		videoRef.current?.play().catch(() => {})
-	}, [])
-
 	return (
 		<section className="max-w-[1200px] mx-auto px-6 md:px-8 py-24">
 			<FadeIn>
@@ -30,7 +25,7 @@ export function VideoSection() {
 					<div className="video-inner-container">
 						<video
 							ref={videoRef}
-							className="video-player"
+							className={`video-player ${!playing ? 'grayscale' : ''}`}
 							src={MP4_URL}
 							poster={POSTER_URL}
 							playsInline
@@ -44,7 +39,7 @@ export function VideoSection() {
 									type="button"
 									onClick={handlePlay}
 									className="flex items-center justify-center w-[60px] h-[60px] rounded-full bg-subtle border border-subtle hover:bg-accent transition-all duration-200"
-									aria-label="Play with sound"
+									aria-label="Play video"
 								>
 									<svg width="20" height="20" viewBox="0 0 20 20" fill="none">
 										<path d="M6 4l10 6-10 6V4z" className="fill-primary" fillOpacity="0.9" />

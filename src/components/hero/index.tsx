@@ -41,7 +41,7 @@ function useAutoChat(scrollProgress: number): number {
 	useEffect(() => {
 		start.current = performance.now()
 		const tick = () => {
-			const t = Math.min(1, (performance.now() - start.current) / 4500)
+			const t = Math.min(1, (performance.now() - start.current) / 3800)
 			setAuto(t)
 			if (t < 1) raf.current = requestAnimationFrame(tick)
 		}
@@ -70,11 +70,15 @@ export function HeroEngine() {
 	// Derive the full hero state from scroll progress
 	const heroState = deriveHeroState(scrollProgress)
 
-	// Chat build sub-progress
-	const typingP = clamp01(chatP / 0.15)
-	const reasoningP = clamp01((chatP - 0.15) / 0.2)
-	const responseP = clamp01((chatP - 0.35) / 0.35)
-	const genUIP = clamp01((chatP - 0.7) / 0.3)
+	// Chat build sub-progress — input-first flow:
+	// 0.00–0.06: text appears in input box
+	// 0.06–0.12: submit animation (input → message bubble)
+	// 0.12+: reasoning, response, citations as before
+	const inputFillP = clamp01(chatP / 0.06)        // text filling input
+	const submitP = clamp01((chatP - 0.06) / 0.06)  // submit transition
+	const reasoningP = clamp01((chatP - 0.12) / 0.2)
+	const responseP = clamp01((chatP - 0.32) / 0.35)
+	const genUIP = clamp01((chatP - 0.67) / 0.3)
 
 	// Component text opacity (ghost = 0, active/focused = 1)
 	const textOpacity = heroState.components.map(s => {
@@ -83,8 +87,10 @@ export function HeroEngine() {
 		return 1
 	})
 
-	// Intro text/logos visibility
+	// Intro text/logos visibility — smooth crossfade with chat offset
 	const introVis = isScrolling ? 0 : 1
+	// Chat panel offset: starts right to avoid hero text overlap, animates to center
+	const chatOffsetX = introVis * 120
 
 	// Chat container opacity (fades at the very end of REASSEMBLE)
 	const reassembleP = phaseProgress(scrollProgress, PHASES.REASSEMBLE)
@@ -158,6 +164,8 @@ export function HeroEngine() {
 							width: W,
 							overflow: 'visible',
 							opacity: globalFade,
+							transform: `translateX(${chatOffsetX}px)`,
+							transition: 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
 						}}
 					>
 						{/* Chat background/border (fades as scaffold takes over) */}
@@ -180,15 +188,19 @@ export function HeroEngine() {
 								</span>
 							</div>
 
-							{/* /01 — Question */}
+							{/* /01 — Question (appears after submit) */}
 							<div ref={setComponentRef(0)} className="mt-3" style={{
 								opacity: textOpacity[0],
 								transition: 'opacity 0.4s',
 								position: 'relative',
 								overflow: 'visible',
 							}}>
-								<div style={{ opacity: Math.min(1, typingP * 3) }}>
-									<UserMessage text={USER_MSG} progress={typingP} />
+								<div style={{
+									opacity: submitP,
+									transform: `translateY(${(1 - submitP) * 8}px)`,
+									transition: 'none',
+								}}>
+									<UserMessage text={USER_MSG} progress={1} />
 								</div>
 							</div>
 
@@ -238,12 +250,12 @@ export function HeroEngine() {
 								</div>
 							</div>
 
-							{/* Chat input — fades during annotation */}
+							{/* Chat input — shows question text, then submits */}
 							<div className="mt-3" style={{
-								opacity: Math.min(1, chatP * 4) * containerBgVis,
+								opacity: Math.min(1, chatP * 8) * containerBgVis,
 								transition: 'opacity 0.3s',
 							}}>
-								<ChatInput />
+								<ChatInput text={USER_MSG} fillProgress={inputFillP} submitted={submitP > 0.5} />
 							</div>
 						</div>
 

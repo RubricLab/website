@@ -7,10 +7,10 @@ import { clamp01, easeOutCubic } from '../scroll-phases'
 const S = 'var(--primary)'
 
 // DAG node definitions
-const NODE_W = 80
-const NODE_H = 24
-const H_GAP = 16
-const V_SPREAD = 36 // vertical distance between parallel branches
+const NODE_W = 74
+const NODE_H = 22
+const H_GAP = 12
+const V_SPREAD = 32 // vertical distance between parallel branches
 
 interface DagNode {
 	label: string
@@ -83,7 +83,7 @@ export function ArchitectureExpansion({ bounds, progress }: {
 	const inputX = startX
 	const parallelX = inputX + NODE_W + H_GAP + 16
 	const mergeX = parallelX + NODE_W + H_GAP + 16
-	const seqX = [mergeX, mergeX + NODE_W / 2 + H_GAP, mergeX + NODE_W + H_GAP * 2, mergeX + NODE_W * 1.5 + H_GAP * 3]
+	const seqX = [mergeX, mergeX + NODE_W / 2 + H_GAP, mergeX + NODE_W + H_GAP * 2]
 
 	const parallelNodes = [
 		{ label: 'retrieve docs', y: centerY - V_SPREAD },

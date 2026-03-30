@@ -28,9 +28,9 @@ const ITERATIONS = [
 	},
 ]
 
-const CARD_W = 185
-const CARD_H = 175
-const CARD_GAP = 12
+const CARD_W = 140
+const CARD_H = 150
+const CARD_GAP = 8
 
 function IterationCard({ iter, x, y, progress, compressed }: {
 	iter: typeof ITERATIONS[0]
@@ -71,7 +71,7 @@ function IterationCard({ iter, x, y, progress, compressed }: {
 						</p>
 
 						{/* Score */}
-						<p className="text-[18px] font-mono text-primary mt-1" style={{
+						<p className="text-[16px] font-mono text-primary mt-1" style={{
 							opacity: iter.winner ? 0.85 : 0.5,
 						}}>
 							{iter.score}
@@ -130,31 +130,25 @@ export function EvaluationExpansion({ bounds, progress }: {
 	if (!bounds || bounds.width === 0 || connectors.length === 0) return null
 
 	const origin = getNodePosition(bounds, connectors[0]) // right-center
-	const startX = origin.x + 30
+	const startX = origin.x + 24
 	const centerY = origin.y - CARD_H / 2
 
-	// Phase within evaluation: show iterations sequentially
-	// 0.0-0.25: iter 1 appears center
-	// 0.25-0.50: iter 1 slides left, iter 2 appears center
-	// 0.50-0.75: iter 2 slides left, iter 3 appears center
+	// Phase within evaluation: show iterations sequentially, tiling right
+	// 0.0-0.25: iter 1 appears at startX
+	// 0.25-0.50: iter 2 appears next to iter 1
+	// 0.50-0.75: iter 3 appears next to iter 2
 	// 0.75-0.90: scores settle, winner highlighted
 	// 0.90-1.0: iters 1&2 compress to ghost lines, iter 3 stays
 
 	const iter1Appear = clamp01(progress * 4)
-	const iter1SlideLeft = clamp01((progress - 0.25) * 4)
 	const iter2Appear = clamp01((progress - 0.25) * 4)
-	const iter2SlideLeft = clamp01((progress - 0.50) * 4)
 	const iter3Appear = clamp01((progress - 0.50) * 4)
 	const compressP = clamp01((progress - 0.88) * 8)
 
-	// Positions
-	const centerX = startX
-	const leftX = startX - CARD_W - CARD_GAP
-	const farLeftX = startX - (CARD_W + CARD_GAP) * 2
-
-	const iter1X = centerX - iter1SlideLeft * (CARD_W + CARD_GAP) - iter2SlideLeft * (CARD_W + CARD_GAP)
-	const iter2X = centerX - iter2SlideLeft * (CARD_W + CARD_GAP)
-	const iter3X = centerX
+	// Tile left-to-right from startX
+	const iter1X = startX
+	const iter2X = startX + CARD_W + CARD_GAP
+	const iter3X = startX + (CARD_W + CARD_GAP) * 2
 
 	return (
 		<>

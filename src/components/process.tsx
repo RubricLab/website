@@ -21,7 +21,7 @@ export function Process() {
 			<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 				{columns.map((col, i) => (
 					<FadeIn key={col.title} delay={i * 0.08}>
-						<div className="bg-accent border border-subtle rounded-lg p-8 hover:border-subtle/60 transition-colors duration-200 h-full">
+						<div className="bg-accent/40 border border-subtle rounded-xl p-8 transition-all duration-300 hover:border-tint/30 hover:shadow-[0_1px_12px_-4px_rgba(0,0,0,0.06)] h-full">
 							<h3 className="font-mono text-xs text-secondary tracking-widest uppercase mb-4">
 								{col.title}
 							</h3>

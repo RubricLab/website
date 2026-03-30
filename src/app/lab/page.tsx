@@ -157,7 +157,7 @@ export default async function LabPage() {
 								href={project.href}
 								target="_blank"
 								rel="noopener noreferrer"
-								className="group block rounded-lg border border-subtle bg-accent p-6 transition-colors duration-200 hover:border-subtle/60"
+								className="group block rounded-xl border border-subtle bg-accent/40 p-6 transition-all duration-300 hover:border-tint/30 hover:shadow-[0_1px_12px_-4px_rgba(0,0,0,0.06)]"
 							>
 								<h3 className="font-sans text-base text-primary font-normal">
 									{project.name}
@@ -188,7 +188,7 @@ export default async function LabPage() {
 								href={tool.href}
 								target="_blank"
 								rel="noopener noreferrer"
-								className="group block rounded-lg border border-subtle bg-accent p-6 transition-colors duration-200 hover:border-subtle/60"
+								className="group block rounded-xl border border-subtle bg-accent/40 p-6 transition-all duration-300 hover:border-tint/30 hover:shadow-[0_1px_12px_-4px_rgba(0,0,0,0.06)]"
 							>
 								<h3 className="font-sans text-base text-primary font-normal">
 									{tool.name}
