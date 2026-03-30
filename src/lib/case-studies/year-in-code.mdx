@@ -12,11 +12,9 @@ The goal: a 60-second personalized video for every user, with a narrative that f
 
 ## The Architecture
 
-The system has four stages: fetch stats, generate a script, render frames, encode video.
+The system has four stages: fetch stats, generate a script, render frames, encode video. We pull a developer's year of GitHub activity via the GraphQL API (commits, PRs, top languages, stars — minimal permissions, no code access) and pass those stats into a generation pipeline.
 
-### Fetching Stats
-
-When a user authenticates with GitHub, we pull their year's activity via the GitHub GraphQL API: commits, pull requests, top languages, contributed repositories, stars given and received, and new followers. We request minimal permissions — no code access. Stats are stored in Supabase (Postgres + auth).
+<YicFlow />
 
 ### AI as Director
 
@@ -66,7 +64,7 @@ The critical optimization: we store the manifest, not the video. The manifest is
 
 When users want to download an .mp4, we render server-side via Remotion Lambda across AWS — up to 10,000 concurrent Lambda instances encoding video in parallel, with outputs stored in S3.
 
-This was the stage that broke first. We launched, it went viral in the developer community, and the rendering pipeline buckled. We parallelized the Lambda architecture, added dynamic resolution downscaling for mobile, and built a queue system with per-user render-once caching (each user's download URL is stored in Supabase after first render).
+This was the stage that broke first. We launched, it went viral in the developer community, hit the front page of Hacker News, and the rendering pipeline buckled. We parallelized the Lambda architecture, added dynamic resolution downscaling for mobile, and built a queue system with per-user render-once caching (each user's download URL is stored in Supabase after first render).
 
 We also deliberately added friction to the download step — you can watch your video for free in the browser, but downloading triggers the expensive render. This kept costs manageable while ensuring the users who cared most about sharing got their file.
 
@@ -80,8 +78,4 @@ We also deliberately added friction to the download step — you can watch your 
 
 ## Outcome
 
-Year in Code was used by thousands of developers. It demonstrated that LLMs could drive creative production at scale — not by generating media directly, but by making structured editorial decisions that feed deterministic rendering pipelines.
-
----
-
-*Built in partnership with Graphite. Also published on [LangChain](https://blog.langchain.com/rubric-labs-graphite-personalized-video-at-scale/).*
+Year in Code was used by over 10,000 developers, went viral in the developer community, and hit the front page of Hacker News. It demonstrated that LLMs could drive creative production at scale — not by generating media directly, but by making structured editorial decisions that feed deterministic rendering pipelines. Graphite was later acquired by Cursor.

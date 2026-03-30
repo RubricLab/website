@@ -20,6 +20,8 @@ We built a system with three layers: agentic search, structured memory, and eval
 
 The search layer is not a single query. It's a multi-step process where the agent formulates retrieval strategies, executes them, inspects the results, and decides whether to refine or continue.
 
+<SafewaySearchLoop />
+
 For a query like "gluten-free pasta alternatives under $5," the agent doesn't fire one search. It decomposes the intent into constraints — dietary restriction, product category, price ceiling — and runs targeted retrievals against the catalog. If the first pass returns too many results, it tightens. If it returns too few, it relaxes a constraint and explains what it changed.
 
 The agent has access to a set of retrieval primitives — filtered catalog search, promotional data lookup, nutritional attribute filtering, and store-level availability checks. It composes these at runtime based on the query, rather than following a fixed retrieval pipeline. Different questions produce different retrieval strategies.
@@ -30,24 +32,30 @@ This is the [Primitives over Pipelines](/blog/primitives-over-pipelines) approac
 
 The most difficult part of this system was memory. A grocery shopping interaction isn't a single turn — it's a session that builds context over time. The customer adds constraints, changes their mind, asks follow-ups that depend on earlier answers.
 
+<SafewayMemory />
+
 We built a structured memory system with two layers:
 
 **Session memory** tracks everything the agent has retrieved, recommended, and discarded in the current interaction. When the customer says "not that one, something cheaper," the agent knows what "that one" refers to because it has a record of its own prior recommendations. It doesn't re-retrieve — it filters its own history.
 
 **Cross-session memory** persists across interactions. If a customer previously indicated a nut allergy or a preference for organic produce, the system retains that as a durable constraint. The next session starts with context already loaded. The agent doesn't ask questions it's already answered.
 
-The memory architecture is selective. Not everything gets persisted — only information that the system identifies as durable preference (dietary restrictions, brand preferences, household size) versus session-specific context (tonight's dinner, this week's budget). A classification layer decides what to store and at what scope.
+The memory architecture is selective. Not everything gets persisted — only information that the system identifies as durable preference versus session-specific context. A classification layer decides what to store and at what scope:
+
+```typescript
+type MemoryEntry = {
+  content: string
+  scope: 'session' | 'cross-session'
+  durability: 'ephemeral' | 'durable'
+  category: 'dietary' | 'brand' | 'budget' | 'household' | 'preference'
+  confidence: number
+  expiresAt: Date | null  // null = permanent
+}
+```
 
 ### Evaluation
 
-Every recommendation the system produces is scored before the customer sees it. The evaluation layer checks:
-
-- **Relevance:** Does this product match the stated constraints?
-- **Availability:** Is it in stock at the customer's store?
-- **Consistency:** Does it conflict with anything in memory (allergies, prior rejections)?
-- **Specificity:** Is the recommendation concrete enough to act on, or is it generic?
-
-Recommendations that fail any check are filtered. The customer never sees a result that contradicts their own stated preferences — because the system checked against memory before responding.
+Every recommendation the system produces is scored before the customer sees it. The evaluation layer checks relevance against stated constraints, availability at the customer's store, consistency with memory (allergies, prior rejections), and whether the recommendation is concrete enough to act on. Recommendations that fail any check are filtered — the customer never sees a result that contradicts their own stated preferences, because the system checked against memory before responding.
 
 ## What We Learned
 
@@ -59,8 +67,4 @@ Recommendations that fail any check are filtered. The customer never sees a resu
 
 ## Outcome
 
-The system is in active use across Albertsons properties. It handles natural language grocery queries with multi-turn reasoning, persistent customer preferences, and real-time inventory awareness — at the scale of a Fortune 500 retailer's full catalog.
-
----
-
-*This project was built in ongoing partnership with Albertsons. Technical details shared with approval.*
+The system is in active use across Albertsons properties, handling natural language grocery queries with multi-turn reasoning, persistent customer preferences, and real-time inventory awareness — at the scale of a Fortune 500 retailer's full 250k+ SKU catalog across 2,200 stores.
