@@ -28,7 +28,7 @@ const LINES: TerminalLine[] = [
 		id: 'agent-1',
 		type: 'agent',
 		content: "I'll scaffold the auth routes and configure Google OAuth.",
-		delayMs: 1000,
+		delayMs: 1400,
 	},
 	{
 		id: 'tool-1',
@@ -39,13 +39,13 @@ const LINES: TerminalLine[] = [
 				<span className="text-primary/70">src/auth/google.ts</span>
 			</>
 		),
-		delayMs: 600,
+		delayMs: 900,
 	},
 	{
 		id: 'result-1',
 		type: 'result',
 		content: '✓ OAuth config with PKCE flow',
-		delayMs: 700,
+		delayMs: 1000,
 	},
 	{
 		id: 'tool-2',
@@ -56,13 +56,13 @@ const LINES: TerminalLine[] = [
 				<span className="text-primary/70">src/auth/callback.ts</span>
 			</>
 		),
-		delayMs: 600,
+		delayMs: 900,
 	},
 	{
 		id: 'result-2',
 		type: 'result',
 		content: '✓ Callback handler with session management',
-		delayMs: 700,
+		delayMs: 1000,
 	},
 	{
 		id: 'tool-3',
@@ -73,20 +73,20 @@ const LINES: TerminalLine[] = [
 				<span className="text-primary/70">gcloud projects create oauth-test-47</span>
 			</>
 		),
-		delayMs: 600,
+		delayMs: 900,
 	},
 	{
 		id: 'error',
 		type: 'error',
 		content: 'PERMISSION_DENIED: caller does not have permission',
-		delayMs: 500,
+		delayMs: 300,
 	},
 	{
 		id: 'yield',
 		type: 'yield',
 		content:
 			"I built the OAuth login flow, but I can't create the GCP project needed for credentials. Could you create it in the console and share the client ID and secret so I can continue?",
-		delayMs: 1200,
+		delayMs: 2200,
 	},
 ]
 
