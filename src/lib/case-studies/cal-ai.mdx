@@ -1,0 +1,77 @@
+export const metadata = {
+  slug: 'cal-ai',
+}
+
+## The Problem
+
+Cal.com is open-source scheduling infrastructure. Peer Richelsen, the founder, came to us with a vision: an AI assistant that could manage your calendar entirely through email. No UI, no app, no buttons — you email it a request in natural language, and it handles the rest.
+
+This was October 2023. Agents were a research concept, not a product category. The tooling was early. Nobody had a great answer for how to make an LLM reliably perform multi-step operations against a real API with real user data.
+
+The question wasn't whether GPT-4 could understand "book a meeting with Sarah tomorrow at 2." It could. The question was whether it could do that *and* check Sarah's availability, find a mutual slot, create the booking, handle timezone conversion, and email a confirmation — without hallucinating a time slot that doesn't exist.
+
+## The Architecture
+
+We built Cal.ai as an [OpenAI functions agent](https://js.langchain.com/docs/modules/agents/agent_types/openai_functions_agent) using LangChain, deployed as a Next.js serverless application on Vercel.
+
+<CalAgentLoop />
+
+### The Agent Loop
+
+The core is a loop: receive an email, parse and verify it, run the agent, send the response.
+
+Incoming emails hit a serverless route. We clean the message with MailParser and verify the sender via DKIM record — this prevents spoofing and ensures the agent only acts on behalf of authenticated users. The parsed request, along with the user's calendar state (timezone, event types, working hours), gets injected into a dynamic prompt and passed to the agent.
+
+The agent has access to six tools, each a `DynamicStructuredTool` with a Zod-validated input schema. The tools wrap Cal.com's API. The agent selects the right tool based on the request, calls it, evaluates the result, and iterates if something fails. A booking request might require `getAvailability` first, then `createBooking`, then a confirmation email — the agent assembles this sequence at runtime.
+
+### Structured Tool Use
+
+The critical design decision was structured inputs. Each tool defines an exact Zod schema for its parameters — ISO 8601 datetime strings, user IDs, event type identifiers. The agent doesn't generate free-text API calls. It fills typed fields, and the schema validates them before execution.
+
+```typescript
+new DynamicStructuredTool({
+  name: 'createBooking',
+  description: 'Book a new calendar event',
+  schema: z.object({
+    start: z.string().describe('ISO 8601 datetime'),
+    end: z.string().describe('ISO 8601 datetime'),
+    eventTypeId: z.number(),
+    attendee: z.object({
+      name: z.string(),
+      email: z.string(),
+      timeZone: z.string()
+    })
+  }),
+  func: async (input) => calApi.createBooking(input)
+})
+```
+
+This matters because scheduling is unforgiving. A free-text date like "tomorrow afternoon" needs to become `2023-10-16T14:00:00-04:00` in the user's timezone before it touches the API. The structured tool interface forces this conversion to happen explicitly, not implicitly.
+
+We also injected certain parameters (API keys, authenticated user IDs) directly into the tools, bypassing the agent loop entirely. The agent never sees the API key. It can't leak it, hallucinate it, or pass it somewhere unexpected.
+
+### Temperature Zero
+
+We set the model temperature to 0. Scheduling is deterministic — there's one correct answer to "is Sarah free at 2pm on Monday?" Creative variation in the response is a bug, not a feature.
+
+We initially tested with `gpt-3.5-turbo` for speed, but found it took more roundabout paths — more tool calls, more retries, slower overall. GPT-4 at temperature 0 was paradoxically faster because it made fewer mistakes.
+
+## What Made This Hard
+
+**Real state, not simulated state.** The agent operates on a live calendar. If it creates a booking, that booking exists. If it misreads availability, a real person gets double-booked. There's no sandbox mode for someone's Tuesday afternoon.
+
+**Email as the only interface.** No UI means no confirmation dialog, no "did you mean...?" prompt, no undo button. The agent has to get it right on the first try, or send an email admitting it couldn't. We built explicit error handling: if a tool call fails, the agent tries an alternative path. If it still can't resolve, it responds honestly instead of guessing.
+
+**Timezone hell.** The agent internally operates in UTC. User-facing times are formatted per the user's timezone. Working hours are defined in the user's timezone. Availability windows are computed in UTC and converted for display. Every tool call crosses this boundary, and a single mismatch means a meeting at 3am.
+
+## What We Learned
+
+**Typed schemas beat prompt engineering.** You can spend weeks tuning prompts to get an LLM to output valid dates and IDs, or you can define a Zod schema and let the structure do the work. The schema rejects bad output before it reaches the API. We never had a malformed booking in production.
+
+**Keep secrets outside the loop.** Injecting API keys and user IDs directly into tools — bypassing the agent entirely — eliminated an entire class of security and hallucination risks. The agent reasons about *what* to do, not *how* to authenticate.
+
+**Memory is the next frontier.** Cal.ai has no memory across sessions — each email is a fresh start. It can't learn that you prefer morning meetings or that you always book 30-minute slots. That's the problem we've since built solutions for (see [Safeway AI](/work/safeway-ai)).
+
+## Outcome
+
+Cal.ai was one of the first AI agents to reach production users, demonstrating that LLMs with structured tool access could reliably perform multi-step operations against live APIs. It shipped as open source inside the [Cal.com monorepo](https://github.com/calcom/cal.com/tree/main/apps/ai) and remains in production. The design of the tool interface mattered more than the choice of model.

@@ -1,8 +1,8 @@
 'use server'
 
+import { headers } from 'next/headers'
 import { z } from 'zod'
 import { env } from '~/lib/env'
-import { getClientIpAddress } from '../utils/api'
 
 const schema = z.object({
 	company: z.string().optional(),
@@ -10,6 +10,15 @@ const schema = z.object({
 	message: z.string().min(1).max(500),
 	name: z.string().min(1)
 })
+
+async function getClientIpAddress(): Promise<string | null> {
+	const headersList = await headers()
+	return (
+		headersList.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+		headersList.get('x-real-ip') ||
+		null
+	)
+}
 
 export async function createContactRequest(_: unknown, formData: FormData) {
 	try {
@@ -25,6 +34,11 @@ export async function createContactRequest(_: unknown, formData: FormData) {
 				.map(issue => `${issue.message}: ${issue.path.join('.')}`)
 				.join(', ')
 			return { error: errorMessage }
+		}
+
+		if (!env.ROS_API_URL || !env.ROS_SECRET) {
+			console.error('Missing ROS_API_URL or ROS_SECRET')
+			return { error: 'Failed to send message' }
 		}
 
 		const ipAddress = await getClientIpAddress()

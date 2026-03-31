@@ -8,11 +8,13 @@ import PostHogPageView from './pageview'
 
 export const PostHogProvider = ({ children }: { children: React.ReactNode }) => {
 	useEffect(() => {
-		posthog.init(env.NEXT_PUBLIC_POSTHOG_KEY, {
-			api_host: env.NEXT_PUBLIC_POSTHOG_HOST,
-			capture_pageleave: true, // Enable pageleave capture, // Disable automatic pageview capture, as we capture manually
-			capture_pageview: false
-		})
+		if (env.NEXT_PUBLIC_POSTHOG_KEY && env.NEXT_PUBLIC_POSTHOG_HOST) {
+			posthog.init(env.NEXT_PUBLIC_POSTHOG_KEY, {
+				api_host: env.NEXT_PUBLIC_POSTHOG_HOST,
+				capture_pageleave: true,
+				capture_pageview: false
+			})
+		}
 	}, [])
 
 	return (

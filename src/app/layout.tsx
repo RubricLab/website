@@ -1,33 +1,55 @@
 import localFont from 'next/font/local'
+import { JetBrains_Mono } from 'next/font/google'
 import type { Metadata } from 'next/types'
 import Providers from '~/app/providers'
-import { META } from '~/lib/constants/metadata'
+import { Footer } from '~/components/footer'
+import { Nav } from '~/components/nav'
 import './globals.css'
-import { getBaseUrl } from '~/lib/utils'
-import { Nav } from '~/ui/nav'
 
-const matter = localFont({ src: './fonts/matter-regular.woff' })
+const matter = localFont({
+	src: './fonts/matter-regular.woff',
+	variable: '--font-matter'
+})
+
+const mono = JetBrains_Mono({
+	subsets: ['latin'],
+	variable: '--font-mono',
+	weight: ['400', '500']
+})
 
 export const metadata: Metadata = {
-	alternates: {
-		canonical: '/',
-		languages: {
-			'en-US': '/en-US'
-		}
+	description:
+		'AI systems research and production engineering. We study how agents should be built, then we build them.',
+	metadataBase: new URL('https://rubriclabs.com'),
+	openGraph: {
+		description: 'AI systems research and production engineering.',
+		siteName: 'Rubric',
+		title: 'Rubric — A lab that ships.',
+		type: 'website',
+		url: 'https://rubriclabs.com'
 	},
-	metadataBase: new URL(getBaseUrl()),
-	...META
+	robots: {
+		follow: true,
+		index: true
+	},
+	title: {
+		default: 'Rubric — A lab that ships.',
+		template: '%s — Rubric'
+	},
+	twitter: {
+		card: 'summary_large_image',
+		site: '@rubriclabs'
+	}
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
-		<html lang="en">
-			<body
-				className={`${matter.className} relative flex h-full min-h-screen w-full flex-col items-center`}
-			>
+		<html lang="en" suppressHydrationWarning className={`${matter.variable} ${mono.variable}`}>
+			<body className="font-sans bg-background">
 				<Providers>
 					<Nav />
-					<div className="min-h-screen w-screen">{children}</div>
+					<main className="min-h-screen">{children}</main>
+					<Footer />
 				</Providers>
 			</body>
 		</html>
