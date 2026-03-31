@@ -14,7 +14,10 @@ export const size = {
 }
 
 const fontDataPromise = readFile(path.join(process.cwd(), 'src/app/fonts/matter-regular.woff'))
-const rootImageDataPromise = readFile(path.join(process.cwd(), 'public/images/seedling.png'), 'base64')
+const rootImageDataPromise = readFile(
+	path.join(process.cwd(), 'public/images/seedling.png'),
+	'base64'
+)
 
 export const Component = ({ rootImageSrc }: { rootImageSrc: string }) => {
 	return (
@@ -50,10 +53,7 @@ export const Component = ({ rootImageSrc }: { rootImageSrc: string }) => {
 }
 
 export default async function Image() {
-	const [localFont, rootImageData] = await Promise.all([
-		fontDataPromise,
-		rootImageDataPromise
-	])
+	const [localFont, rootImageData] = await Promise.all([fontDataPromise, rootImageDataPromise])
 	const rootImageSrc = `data:image/png;base64,${rootImageData}`
 	const pngResponse = new ImageResponse(<Component rootImageSrc={rootImageSrc} />, {
 		...size,
