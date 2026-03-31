@@ -17,6 +17,6 @@ export const NAV_LINKS = [
 ] as const
 
 export const ANNOUNCEMENT = {
-	href: '/lab/contract-engineering',
-	text: 'New: Contract Engineering — how we spec agent systems'
+	href: '/lab/unblocking-agents',
+	text: 'New: Unblocking Agents — isolation, verification, and persistence'
 } as const

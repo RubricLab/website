@@ -1,5 +1,3 @@
-export { PermissionsTrapFigure } from './permissions-trap-figure'
-export { IsolationArchitectureFigure } from './isolation-architecture-figure'
-export { VerificationLayersFigure } from './verification-layers-figure'
-export { OneWayBridgeFigure } from './one-way-bridge-figure'
 export { BeforeAfterFlowFigure } from './before-after-flow-figure'
+export { OneWayBridgeFigure } from './one-way-bridge-figure'
+export { PermissionsTrapFigure } from './permissions-trap-figure'

@@ -44,10 +44,10 @@ export function Pillars() {
 						title="Research"
 						footer={
 							<Link
-								href="/lab/contract-engineering"
+								href="/lab/unblocking-agents"
 								className="group inline-flex items-center gap-2 font-mono text-[12px] text-text-tertiary transition-colors duration-200 hover:text-text-secondary"
 							>
-								<span>Latest: Contract Engineering</span>
+								<span>Latest: Unblocking Agents</span>
 								<span className="transition-transform duration-200 group-hover:translate-x-0.5">
 									&rarr;
 								</span>

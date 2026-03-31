@@ -1,12 +1,12 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { cn } from '~/lib/utils/cn'
 import { Button } from '~/components/button'
 import { Figure } from '~/components/figure'
 import { PauseIcon } from '~/components/icons/pause'
 import { PlayIcon } from '~/components/icons/play'
 import { RestartIcon } from '~/components/icons/restart'
-import { cn } from '~/lib/utils/cn'
 
 /**
  * Side-by-side: unblocked vs blocked agent building the same feature.
@@ -26,7 +26,7 @@ const UNBLOCKED: Step[] = [
 	{ label: 'Deploy to staging', status: 'done', tick: 4 },
 	{ label: 'Send test event', status: 'done', tick: 5 },
 	{ label: 'Verify receipt end-to-end', status: 'done', tick: 6 },
-	{ label: 'Open PR', status: 'done', tick: 7 },
+	{ label: 'Open PR', status: 'done', tick: 7 }
 ]
 
 const BLOCKED: Step[] = [
@@ -36,7 +36,7 @@ const BLOCKED: Step[] = [
 	// ticks 4-6: nothing new appears, just stalls
 	{ label: 'Human shares credentials', status: 'done', tick: 7 },
 	{ label: 'Need deploy token', status: 'blocked', tick: 8 },
-	{ label: 'Waiting for human', status: 'waiting', tick: 9 },
+	{ label: 'Waiting for human', status: 'waiting', tick: 9 }
 	// ticks 10-11: stalls again
 ]
 
@@ -44,21 +44,39 @@ const TICK_MS = 900
 const TOTAL_TICKS = 11
 
 const DOT: Record<StepStatus, string> = {
-	done: 'bg-tint',
 	blocked: 'bg-red-500/80',
-	waiting: 'bg-secondary/30',
+	done: 'bg-tint',
+	waiting: 'bg-secondary/30'
 }
 
 const LABEL: Record<StepStatus, string> = {
-	done: 'text-primary',
 	blocked: 'text-red-400',
-	waiting: 'text-secondary/50',
+	done: 'text-primary',
+	waiting: 'text-secondary/50'
 }
 
 export const BeforeAfterFlowFigure = () => {
 	const [tick, setTick] = useState(0)
-	const [isPlaying, setIsPlaying] = useState(true)
+	const [isPlaying, setIsPlaying] = useState(false)
+	const hasAutoPlayed = useRef(false)
+	const containerRef = useRef<HTMLDivElement>(null)
 	const isComplete = tick >= TOTAL_TICKS
+
+	useEffect(() => {
+		const el = containerRef.current
+		if (!el) return undefined
+		const observer = new IntersectionObserver(
+			([entry]) => {
+				if (entry?.isIntersecting && !hasAutoPlayed.current) {
+					hasAutoPlayed.current = true
+					setIsPlaying(true)
+				}
+			},
+			{ threshold: 0.5 }
+		)
+		observer.observe(el)
+		return () => observer.disconnect()
+	}, [])
 
 	const reset = useCallback(() => {
 		setTick(0)
@@ -81,8 +99,8 @@ export const BeforeAfterFlowFigure = () => {
 	}, [isComplete])
 
 	const renderColumn = (title: string, steps: Step[]) => (
-		<div className="flex-1 min-w-0">
-			<span className="block font-mono text-[9px] uppercase tracking-wide text-primary/70 mb-3">
+		<div className="min-w-0 flex-1">
+			<span className="mb-3 block font-mono text-[9px] text-primary/70 uppercase tracking-wide">
 				{title}
 			</span>
 			<div className="flex flex-col gap-0">
@@ -97,22 +115,21 @@ export const BeforeAfterFlowFigure = () => {
 								visible ? 'opacity-100' : 'opacity-0'
 							)}
 						>
-							<div className="flex flex-col items-center w-2 shrink-0">
-								<div className={cn(
-									'h-2 w-2 rounded-full mt-0.5',
-									visible ? DOT[step.status] : 'bg-transparent'
-								)} />
+							<div className="flex w-2 shrink-0 flex-col items-center">
+								<div
+									className={cn(
+										'mt-0.5 h-2 w-2 rounded-full',
+										visible ? DOT[step.status] : 'bg-transparent'
+									)}
+								/>
 								{!isLast && (
-									<div className={cn(
-										'w-px flex-1 min-h-[12px]',
-										visible ? 'bg-subtle' : 'bg-transparent'
-									)} />
+									<div
+										className={cn('min-h-[12px] w-px flex-1', visible ? 'bg-subtle' : 'bg-transparent')}
+									/>
 								)}
 							</div>
 							<div className="pb-2">
-								<span className={cn('font-mono text-[11px] block', LABEL[step.status])}>
-									{step.label}
-								</span>
+								<span className={cn('block font-mono text-[11px]', LABEL[step.status])}>{step.label}</span>
 							</div>
 						</div>
 					)
@@ -122,7 +139,10 @@ export const BeforeAfterFlowFigure = () => {
 	)
 
 	return (
-		<div className="w-full rounded-xl border border-subtle bg-subtle/10 px-4 pt-4 pb-3">
+		<div
+			ref={containerRef}
+			className="w-full rounded-xl border border-subtle bg-subtle/10 px-4 pt-4 pb-3"
+		>
 			<div className="flex flex-col gap-3">
 				<div className="grid grid-cols-2 gap-4">
 					{renderColumn('Unblocked', UNBLOCKED)}
@@ -132,7 +152,7 @@ export const BeforeAfterFlowFigure = () => {
 				{/* Scrubber */}
 				<div
 					className="relative h-0.5 cursor-pointer rounded-full bg-subtle/20"
-					onClick={(e) => {
+					onClick={e => {
 						const rect = e.currentTarget.getBoundingClientRect()
 						const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width))
 						setTick(Math.round(pct * TOTAL_TICKS))
