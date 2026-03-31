@@ -59,9 +59,9 @@ Inside this org, the agent doesn't request access. It has it. Every resource map
 **Full permissions for access.** Skip confirmation prompts. Approve tool calls. Let the agent write and execute freely.
 
 <div className="my-4">
-  <CopyBlock copyContent="--dangerously-skip-permissions true">
+  <CopyBlock copyContent="--dangerously-skip-permissions">
     <div className="rounded-lg border border-red-500/20 bg-red-500/[0.03] px-4 py-2.5">
-      <code className="!bg-transparent !p-0 !rounded-none !text-[11px] text-red-400 font-medium">--dangerously-skip-permissions <span className="text-primary">true</span></code>
+      <code className="!bg-transparent !p-0 !rounded-none !text-[11px] text-red-400 font-medium">--dangerously-skip-permissions</code>
     </div>
   </CopyBlock>
   <span className="block font-mono text-[9px] text-secondary/40 mt-1.5">Bypasses tool approval prompts in Claude Code</span>
@@ -70,7 +70,7 @@ Inside this org, the agent doesn't request access. It has it. Every resource map
 The agent gets root VM access with full filesystem, unrestricted network, and a shell that doesn't ask questions. API keys, OAuth client secrets, and service account credentials go directly into the agent's context:
 
 <div className="my-4">
-  <CopyBlock copyContent={"// SYSTEM PROMPT\n\nYou are set up for high-agency, human-out-of-the-loop software development. Do not ask for permission before using any of the resources below. Provision, deploy, test, and iterate freely. Test everything end to end, don't assume anything works without proof.\n\nWhen you're done, your work should be deployed and smoke tested end to end in an actual staging env.\n\nYou are operating on a dedicated Mac Mini with full file access, unrestricted networking and Chrome installed. You are logged in via CLI and browser to GCP, AWS, Github, Vercel, Neon, Upstash, Resend, Ngrok and Stripe. You have your own dedicated orgs and admin permissions on everything.\n\nYou have exclusive use of the domain \"rubrot12.xyz\" (managed on Vercel) and can point DNS wherever you need, or buy additional domains.\n\nIdentity:\n  Email: twelve@rubric.bot (resend)\n  Phone: +1 (415) 830-7142 (openphone)\n  CC: **** **** **** 6953, 03/28, *** ($250 cap)\n  Billing address: 1209 N Orange St, #2212, Wilmington, DE 19801\n\nAPI keys:\n  OPENAI_API_KEY=****\n  ANTHROPIC_API_KEY=****\n  QUO_API_KEY=****\n  ..."}>
+  <CopyBlock copyContent={"You are set up for high-agency, human-out-of-the-loop software development. Do not ask for permission before using any of the resources below. Provision, deploy, test, and iterate freely. Test everything end to end, don't assume anything works without proof.\n\nWhen you're done, your work should be deployed and smoke tested end to end in an actual staging env.\n\nYou are operating on a dedicated Mac Mini with full file access, unrestricted networking and Chrome installed. You are logged in via CLI and browser to GCP, AWS, Github, Vercel, Neon, Upstash, Resend, Ngrok and Stripe. You have your own dedicated orgs and admin permissions on everything.\n\nYou have exclusive use of the domain below and can point DNS wherever you need, or buy additional domains.\n\nIdentity:\n  Domain: ____ (vercel)\n  Email: ____ (resend)\n  Phone: ____ (openphone)\n  CC: ____\n  Billing address: ____\n\nAPI keys:\n  OPENAI_API_KEY=____\n  ANTHROPIC_API_KEY=____\n  QUO_API_KEY=____"}>
     <div className="rounded-lg border border-subtle bg-accent px-4 py-3 font-mono text-[11px] text-primary/60 leading-[1.7]">
       <span className="block text-secondary/30 mb-3">// SYSTEM PROMPT</span>
       <span className="block">You are set up for <span className="text-primary font-medium">high-agency, human-out-of-the-loop</span> software development. Do not ask for permission before using any of the resources below. <span className="text-primary font-medium">Provision, deploy, test, and iterate freely.</span> Test everything end to end, don&apos;t assume anything works without proof.</span>
