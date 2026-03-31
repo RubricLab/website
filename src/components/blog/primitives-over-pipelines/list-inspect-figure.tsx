@@ -153,10 +153,10 @@ export const ListInspectFigure = () => {
 					style={{ bottom: CONTROLS_BOTTOM, left: CONTROLS_LEFT }}
 				>
 					<Button size="sm" variant="icon" onClick={togglePlay}>
-						{isPlaying ? <PauseIcon className="h-4 w-4" /> : <PlayIcon className="h-4 w-4" />}
+						{isPlaying ? <PauseIcon className="h-3.5 w-3.5" /> : <PlayIcon className="h-3.5 w-3.5" />}
 					</Button>
 					<Button size="sm" variant="icon" onClick={reset}>
-						<RestartIcon className="h-4 w-4" />
+						<RestartIcon className="h-3.5 w-3.5" />
 					</Button>
 					<Figure.Share />
 				</div>

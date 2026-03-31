@@ -1,104 +1,165 @@
 'use client'
 
+import { useCallback, useEffect, useState } from 'react'
+import { Button } from '~/components/button'
+import { Figure } from '~/components/figure'
+import { PauseIcon } from '~/components/icons/pause'
+import { PlayIcon } from '~/components/icons/play'
+import { RestartIcon } from '~/components/icons/restart'
 import { cn } from '~/lib/utils/cn'
-
-/**
- * Static diagram showing two isolated resource islands:
- * Your Org (locked down) and Agent World (full access),
- * with a project fork arrow connecting them.
- */
 
 type Resource = { label: string; detail: string }
 
-const YOUR_ORG: Resource[] = [
-	{ label: 'GitHub', detail: 'rubriclabs/*' },
-	{ label: 'AWS', detail: 'prod account' },
-	{ label: 'Vercel', detail: 'rubriclabs.com' },
-	{ label: 'Database', detail: 'prod Postgres' },
+type Column = {
+	header: string
+	resources: Resource[]
+}
+
+const COLUMNS: Column[] = [
+	{
+		header: 'ACCESS',
+		resources: [
+			{ label: 'GitHub', detail: 'full push + CI' },
+			{ label: 'Shell', detail: 'root VM' },
+			{ label: 'Network', detail: 'unrestricted' },
+			{ label: 'Permissions', detail: 'skip prompts' },
+		],
+	},
+	{
+		header: 'INFRASTRUCTURE',
+		resources: [
+			{ label: 'AWS', detail: 'sandbox account' },
+			{ label: 'GCP', detail: 'isolated project' },
+			{ label: 'Vercel', detail: 'agent workspace' },
+			{ label: 'Postgres', detail: 'own instance' },
+			{ label: 'Redis', detail: 'own instance' },
+			{ label: 'Domain', detail: 'DNS + TLS' },
+		],
+	},
+	{
+		header: 'IDENTITY',
+		resources: [
+			{ label: 'Email', detail: 'receives mail' },
+			{ label: 'Phone', detail: 'passes carrier check' },
+			{ label: 'Card', detail: '$100 limit' },
+			{ label: 'Browser', detail: 'Playwright sessions' },
+		],
+	},
 ]
 
-const AGENT_WORLD: Resource[] = [
-	{ label: 'GitHub', detail: 'agent-org/*' },
-	{ label: 'AWS', detail: 'sandbox account' },
-	{ label: 'GCP', detail: 'isolated project' },
-	{ label: 'Vercel', detail: 'agent.dev' },
-	{ label: 'Postgres', detail: 'own instance' },
-	{ label: 'Redis', detail: 'own instance' },
-	{ label: 'Domain', detail: 'DNS + TLS' },
-	{ label: 'Email', detail: 'agent@workspace' },
-	{ label: 'Browser', detail: 'Playwright' },
-	{ label: 'Shell', detail: 'root VM' },
-	{ label: 'Card', detail: '$100 limit' },
-	{ label: 'IP', detail: 'static + inbound' },
-]
-
-const ResourceItem = ({ resource, dimmed }: { resource: Resource; dimmed?: boolean }) => (
-	<div className={cn(
-		'flex items-center justify-between gap-2 py-0.5 transition-all',
-		dimmed ? 'opacity-40' : ''
-	)}>
-		<span className="font-mono text-[10px] text-primary/80">{resource.label}</span>
-		<span className="font-mono text-[8px] text-secondary/40">{resource.detail}</span>
-	</div>
-)
+const STAGGER_MS = 700
 
 export const IsolationArchitectureFigure = () => {
+	const [visibleColumns, setVisibleColumns] = useState(0)
+	const [isPlaying, setIsPlaying] = useState(true)
+	const isComplete = visibleColumns >= COLUMNS.length
+
+	const reset = useCallback(() => {
+		setVisibleColumns(0)
+		setIsPlaying(true)
+	}, [])
+
+	const togglePlay = useCallback(() => {
+		if (isComplete) {
+			reset()
+		} else {
+			setIsPlaying(prev => !prev)
+		}
+	}, [isComplete, reset])
+
+	useEffect(() => {
+		if (!isPlaying || isComplete) return undefined
+		const timer = setInterval(() => {
+			setVisibleColumns(prev => prev + 1)
+		}, STAGGER_MS)
+		return () => clearInterval(timer)
+	}, [isPlaying, isComplete])
+
+	useEffect(() => {
+		if (isComplete) setIsPlaying(false)
+	}, [isComplete])
+
 	return (
-		<div className="w-full rounded-xl border border-subtle bg-subtle/10 px-4 pt-4 pb-4">
-			<div className="grid grid-cols-1 gap-4 sm:grid-cols-[1fr_auto_1.5fr]">
-				{/* Your Org — locked */}
-				<div className="rounded-lg border border-subtle/60 p-3">
-					<div className="mb-2 flex items-center justify-between">
-						<span className="font-mono text-[9px] uppercase tracking-wide text-secondary/50">Your Org</span>
-						<span className="font-mono text-[8px] text-red-500/50">read-only</span>
-					</div>
-					<div className="flex flex-col gap-0.5">
-						{YOUR_ORG.map(r => (
-							<ResourceItem key={r.label} resource={r} dimmed />
-						))}
-					</div>
+		<div className="w-full rounded-xl border border-subtle bg-subtle/10 px-4 pt-4 pb-3">
+			<div className="flex flex-col gap-3">
+				{/* Header */}
+				<div className="flex items-center justify-between">
+					<span className="font-mono text-xs uppercase tracking-wider text-primary">
+						Agent Org
+					</span>
+					<span
+						className={cn(
+							'font-mono text-[9px] uppercase tracking-wider text-tint transition-all duration-500',
+							isComplete ? 'opacity-100' : 'opacity-0'
+						)}
+					>
+						full access
+					</span>
 				</div>
 
-				{/* Fork arrow */}
-				<div className="flex items-center justify-center sm:flex-col sm:gap-1">
-					{/* Mobile: horizontal */}
-					<div className="flex items-center gap-1 sm:hidden">
-						<div className="h-px w-6 bg-secondary/20" />
-						<span className="font-mono text-[8px] text-secondary/30">fork</span>
-						<svg className="h-3 w-3 text-secondary/30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-							<title>Fork arrow</title>
-							<path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
-						</svg>
-					</div>
-					{/* Desktop: vertical-ish */}
-					<div className="hidden sm:flex sm:flex-col sm:items-center sm:gap-1">
-						<svg className="h-4 w-4 text-secondary/30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-							<title>Fork arrow</title>
-							<path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
-						</svg>
-						<span className="font-mono text-[7px] text-secondary/25">fork into<br />agent org</span>
-					</div>
+				{/* Three columns */}
+				<div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+					{COLUMNS.map((col, colIdx) => {
+						const isVisible = colIdx < visibleColumns
+						return (
+							<div key={col.header} className="flex flex-col gap-2">
+								{/* Column header */}
+								<span
+									className={cn(
+										'font-mono text-[9px] uppercase tracking-wide transition-all duration-300',
+										isVisible
+											? 'text-primary opacity-100 translate-y-0'
+											: 'text-primary opacity-0 translate-y-1'
+									)}
+								>
+									{col.header}
+								</span>
+
+								{/* Resources */}
+								<div className="flex flex-col gap-0.5">
+									{col.resources.map((r, rIdx) => (
+										<div
+											key={r.label}
+											className={cn(
+												'flex items-center justify-between gap-2 py-0.5 transition-all duration-300',
+												isVisible
+													? 'opacity-100 translate-y-0'
+													: 'opacity-0 translate-y-1'
+											)}
+											style={{
+												transitionDelay: isVisible
+													? `${(rIdx + 1) * 60}ms`
+													: '0ms',
+											}}
+										>
+											<span className="font-mono text-[10px] text-secondary">
+												{r.label}
+											</span>
+											<span className="font-mono text-[7px] text-secondary/40">
+												{r.detail}
+											</span>
+										</div>
+									))}
+								</div>
+							</div>
+						)
+					})}
 				</div>
 
-				{/* Agent World — full access */}
-				<div className="rounded-lg border-2 border-emerald-500/20 p-3">
-					<div className="mb-2 flex items-center justify-between">
-						<span className="font-mono text-[9px] uppercase tracking-wide text-emerald-600/70 dark:text-emerald-400/70">Agent World</span>
-						<span className="font-mono text-[8px] text-emerald-500/50">full access</span>
-					</div>
-					<div className="grid grid-cols-2 gap-x-4 gap-y-0.5">
-						{AGENT_WORLD.map(r => (
-							<ResourceItem key={r.label} resource={r} />
-						))}
-					</div>
+				{/* Controls */}
+				<div className="flex items-center gap-2 pt-1">
+					<Button size="sm" variant="icon" onClick={togglePlay}>
+						{isPlaying ? (
+							<PauseIcon className="h-3.5 w-3.5" />
+						) : (
+							<PlayIcon className="h-3.5 w-3.5" />
+						)}
+					</Button>
+					<Button size="sm" variant="icon" onClick={reset}>
+						<RestartIcon className="h-3.5 w-3.5" />
+					</Button>
+					<Figure.Share />
 				</div>
-			</div>
-
-			{/* Isolation boundary */}
-			<div className="mt-4 flex items-center gap-3">
-				<div className="h-px flex-1 border-t border-dashed border-secondary/15" />
-				<span className="font-mono text-[8px] text-secondary/25">separate orgs · separate billing · can&apos;t touch production</span>
-				<div className="h-px flex-1 border-t border-dashed border-secondary/15" />
 			</div>
 		</div>
 	)

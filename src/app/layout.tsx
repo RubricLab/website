@@ -2,7 +2,6 @@ import localFont from 'next/font/local'
 import { JetBrains_Mono } from 'next/font/google'
 import type { Metadata } from 'next/types'
 import Providers from '~/app/providers'
-import { AnnouncementBar } from '~/components/announcement-bar'
 import { Footer } from '~/components/footer'
 import { Nav } from '~/components/nav'
 import './globals.css'
@@ -49,7 +48,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 			<body className="font-sans bg-background">
 				<Providers>
 					<Nav />
-					<AnnouncementBar />
 					<main className="min-h-screen">{children}</main>
 					<Footer />
 				</Providers>

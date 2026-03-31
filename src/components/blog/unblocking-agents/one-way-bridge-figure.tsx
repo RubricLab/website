@@ -1,0 +1,176 @@
+'use client'
+
+import { useCallback, useEffect, useState } from 'react'
+import { Button } from '~/components/button'
+import { Figure } from '~/components/figure'
+import { PauseIcon } from '~/components/icons/pause'
+import { PlayIcon } from '~/components/icons/play'
+import { RestartIcon } from '~/components/icons/restart'
+import { cn } from '~/lib/utils/cn'
+
+/**
+ * Isolation boundary — two workspaces side by side.
+ * Code blocks have window chrome (dots). Workspaces are just labels.
+ *
+ * 0 - Code in rubric, rubrot empty
+ * 1 - Code crosses to rubrot
+ * 2 - Diff appears
+ * 3-5 - Deploy steps in prompt
+ * 6 - ✓ ready
+ * 7 - PR arrives in rubric
+ */
+
+const PHASE_COUNT = 8
+const PHASE_MS = 1800
+
+const ORIGINAL = [
+	{ text: 'async function send(draft) {', type: 'ctx' as const },
+	{ text: '  const msg = await gmail.send(draft)', type: 'ctx' as const },
+	{ text: '  return msg.id', type: 'ctx' as const },
+	{ text: '}', type: 'ctx' as const },
+]
+
+const DIFF = [
+	{ text: 'async function send(draft) {', type: 'ctx' as const },
+	{ text: '  const msg = await gmail.send(draft)', type: 'ctx' as const },
+	{ text: '  return msg.id', type: 'del' as const },
+	{ text: '  await db.emails.insert(msg)', type: 'add' as const },
+	{ text: '  await redis.publish("inbox", msg)', type: 'add' as const },
+	{ text: '  return msg', type: 'add' as const },
+	{ text: '}', type: 'ctx' as const },
+]
+
+const PROMPTS: Record<number, { cmd: string; ok: string }> = {
+	3: { cmd: 'neon db create --name agent-47', ok: '✓ ready' },
+	4: { cmd: 'vercel deploy --prod', ok: '✓ deployed' },
+	5: { cmd: 'playwright test e2e/', ok: '✓ 12 passed' },
+}
+
+const LINE_COLOR = { ctx: 'text-primary/60', add: 'text-emerald-400', del: 'text-red-400' }
+const LINE_BG = { ctx: '', add: 'bg-emerald-500/[0.06]', del: 'bg-red-500/[0.06]' }
+const PREFIX_CHAR = { ctx: ' ', add: '+', del: '−' }
+const PREFIX_COLOR = { ctx: 'text-primary/20', add: 'text-emerald-400', del: 'text-red-400' }
+
+const CONTENT_H = 'h-[170px]'
+
+const WindowDots = ({ label }: { label?: string }) => (
+	<div className="flex items-center gap-1.5 px-2.5 py-1.5 border-b border-subtle/60">
+		<div className="flex gap-1">
+			<div className="h-1.5 w-1.5 rounded-full bg-secondary/20" />
+			<div className="h-1.5 w-1.5 rounded-full bg-secondary/20" />
+			<div className="h-1.5 w-1.5 rounded-full bg-secondary/20" />
+		</div>
+		{label && <span className="flex-1 text-center font-mono text-[9px] text-secondary/30">{label}</span>}
+	</div>
+)
+
+const CodeBlock = ({ lines, className, children, label }: { lines: typeof ORIGINAL; className?: string; children?: React.ReactNode; label?: string }) => (
+	<div className={cn(CONTENT_H, 'rounded-lg border border-subtle bg-accent overflow-hidden', className)}>
+		<WindowDots label={label} />
+		<div className="p-2.5 font-mono text-[10px] leading-[1.8]">
+			{children}
+			{lines.map((l, i) => (
+				<div key={`l${String(i)}`} className={cn('px-1 -mx-1 rounded-sm', LINE_BG[l.type], LINE_COLOR[l.type])}>
+					<span className={cn('inline-block w-3 text-right mr-1.5', PREFIX_COLOR[l.type])}>
+						{PREFIX_CHAR[l.type]}
+					</span>
+					{l.text}
+				</div>
+			))}
+		</div>
+	</div>
+)
+
+const SkeletonSlot = ({ text }: { text: string }) => (
+	<div className={cn(CONTENT_H, 'rounded-lg border border-dashed border-subtle/40 flex items-center justify-center')}>
+		<span className="font-mono text-[9px] text-secondary/20">{text}</span>
+	</div>
+)
+
+const StatusText = ({ text }: { text: string }) => (
+	<span className="font-mono text-[9px] text-tint animate-fadeIn">{text}</span>
+)
+
+export const OneWayBridgeFigure = () => {
+	const [phase, setPhase] = useState(0)
+	const [isPlaying, setIsPlaying] = useState(true)
+	const isComplete = phase >= PHASE_COUNT - 1
+
+	const reset = useCallback(() => {
+		setPhase(0)
+		setIsPlaying(true)
+	}, [])
+
+	const togglePlay = useCallback(() => {
+		if (isComplete) reset()
+		else setIsPlaying(prev => !prev)
+	}, [isComplete, reset])
+
+	useEffect(() => {
+		if (!isPlaying || isComplete) return undefined
+		const timer = setInterval(
+			() => setPhase(p => Math.min(p + 1, PHASE_COUNT - 1)),
+			PHASE_MS
+		)
+		return () => clearInterval(timer)
+	}, [isPlaying, isComplete])
+
+	useEffect(() => {
+		if (isComplete) setIsPlaying(false)
+	}, [isComplete])
+
+	const statusText = PROMPTS[phase] ? `$ ${PROMPTS[phase].cmd} → ${PROMPTS[phase].ok}` : null
+
+	return (
+		<div className="w-full rounded-xl border border-subtle bg-subtle/10 px-4 pt-4 pb-3">
+			<div className="flex flex-col gap-3">
+				{/* Two workspaces with isolation boundary */}
+				<div className="flex items-stretch gap-0">
+					{/* Rubric */}
+					<div className="flex-1 min-w-0 flex flex-col gap-2 pr-3">
+						<span className="font-mono text-[9px] uppercase tracking-wide text-primary/70">rubric</span>
+						{phase === 0 && <CodeBlock lines={ORIGINAL} label="handler.ts" />}
+						{phase >= 1 && phase <= 6 && <SkeletonSlot text="waiting for PR" />}
+						{phase >= 7 && <CodeBlock lines={DIFF} label="handler.ts" className="animate-fadeIn" />}
+					</div>
+
+					{/* Isolation boundary — strong vertical wall */}
+					<div className="w-px bg-primary/20 self-stretch" />
+
+					{/* Rubrot */}
+					<div className="flex-1 min-w-0 flex flex-col gap-2 pl-3">
+						<span className="font-mono text-[9px] uppercase tracking-wide text-primary/70">rubrot</span>
+						{phase === 0 && <SkeletonSlot text="" />}
+						{phase === 1 && <CodeBlock lines={ORIGINAL} label="handler.ts" className="animate-fadeIn" />}
+						{phase === 2 && <CodeBlock lines={DIFF} label="handler.ts" className="animate-fadeIn" />}
+						{phase >= 3 && phase <= 5 && (
+							<>
+								<CodeBlock lines={DIFF} label="handler.ts" />
+								{statusText && <StatusText text={statusText} />}
+							</>
+						)}
+						{phase === 6 && (
+							<CodeBlock lines={DIFF} label="handler.ts">
+								<div className="flex items-center gap-2 mb-1 font-mono text-[9px] animate-fadeIn">
+									<span className="text-tint">✓ ready</span>
+								</div>
+							</CodeBlock>
+						)}
+						{phase >= 7 && <SkeletonSlot text="done" />}
+					</div>
+				</div>
+
+				{/* Controls */}
+				<div className="flex items-center gap-2">
+					<Button size="sm" variant="icon" onClick={togglePlay}>
+						{isPlaying ? <PauseIcon className="h-3.5 w-3.5" /> : <PlayIcon className="h-3.5 w-3.5" />}
+					</Button>
+					<Button size="sm" variant="icon" onClick={reset}>
+						<RestartIcon className="h-3.5 w-3.5" />
+					</Button>
+					<Figure.Share />
+				</div>
+			</div>
+		</div>
+	)
+}

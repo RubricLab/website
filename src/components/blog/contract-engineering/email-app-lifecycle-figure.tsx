@@ -110,19 +110,19 @@ const STATES: UIState[] = [
 ]
 
 const phaseColor: Record<string, string> = {
-	ui: 'text-sky-600 dark:text-sky-400',
-	api: 'text-violet-600 dark:text-violet-400',
-	provider: 'text-emerald-600 dark:text-emerald-400',
-	db: 'text-amber-600 dark:text-amber-400',
-	webhook: 'text-rose-600 dark:text-rose-400',
-	cache: 'text-orange-600 dark:text-orange-400',
-	realtime: 'text-teal-600 dark:text-teal-400',
+	ui: 'text-primary/70',
+	api: 'text-primary/60',
+	provider: 'text-primary/60',
+	db: 'text-primary/60',
+	webhook: 'text-primary/60',
+	cache: 'text-primary/60',
+	realtime: 'text-primary/70',
 }
 
 // Tiny wireframe field
 const Field = ({ value, placeholder, disabled }: { value: string; placeholder: string; disabled: boolean }) => (
 	<div className={cn(
-		'rounded border px-1.5 py-0.5 font-mono text-[8px] leading-tight transition-all duration-500',
+		'rounded border px-1.5 py-0.5 font-mono text-[7px] leading-tight transition-all duration-500',
 		disabled ? 'border-subtle/30 text-secondary/30' : 'border-subtle text-primary/80',
 		!value && 'text-secondary/20'
 	)}>
@@ -174,7 +174,7 @@ export const EmailAppLifecycleFigure = () => {
 							<Field value={state.compose.to} placeholder="to" disabled={state.compose.inputsDisabled} />
 							<Field value={state.compose.subject} placeholder="subject" disabled={state.compose.inputsDisabled} />
 							<div className={cn(
-								'h-5 rounded border px-1.5 py-0.5 font-mono text-[8px] leading-tight transition-all duration-500',
+								'h-5 rounded border px-1.5 py-0.5 font-mono text-[7px] leading-tight transition-all duration-500',
 								state.compose.inputsDisabled ? 'border-subtle/30 text-secondary/30' : 'border-subtle text-primary/80',
 								!state.compose.body && 'text-secondary/20'
 							)}>
@@ -257,10 +257,10 @@ export const EmailAppLifecycleFigure = () => {
 				{/* Controls */}
 				<div className="flex items-center gap-2">
 					<Button size="sm" variant="icon" onClick={togglePlay}>
-						{isPlaying ? <PauseIcon className="h-4 w-4" /> : <PlayIcon className="h-4 w-4" />}
+						{isPlaying ? <PauseIcon className="h-3.5 w-3.5" /> : <PlayIcon className="h-3.5 w-3.5" />}
 					</Button>
 					<Button size="sm" variant="icon" onClick={reset}>
-						<RestartIcon className="h-4 w-4" />
+						<RestartIcon className="h-3.5 w-3.5" />
 					</Button>
 					<Figure.Share />
 				</div>

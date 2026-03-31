@@ -97,7 +97,7 @@ const CrossIcon = () => (
 export const ContractScenariosFigure = () => {
 	const [activeIndex, setActiveIndex] = useState(0)
 	const [visibleChecks, setVisibleChecks] = useState(0)
-	const [isPlaying, setIsPlaying] = useState(true)
+	const [isPlaying, setIsPlaying] = useState(false)
 
 	const scenario = SCENARIOS[activeIndex]!
 	const allChecksVisible = visibleChecks >= scenario.checks.length
@@ -139,7 +139,7 @@ export const ContractScenariosFigure = () => {
 				{/* Header: title + outcome */}
 				<div className="flex items-center justify-between">
 					<div className="flex items-baseline gap-2">
-						<span className="font-mono text-sm text-primary">{scenario.title}</span>
+						<span className="font-mono text-[11px] text-primary">{scenario.title}</span>
 						<span className="font-mono text-[9px] text-secondary/50">{scenario.subtitle}</span>
 					</div>
 					<span className={cn(
@@ -229,19 +229,19 @@ export const ContractScenariosFigure = () => {
 				<div className="flex items-center justify-between">
 					<div className="flex items-center gap-2">
 						<Button size="sm" variant="icon" onClick={togglePlay}>
-							{isPlaying ? <PauseIcon className="h-4 w-4" /> : <PlayIcon className="h-4 w-4" />}
+							{isPlaying ? <PauseIcon className="h-3.5 w-3.5" /> : <PlayIcon className="h-3.5 w-3.5" />}
 						</Button>
 						<Button size="sm" variant="icon" onClick={resetChecks}>
-							<RestartIcon className="h-4 w-4" />
+							<RestartIcon className="h-3.5 w-3.5" />
 						</Button>
 						<Figure.Share />
 					</div>
 					<div className="flex items-center gap-2">
 						<Button size="sm" variant="icon" onClick={goToPrevious}>
-							<Arrow className="h-4 w-4 rotate-180" />
+							<Arrow className="h-3.5 w-3.5 rotate-180" />
 						</Button>
 						<Button size="sm" variant="icon" onClick={goToNext}>
-							<Arrow className="h-4 w-4" />
+							<Arrow className="h-3.5 w-3.5" />
 						</Button>
 					</div>
 				</div>

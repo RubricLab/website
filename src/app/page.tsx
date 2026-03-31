@@ -1,3 +1,4 @@
+import { AnnouncementBar } from '~/components/announcement-bar'
 import { CTA } from '~/components/cta'
 import { FeaturedWork } from '~/components/featured-work'
 import { HeroEngine } from '~/components/hero/index'
@@ -8,6 +9,7 @@ import { VideoSection } from '~/components/video-section'
 export default function Home() {
 	return (
 		<>
+			<AnnouncementBar />
 			{/* Hero + scroll-driven engine reveal (includes logos) */}
 			<HeroEngine />
 

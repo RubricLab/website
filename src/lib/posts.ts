@@ -15,6 +15,7 @@ export type Post = {
 	bannerImageUrl: string
 	coPost?: CoPost
 	archived?: boolean
+	isNew?: boolean
 }
 
 export type TocItem = {

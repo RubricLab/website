@@ -1,103 +1,241 @@
 'use client'
 
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { Button } from '~/components/button'
+import { Figure } from '~/components/figure'
+import { PauseIcon } from '~/components/icons/pause'
+import { PlayIcon } from '~/components/icons/play'
+import { RestartIcon } from '~/components/icons/restart'
 import { cn } from '~/lib/utils/cn'
 
-/**
- * Static terminal mockup showing an agent getting blocked.
- * No animation — just a realistic Claude Code session where
- * the agent tries to deploy, hits a permissions wall, and yields.
- */
-export const PermissionsTrapFigure = () => {
-	return (
-		<div className="w-full rounded-xl border border-subtle bg-subtle/10 p-1">
-			{/* Terminal chrome */}
-			<div className="overflow-hidden rounded-lg border border-[#2a2a2a] bg-[#1a1a1a]">
-				{/* Title bar */}
-				<div className="flex items-center gap-1.5 border-b border-[#2a2a2a] px-3 py-1.5">
-					<div className="flex gap-1.5">
-						<div className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
-						<div className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
-						<div className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
-					</div>
-					<span className="flex-1 text-center font-mono text-[10px] text-[#666]">
-						claude — ~/project
-					</span>
-				</div>
+type LineType = 'prompt' | 'agent' | 'tool' | 'result' | 'error' | 'yield'
 
-				{/* Terminal content */}
-				<div className="flex flex-col gap-0 px-4 py-3 font-mono text-[11px] leading-[1.7]">
-					{/* User prompt */}
-					<Line type="prompt">
-						Deploy the OAuth login flow to production and verify it works end to end.
-					</Line>
-
-					{/* Agent working */}
-					<Line type="agent">
-						I&apos;ll set up the OAuth flow. Let me start by scaffolding the auth routes and configuring the Google OAuth credentials.
-					</Line>
-
-					<Line type="tool">
-						<span className="text-[#6b7280]">Write</span>{' '}
-						<span className="text-[#d4d4d4]">src/auth/google.ts</span>
-					</Line>
-					<Line type="result">✓ Created OAuth configuration with PKCE flow</Line>
-
-					<Line type="tool">
-						<span className="text-[#6b7280]">Write</span>{' '}
-						<span className="text-[#d4d4d4]">src/auth/callback.ts</span>
-					</Line>
-					<Line type="result">✓ Created callback handler with session management</Line>
-
-					{/* The block */}
-					<Line type="tool">
-						<span className="text-[#6b7280]">Bash</span>{' '}
-						<span className="text-[#d4d4d4]">gcloud projects create oauth-test-47</span>
-					</Line>
-					<Line type="error">
-						ERROR: (gcloud) PERMISSION_DENIED: caller does not have permission
-					</Line>
-
-					{/* Agent yields */}
-					<div className="mt-1 border-l-2 border-[#f59e0b]/40 pl-3">
-						<Line type="yield">
-							I&apos;ve written the OAuth handlers, but I can&apos;t create the Google Cloud project needed for credentials. Can you create a project in the GCP console and add the OAuth redirect URI? I&apos;ll need the client ID and secret to continue.
-						</Line>
-					</div>
-				</div>
-			</div>
-		</div>
-	)
+type TerminalLine = {
+	id: string
+	type: LineType
+	content: React.ReactNode
+	delayMs: number
 }
 
-const Line = ({
-	type,
-	children,
-}: {
-	type: 'prompt' | 'agent' | 'tool' | 'result' | 'error' | 'yield'
-	children: React.ReactNode
-}) => {
-	const styles: Record<string, string> = {
-		prompt: 'text-[#e2e8f0]',
-		agent: 'text-[#a3a3a3]',
-		tool: 'text-[#818cf8]',
-		result: 'text-[#4ade80]/70',
-		error: 'text-[#f87171]',
-		yield: 'text-[#fbbf24]/80',
-	}
+const LINES: TerminalLine[] = [
+	{
+		id: 'prompt',
+		type: 'prompt',
+		content: 'Deploy the OAuth login flow and verify it works end to end.',
+		delayMs: 0,
+	},
+	{
+		id: 'agent-1',
+		type: 'agent',
+		content: "I'll scaffold the auth routes and configure Google OAuth.",
+		delayMs: 1000,
+	},
+	{
+		id: 'tool-1',
+		type: 'tool',
+		content: (
+			<>
+				<span className="text-secondary/50">Write</span>{' '}
+				<span className="text-primary/70">src/auth/google.ts</span>
+			</>
+		),
+		delayMs: 600,
+	},
+	{
+		id: 'result-1',
+		type: 'result',
+		content: '✓ OAuth config with PKCE flow',
+		delayMs: 700,
+	},
+	{
+		id: 'tool-2',
+		type: 'tool',
+		content: (
+			<>
+				<span className="text-secondary/50">Write</span>{' '}
+				<span className="text-primary/70">src/auth/callback.ts</span>
+			</>
+		),
+		delayMs: 600,
+	},
+	{
+		id: 'result-2',
+		type: 'result',
+		content: '✓ Callback handler with session management',
+		delayMs: 700,
+	},
+	{
+		id: 'tool-3',
+		type: 'tool',
+		content: (
+			<>
+				<span className="text-secondary/50">Bash</span>{' '}
+				<span className="text-primary/70">gcloud projects create oauth-test-47</span>
+			</>
+		),
+		delayMs: 600,
+	},
+	{
+		id: 'error',
+		type: 'error',
+		content: 'PERMISSION_DENIED: caller does not have permission',
+		delayMs: 500,
+	},
+	{
+		id: 'yield',
+		type: 'yield',
+		content:
+			"I built the OAuth login flow, but I can't create the GCP project needed for credentials. Could you create it in the console and share the client ID and secret so I can continue?",
+		delayMs: 1200,
+	},
+]
 
-	const prefixes: Record<string, React.ReactNode> = {
-		prompt: <span className="mr-2 text-[#818cf8]">❯</span>,
-		agent: null,
-		tool: <span className="mr-2 text-[#6b7280]">→</span>,
-		result: <span className="mr-2">{'  '}</span>,
-		error: <span className="mr-2">{'  '}</span>,
-		yield: null,
-	}
+const CUMULATIVE_TIMES = LINES.reduce<number[]>((acc, line, i) => {
+	const prev = i === 0 ? 0 : acc[i - 1]!
+	acc.push(prev + line.delayMs)
+	return acc
+}, [])
+const TOTAL_DURATION = CUMULATIVE_TIMES[CUMULATIVE_TIMES.length - 1]! + 400
+
+const LINE_STYLES: Record<LineType, string> = {
+	prompt: 'text-primary/80',
+	agent: 'text-secondary/60',
+	tool: 'text-primary/60',
+	result: 'text-tint',
+	error: 'text-red-400',
+	yield: 'text-secondary/70',
+}
+
+const LINE_PREFIXES: Record<LineType, React.ReactNode> = {
+	prompt: <span className="mr-1.5 text-tint">{'❯'}</span>,
+	agent: null,
+	tool: <span className="mr-1.5 text-secondary/40">{'→'}</span>,
+	result: <span className="mr-1.5">{' '}</span>,
+	error: <span className="mr-1.5">{' '}</span>,
+	yield: null,
+}
+
+const TICK_MS = 50
+
+export const PermissionsTrapFigure = () => {
+	const [visibleLines, setVisibleLines] = useState(0)
+	const [isPlaying, setIsPlaying] = useState(true)
+	const elapsedRef = useRef(0)
+	const isComplete = visibleLines >= LINES.length
+
+	const reset = useCallback(() => {
+		setVisibleLines(0)
+		elapsedRef.current = 0
+		setIsPlaying(true)
+	}, [])
+
+	const togglePlay = useCallback(() => {
+		if (isComplete) reset()
+		else setIsPlaying(prev => !prev)
+	}, [isComplete, reset])
+
+	useEffect(() => {
+		if (!isPlaying || isComplete) return undefined
+		const timer = setInterval(() => {
+			elapsedRef.current += TICK_MS
+			let next = visibleLines
+			while (next < LINES.length && CUMULATIVE_TIMES[next]! <= elapsedRef.current) {
+				next++
+			}
+			if (next > visibleLines) setVisibleLines(next)
+		}, TICK_MS)
+		return () => clearInterval(timer)
+	}, [isPlaying, isComplete, visibleLines])
+
+	useEffect(() => {
+		if (isComplete) setIsPlaying(false)
+	}, [isComplete])
+
+	const handleScrub = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+		const rect = e.currentTarget.getBoundingClientRect()
+		const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width))
+		const targetTime = pct * TOTAL_DURATION
+		let idx = 0
+		while (idx < LINES.length && CUMULATIVE_TIMES[idx]! <= targetTime) idx++
+		setVisibleLines(idx)
+		elapsedRef.current = targetTime
+		setIsPlaying(false)
+	}, [])
+
+	const progress = isComplete ? 1 : visibleLines / LINES.length
 
 	return (
-		<div className={cn('py-0.5', styles[type])}>
-			{prefixes[type]}
-			{children}
+		<div className="w-full rounded-xl border border-subtle bg-subtle/10 px-4 pt-4 pb-3">
+			<div className="flex flex-col gap-3">
+				{/* Terminal */}
+				<div className="overflow-hidden rounded-lg border border-subtle bg-accent">
+					{/* Title bar */}
+					<div className="flex items-center gap-1.5 border-b border-subtle/60 px-3 py-2">
+						<div className="flex gap-1">
+							<div className="h-1.5 w-1.5 rounded-full bg-secondary/20" />
+							<div className="h-1.5 w-1.5 rounded-full bg-secondary/20" />
+							<div className="h-1.5 w-1.5 rounded-full bg-secondary/20" />
+						</div>
+						<span className="flex-1 text-center font-mono text-[9px] text-secondary/30">
+							claude — ~/project
+						</span>
+					</div>
+
+					{/* Content */}
+					<div className="flex flex-col gap-0 px-4 py-3 font-mono text-[11px] leading-[1.8]">
+						{LINES.map((line, i) => {
+							const isVisible = i < visibleLines
+							const isError = line.type === 'error'
+							const isYield = line.type === 'yield'
+							const isResult = line.type === 'result'
+
+							return (
+								<div
+									key={line.id}
+									className={cn(
+										'py-0.5',
+										LINE_STYLES[line.type],
+										isError
+											? isVisible ? 'opacity-100' : 'opacity-0'
+											: isYield
+												? cn('transition-opacity duration-700', isVisible ? 'opacity-100' : 'opacity-0')
+												: isResult
+													? cn('transition-all duration-300', isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95')
+													: cn('transition-opacity duration-300', isVisible ? 'opacity-100' : 'opacity-0'),
+										isError && isVisible && 'bg-red-500/[0.06] -mx-3 px-3 rounded',
+										isYield && 'mt-1.5 border-l-2 border-secondary/20 pl-3'
+									)}
+								>
+									{LINE_PREFIXES[line.type]}
+									{line.content}
+								</div>
+							)
+						})}
+					</div>
+				</div>
+
+				{/* Scrubber */}
+				<div
+					className="relative h-0.5 cursor-pointer rounded-full bg-subtle/30"
+					onClick={handleScrub}
+				>
+					<div
+						className="absolute inset-y-0 left-0 rounded-full bg-primary/20 transition-all duration-200"
+						style={{ width: `${progress * 100}%` }}
+					/>
+				</div>
+
+				{/* Controls */}
+				<div className="flex items-center gap-2">
+					<Button size="sm" variant="icon" onClick={togglePlay}>
+						{isPlaying ? <PauseIcon className="h-3.5 w-3.5" /> : <PlayIcon className="h-3.5 w-3.5" />}
+					</Button>
+					<Button size="sm" variant="icon" onClick={reset}>
+						<RestartIcon className="h-3.5 w-3.5" />
+					</Button>
+					<Figure.Share />
+				</div>
+			</div>
 		</div>
 	)
 }

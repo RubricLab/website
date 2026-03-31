@@ -8,7 +8,7 @@ import { PlayIcon } from '~/components/icons/play'
 import { RestartIcon } from '~/components/icons/restart'
 import { cn } from '~/lib/utils/cn'
 
-const STEP_INTERVAL_MS = 1200
+const STEP_INTERVAL_MS = 1600
 
 type EventEntry = {
 	id: number
@@ -34,23 +34,23 @@ const EVENTS: EventEntry[] = [
 ]
 
 const categoryColor: Record<string, string> = {
-	ui: 'text-sky-600 dark:text-sky-400',
-	api: 'text-violet-600 dark:text-violet-400',
-	db: 'text-amber-600 dark:text-amber-400',
-	provider: 'text-emerald-600 dark:text-emerald-400',
-	webhook: 'text-rose-600 dark:text-rose-400',
-	cache: 'text-orange-600 dark:text-orange-400',
-	realtime: 'text-teal-600 dark:text-teal-400',
+	ui: 'text-primary/70',
+	api: 'text-primary/60',
+	db: 'text-primary/60',
+	provider: 'text-primary/60',
+	webhook: 'text-primary/60',
+	cache: 'text-primary/60',
+	realtime: 'text-primary/70',
 }
 
 const borderColor: Record<string, string> = {
-	ui: 'border-l-sky-500/50',
-	api: 'border-l-violet-500/50',
-	db: 'border-l-amber-500/50',
-	provider: 'border-l-emerald-500/50',
-	webhook: 'border-l-rose-500/50',
-	cache: 'border-l-orange-500/50',
-	realtime: 'border-l-teal-500/50',
+	ui: 'border-l-primary/30',
+	api: 'border-l-primary/20',
+	db: 'border-l-primary/20',
+	provider: 'border-l-primary/20',
+	webhook: 'border-l-primary/20',
+	cache: 'border-l-primary/20',
+	realtime: 'border-l-primary/30',
 }
 
 const CheckIcon = () => (
@@ -155,10 +155,10 @@ export const ContractEventLog = () => {
 			{/* Controls */}
 			<div className="mt-3 flex items-center gap-2">
 				<Button size="sm" variant="icon" onClick={togglePlay}>
-					{isPlaying ? <PauseIcon className="h-4 w-4" /> : <PlayIcon className="h-4 w-4" />}
+					{isPlaying ? <PauseIcon className="h-3.5 w-3.5" /> : <PlayIcon className="h-3.5 w-3.5" />}
 				</Button>
 				<Button size="sm" variant="icon" onClick={reset}>
-					<RestartIcon className="h-4 w-4" />
+					<RestartIcon className="h-3.5 w-3.5" />
 				</Button>
 				<Figure.Share />
 			</div>

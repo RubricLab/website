@@ -82,6 +82,11 @@ export default async function LabPage() {
 											<h3 className="font-sans text-lg text-primary font-normal">
 												{post.title}
 											</h3>
+											{post.isNew && (
+												<span className="shrink-0 font-mono text-[9px] uppercase tracking-widest text-tint border border-tint/30 rounded px-1.5 py-0.5 leading-none">
+													New
+												</span>
+											)}
 										</div>
 										<p className="mt-1 font-sans text-base text-secondary leading-relaxed">
 											{pullSentences[post.slug] || post.pullSentence || post.description}

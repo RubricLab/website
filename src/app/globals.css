@@ -114,7 +114,7 @@
 	}
 
 	article {
-		@apply space-y-4;
+		@apply space-y-5;
 	}
 }
 
@@ -132,12 +132,12 @@
 
 /* Article typography */
 article h2 {
-	@apply text-2xl font-normal mt-12;
+	@apply text-2xl font-normal mt-14 mb-2;
 	scroll-margin-top: 2rem;
 }
 
 article h3 {
-	@apply text-xl font-normal mt-8;
+	@apply text-xl font-normal mt-10 mb-1;
 	scroll-margin-top: 2rem;
 }
 
@@ -151,7 +151,7 @@ article a:not(:has(button)) {
 
 article p,
 article li {
-	@apply text-primary text-lg leading-relaxed;
+	@apply text-secondary text-[15px] leading-[1.75];
 }
 
 article :is(strong, b) {
@@ -159,7 +159,19 @@ article :is(strong, b) {
 }
 
 article blockquote {
-	@apply border-l-2 border-subtle pl-6 text-lg text-secondary italic;
+	@apply border-l border-subtle pl-6 text-[15px] text-secondary/70 leading-[1.75];
+}
+
+article figure {
+	@apply my-10;
+}
+
+article figcaption {
+	@apply mt-2 text-[9px] text-secondary/40 text-center font-mono;
+}
+
+article hr {
+	@apply border-t border-subtle my-12;
 }
 
 article aside {

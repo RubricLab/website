@@ -5,87 +5,50 @@ export const metadata = {
   title: "Contract Engineering",
   subtitle: "How we define \"done\" for AI agents using verifiable contracts",
   date: "2026-03-30",
+  isNew: true,
   author: AUTHORS.DEXTER_STOREY,
   category: CATEGORIES.ESSAY,
-  description: "Contracts are hard, verifiable claims about what a system does. The agent builds until every contract passes. The contracts are the invariant; the code is the variable.",
+  description: "The contracts are the application. The code is an implementation detail.",
 }
 
-AI coding agents can build fast, but the work they produce needs constant supervision. Sometimes the agent gets stuck — it can't deploy without your credentials, or it needs you to set up a Google Cloud project before it can continue. Other times it keeps going and the output quietly falls apart: the API returns 200 but the database row was never written. The form submits but the email never arrives. Left unchecked, the work stops at a step it can't complete.
+Our team has been running experiments toward fully unsupervised development, with the goal being to write a spec at night, and waking up to working, deployed, production-ready software. Agents can already build and deploy without handing the keyboard back to you, given their own accounts, infrastructure, and verification tooling. We wrote about how we set that up in [Unblocking Agents](/lab/unblocking-agents).
 
-Our internal goal at Rubric is to be able to write a spec at night, have an agent build the entire system while we sleep, and wake up to working, deployed, tested software. Cursor, Anthropic, and OpenAI are all pushing in this direction too. This post is about the approach we keep converging on, and the idea at its center: contracts.
+But the results are inconsistent. The run looks good. The app deploys. The tests pass. And the software is still wrong — because nobody defined what "done" means in a form the agent can be held to.
 
-## Autonomy
+We've been approaching this with something we call contracts: hard, versioned, executable claims about what the system must do. A contract is both the specification and the acceptance criteria. The agent builds until every contract passes, and it cannot ship until they do.
 
-The first problem is permissions. Every time the agent can't deploy, can't send an email, or can't verify a webhook, the run stalls and a human has to step in.
+## The Problem with Prompting
 
-Most teams try to solve this by giving the agent a seat in their own org — it can collaborate with the team and open PRs they can review. But now the agent is operating on your real infrastructure, and teams are understandably nervous about what it might break. So permissions get scoped down: read-only AWS, a GitHub token limited to one repo, a sandbox that can't touch the network. The agent ends up with just enough access to start a task but not enough to finish it.
+When building with agents, your spec is the conversation. The details of the product are teased out through your prompts, the agent's responses, and the ongoing back and forth. This is the source of truth for the entire system, and it breaks in three ways.
 
-The Rubric approach is to give the agent its own everything. We treat agents like full employees. Our system prompts look something like this:
+The first is decay. The first prompt is always the best because you're offering the full picture with high context. As you continue your conversation with the agent, you might prompt to fix a specific issue: "Fix the auth redirect." The agent fixes it but breaks session handling. You catch that: "The session isn't persisting." It fixes the session, but the fix doesn't match the pattern used elsewhere. The context window fills up and gets compacted. The agent loses track of early decisions. You lose track of the code because you didn't write it. The spec is now scattered across dozens of messages with no sense of consistency.
 
-> You are set up for high-agency, human-out-of-the-loop software development end to end.
->
-> You have been given full access to the GitHub CLI, Vercel CLI, Neon CLI, Upstash CLI, GCP CLI, AWS CLI with logged-in high-agency sessions. You also have access to all the below API keys, an email address, phone number, credit card (with a limit), static IP, unique domain with DNS access, unrestricted network access, and a VM with full file system and shell access. You can use all of these resources in any way you want without asking for permission.
+The second is non-determinism. Even with a perfect prompt, agent runs aren't reproducible. You can have the same prompt in a different session and get a completely different result. Some runs feel locked in: the agent makes good decisions and the architecture is clean. Other runs drift. The difference is sampling luck, context ordering, and temperature. You can't reliably reproduce what worked, and you can't explain why something didn't.
 
-The agent has its own GitHub account, Google Workspace, AWS and GCP projects, domain, and credit card — with maximum permissions on everything.
+The third is specificity. PRDs were designed for humans under the assumption that engineering is expensive and that efforts take weeks with constant subtle feedback signals during sprints. A PRD says "the user should be able to send an email" and trusts the engineer to figure out what that means across OAuth, API calls, database writes, cache invalidation, and realtime updates. An agent needs a level of specificity that would be unreasonable to ask of a human engineer — but is exactly right for a process where execution is cheap and restarts are free.
 
-This is safe because none of these accounts touch our real infrastructure. We created entirely separate orgs, workspaces, and billing accounts — a parallel universe of disposable resources. The agent has full control over infrastructure that can't hurt us.
-
-Instead of the agent asking us for access, the agent has access to everything and we ask the agent for results.
-
-For a deeper treatment of the environment problem — isolation, verification, and persistence — see [Unblocking Agents](/lab/unblocking-agents).
-
-## Verification
-
-Autonomy without verification just means the agent ships broken software faster. The agent needs to thoroughly check its own work. Our agent tests against real services, with real accounts and real credentials, the same way a human developer would.
-
-It has **Playwright for browser automation.** Building an OAuth flow? The agent opens a browser, signs into its own Google account, completes the actual consent screen, gets a real token, and verifies the session cookie. Building a dashboard? It navigates to every page, fills every form, clicks every button — with real data behind it.
-
-It has **visual evaluation** — screenshots at every meaningful state, fed to an LLM that scores them against your design system. Not "did it render," but: does the spacing look right? Is the loading state showing a spinner? Does the empty state say the right thing? This catches the entire class of bugs that pass every unit test but look wrong to a human.
-
-It has **full shell access** with admin permissions to verify from the outside. Query Postgres directly. Check that a row was written. Check that a Redis key was set. Curl the API. Tail the logs. The agent isn't limited to the application's own reporting of its health.
-
-It has **unrestricted network access**, its own domain with DNS control, and a stable HTTPS endpoint via tunnel. It can receive webhooks from the real internet, hit deployed URLs, and call external APIs.
-
-And critically, the **environment is persistent.** This isn't an ephemeral container that vanishes between runs. The filesystem, databases, and running services all survive. The agent can deploy, walk away, come back, and pick up where it left off. That's what makes real iteration possible.
-
-All of this extends through deployment. The agent doesn't just push code — it deploys, waits for the deployment to be live, hits the real URL, and runs the same verification suite against production.
-
-## The Determinism Problem
-
-Even with full autonomy and real verification tooling, you still get inconsistent results. The agent's verification is ad hoc — it tests whatever it thinks is important. It checks the happy path and skips the edge case. It confirms the API returns 200 but never checks whether the database row was written. It verifies the form submits but never confirms the email arrived.
-
-The problem is that the agent decides what to check, and that decision changes every run. There's no shared definition of "working." The agent thinks it's done because it tested what it thought mattered. You think it's done because the agent said so. Nobody is wrong, but the software is broken.
-
-What's missing is an explicit, exhaustive definition of "done" — written before the agent starts, not decided by the agent as it goes.
+We need a format that's durable, deterministic, and precise enough that an agent can execute against it with no interim feedback and get it right.
 
 ## Contracts
 
-A contract is a hard, verifiable claim about what a system does. It's both the specification and the acceptance criteria — the agent builds until every contract passes, and it cannot yield until they do.
+A contract is a hard, versioned, executable definition of what the system must do. It doesn't live in a conversation. It doesn't decay between runs. It doesn't depend on the agent's sampling luck to get checked.
 
-This isn't a test suite the agent can partially satisfy. It's not logging it can ignore. A contract defines expected behavior at a specific boundary, and passing it requires proof — actual database rows, actual API responses, actual screenshots evaluated by an LLM.
+A contract defines a scenario — what the agent should build — and a sequence of events the system must produce, each with a proof requirement. Every claim resolves to something binary, verifiable against the real system. Either the database row exists or it doesn't, the webhook arrived or it didn't. The agent doesn't decide what matters while it's building — the contract decides up front.
 
-Contracts exist at two levels, and you need both.
+This is the specificity that prompting lacks. A PRD says "the user should be able to send an email" and trusts the engineer to fill in the gaps. A contract spells out every event the system must produce across every layer — UI, API, database, cache, webhooks, realtime — each with proof that it happened.
 
-**Modular contracts** describe what individual components do in isolation — a function, a service, an API endpoint, a UI component. For every meaningful input or state, the component has a contracted output.
-
-**End-to-end contracts** assemble modular components into complete use cases — the full sequence of events the system should produce when a real user interaction happens. From the first UI render through API calls, database writes, cache updates, webhook delivery, and back to the UI.
+Contracts exist at two levels, and you need both. **Modular contracts** describe what individual components do in isolation. **End-to-end contracts** assemble components into complete use cases — the full sequence of events the system must produce when a real user interaction happens.
 
 <Figure id="contract-scenarios">
   <ContractScenariosFigure />
-  <Figure.Caption>Four contracts, each verified step by step. Use the arrows to see a modular pass, a modular failure, a webhook contract, and an end-to-end contract that fails at the realtime boundary.</Figure.Caption>
+  <Figure.Caption>Four contracts, each verified step by step — a modular pass, a modular failure, a webhook contract, and an end-to-end contract that fails at the realtime boundary.</Figure.Caption>
 </Figure>
 
-The full event log of an end-to-end contract is the hard gate. You define it upfront, the agent runs the scenario, and the system's actual event log must match the contracted sequence exactly. Every event, in order, with the right data.
+## What This Looks Like
 
-A system that satisfies all its modular contracts and all its end-to-end contracts is done.
+Take a fullstack email app: OAuth with Google, sending via the Gmail API, receiving via webhook, database writes, Redis cache invalidation, and SSE realtime updates.
 
-## A Real Example
-
-Here's a real one: a fullstack email app with OAuth, sending, receiving via webhook, database writes, Redis cache invalidation, and SSE realtime updates.
-
-The app: sign in with Google, authorize Gmail scopes, land on a UI with a compose form and an inbox. Send an email to yourself, receive it back via webhook, see it appear in realtime.
-
-Here's the end-to-end contract for "send and receive" — the exact sequence the system must produce. Click through to watch every UI state, API call, database write, and realtime event:
+The end-to-end contract for "send and receive" defines the exact event log the system must produce. Click through to watch every UI state, API call, database write, and realtime event:
 
 <Figure id="email-app-lifecycle">
   <EmailAppLifecycleFigure />
@@ -99,40 +62,69 @@ And the contracted event log that gates the run:
   <Figure.Caption>13 events, verified in order. The agent can't claim success without every check passing against real infrastructure.</Figure.Caption>
 </Figure>
 
-Every line is a contracted event. Verification combines deterministic checks — database queries, API response codes, Redis channel messages, log entries — with qualitative checks where an LLM scores screenshots against expected UI states.
+Each event is independently verifiable from outside the application. Verification combines deterministic checks — database queries, response codes, Redis channel messages, log entries — with qualitative checks where an LLM scores screenshots against expected UI states.
 
-Each event is independently verifiable from outside the application. The agent can't claim `db:emails:insert` passed without querying Postgres and finding the row. It can't claim `ui:inbox:update` passed without a screenshot that an LLM confirms shows the new email. There's no way to satisfy the contracted event log without the system actually working end to end.
+The contract can't be satisfied without the system actually working end to end. And it doesn't matter which run produced the code, or what the agent's context looked like, or what sampling decisions it made. The contract is the same every time. Pass or fail.
 
-## Contracts as Source of Truth
+## Catching Bugs
 
-Once you work this way, something becomes clear: the contracts *are* the application. The code is an implementation detail — different agent runs produce different code, but they satisfy the same contracts. The contracts are the invariant; the code is the variable.
+The agent runs the SendAndReceiveEmail contract. Events 1 through 9 pass. The email is sent, the webhook arrives, the database rows exist. Then event 10 — `cache:redis:publish` — fails. The evaluator queries Redis and finds no PUBLISH on `inbox:{accountId}`. The agent wrote the webhook handler but forgot to publish the cache invalidation event.
 
-This makes contracts the highest-level programming language that's still pseudo-deterministic. You're not writing code, and you're not just writing prompts. You're writing precise, verifiable descriptions of behavior. If you don't contract it, the agent doesn't guarantee it.
+Without the contract, the agent reports success. The app works in testing because the page refreshes and loads from the database directly. But in production, users with the inbox already open never see new emails arrive. SSE never fires because the Redis pub never happened. The bug ships silently.
+
+With the contract, the agent gets kicked back. It knows exactly what failed, exactly what the proof requires, and it iterates until Redis shows the message.
+
+This is what specificity buys you. A PRD would never mention Redis cache invalidation. A prompt might, if you remembered. A contract always does — because it defines every event the system must produce, not just the ones that are obvious.
+
+## Contracts Don't Decay
+
+Prompting decays. Contracts don't. The specification moves out of the conversation and into the repo — versioned, reviewable, durable. It doesn't compact between runs. It doesn't scatter across follow-ups.
+
+This makes restarts cheap. Without contracts, a restart throws away meaning — the edge cases, the subtle requirements, the failures that taught you what the product really needed. With contracts, you throw out the code, the context, the thread, and the contracts carry everything forward. Different agent runs produce different code. They satisfy the same contracts.
+
+And contracts accumulate. Run 1: the email app has 13 contracts. All pass. A week later, you discover the Gmail API rate-limits a send and the UI still shows a success toast. New contracts:
+
+```
+{ event: "api:send:ratelimited", proof: apiResponse(429) }
+{ event: "ui:compose:error",     proof: screenshot({ toast: "error" }) }
+```
+
+That edge case is locked in. The next agent run — potentially completely different code — must handle rate limiting correctly or the contract fails.
+
+A month later, the inbox doesn't sort correctly when two emails arrive within the same second:
+
+```
+{ event: "ui:inbox:order", proof: dom({ firstChild: newerEmail }) }
+```
+
+Each contract is a scar from a real failure, crystallized into a permanent requirement. The spec gets sharper instead of fuzzier.
+
+## Contracts Are the Product
+
+Once you internalize this, something shifts. The code the agent writes starts to feel like a build artifact. It might look different tomorrow. The agent might use a different architecture next week, or rewrite the system from scratch next month. That's fine. The contracts stay.
+
+The contracts are the highest-level language that's still pseudo-deterministic. You're not writing code. You're not writing prompts. You're writing precise, verifiable descriptions of what the product must do — and the agent's job is to produce code that satisfies them. The code is the variable. The contracts are the invariant.
+
+This also means the engineering effort shifts upstream. Instead of writing code and manually verifying, you define contracts and let the agent iterate until they pass. The hard thinking moves from implementation to specification — what does "done" actually mean, across every layer of the system? Getting that right is the new job. And when you get it wrong, you don't fix the code. You fix the contract and let the agent rebuild.
+
+In a meaningful sense, the contracts are the application.
 
 ## What Gets Hard
 
-There are genuinely difficult problems at the edges that we haven't solved yet.
+We've been running this approach against real applications and it works — but it surfaces a new class of problems that only show up once the basic architecture is right.
 
-**Scarce infrastructure.** Some contracts require resources that can't be cheaply provisioned on demand. To test "a user signs up for the first time and sees an empty inbox," you need a fresh email account that has never received a message. You could provision one programmatically — but you might hit bot detection, rate limits, or CAPTCHAs. To test SMS verification, you need a real phone number outside the VoIP blocks. To test ACH payment flows, you need real bank accounts with real money.
+**Scarce infrastructure.** Some contracts require resources that can't be cheaply provisioned on demand. A first-time signup needs a fresh email account. SMS verification needs a real phone number outside the VoIP blocks. Payment flows need real bank accounts with real money. We're approaching this with resource pools — pre-provisioned resources leased to a run and returned afterward — but pools have limits, and some resources are genuinely finite.
 
-We're calling this *scarce infrastructure* — the long tail of real-world resources that can't be conjured on demand and assigned a clean initial state. Our current approach is resource pools: a managed set of pre-provisioned resources (phone numbers, email accounts, test cards) that get leased to a test run, used, and returned. But pools have limits, and some resources are genuinely finite.
+**World parity.** A contract that passes locally doesn't necessarily pass in production. Real APIs ship breaking changes without notice, real networks have variable latency, real OAuth providers occasionally change their consent screens. A contract should pass in every environment — sim, staging, prod — but achieving that consistently is an open problem.
 
-**World parity.** A contract that passes locally doesn't necessarily pass in production on a Monday morning. Real APIs have undocumented rate limits, real networks have inconsistent latencies, real OAuth providers occasionally change their consent screen. The system needs to run contracts in multiple environments — sim, live-local, live-prod — and a contract only truly passes when it passes in all of them. But the real world is non-deterministic, and the software will always be as strong as the contracts that define it.
+**Qualitative drift.** LLM-scored screenshots are powerful but noisy. The same screenshot can score differently across evaluations. We're working on pinned scoring — caching evaluations so a passing screenshot stays passed until the UI actually changes — but calibrating the boundary between acceptable variance and a real regression is ongoing.
 
-**Qualitative drift.** LLM-scored screenshots are powerful but noisy. The same screenshot might score differently across evaluations. We're working on pinned scoring — caching qualitative evaluations so that once a screenshot passes, it stays passed until the UI actually changes. Calibrating the boundary between "acceptable variance" and "actually broken" is ongoing work.
-
-**Motion and animation.** Screenshots are static. They can't verify that a loading spinner actually spins, that a transition is smooth, or that an animation follows the design spec. Video-based evaluation with video models is the obvious next step, but the tooling is early — only a few providers offer video understanding at the quality level needed. This is a real gap in the current approach.
-
-## Where This Is Going
-
-We're building a small framework around this — a deterministic execution and proof system for human-out-of-the-loop development.
-
-The loop: spec, code, run, trace, evaluate, patch, repeat.
-
-The application always emits a trace — an append-only event stream of everything it does. Contracts evaluate against windows of that trace. A success that doesn't appear in the trace didn't happen. An expected failure is an explicit error event. An unexpected failure is a panic.
-
-We're proving it with two apps: **Mailroom**, the minimal proof for OAuth, send, receive, webhook sync, and SSE; and **Fileroom**, the stress test for file UX, uploads, sharing, and realtime collaboration.
+These are hard problems. They're also the right problems — the kind that only matter once you've stopped fighting the environment and started fighting the specification.
 
 ---
 
-If you want to follow along or build with us, we're working in the open at [github.com/rubriclabs](https://github.com/rubriclabs).
+The goal we started with was simple: write a spec at night, wake up to working software. Contracts are what make that possible — not by making the agent smarter, but by defining what "done" means precisely enough that any agent, on any run, can be held to it.
+
+At night, you write the contracts. By morning, the agent has built against them, deployed the result, rerun failures, fixed what it could, and left behind proof: what passed, what failed, what changed, and why. The code might be different next time. The contracts won't be.
+
+We're building in the open at [github.com/rubriclabs](https://github.com/rubriclabs).
