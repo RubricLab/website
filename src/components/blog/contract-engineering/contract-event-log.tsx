@@ -152,6 +152,22 @@ export const ContractEventLog = () => {
 				})}
 			</div>
 
+			{/* Scrubber */}
+			<div
+				className="relative mt-3 h-0.5 cursor-pointer rounded-full bg-subtle/20"
+				onClick={(e) => {
+					const rect = e.currentTarget.getBoundingClientRect()
+					const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width))
+					setVerifiedCount(Math.round(pct * EVENTS.length))
+					setIsPlaying(false)
+				}}
+			>
+				<div
+					className="absolute inset-y-0 left-0 rounded-full bg-primary/20 transition-all duration-300"
+					style={{ width: `${(verifiedCount / EVENTS.length) * 100}%` }}
+				/>
+			</div>
+
 			{/* Controls */}
 			<div className="mt-3 flex items-center gap-2">
 				<Button size="sm" variant="icon" onClick={togglePlay}>

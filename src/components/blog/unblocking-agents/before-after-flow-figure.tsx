@@ -32,15 +32,12 @@ const UNBLOCKED: Step[] = [
 const BLOCKED: Step[] = [
 	{ label: 'Write webhook handler', status: 'done', tick: 1 },
 	{ label: 'Need database access', status: 'blocked', tick: 2 },
-	{ label: 'Ask human for credentials', status: 'waiting', tick: 3 },
-	{ label: 'Waiting', status: 'waiting', tick: 4 },
-	{ label: 'Waiting', status: 'waiting', tick: 5 },
-	{ label: 'Waiting', status: 'waiting', tick: 6 },
+	{ label: 'Waiting for human', status: 'waiting', tick: 3 },
+	// ticks 4-6: nothing new appears, just stalls
 	{ label: 'Human shares credentials', status: 'done', tick: 7 },
 	{ label: 'Need deploy token', status: 'blocked', tick: 8 },
-	{ label: 'Ask human for token', status: 'waiting', tick: 9 },
-	{ label: 'Waiting', status: 'waiting', tick: 10 },
-	{ label: 'Waiting', status: 'waiting', tick: 11 },
+	{ label: 'Waiting for human', status: 'waiting', tick: 9 },
+	// ticks 10-11: stalls again
 ]
 
 const TICK_MS = 900
@@ -130,6 +127,22 @@ export const BeforeAfterFlowFigure = () => {
 				<div className="grid grid-cols-2 gap-4">
 					{renderColumn('Unblocked', UNBLOCKED)}
 					{renderColumn('Blocked', BLOCKED)}
+				</div>
+
+				{/* Scrubber */}
+				<div
+					className="relative h-0.5 cursor-pointer rounded-full bg-subtle/20"
+					onClick={(e) => {
+						const rect = e.currentTarget.getBoundingClientRect()
+						const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width))
+						setTick(Math.round(pct * TOTAL_TICKS))
+						setIsPlaying(false)
+					}}
+				>
+					<div
+						className="absolute inset-y-0 left-0 rounded-full bg-primary/20 transition-all duration-300"
+						style={{ width: `${(tick / TOTAL_TICKS) * 100}%` }}
+					/>
 				</div>
 
 				<div className="flex items-center gap-2">

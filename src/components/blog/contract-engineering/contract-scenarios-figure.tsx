@@ -225,6 +225,22 @@ export const ContractScenariosFigure = () => {
 					})}
 				</div>
 
+				{/* Scrubber */}
+				<div
+					className="relative h-0.5 cursor-pointer rounded-full bg-subtle/20"
+					onClick={(e) => {
+						const rect = e.currentTarget.getBoundingClientRect()
+						const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width))
+						setVisibleChecks(Math.round(pct * scenario.checks.length))
+						setIsPlaying(false)
+					}}
+				>
+					<div
+						className="absolute inset-y-0 left-0 rounded-full bg-primary/20 transition-all duration-300"
+						style={{ width: `${(visibleChecks / scenario.checks.length) * 100}%` }}
+					/>
+				</div>
+
 				{/* Controls */}
 				<div className="flex items-center justify-between">
 					<div className="flex items-center gap-2">
