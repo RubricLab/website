@@ -1,0 +1,128 @@
+import { AUTHORS, CATEGORIES } from '~/lib/constants/blog'
+import { PermissionsTrapFigure, OneWayBridgeFigure, BeforeAfterFlowFigure } from '~/ui/blog/unblocking-agents'
+import { CopyBlock } from '~/ui/blog/copy-block'
+
+export const metadata = {
+  title: "Unblocking Agents",
+  subtitle: "Isolation, verification, and persistence for autonomous agent environments",
+  date: "2026-03-30",
+  author: AUTHORS.DEXTER_STOREY,
+  category: CATEGORIES.ESSAY,
+  bannerImageUrl: "/images/unblocking-agents.png",
+  description: "The bottleneck isn't the model. It's the environment.",
+}
+
+Agents are good enough to build real applications, but they keep hitting the same walls.
+
+> "I've written the migration. Can you run it? I don't have permission to execute against the database."
+
+> "I've set up the OAuth handlers, but I can't create the GCP project needed for credentials. Can you create a project in the console and add the OAuth redirect URI? I'll need the client ID and secret to continue."
+
+> "I've built the signup flow. Can you test it manually? I'll need a real email and phone number to get through verification."
+
+The agent wrote the code, but it can't provision what it needs, deploy what it built, or verify what it produced. To unlock truly autonomous agents, we believe agents must be free to work however they see fit — which requires a development philosophy that encourages that freedom without sacrificing safety.
+
+## What Blocks Agents
+
+Agents working on real applications hit three categories of wall.
+
+**Access** is the most basic layer. Agents need permission to act on your machine — writing files, running shell commands, installing packages, making network requests. An unrestricted agent can do real damage, so frameworks gate actions behind approval prompts. Even when the agent is doing exactly what you asked, the permission model assumes it might not be.
+
+<Figure id="permissions-trap">
+  <PermissionsTrapFigure />
+  <Figure.Caption>The agent writes the code, then yields. It can't create the GCP project it needs to continue.</Figure.Caption>
+</Figure>
+
+Beyond local permissions, the agent needs credentials for the services the code depends on — API keys, cloud credentials, deployment tokens, database connection strings. Most teams keep these tightly scoped or out of the agent's reach entirely, which means the agent writes a perfectly good migration and then asks you to run it.
+
+**Infrastructure** is what the application runs on. When a developer joins a team, they get a seat on the org — they can provision what they need, from spinning up a database to configuring a deployment. Agents don't get seats, they get environment variables. They can connect to existing services but can't create new ones. The moment a task requires provisioning, the agent is stuck.
+
+**Identity** is the problem of being a person. Software sends confirmation emails, redirects to consent screens, validates credit cards against billing addresses, delivers SMS codes to phone numbers. Testing these flows requires a real human identity on the other side — an email inbox that receives mail and a phone number that carriers don't flag as VOIP. The agent has no way to test any of this.
+
+Every one of these blockers ends the same way: either the agent stops and asks you for help, or it skips what it can't do and assumes it works.
+
+## Give Them Their Own Org
+
+The instinct is to carefully expand what agents can do inside your existing environment. Grant a few more permissions. Add a scoped credential. Share a staging key. This is the wrong direction. The more access the agent has to your infrastructure, the more you need to supervise it, which defeats the point.
+
+The better answer: don't give agents more access to your environment. Give them their own.
+
+<Figure id="before-after-flow">
+  <BeforeAfterFlowFigure />
+  <Figure.Caption>Same agent, same task. The difference is the environment.</Figure.Caption>
+</Figure>
+
+We provisioned an entirely separate organization — a complete fork of our company's project structure under completely different accounts. Separate GitHub org, separate AWS and GCP accounts, separate Vercel workspace, separate billing. No production data. No customer access. Projects get cloned in and agents get full control.
+
+Inside this org, the agent doesn't request access. It has it. Every resource maps to one of the three blockers, and every blocker has a concrete solution.
+
+**Full permissions for access.** Skip confirmation prompts. Approve tool calls. Let the agent write and execute freely.
+
+<div className="my-4">
+  <CopyBlock copyContent="--dangerously-skip-permissions">
+    <div className="rounded-lg border border-red-500/20 bg-red-500/[0.03] px-4 py-2.5">
+      <code className="!bg-transparent !p-0 !rounded-none !text-[11px] text-red-400 font-medium">--dangerously-skip-permissions</code>
+    </div>
+  </CopyBlock>
+  <span className="block font-mono text-[9px] text-secondary/40 mt-1.5">Bypasses tool approval prompts in Claude Code</span>
+</div>
+
+The agent gets root VM access with full filesystem, unrestricted network, and a shell that doesn't ask questions. API keys, OAuth client secrets, and service account credentials go directly into the agent's context:
+
+<div className="my-4">
+  <CopyBlock copyContent={"You are set up for high-agency, human-out-of-the-loop software development. Do not ask for permission before using any of the resources below. Provision, deploy, test, and iterate freely. Test everything end to end, don't assume anything works without proof.\n\nWhen you're done, your work should be deployed and smoke tested end to end in an actual staging env.\n\nYou are operating on a dedicated Mac Mini with full file access, unrestricted networking and Chrome installed. You are logged in via CLI and browser to GCP, AWS, Github, Vercel, Neon, Upstash, Resend, Ngrok and Stripe. You have your own dedicated orgs and admin permissions on everything.\n\nYou have exclusive use of the domain below and can point DNS wherever you need, or buy additional domains.\n\nIdentity:\n  Domain: ____ (vercel)\n  Email: ____ (resend)\n  Phone: ____ (openphone)\n  CC: ____\n  Billing address: ____\n\nAPI keys:\n  OPENAI_API_KEY=____\n  ANTHROPIC_API_KEY=____\n  QUO_API_KEY=____"}>
+    <div className="rounded-lg border border-subtle bg-accent px-4 py-3 font-mono text-[11px] text-primary/60 leading-[1.7]">
+      <span className="block text-secondary/30 mb-3">// SYSTEM PROMPT</span>
+      <span className="block">You are set up for <span className="text-primary font-medium">high-agency, human-out-of-the-loop</span> software development. Do not ask for permission before using any of the resources below. <span className="text-primary font-medium">Provision, deploy, test, and iterate freely.</span> Test everything end to end, don&apos;t assume anything works without proof.</span>
+      <span className="block mt-2 mb-4">When you&apos;re done, your work should be <span className="text-primary font-medium">deployed and smoke tested end to end</span> in an actual staging env.</span>
+      <span className="block">You are operating on a <span className="text-primary font-medium">dedicated Mac Mini</span> with full file access, unrestricted networking and Chrome installed. You are logged in via CLI and browser to <span className="text-primary font-medium">GCP, AWS, Github, Vercel, Neon, Upstash, Resend, Ngrok</span> and <span className="text-primary font-medium">Stripe</span>. You have your own dedicated orgs and admin permissions on everything.</span>
+      <span className="block mt-2 mb-4">You have exclusive use of the domain <span className="text-primary font-medium">&quot;rubrot12.xyz&quot;</span> (managed on Vercel) and can point DNS wherever you need, or buy additional domains.</span>
+      <span className="block mb-1.5">Identity:</span>
+      <span className="block"><span className="text-primary font-medium">Email:</span> twelve@rubric.bot <span className="text-secondary/25">(resend)</span></span>
+      <span className="block"><span className="text-primary font-medium">Phone:</span> +1 (415) 830-7142 <span className="text-secondary/25">(openphone)</span></span>
+      <span className="block"><span className="text-primary font-medium">CC:</span> 5142 0034 8271 6953, 03/28, 219 <span className="text-secondary/25">($250 cap)</span></span>
+      <span className="block mb-4"><span className="text-primary font-medium">Billing address:</span> 1209 N Orange St, #2212, Wilmington, DE 19801</span>
+      <span className="block mb-1.5">API keys:</span>
+      <span className="block text-primary/30 break-all">OPENAI_API_KEY=sk-proj-a8Kj2mNx9pL4vR7wQ3bYtF6uH0dS1eA5iO8nM2kP4xR7</span>
+      <span className="block text-primary/30 break-all">ANTHROPIC_API_KEY=sk-ant-api03-7kN2vXq8mP1rT5wL9bY4uH0dS6eA3iO8nM2kF7pJ</span>
+      <span className="block text-primary/30 break-all">QUO_API_KEY=pk_live_8mN2kP4xR9qL1vT5wY7bU3eA0dS6iO</span>
+      <span className="block text-primary/30 mt-1">...</span>
+    </div>
+  </CopyBlock>
+  <span className="block font-mono text-[9px] text-secondary/40 mt-1.5">Example system prompt — identities and keys are illustrative</span>
+</div>
+
+**Real seats for infrastructure.** The agent gets admin accounts on every platform it needs, not scoped credentials. It can create cloud projects, provision databases, deploy applications, and configure DNS — the way a new developer would on their first week. GitHub with full push access and CI. Sandbox AWS and GCP accounts where the agent creates IAM policies and configures OAuth credentials. Its own Vercel workspace to deploy, set environment variables, and attach domains. Admin access to Neon for Postgres databases and Upstash for Redis instances. Ngrok to expose local services for webhook testing and OAuth callbacks. A real domain with subdomains, DNS records, and HTTPS.
+
+**Real identities for testing.** The agent gets an email address that receives mail, for confirmation links and verification codes. A phone number that passes carrier verification. A card that clears AVS checks with a hard spending cap. Playwright sessions for navigating consent screens, submitting forms, and verifying UI flows. For scarce resources, we maintain pools of pre-provisioned identities that agents can draw from and return.
+
+With this setup, the agent can provision a database, deploy against it, configure OAuth with a real callback URL, sign in with a real account, and verify the entire flow. No yielding. No asking for help.
+
+## The Isolation Boundary
+
+An agent with admin access to cloud accounts, a credit card, and the ability to run arbitrary code is a legitimate concern. This works because none of these resources are connected to production.
+
+There is no IAM role, no shared credential, and no network path between the agent's org and ours. An agent with root access inside its sandbox cannot reach our production infrastructure. The two orgs are completely separate entities with completely separate billing.
+
+<Figure id="one-way-bridge">
+  <OneWayBridgeFigure />
+  <Figure.Caption>A project forks into the sandbox, gets modified and verified, then returns as a pull request. Nothing else crosses the boundary.</Figure.Caption>
+</Figure>
+
+Code flows in one direction. When the agent finishes a task, the result is a pull request into our production org. Our CI runs. Our team reviews. We merge or we don't. The agent proposes changes. We accept or reject them. That's the only bridge between the two worlds.
+
+We run agent workloads on dedicated Mac Minis in isolated VMs. The card has a hard spending cap. Cloud accounts have billing alerts. If an agent provisions something expensive or gets stuck in a loop, the blast radius is a capped card and a sandbox account. Not our infrastructure.
+
+The safety model is not about restricting what the agent can do. It's about ensuring that nothing the agent does can reach production.
+
+## What's Next
+
+This setup gives agents what they need to build real software end to end. Full permissions, real infrastructure, real identity — all inside an environment that can't touch production. The bottleneck is no longer the environment.
+
+But unblocked doesn't mean correct. We've had agents build an app, deploy it, verify their own work, and report success — only to find the software was still wrong. Not because the agent lacked access, but because it didn't know what "correct" meant. Or it knew at the start and drifted. Or it checked its work but checked the wrong things.
+
+That's a specification problem. We'll write about how we're approaching it soon.
+
+---
+
+We're building in the open at [github.com/rubriclabs](https://github.com/rubriclabs).

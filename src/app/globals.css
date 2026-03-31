@@ -8,6 +8,7 @@
 	--subtle: #0000001a; /* black/10 */
 	--accent: #dedad7; /* black/20 on background */
 	--accent-foreground: black;
+	--tint: #8a9a9a;
 	--danger: red;
 }
 
@@ -20,6 +21,7 @@
 		--subtle: #ffffff1a; /* white/10 */
 		--accent: #1d1d1d; /* white/20 on black */
 		--accent-foreground: white;
+		--tint: #7a9090;
 		--danger: red;
 	}
 }
@@ -32,6 +34,7 @@
 	--color-secondary: var(--secondary);
 	--color-accent: var(--accent);
 	--color-accent-foreground: var(--accent-foreground);
+	--color-tint: var(--tint);
 	--color-danger: var(--danger);
 	--radius-custom: 1.625rem;
 }
@@ -430,6 +433,21 @@
 
 	.animate-slide-in {
 		animation: slide-in 0.3s ease-out;
+	}
+
+	@keyframes fadeIn {
+		from {
+			opacity: 0;
+			transform: translateY(4px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	.animate-fadeIn {
+		animation: fadeIn 300ms ease-out forwards;
 	}
 }
 
