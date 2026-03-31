@@ -2,7 +2,7 @@
 
 import type { ComponentBounds } from '../use-layout'
 import { CONNECTOR_NODES, getNodePosition } from '../scaffold'
-import { clamp01, easeOutCubic, easeOut } from '../scroll-phases'
+import { clamp01, easeOutCubic } from '../scroll-phases'
 
 const S = 'var(--primary)'
 
@@ -126,10 +126,10 @@ export function EvaluationExpansion({ bounds, progress }: {
 	bounds: ComponentBounds
 	progress: number
 }) {
-	const connectors = CONNECTOR_NODES[2]
+	const connectors = CONNECTOR_NODES[2]!
 	if (!bounds || bounds.width === 0 || connectors.length === 0) return null
 
-	const origin = getNodePosition(bounds, connectors[0]) // right-center
+	const origin = getNodePosition(bounds, connectors[0]!) // right-center
 	const startX = origin.x + 24
 	const centerY = origin.y - CARD_H / 2
 
@@ -202,19 +202,19 @@ export function EvaluationExpansion({ bounds, progress }: {
 
 			{/* Iteration cards */}
 			<IterationCard
-				iter={ITERATIONS[0]}
+				iter={ITERATIONS[0]!}
 				x={iter1X} y={centerY}
 				progress={iter1Appear}
 				compressed={compressP}
 			/>
 			<IterationCard
-				iter={ITERATIONS[1]}
+				iter={ITERATIONS[1]!}
 				x={iter2X} y={centerY}
 				progress={iter2Appear}
 				compressed={compressP}
 			/>
 			<IterationCard
-				iter={ITERATIONS[2]}
+				iter={ITERATIONS[2]!}
 				x={iter3X} y={centerY}
 				progress={iter3Appear}
 				compressed={0}

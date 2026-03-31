@@ -64,9 +64,10 @@ const WindowDots = ({ label }: { label?: string }) => (
 	</div>
 )
 
-const CodeBlock = ({ lines, className, children, label }: { lines: typeof ORIGINAL; className?: string; children?: React.ReactNode; label?: string }) => (
+type Line = { text: string; type: 'ctx' | 'add' | 'del' }
+const CodeBlock = ({ lines, className, children, label }: { lines: Line[]; className?: string; children?: React.ReactNode; label?: string }) => (
 	<div className={cn(CONTENT_H, 'rounded-lg border border-subtle bg-accent overflow-hidden', className)}>
-		<WindowDots label={label} />
+		{label ? <WindowDots label={label} /> : <WindowDots />}
 		<div className="p-2.5 font-mono text-[10px] leading-[1.8]">
 			{children}
 			{lines.map((l, i) => (

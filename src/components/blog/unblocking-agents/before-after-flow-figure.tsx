@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Button } from '~/components/button'
 import { Figure } from '~/components/figure'
 import { PauseIcon } from '~/components/icons/pause'

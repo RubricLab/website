@@ -194,7 +194,7 @@ export function ArchitectureDiagram({ progress }: { progress: number }) {
 			{/* Sequential nodes */}
 			{seq.map((s, i) => {
 				const sp = clamp01(p * 2.2 - 0.35 - i * 0.1)
-				const prevRight = i === 0 ? mergeX + 3 : seq[i - 1].x + sw
+				const prevRight = i === 0 ? mergeX + 3 : (seq[i - 1]?.x ?? 0) + sw
 				return (
 					<g key={s.label}>
 						<Line x1={prevRight} y1={centerY} x2={s.x} y2={centerY} progress={clamp01(p * 2.5 - 0.33 - i * 0.08)} />
@@ -205,21 +205,28 @@ export function ArchitectureDiagram({ progress }: { progress: number }) {
 			})}
 
 			{/* Fallback path (dashed, from validate schema) */}
-			<Line x1={parX + bw / 2} y1={parallels[2].y + bh}
-				x2={parX + bw / 2} y2={parallels[2].y + bh + 16}
-				progress={clamp01((p - 0.55) * 3)} dashed />
-			<g opacity={clamp01((p - 0.6) * 3)}>
-				<rect x={parX - 4} y={parallels[2].y + bh + 16}
-					width={bw + 8} height={bh} rx={3}
-					fill="none" stroke="#b08050" strokeWidth={SW}
-					strokeDasharray="3 2" opacity={0.35}
-				/>
-				<text x={parX + bw / 2} y={parallels[2].y + bh + 30}
-					textAnchor="middle" fontSize="9" fontFamily="ui-monospace, monospace"
-					fill="#b08050" opacity={0.55}>
-					fallback: use cache
-				</text>
-			</g>
+			{(() => {
+				const validateY = parallels[2]!.y
+				return (
+					<>
+						<Line x1={parX + bw / 2} y1={validateY + bh}
+							x2={parX + bw / 2} y2={validateY + bh + 16}
+							progress={clamp01((p - 0.55) * 3)} dashed />
+						<g opacity={clamp01((p - 0.6) * 3)}>
+							<rect x={parX - 4} y={validateY + bh + 16}
+								width={bw + 8} height={bh} rx={3}
+								fill="none" stroke="#b08050" strokeWidth={SW}
+								strokeDasharray="3 2" opacity={0.35}
+							/>
+							<text x={parX + bw / 2} y={validateY + bh + 30}
+								textAnchor="middle" fontSize="9" fontFamily="ui-monospace, monospace"
+								fill="#b08050" opacity={0.55}>
+								fallback: use cache
+							</text>
+						</g>
+					</>
+				)
+			})()}
 
 			{/* Timing bars (cosmetic — illustrate parallelism) */}
 			<g opacity={clamp01((p - 0.5) * 3) * 0.35}>
@@ -317,7 +324,7 @@ export function EvaluationDiagram({ progress }: { progress: number }) {
 									<rect x={x + 9} y={my + 14} width={cw - 18} height={2} rx={1}
 										fill={S} opacity={0.06} />
 									<rect x={x + 9} y={my + 14}
-										width={(cw - 18) * (v.m[mi] / 10) * clamp01(mp * 2)}
+										width={(cw - 18) * (v.m[mi]! / 10) * clamp01(mp * 2)}
 										height={2} rx={1}
 										fill={S} opacity={v.win ? 0.3 : 0.12}
 									/>

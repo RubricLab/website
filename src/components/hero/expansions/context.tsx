@@ -68,7 +68,7 @@ export function ContextExpansion({ bounds, progress }: {
 	bounds: ComponentBounds
 	progress: number
 }) {
-	const connectors = CONNECTOR_NODES[0]
+	const connectors = CONNECTOR_NODES[0]!
 	if (!bounds || bounds.width === 0) return null
 
 	// Source block positions (centered under each connector node)
@@ -77,7 +77,7 @@ export function ContextExpansion({ bounds, progress }: {
 
 	// Schema below first source
 	const schemaY = blockY + BLOCK_H + BLOCK_GAP
-	const schemaX = nodePositions[0].x - BLOCK_W / 2
+	const schemaX = nodePositions[0]!.x - BLOCK_W / 2
 
 	// Discarded below schema
 	const discardedY = schemaY + BLOCK_H + BLOCK_GAP
@@ -110,8 +110,8 @@ export function ContextExpansion({ bounds, progress }: {
 					const lineLen = endY - startY
 					return (
 						<line
-							x1={nodePositions[0].x} y1={startY}
-							x2={nodePositions[0].x} y2={endY}
+							x1={nodePositions[0]!.x} y1={startY}
+							x2={nodePositions[0]!.x} y2={endY}
 							stroke={S} strokeWidth={0.75}
 							strokeDasharray={`${lineLen} ${lineLen}`}
 							strokeDashoffset={lineLen * (1 - easeOutCubic(lineP))}
@@ -137,7 +137,7 @@ export function ContextExpansion({ bounds, progress }: {
 			{SOURCES.map((src, i) => (
 				<SourceBlock
 					key={src.label}
-					x={nodePositions[i].x - BLOCK_W / 2}
+					x={nodePositions[i]!.x - BLOCK_W / 2}
 					y={blockY}
 					label={src.label}
 					detail={src.detail}

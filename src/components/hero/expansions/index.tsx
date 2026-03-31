@@ -57,19 +57,19 @@ export function Expansions({ layoutRef, heroState }: {
 			{/* Expansion content (positioned within/around the chat container) */}
 			{expansion === 'context' && (
 				<ContextExpansion
-					bounds={layout[0]}
+					bounds={layout[0]!}
 					progress={heroState.expansionProgress}
 				/>
 			)}
 			{expansion === 'architecture' && (
 				<ArchitectureExpansion
-					bounds={layout[1]}
+					bounds={layout[1]!}
 					progress={heroState.expansionProgress}
 				/>
 			)}
 			{expansion === 'evaluation' && (
 				<EvaluationExpansion
-					bounds={layout[2]}
+					bounds={layout[2]!}
 					progress={heroState.expansionProgress}
 				/>
 			)}

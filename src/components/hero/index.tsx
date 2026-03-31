@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { LogoBar } from '~/components/logo-bar'
 import { useScrollProgress } from './use-scroll-progress'
-import { PHASES, phaseProgress, easeOut, easeOutCubic, clamp01, deriveHeroState } from './scroll-phases'
+import { PHASES, phaseProgress, easeOut, clamp01, deriveHeroState } from './scroll-phases'
 import { useLayout } from './use-layout'
 import { ScaffoldOverlay } from './scaffold'
 import { Expansions } from './expansions'
@@ -115,7 +115,7 @@ export function HeroEngine() {
 					</p>
 					<div className="mb-10 overflow-hidden"><LogoBar compact /></div>
 					<div className="grid grid-cols-1 gap-6">
-						{HIGHLIGHT_CONTENT.map((item, i) => (
+						{HIGHLIGHT_CONTENT.map((item, _i) => (
 							<div key={item.mono} className="border border-subtle rounded-xl p-5">
 								<span className="text-[10px] text-secondary tracking-[0.15em] font-mono uppercase block mb-2">
 									{item.mono}

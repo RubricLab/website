@@ -12,13 +12,7 @@ const NODE_H = 22
 const H_GAP = 12
 const V_SPREAD = 32 // vertical distance between parallel branches
 
-interface DagNode {
-	label: string
-	x: number // relative to expansion origin
-	y: number // relative to expansion origin (center of node)
-}
-
-function DagNodeBlock({ label, x, y, progress, isParallel }: {
+function DagNodeBlock({ label, x, y, progress, isParallel: _isParallel }: {
 	label: string; x: number; y: number; progress: number; isParallel?: boolean
 }) {
 	const op = clamp01(progress * 3)
@@ -71,11 +65,11 @@ export function ArchitectureExpansion({ bounds, progress }: {
 	bounds: ComponentBounds
 	progress: number
 }) {
-	const connectors = CONNECTOR_NODES[1]
+	const connectors = CONNECTOR_NODES[1]!
 	if (!bounds || bounds.width === 0 || connectors.length === 0) return null
 
 	// Origin: right edge center of the reasoning component
-	const origin = getNodePosition(bounds, connectors[1]) // right-center
+	const origin = getNodePosition(bounds, connectors[1]!) // right-center
 	const startX = origin.x + 20
 	const centerY = origin.y
 
@@ -92,9 +86,9 @@ export function ArchitectureExpansion({ bounds, progress }: {
 	]
 
 	const seqNodes = [
-		{ label: 'merge', x: seqX[0] },
-		{ label: 'inference', x: seqX[1] },
-		{ label: 'output', x: seqX[2] },
+		{ label: 'merge', x: seqX[0]! },
+		{ label: 'inference', x: seqX[1]! },
+		{ label: 'output', x: seqX[2]! },
 	]
 
 	// Timing bar position
@@ -158,7 +152,7 @@ export function ArchitectureExpansion({ bounds, progress }: {
 				{seqNodes.slice(0, -1).map((sn, i) => {
 					const lineP = easeOutCubic(clamp01((progress - 0.5 - i * 0.08) * 4))
 					const x1 = sn.x + (i === 0 ? NODE_W / 2 : NODE_W)
-					const x2 = seqNodes[i + 1].x
+					const x2 = seqNodes[i + 1]!.x
 					const lineLen = x2 - x1
 					return (
 						<g key={`seq-${i}`}>

@@ -171,7 +171,7 @@ function ComponentScaffold({
 					</text>
 
 					{/* Connector nodes */}
-					{connectors.map(node => {
+					{connectors!.map(node => {
 						const nx = bounds.left + bounds.width * node.xRatio
 						const ny = bounds.top + bounds.height * node.yRatio
 						const nodeOp = mainOp * (isFocused ? 0.7 : 0.35)
@@ -230,8 +230,8 @@ export function ScaffoldOverlay({
 					key={i}
 					bounds={bounds}
 					index={i}
-					drawProgress={heroState.scaffoldDraw[i]}
-					ghostProgress={heroState.ghostGuides[i]}
+					drawProgress={heroState.scaffoldDraw[i]!}
+					ghostProgress={heroState.ghostGuides[i]!}
 					isFocused={heroState.components[i] === 'focused'}
 				/>
 			))}
