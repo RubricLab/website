@@ -182,30 +182,29 @@ export const OneWayBridgeFigure = () => {
 					{/* Rubrot */}
 					<div className="flex min-w-0 flex-1 flex-col gap-2 pl-3">
 						<span className="font-mono text-[9px] text-primary/70 uppercase tracking-wide">rubrot</span>
-						{phase === 0 && <SkeletonSlot text="" />}
-						{phase >= 1 && phase <= 6 && (
-							<div className="flex flex-col gap-2">
-								{phase === 1 && (
-									<CodeBlock lines={ORIGINAL} label="handler.ts" className="animate-fadeIn" />
-								)}
-								{phase === 2 && <CodeBlock lines={DIFF} label="handler.ts" className="animate-fadeIn" />}
-								{phase >= 3 && phase <= 5 && <CodeBlock lines={DIFF} label="handler.ts" />}
-								{phase === 6 && (
-									<CodeBlock lines={DIFF} label="handler.ts">
-										<div className="mb-1 flex animate-fadeIn items-center gap-2 font-mono text-[9px]">
-											<span className="text-tint">✓ ready</span>
-										</div>
-									</CodeBlock>
-								)}
-								<div className="h-4">{statusText && <StatusText text={statusText} />}</div>
+						<div className="flex flex-col gap-2">
+							{phase === 0 && <SkeletonSlot text="" />}
+							{phase === 1 && <CodeBlock lines={ORIGINAL} label="handler.ts" className="animate-fadeIn" />}
+							{phase === 2 && <CodeBlock lines={DIFF} label="handler.ts" className="animate-fadeIn" />}
+							{phase >= 3 && phase <= 5 && <CodeBlock lines={DIFF} label="handler.ts" />}
+							{phase === 6 && (
+								<CodeBlock lines={DIFF} label="handler.ts">
+									<div className="mb-1 flex animate-fadeIn items-center gap-2 font-mono text-[9px]">
+										<span className="text-tint">✓ ready</span>
+									</div>
+								</CodeBlock>
+							)}
+							{phase >= 7 && <SkeletonSlot text="done" />}
+							<div className="h-4">
+								{phase >= 1 && phase <= 6 && statusText && <StatusText text={statusText} />}
 							</div>
-						)}
-						{phase >= 7 && <SkeletonSlot text="done" />}
+						</div>
 					</div>
 				</div>
 
 				{/* Scrubber */}
-				<div
+				<button
+					type="button"
 					className="relative h-0.5 cursor-pointer rounded-full bg-subtle/20"
 					onClick={e => {
 						const rect = e.currentTarget.getBoundingClientRect()
@@ -218,7 +217,7 @@ export const OneWayBridgeFigure = () => {
 						className="absolute inset-y-0 left-0 rounded-full bg-primary/20 transition-all duration-300"
 						style={{ width: `${(phase / (PHASE_COUNT - 1)) * 100}%` }}
 					/>
-				</div>
+				</button>
 
 				{/* Controls */}
 				<div className="flex items-center gap-2">
