@@ -103,6 +103,10 @@
 		@apply underline underline-offset-3 decoration-1 hover:decoration-4;
 	}
 
+	article :is(strong, b) a:not(:has(button)) {
+		@apply text-primary font-semibold;
+	}
+
 	article p,
 	article li {
 		@apply text-secondary;
@@ -113,7 +117,7 @@
 	}
 
 	article blockquote {
-		@apply border-l-4 border-secondary/20 pl-4 font-light text-lg italic;
+		@apply border-l-4 border-secondary/20 pl-4 font-light text-lg italic text-secondary;
 	}
 
 	article aside {
