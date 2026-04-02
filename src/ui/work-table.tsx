@@ -27,6 +27,23 @@ type Work = {
 
 const works = [
 	{
+		category: 'Client',
+		date: '2026',
+		description:
+			'Sligo AI was building an ambitious enterprise agent platform. We partnered across backend reliability, workflow orchestration, enterprise deployment, evaluation systems, and guardrails to help make the platform powerful, deployable, observable, and secure.',
+		link: {
+			href: '/blog/sligo-procurement-intelligence',
+			label: 'Read case study'
+		},
+		name: 'Sligo',
+		quote: 'Reliability, orchestration, and enterprise hardening for an agent platform',
+		secondaryLink: {
+			href: 'https://sligo.ai',
+			label: 'Visit website',
+			target: '_blank'
+		}
+	},
+	{
 		backgroundImageUrl: '/images/gumloop-marketplace-screenshot.png',
 		category: 'Client',
 		date: '2025',
@@ -223,13 +240,6 @@ const works = [
 	{
 		category: 'Client',
 		date: '2024',
-		description: 'We built a RAG and SQL generation system for Sligo.',
-		link: { href: 'https://sligo.ai', label: 'Visit website', target: '_blank' },
-		name: 'Sligo'
-	},
-	{
-		category: 'Client',
-		date: '2024',
 		description:
 			'We built an enterprise booking platform for Weave to handle everything from POS to inventory management.',
 		link: { href: 'https://weavein.co', label: 'Visit website', target: '_blank' },
@@ -268,51 +278,67 @@ export const WorkTable = () => {
 
 	return (
 		<div className="flex flex-col gap-12">
-			{works.map((work, index) => (
-				<div
-					key={index}
-					id={`work-${work.name}`}
-					className={`group flex h-fit w-full flex-col items-center justify-center rounded-custom border text-secondary transition-colors duration-500 sm:px-6 sm:py-4 ${
-						highlightedWork === work.name ? 'border-primary' : 'border-primary/0'
-					}`}
-				>
-					<div className="flex w-full items-center">
-						<h3 className="text-primary">{work.name}</h3>
-					</div>
-					<div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
-						<div className="flex h-full w-full flex-col justify-center gap-4">
-							{work.quote && (
-								<div className="text-5xl text-primary leading-12 tracking-tight">{work.quote}</div>
+			{works.map((work, index) => {
+				const hasVisual = Boolean(work.image || work.backgroundImageUrl)
+
+				return (
+					<div
+						key={index}
+						id={`work-${work.name}`}
+						className={`group flex h-fit w-full flex-col items-center justify-center rounded-custom border text-secondary transition-colors duration-500 sm:px-6 sm:py-4 ${
+							highlightedWork === work.name ? 'border-primary' : 'border-primary/0'
+						}`}
+					>
+						<div className="flex w-full items-center">
+							<h3 className="text-primary">{work.name}</h3>
+						</div>
+						<div
+							className={cn(
+								'grid w-full grid-cols-1 gap-6',
+								hasVisual ? 'md:grid-cols-2' : 'md:grid-cols-3'
 							)}
-							{work.description && <div className="flex h-full flex-col">{work.description}</div>}
-							{(work.link || work.secondaryLink) && (
-								<div className="flex items-center gap-2">
-									{work.link && (
-										<Link href={work.link.href} target={work.link.target ?? '_self'}>
-											<Button variant="default">{work.link.label}</Button>
-										</Link>
-									)}
-									{work.secondaryLink && (
-										<Link href={work.secondaryLink.href} target={work.secondaryLink.target ?? '_self'}>
-											<Button variant="ghost">{work.secondaryLink.label}</Button>
-										</Link>
+						>
+							<div
+								className={cn(
+									'flex h-full w-full flex-col justify-center gap-4',
+									!hasVisual && 'md:col-span-2'
+								)}
+							>
+								{work.quote && (
+									<div className="text-5xl text-primary leading-12 tracking-tight">{work.quote}</div>
+								)}
+								{work.description && <div className="flex h-full flex-col">{work.description}</div>}
+								{(work.link || work.secondaryLink) && (
+									<div className="flex items-center gap-2">
+										{work.link && (
+											<Link href={work.link.href} target={work.link.target ?? '_self'}>
+												<Button variant="default">{work.link.label}</Button>
+											</Link>
+										)}
+										{work.secondaryLink && (
+											<Link href={work.secondaryLink.href} target={work.secondaryLink.target ?? '_self'}>
+												<Button variant="ghost">{work.secondaryLink.label}</Button>
+											</Link>
+										)}
+									</div>
+								)}
+							</div>
+							{hasVisual && (
+								<div className="relative flex h-full w-full flex-col items-center justify-center">
+									{work.image && <div className="z-10 h-full w-full shrink-0 p-4">{work.image}</div>}
+									{work.backgroundImageUrl && (
+										<CustomImage
+											src={work.backgroundImageUrl}
+											alt={work.name}
+											className="absolute top-0 left-0 w-full object-cover saturate-[1.25] dark:saturate-[0.75]"
+										/>
 									)}
 								</div>
 							)}
 						</div>
-						<div className="relative flex h-full w-full flex-col items-center justify-center">
-							{work.image && <div className="z-10 h-full w-full shrink-0 p-4">{work.image}</div>}
-							{work.backgroundImageUrl && (
-								<CustomImage
-									src={work.backgroundImageUrl}
-									alt={work.name}
-									className="absolute top-0 left-0 w-full object-cover saturate-[1.25] dark:saturate-[0.75]"
-								/>
-							)}
-						</div>
 					</div>
-				</div>
-			))}
+				)
+			})}
 		</div>
 	)
 }
