@@ -4,9 +4,9 @@ import Link from 'next/link'
 import { usePostHog } from 'posthog-js/react'
 import { Arrow } from './icons/arrow'
 
-const body = 'Read about our approach'
+const body = 'New: Contract Engineering — how we spec agent systems'
 
-const href = '/blog/introducing-rubric-labs'
+const href = '/blog/contract-engineering'
 
 export const Announcement = () => {
 	const posthog = usePostHog()
