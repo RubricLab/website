@@ -1,0 +1,125 @@
+import { AUTHORS, CATEGORIES } from '~/lib/constants/blog'
+import { ContractEventLog, EmailAppLifecycleFigure } from '~/ui/blog/contract-engineering'
+import { CopyBlock } from '~/ui/blog/copy-block'
+
+export const metadata = {
+  title: "Contract Engineering",
+  subtitle: "How we define \"done\" for AI agents using verifiable contracts",
+  date: "2026-04-07",
+  isNew: true,
+  author: AUTHORS.DEXTER_STOREY,
+  category: CATEGORIES.ESSAY,
+  description: "The contracts are the application. The code is an implementation detail.",
+  bannerImageUrl: "/images/excavator.png",
+}
+
+Our team has been running experiments toward fully unsupervised development, with the goal of being able to write a spec at night, and wake up to working, deployed, production-ready software. Agents can already build and deploy without handing the keyboard back to you, given their own accounts, infrastructure, and verification tooling. We wrote about how we set that up in [Unblocking Agents](/blog/unblocking-agents).
+
+But the results haven't always been consistent, because nobody defined what "done" means in a form the agent can be held to.
+
+We've been approaching this with something we call contracts: hard, versioned, executable claims about what the system must do. A contract is both the specification and the acceptance criteria. The agent builds until every contract passes, and it cannot ship until they do.
+
+## The Problem with Prompting
+
+When building with agents, your spec is the conversation. The details of the product are teased out through your prompts, the agent's responses, and the ongoing back and forth. This is the source of truth for the entire system, and it breaks in three ways.
+
+The first is decay. The first prompt is always the best because you're offering the full picture with high context. As you continue your conversation with the agent, you might prompt to fix a specific issue: "Fix the auth redirect." The agent fixes it but breaks session handling. You catch that: "The session isn't persisting." It fixes the session, but the fix doesn't match the pattern used elsewhere. The context window fills up and gets compacted. The agent loses track of early decisions. You lose track of the code because you didn't write it. The spec is now scattered across dozens of messages with no sense of consistency.
+
+The second is non-determinism. Even with a perfect prompt, agent runs aren't reproducible. You can have the same prompt in a different session and get a completely different result. Some runs feel locked in: the agent makes good decisions and the architecture is clean. Other runs drift. The difference is sampling luck, context ordering, and temperature. You can't reliably reproduce what worked, and you can't explain why something didn't.
+
+The third is specificity. PRDs were designed for humans under the assumption that engineering is expensive and that efforts take weeks with constant subtle feedback signals during sprints. A PRD says "the user should be able to send an email" and trusts the engineer to figure out what that means across OAuth, API calls, database writes, cache invalidation, and realtime updates. An agent, on the other hand, needs a level of specificity that would be unreasonable to ask of a human engineer, but is exactly right for a process where execution is cheap and restarts are free.
+
+We need a format that's durable, deterministic, and precise enough that an agent can execute against it with no interim feedback and get it right.
+
+## Contracts
+
+A contract is a hard, versioned, executable definition of what the system must do. It defines a scenario — what the agent should build — and a sequence of events the system must produce, each with a proof requirement. Every claim resolves to something binary, verifiable against the real system. For example, either the database row exists or it doesn't, the webhook arrived or it didn't, etc. It doesn't live in a conversation or decay between runs. The agent doesn't decide what matters while it's building because the contract decides up front.
+
+This is the specificity that prompting lacks. A PRD says "the user should be able to send an email" and trusts the engineer to fill in the gaps. A contract, on the other hand, spells out every event the system must produce across every layer — UI, API, database, cache, webhooks, realtime — each with proof that it happened.
+
+## What This Looks Like
+
+Take a fullstack email app: OAuth with Google, sending via the Gmail API, receiving via webhook, database writes, Redis cache invalidation, and SSE realtime updates.
+
+The end-to-end contract for "send and receive" defines the exact event log the system must produce:
+
+<Figure id="email-app-lifecycle">
+  <EmailAppLifecycleFigure />
+  <Figure.Caption>The full send-and-receive lifecycle. Each step maps to a contracted event with proof — screenshots, database queries, API responses, SSE messages.</Figure.Caption>
+</Figure>
+
+Each event is independently verifiable from outside the application. Verification combines deterministic checks like database queries, response codes, Redis messages, and log entries with qualitative checks where an LLM scores screenshots against expected states.
+
+<Figure id="contract-event-log">
+  <ContractEventLog />
+  <Figure.Caption>13 events, verified in order. The agent can't claim success without every check passing against real infrastructure.</Figure.Caption>
+</Figure>
+
+The contract can't be satisfied without the system actually working end to end. And it doesn't matter which run produced the code, or what the agent's context looked like, or what sampling decisions it made. The contract is the same every time.
+
+## Catching Bugs
+
+The agent runs the SendAndReceiveEmail contract. Events 1 through 9 pass. The email is sent, the webhook arrives, the database rows exist. Then event 10 — `cache:redis:publish` — fails. The evaluator queries Redis and finds no PUBLISH on `inbox:{accountId}`. The agent wrote the webhook handler but forgot to publish the cache invalidation event.
+
+Without the contract, the agent reports success. The app works in testing because the page refreshes and loads from the database directly, but in production, users with the inbox already open never see new emails arrive. SSE never fires because the Redis pub never happened.
+
+With the contract, the agent gets kicked back. It knows exactly what failed, exactly what the proof requires, and it iterates until Redis shows the message.
+
+This is what specificity buys you. A PRD would never mention Redis cache invalidation. A prompt might, if you remembered in the moment. But a contract always does, because it defines every event the system must produce, not just the ones that are obvious.
+
+## Sharpen the Spec
+
+Again, contracts don't decay. The specification moves out of the conversation and into the repo as a versioned, reviewable, durable document.
+
+This makes restarts cheap. Without contracts, a restart throws away hours of prompting and context, like edge cases and failures that taught you what the product really needed. With contracts, you can throw out the code, the context, and the thread, but the contracts still carry everything forward. Different agent runs produce different code but satisfy the same contracts.
+
+And contracts accumulate. Run 1: the email app has 13 contracts. All pass. A week later, you discover the Gmail API rate-limits a send and the UI still shows a success toast. You add a new contract that sends 10 emails in quick succession, forcing the 429. Now the contract requires the API to surface the rate limit and the UI to show an error instead of a false success:
+
+<div className="my-6">
+  <CopyBlock copyContent={'{ event: "api:send:ratelimited", proof: apiResponse(429) }\n{ event: "ui:compose:error",     proof: screenshot({ toast: "error" }) }'}>
+    <div className="rounded-lg border border-subtle bg-accent px-4 py-3 font-mono text-[11px] text-primary/60 leading-[1.8]">
+      <span className="block">{'{ event: '}<span className="text-primary/80">"api:send:ratelimited"</span>{', proof: apiResponse('}<span className="text-tint">429</span>{') }'}</span>
+      <span className="block">{'{ event: '}<span className="text-primary/80">"ui:compose:error"</span>{',     proof: screenshot({ toast: '}<span className="text-tint">"error"</span>{' }) }'}</span>
+    </div>
+  </CopyBlock>
+</div>
+
+That edge case is locked in. The next agent run — potentially completely different code — must handle rate limiting correctly or the contract fails.
+
+A month later, the inbox doesn't sort correctly when two emails arrive within the same second. You add a contract that triggers two webhooks back-to-back with timestamps 10 milliseconds apart, then checks that the inbox renders the newer one first:
+
+<div className="my-6">
+  <CopyBlock copyContent={'{ event: "ui:inbox:order", proof: dom({ firstChild: newerEmail }) }'}>
+    <div className="rounded-lg border border-subtle bg-accent px-4 py-3 font-mono text-[11px] text-primary/60 leading-[1.8]">
+      <span className="block">{'{ event: '}<span className="text-primary/80">"ui:inbox:order"</span>{', proof: dom({ firstChild: '}<span className="text-tint">newerEmail</span>{' }) }'}</span>
+    </div>
+  </CopyBlock>
+</div>
+
+The spec gets sharper over time instead of fuzzier.
+
+## Contracts Are the Product
+
+Contracts are the highest-level language that's still pseudo-deterministic. You're writing precise, verifiable descriptions of what the product must do, and the agent's job is to produce code that satisfies them.
+
+This also means the engineering effort shifts upstream. Instead of writing code and manually verifying, you define contracts and let the agent iterate until they pass. The hard thinking moves from implementation to specification: what does "done" actually mean, across every layer of the system?
+
+In a meaningful sense, the contracts are the application.
+
+## Limitations
+
+We've been running this approach against real applications, and it's already surfacing a new class of problems — the kind that only show up once the basic architecture is right.
+
+**Scarce infrastructure.** Some contracts require resources that can't be cheaply provisioned on demand. For example, a first-time signup needs a fresh email account, SMS verification needs a real phone number outside the VOIP blocks, and payment flows need real bank accounts with real money. We're approaching this with resource pools — pre-provisioned resources leased to a run and returned afterward — but pools have limits, and some resources are genuinely finite.
+
+**World parity.** A contract that passes locally doesn't necessarily pass in production. Real APIs ship breaking changes without notice, real networks have variable latency, real OAuth providers occasionally change their consent screens. A contract should pass in every environment, but achieving that consistently is an open problem.
+
+**Qualitative drift.** LLM-scored screenshots are powerful but noisy. The same screenshot can score differently across evaluations. We're working on pinned scoring (caching evaluations so a passing screenshot stays passed until the UI actually changes) but calibrating the boundary between acceptable variance and a real regression is ongoing.
+
+These are hard problems, but they're also the right problems given the tools at our disposal.
+
+---
+
+At night, you write the contracts. By morning, the agent has built against them, deployed the result, rerun failures, fixed what it could, and left behind proof: what passed, what failed, what changed, and why. This is Contract Engineering.
+
+We're building in the open at [github.com/rubriclabs](https://github.com/rubriclabs).
