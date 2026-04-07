@@ -4,11 +4,12 @@ import { ContractEventLog, ContractScenariosFigure, EmailAppLifecycleFigure } fr
 export const metadata = {
   title: "Contract Engineering",
   subtitle: "How we define \"done\" for AI agents using verifiable contracts",
-  date: "2026-03-30",
+  date: "2026-04-07",
   isNew: true,
   author: AUTHORS.DEXTER_STOREY,
   category: CATEGORIES.ESSAY,
   description: "The contracts are the application. The code is an implementation detail.",
+  bannerImageUrl: "/images/excavator.png",
 }
 
 Our team has been running experiments toward fully unsupervised development, with the goal being to write a spec at night, and waking up to working, deployed, production-ready software. Agents can already build and deploy without handing the keyboard back to you, given their own accounts, infrastructure, and verification tooling. We wrote about how we set that up in [Unblocking Agents](/blog/unblocking-agents).
@@ -41,7 +42,7 @@ Contracts exist at two levels, and you need both. **Modular contracts** describe
 
 <Figure id="contract-scenarios">
   <ContractScenariosFigure />
-  <Figure.Caption>Four contracts, each verified step by step — a modular pass, a modular failure, a webhook contract, and an end-to-end contract that fails at the realtime boundary.</Figure.Caption>
+  <Figure.Caption>Four contracts, stepped through: a modular pass, a modular failure, a webhook pass, and an end-to-end failure at the realtime boundary.</Figure.Caption>
 </Figure>
 
 ## What This Looks Like
