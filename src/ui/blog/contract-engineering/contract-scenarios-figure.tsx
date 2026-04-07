@@ -9,7 +9,7 @@ import { PauseIcon } from '~/ui/icons/pause'
 import { PlayIcon } from '~/ui/icons/play'
 import { RestartIcon } from '~/ui/icons/restart'
 
-const STEP_INTERVAL_MS = 1600
+const STEP_INTERVAL_MS = 1400
 
 type Check = {
 	id: string
@@ -23,7 +23,6 @@ type Check = {
 type Scenario = {
 	id: string
 	title: string
-	subtitle: string
 	outcome: 'pass' | 'fail'
 	description: string
 	checks: Check[]
@@ -60,7 +59,6 @@ const SCENARIOS = [
 		description: 'POST /api/email/send creates a row and returns the message ID.',
 		id: 'api-send',
 		outcome: 'pass',
-		subtitle: 'Modular',
 		title: 'api:send'
 	},
 	{
@@ -74,7 +72,7 @@ const SCENARIOS = [
 				pass: true
 			},
 			{
-				actual: 'This did not happen because the button never entered a loading state.',
+				actual: 'Button never entered a loading state.',
 				expected: 'spinner visible',
 				id: 'ui-spinner',
 				label: 'Loading spinner',
@@ -82,7 +80,7 @@ const SCENARIOS = [
 				pass: false
 			},
 			{
-				actual: 'This did not happen because the subject field still contained the previous value.',
+				actual: 'Subject field still contained the previous value.',
 				expected: 'all fields empty',
 				id: 'ui-clear',
 				label: 'Fields cleared',
@@ -93,7 +91,6 @@ const SCENARIOS = [
 		description: 'Compose form disables inputs and shows spinner during submit.',
 		id: 'ui-compose',
 		outcome: 'fail',
-		subtitle: 'Modular',
 		title: 'ui:compose'
 	},
 	{
@@ -126,41 +123,7 @@ const SCENARIOS = [
 		description: 'Gmail webhook arrives within 5s, schema validates, row is upserted.',
 		id: 'webhook-receive',
 		outcome: 'pass',
-		subtitle: 'Modular',
 		title: 'webhook:receive'
-	},
-	{
-		checks: [
-			{
-				actual: '7/7 passed',
-				expected: '7 events in order',
-				id: 'e2e-send',
-				label: 'Events 1-7: send flow',
-				method: 'trace',
-				pass: true
-			},
-			{
-				actual: '3/3 passed',
-				expected: '3 events in order',
-				id: 'e2e-receive',
-				label: 'Events 8-10: receive flow',
-				method: 'trace',
-				pass: true
-			},
-			{
-				actual: 'This did not happen because the inbox never re-rendered after the SSE event arrived.',
-				expected: 'SSE -> inbox -> detail',
-				id: 'e2e-realtime',
-				label: 'Events 11-13: realtime UI',
-				method: 'trace',
-				pass: false
-			}
-		],
-		description: 'Full lifecycle: compose, send, webhook, realtime update. 13 events.',
-		id: 'send-receive-e2e',
-		outcome: 'fail',
-		subtitle: 'End-to-end',
-		title: 'send-and-receive'
 	}
 ] satisfies [Scenario, ...Scenario[]]
 
@@ -191,44 +154,29 @@ export const ContractScenariosFigure = () => {
 	const [activeIndex, setActiveIndex] = useState(0)
 	const [visibleChecks, setVisibleChecks] = useState(0)
 	const [isPlaying, setIsPlaying] = useState(false)
-	const hasStarted = useRef(false)
+	const hasAutoPlayed = useRef(false)
 	const containerRef = useRef<HTMLDivElement>(null)
 
 	const scenario = SCENARIOS.at(activeIndex) ?? SCENARIOS[0]
 	const allChecksVisible = visibleChecks >= scenario.checks.length
 	const progress = scenario.checks.length === 0 ? 0 : visibleChecks / scenario.checks.length
 
-	const startPlayback = useCallback(() => {
-		if (hasStarted.current) return
-		hasStarted.current = true
-		setVisibleChecks(0)
-		setIsPlaying(true)
-	}, [])
-
+	// Auto-start on scroll into view, once
 	useEffect(() => {
 		const el = containerRef.current
 		if (!el) return undefined
-
 		const observer = new IntersectionObserver(
 			([entry]) => {
-				if (entry?.isIntersecting) {
-					startPlayback()
+				if (entry?.isIntersecting && !hasAutoPlayed.current) {
+					hasAutoPlayed.current = true
+					setIsPlaying(true)
 				}
 			},
-			{ threshold: 0.25 }
+			{ threshold: 0.3 }
 		)
-
 		observer.observe(el)
-
-		const rect = el.getBoundingClientRect()
-		const alreadyVisible =
-			rect.top < window.innerHeight * 0.85 && rect.bottom > window.innerHeight * 0.15
-		if (alreadyVisible) {
-			startPlayback()
-		}
-
 		return () => observer.disconnect()
-	}, [startPlayback])
+	}, [])
 
 	const resetChecks = useCallback(() => {
 		setVisibleChecks(0)
@@ -260,7 +208,7 @@ export const ContractScenariosFigure = () => {
 			setVisibleChecks(prev => Math.min(prev + 1, scenario.checks.length))
 		}, STEP_INTERVAL_MS)
 		return () => clearTimeout(timer)
-	}, [allChecksVisible, isPlaying, scenario.checks.length])
+	}, [allChecksVisible, isPlaying, scenario.checks.length, visibleChecks])
 
 	useEffect(() => {
 		if (allChecksVisible) setIsPlaying(false)
@@ -272,130 +220,118 @@ export const ContractScenariosFigure = () => {
 			className="w-full rounded-xl border border-subtle bg-subtle/10 px-4 pt-4 pb-3"
 		>
 			<div className="flex flex-col gap-3">
-				<div className="rounded-lg border border-subtle bg-accent px-3 py-3">
-					<div className="flex items-start justify-between gap-3">
-						<div className="min-w-0">
-							<div className="flex items-center gap-2">
-								<span className="font-mono text-[11px] text-primary">{scenario.title}</span>
-								<span className="font-mono text-[9px] text-secondary/45">{scenario.subtitle}</span>
-							</div>
-							<p className="mt-1 text-[11px] text-secondary leading-relaxed">{scenario.description}</p>
-						</div>
-						<span
-							className={cn(
-								'font-mono text-[10px]',
-								allChecksVisible
-									? scenario.outcome === 'pass'
-										? 'text-emerald-600 dark:text-emerald-400'
-										: 'text-red-600 dark:text-red-400'
-									: 'text-secondary/35'
-							)}
-						>
-							{allChecksVisible
-								? scenario.outcome.toUpperCase()
-								: `${visibleChecks}/${scenario.checks.length}`}
-						</span>
+				{/* Header */}
+				<div className="flex items-start justify-between gap-3">
+					<div className="min-w-0">
+						<span className="font-mono text-[11px] text-primary">{scenario.title}</span>
+						<p className="mt-0.5 text-[11px] text-secondary leading-relaxed">{scenario.description}</p>
 					</div>
-
-					<div className="mt-3 flex flex-wrap gap-2">
-						{SCENARIOS.map((item, index) => {
-							const isActive = index === activeIndex
-							return (
-								<button
-									key={item.id}
-									type="button"
-									onClick={() => jumpToScenario(index)}
-									className={cn(
-										'rounded-full border px-2.5 py-1 font-mono text-[9px] transition-all duration-300',
-										isActive
-											? 'border-subtle bg-subtle/15 text-primary'
-											: 'border-subtle/60 text-secondary/50 hover:bg-subtle/10'
-									)}
-								>
-									{item.title}
-								</button>
-							)
-						})}
-					</div>
-
-					<div className="mt-3 flex flex-col gap-2 font-mono">
-						{scenario.checks.map((check, index) => {
-							const isVisible = index < visibleChecks
-							return (
-								<div
-									key={check.id}
-									className={cn(
-										'rounded-lg border px-3 py-2 transition-all duration-500',
-										!isVisible
-											? 'border-subtle/40 opacity-25'
-											: check.pass
-												? 'border-emerald-500/40 bg-emerald-500/[0.04]'
-												: 'border-red-500/40 bg-red-500/[0.05]'
-									)}
-								>
-									<div className="grid gap-2 sm:grid-cols-[18px_minmax(0,1fr)_62px] sm:items-center">
-										<div
-											className={cn(
-												'transition-colors',
-												!isVisible ? 'text-secondary/20' : check.pass ? 'text-emerald-500' : 'text-red-500'
-											)}
-										>
-											{isVisible ? (
-												check.pass ? (
-													<CheckIcon />
-												) : (
-													<CrossIcon />
-												)
-											) : (
-												<div className="h-3 w-3 rounded-full border border-subtle/40" />
-											)}
-										</div>
-										<div className="min-w-0">
-											<div
-												className={cn('truncate text-[11px]', isVisible ? 'text-primary' : 'text-secondary/35')}
-											>
-												{check.label}
-											</div>
-										</div>
-										<div
-											className={cn(
-												'text-[9px] uppercase',
-												METHOD_STYLES[check.method] ?? 'text-secondary/45'
-											)}
-										>
-											{check.method}
-										</div>
-									</div>
-
-									<div className="mt-2 grid gap-2 text-[10px] sm:grid-cols-2">
-										<div>
-											<div className="text-secondary/35">expected</div>
-											<div className={cn('mt-1', isVisible ? 'text-secondary' : 'text-secondary/30')}>
-												{check.expected}
-											</div>
-										</div>
-										<div>
-											<div className="text-secondary/35">{check.pass ? 'observed' : 'why it failed'}</div>
-											<div
-												className={cn(
-													'mt-1',
-													!isVisible
-														? 'text-secondary/30'
-														: check.pass
-															? 'text-emerald-600 dark:text-emerald-400'
-															: 'text-red-600 dark:text-red-400'
-												)}
-											>
-												{check.actual}
-											</div>
-										</div>
-									</div>
-								</div>
-							)
-						})}
-					</div>
+					<span
+						className={cn(
+							'font-mono text-[10px]',
+							allChecksVisible
+								? scenario.outcome === 'pass'
+									? 'text-emerald-600 dark:text-emerald-400'
+									: 'text-red-600 dark:text-red-400'
+								: 'text-secondary/35'
+						)}
+					>
+						{allChecksVisible
+							? scenario.outcome.toUpperCase()
+							: `${visibleChecks}/${scenario.checks.length}`}
+					</span>
 				</div>
 
+				{/* Tabs */}
+				<div className="flex flex-wrap gap-1.5">
+					{SCENARIOS.map((item, index) => {
+						const isActive = index === activeIndex
+						return (
+							<button
+								key={item.id}
+								type="button"
+								onClick={() => jumpToScenario(index)}
+								className={cn(
+									'rounded-full border px-2 py-0.5 font-mono text-[9px] transition-all duration-300',
+									isActive
+										? 'border-subtle bg-subtle/15 text-primary'
+										: 'border-subtle/60 text-secondary/50 hover:bg-subtle/10'
+								)}
+							>
+								{item.title}
+							</button>
+						)
+					})}
+				</div>
+
+				{/* Check rows */}
+				<div className="flex flex-col gap-1 font-mono">
+					{scenario.checks.map((check, index) => {
+						const isVisible = index < visibleChecks
+						const isFail = isVisible && !check.pass
+
+						return (
+							<div
+								key={check.id}
+								className={cn(
+									'rounded-lg border px-3 py-2 transition-all duration-500',
+									!isVisible && 'border-subtle/30 bg-transparent opacity-20',
+									isVisible && check.pass && 'border-subtle/60 bg-accent',
+									isFail && 'border-subtle/60 bg-accent'
+								)}
+							>
+								{/* Main row: icon, label, value, method */}
+								<div className="grid grid-cols-[14px_1fr_auto_auto] items-center gap-2">
+									<div
+										className={cn(
+											'transition-colors',
+											!isVisible ? 'text-secondary/20' : check.pass ? 'text-emerald-500' : 'text-red-500'
+										)}
+									>
+										{isVisible ? (
+											check.pass ? (
+												<CheckIcon />
+											) : (
+												<CrossIcon />
+											)
+										) : (
+											<div className="h-3 w-3 rounded-full border border-subtle/40" />
+										)}
+									</div>
+									<span className={cn('text-[11px]', isVisible ? 'text-primary' : 'text-secondary/35')}>
+										{check.label}
+									</span>
+									<span
+										className={cn(
+											'text-[10px]',
+											!isVisible
+												? 'text-secondary/25'
+												: check.pass
+													? 'text-emerald-600 dark:text-emerald-400'
+													: 'text-red-500/70'
+										)}
+									>
+										{isVisible ? (check.pass ? check.actual : `expected: ${check.expected}`) : ''}
+									</span>
+									<span
+										className={cn('text-[8px] uppercase', METHOD_STYLES[check.method] ?? 'text-secondary/45')}
+									>
+										{check.method}
+									</span>
+								</div>
+
+								{/* Failure reason — only for visible failing checks */}
+								{isFail && (
+									<div className="mt-1 pl-[22px] text-[10px] text-red-600 dark:text-red-400">
+										{check.actual}
+									</div>
+								)}
+							</div>
+						)
+					})}
+				</div>
+
+				{/* Scrubber */}
 				<button
 					type="button"
 					aria-label="Scrub contract playback progress"
@@ -413,6 +349,7 @@ export const ContractScenariosFigure = () => {
 					/>
 				</button>
 
+				{/* Controls */}
 				<div className="flex items-center justify-between gap-3">
 					<div className="flex items-center gap-2">
 						<Button size="sm" variant="icon" onClick={togglePlay}>

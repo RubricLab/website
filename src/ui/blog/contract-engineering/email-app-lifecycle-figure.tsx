@@ -35,6 +35,8 @@ const BASE_INBOX = [
 	{ from: 'Cal.com', subject: 'Booking confirmed for Thursday', time: '5h', unread: false }
 ]
 
+const EMPTY_EMAIL = { from: '', subject: '', time: '', unread: false }
+
 const STATES = [
 	{
 		compose: {
@@ -256,6 +258,110 @@ const phaseColor: Record<string, string> = {
 	webhook: 'text-primary/60'
 }
 
+// System pipeline: which backend nodes are "reached" at each step
+type SystemNode = { id: string; label: string }
+
+const SEND_NODES: SystemNode[] = [
+	{ id: 'api', label: 'API' },
+	{ id: 'provider', label: 'Gmail' },
+	{ id: 'db-send', label: 'DB' }
+]
+
+const RECEIVE_NODES: SystemNode[] = [
+	{ id: 'webhook', label: 'Webhook' },
+	{ id: 'db-receive', label: 'DB' },
+	{ id: 'cache', label: 'Redis' },
+	{ id: 'realtime', label: 'SSE' }
+]
+
+// Map each step to the active system node (null = UI-only frame)
+const STEP_TO_SYSTEM: Record<string, string | null> = {
+	'api-send': 'api',
+	'db-insert': 'db-send',
+	'db-upsert': 'db-receive',
+	fill: null,
+	'gmail-send': 'provider',
+	'inbox-select': null,
+	'inbox-update': null,
+	redis: 'cache',
+	render: null,
+	sse: 'realtime',
+	submit: null,
+	success: null,
+	webhook: 'webhook'
+}
+
+// Map step IDs to which pipeline is active ('send' | 'receive' | null)
+const STEP_TO_PIPELINE: Record<string, 'send' | 'receive' | null> = {
+	'api-send': 'send',
+	'db-insert': 'send',
+	'db-upsert': 'receive',
+	fill: null,
+	'gmail-send': 'send',
+	'inbox-select': null,
+	'inbox-update': null,
+	redis: 'receive',
+	render: null,
+	sse: 'receive',
+	submit: null,
+	success: null,
+	webhook: 'receive'
+}
+
+const ArrowRight = () => (
+	<svg
+		className="h-2.5 w-2.5 flex-shrink-0 text-secondary/20"
+		viewBox="0 0 24 24"
+		fill="none"
+		stroke="currentColor"
+		strokeWidth="2"
+	>
+		<path d="M5 12h14m-4-4 4 4-4 4" strokeLinecap="round" strokeLinejoin="round" />
+	</svg>
+)
+
+const SystemPipeline = ({
+	nodes,
+	activeId,
+	pipeline,
+	activePipeline
+}: {
+	nodes: SystemNode[]
+	activeId: string | null
+	pipeline: 'send' | 'receive'
+	activePipeline: 'send' | 'receive' | null
+}) => {
+	const isActivePipeline = pipeline === activePipeline
+	// A node is "reached" if the pipeline is active and the node index <= the active node index
+	const activeIdx = activeId ? nodes.findIndex(n => n.id === activeId) : -1
+
+	return (
+		<div className="flex items-center gap-1">
+			{nodes.map((node, i) => {
+				const isReached = isActivePipeline && activeIdx >= i
+				const isCurrent = node.id === activeId
+				return (
+					<div key={node.id} className="flex items-center gap-1">
+						{i > 0 && <ArrowRight />}
+						<span
+							className={cn(
+								'rounded border px-1.5 py-0.5 font-mono text-[8px] transition-all duration-500',
+								isCurrent
+									? 'border-tint/40 bg-tint/8 text-tint'
+									: isReached
+										? 'border-subtle/60 text-primary/50'
+										: 'border-subtle/30 text-secondary/20'
+							)}
+						>
+							{node.label}
+						</span>
+					</div>
+				)
+			})}
+		</div>
+	)
+}
+
 // Tiny wireframe field
 const Field = ({
 	value,
@@ -285,8 +391,7 @@ export const EmailAppLifecycleFigure = () => {
 	const isComplete = currentStep >= STATES.length - 1
 	const progress = (currentStep + 1) / STATES.length
 	const composeToast = state.event === 'ui:compose:success' ? 'Sent' : ''
-	const selectedEmail =
-		state.inbox.selectedIndex === null ? null : state.inbox.emails[state.inbox.selectedIndex]
+	const visibleEmails = [...state.inbox.emails, EMPTY_EMAIL, EMPTY_EMAIL].slice(0, 3)
 
 	const reset = useCallback(() => {
 		setCurrentStep(0)
@@ -377,11 +482,12 @@ export const EmailAppLifecycleFigure = () => {
 								Inbox
 							</span>
 							<div className="flex flex-col gap-1">
-								{state.inbox.emails.map((email, i) => (
+								{visibleEmails.map((email, i) => (
 									<div
 										key={`${email.subject}-${String(i)}`}
 										className={cn(
 											'flex h-7 items-center gap-1 rounded px-1.5 py-1 transition-all duration-500',
+											!email.subject && 'opacity-0',
 											state.inbox.selectedIndex === i
 												? 'bg-sky-500/8 ring-1 ring-sky-500/20'
 												: email.unread
@@ -404,36 +510,48 @@ export const EmailAppLifecycleFigure = () => {
 									</div>
 								))}
 							</div>
-							<div className="mt-auto rounded border border-subtle/40 bg-subtle/10 px-1.5 py-1">
-								{selectedEmail ? (
-									<div className="flex flex-col gap-0.5">
-										<span className="truncate font-medium font-mono text-[8px] text-primary/70">
-											{selectedEmail.subject}
-										</span>
-										<span className="truncate font-mono text-[7px] text-secondary/40">
-											{selectedEmail.from}
-										</span>
-										<div className="truncate rounded bg-subtle/10 px-1 py-0.5 font-mono text-[7px] text-secondary/40">
-											Verifying the full send/receive lifecycle...
-										</div>
-									</div>
-								) : (
-									<div className="font-mono text-[7px] text-secondary/30">
-										Detail view appears after the final inbox event.
-									</div>
-								)}
-							</div>
 						</div>
 					</div>
 				</div>
 
-				{/* Event annotation */}
-				<div className="flex items-center gap-2">
-					<span className="font-mono text-[9px] text-secondary/40">{state.eventNumber}/13</span>
-					<span className={cn('font-mono text-[11px]', phaseColor[state.phase] ?? 'text-secondary')}>
-						{state.event}
-					</span>
-				</div>
+				{/* System pipeline + event annotation */}
+				{(() => {
+					const activeSystemId = STEP_TO_SYSTEM[state.id] ?? null
+					const activePipeline = STEP_TO_PIPELINE[state.id] ?? null
+
+					return (
+						<div className="flex flex-col gap-2">
+							{/* Pipeline nodes */}
+							<div className="flex items-center gap-3 overflow-x-auto">
+								<SystemPipeline
+									nodes={SEND_NODES}
+									activeId={activeSystemId}
+									pipeline="send"
+									activePipeline={activePipeline}
+								/>
+								<div
+									className={cn(
+										'h-3 w-px flex-shrink-0 transition-colors duration-500',
+										activePipeline ? 'bg-subtle' : 'bg-subtle/30'
+									)}
+								/>
+								<SystemPipeline
+									nodes={RECEIVE_NODES}
+									activeId={activeSystemId}
+									pipeline="receive"
+									activePipeline={activePipeline}
+								/>
+							</div>
+							{/* Event */}
+							<div className="flex items-baseline gap-2">
+								<span className="font-mono text-[9px] text-secondary/40">{state.eventNumber}/13</span>
+								<span className={cn('font-mono text-[11px]', phaseColor[state.phase] ?? 'text-secondary')}>
+									{state.event}
+								</span>
+							</div>
+						</div>
+					)
+				})()}
 
 				{/* Progress scrubber */}
 				<button

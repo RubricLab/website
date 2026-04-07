@@ -49,7 +49,8 @@ export function ContractTrace() {
 			className="absolute inset-0 z-0 hidden overflow-hidden md:block"
 			style={{
 				maskImage: 'linear-gradient(to bottom, transparent 5%, black 30%, black 70%, transparent 95%)',
-				WebkitMaskImage: 'linear-gradient(to bottom, transparent 5%, black 30%, black 70%, transparent 95%)'
+				WebkitMaskImage:
+					'linear-gradient(to bottom, transparent 5%, black 30%, black 70%, transparent 95%)'
 			}}
 		>
 			<div className="flex h-full items-end justify-end pr-10">

@@ -8,8 +8,8 @@ import { PauseIcon } from '~/ui/icons/pause'
 import { PlayIcon } from '~/ui/icons/play'
 import { RestartIcon } from '~/ui/icons/restart'
 
-const STEP_INTERVAL_MS = 1600
-const STEPS_PER_EVENT = 2
+const TICK_MS = 700
+const EVAL_DELAY = 3 // evaluations trail 3 ticks behind arrivals
 
 type EventEntry = {
 	id: number
@@ -113,6 +113,8 @@ const EVENTS: EventEntry[] = [
 	}
 ]
 
+const TOTAL_TICKS = EVENTS.length + EVAL_DELAY
+
 const categoryColor: Record<string, string> = {
 	api: 'text-primary/60',
 	cache: 'text-primary/60',
@@ -154,15 +156,15 @@ const SpinnerIcon = () => (
 )
 
 export const ContractEventLog = () => {
-	const [stage, setStage] = useState(0)
+	const [tick, setTick] = useState(0)
 	const [isPlaying, setIsPlaying] = useState(true)
 
-	const totalStages = EVENTS.length * STEPS_PER_EVENT
-	const passedCount = Math.floor(stage / STEPS_PER_EVENT)
-	const isComplete = stage >= totalStages
+	const arrivedCount = Math.min(tick, EVENTS.length)
+	const evaluatedCount = Math.min(Math.max(tick - EVAL_DELAY, 0), EVENTS.length)
+	const isComplete = tick >= TOTAL_TICKS
 
 	const reset = useCallback(() => {
-		setStage(0)
+		setTick(0)
 		setIsPlaying(true)
 	}, [])
 	const togglePlay = useCallback(() => {
@@ -176,10 +178,10 @@ export const ContractEventLog = () => {
 	useEffect(() => {
 		if (!isPlaying || isComplete) return undefined
 		const timer = setInterval(() => {
-			setStage(prev => Math.min(prev + 1, totalStages))
-		}, STEP_INTERVAL_MS)
+			setTick(prev => Math.min(prev + 1, TOTAL_TICKS))
+		}, TICK_MS)
 		return () => clearInterval(timer)
-	}, [isPlaying, isComplete, totalStages])
+	}, [isPlaying, isComplete])
 
 	useEffect(() => {
 		if (isComplete) setIsPlaying(false)
@@ -198,61 +200,55 @@ export const ContractEventLog = () => {
 						isComplete ? 'font-medium text-emerald-600 dark:text-emerald-400' : 'text-secondary/40'
 					)}
 				>
-					{passedCount}/{EVENTS.length}
+					{evaluatedCount}/{EVENTS.length}
 				</span>
 			</div>
 
 			{/* Event log */}
 			<div className="flex flex-col gap-1.5">
 				{EVENTS.map((entry, i) => {
-					const artifactReady = stage > i * STEPS_PER_EVENT
-					const checkPassed = stage > i * STEPS_PER_EVENT + 1
-					const checkRunning = artifactReady && !checkPassed
-					const receiptStatus = artifactReady ? 'received' : 'waiting'
-					const evalStatus = checkPassed ? 'pass' : checkRunning ? 'run' : 'wait'
+					const arrived = i < arrivedCount
+					const evaluated = i < evaluatedCount
+					const evaluating = arrived && !evaluated
+					const evalStatus = evaluated ? 'pass' : evaluating ? 'run' : 'wait'
 
 					return (
 						<div
 							key={entry.id}
 							className={cn(
-								'flex items-center gap-2.5 rounded-r-md border-l-2 py-1 pr-2 pl-2.5 transition-all duration-300',
-								!artifactReady && 'border-l-transparent opacity-15',
-								checkRunning && (borderColor[entry.category] ?? 'border-l-primary/30'),
-								checkPassed && (borderColor[entry.category] ?? 'border-l-primary/20'),
-								artifactReady && !checkRunning && !checkPassed && (borderColor[entry.category] ?? 'border-l-primary/20')
+								'grid items-center gap-x-2.5 rounded-r-md border-l-2 py-1 pr-2 pl-2.5 transition-all duration-300',
+								'grid-cols-[12px_16px_1fr_44px] sm:grid-cols-[12px_16px_1fr_120px_170px_44px]',
+								!arrived && 'border-l-transparent opacity-15',
+								evaluating && (borderColor[entry.category] ?? 'border-l-primary/30'),
+								evaluated && (borderColor[entry.category] ?? 'border-l-primary/20')
 							)}
 						>
 							{/* Icon */}
 							<div
 								className={cn(
-									'flex-shrink-0 transition-all duration-300',
-									checkPassed && 'text-emerald-500/60',
-									checkRunning && 'text-amber-500',
-									!artifactReady && 'text-secondary/20',
-									artifactReady && !checkRunning && !checkPassed && 'text-primary/45'
+									'transition-all duration-300',
+									evaluated && 'text-emerald-500/60',
+									evaluating && 'text-amber-500',
+									!arrived && 'text-secondary/20'
 								)}
 							>
-								{checkPassed ? (
+								{evaluated ? (
 									<CheckIcon />
-								) : checkRunning ? (
+								) : evaluating ? (
 									<SpinnerIcon />
-								) : artifactReady ? (
-									<div className="h-3 w-3 rounded-full bg-primary/35" />
 								) : (
 									<div className="h-3 w-3 rounded-full border border-subtle/30" />
 								)}
 							</div>
 
 							{/* Number */}
-							<span className="w-4 flex-shrink-0 font-mono text-[9px] text-secondary/30">{entry.id}</span>
+							<span className="font-mono text-[9px] text-secondary/30">{entry.id}</span>
 
 							{/* Event name */}
 							<span
 								className={cn(
-									'min-w-0 flex-1 truncate font-mono text-[10px] transition-all duration-300',
-									!artifactReady
-										? 'text-secondary/30'
-										: (categoryColor[entry.category] ?? 'text-secondary')
+									'truncate font-mono text-[10px] transition-all duration-300',
+									!arrived ? 'text-secondary/30' : (categoryColor[entry.category] ?? 'text-secondary')
 								)}
 							>
 								{entry.event}
@@ -260,10 +256,8 @@ export const ContractEventLog = () => {
 
 							<span
 								className={cn(
-									'hidden min-w-[118px] flex-shrink-0 rounded border px-1.5 py-0.5 font-mono text-[8px] sm:block',
-									!artifactReady
-										? 'border-subtle/30 text-secondary/25'
-										: 'border-subtle/60 text-secondary/45'
+									'hidden truncate rounded border px-1.5 py-0.5 font-mono text-[8px] sm:block',
+									!arrived ? 'border-subtle/30 text-secondary/25' : 'border-subtle/60 text-secondary/45'
 								)}
 							>
 								{entry.artifact}
@@ -271,8 +265,8 @@ export const ContractEventLog = () => {
 
 							<span
 								className={cn(
-									'hidden min-w-[170px] flex-shrink-0 font-mono text-[9px] sm:block',
-									!artifactReady ? 'text-secondary/25' : 'text-secondary/35'
+									'hidden truncate font-mono text-[9px] sm:block',
+									!arrived ? 'text-secondary/25' : 'text-secondary/35'
 								)}
 							>
 								test({entry.proof})
@@ -280,25 +274,10 @@ export const ContractEventLog = () => {
 
 							<span
 								className={cn(
-									'min-w-[52px] text-right font-mono text-[9px]',
-									checkPassed
+									'text-right font-mono text-[9px]',
+									evaluated
 										? 'text-emerald-600 dark:text-emerald-400'
-										: checkRunning
-											? 'text-amber-600 dark:text-amber-400'
-											: artifactReady
-												? 'text-primary/45'
-												: 'text-secondary/25'
-								)}
-							>
-								{receiptStatus.toUpperCase()}
-							</span>
-
-							<span
-								className={cn(
-									'min-w-[44px] text-right font-mono text-[9px]',
-									checkPassed
-										? 'text-emerald-600 dark:text-emerald-400'
-										: checkRunning
+										: evaluating
 											? 'text-amber-600 dark:text-amber-400'
 											: 'text-secondary/25'
 								)}
@@ -318,13 +297,13 @@ export const ContractEventLog = () => {
 				onClick={e => {
 					const rect = e.currentTarget.getBoundingClientRect()
 					const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width))
-					setStage(Math.round(pct * totalStages))
+					setTick(Math.round(pct * TOTAL_TICKS))
 					setIsPlaying(false)
 				}}
 			>
 				<div
 					className="absolute inset-y-0 left-0 rounded-full bg-primary/20 transition-all duration-300"
-					style={{ width: `${(stage / totalStages) * 100}%` }}
+					style={{ width: `${(tick / TOTAL_TICKS) * 100}%` }}
 				/>
 			</button>
 
