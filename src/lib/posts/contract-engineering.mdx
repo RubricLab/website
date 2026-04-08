@@ -35,6 +35,8 @@ We need a format that's durable, deterministic, and precise enough that an agent
 
 A contract is a hard, versioned, executable definition of what the system must do. It defines a scenario — what the agent should build — and a sequence of events the system must produce, each with a proof requirement. Every claim resolves to something binary, verifiable against the real system. For example, either the database row exists or it doesn't, the webhook arrived or it didn't, etc. It doesn't live in a conversation or decay between runs. The agent doesn't decide what matters while it's building because the contract decides up front.
 
+Contracts differ from test-driven development in that they are durable and survive re-writes. As code changes, tests must be re-written, whereas contracts are expected to remain untouched except by the designer.
+
 This is the specificity that prompting lacks. A PRD says "the user should be able to send an email" and trusts the engineer to fill in the gaps. A contract, on the other hand, spells out every event the system must produce across every layer — UI, API, database, cache, webhooks, realtime — each with proof that it happened.
 
 ## What This Looks Like
@@ -116,10 +118,14 @@ We've been running this approach against real applications, and it's already sur
 
 **Qualitative drift.** LLM-scored screenshots are powerful but noisy. The same screenshot can score differently across evaluations. We're working on pinned scoring (caching evaluations so a passing screenshot stays passed until the UI actually changes) but calibrating the boundary between acceptable variance and a real regression is ongoing.
 
-These are hard problems, but they're also the right problems given the tools at our disposal.
+**Ambiguity.** Contracts currently follow two principles: being verifiable (or, at least, having a feedback loop to hill-climb), and being unambiguous enough that a junior developer could implement them. Formalizing and streamlining these guidelines into a reusable framework is non-trivial.
 
----
+These are hard problems, but they're also the right problems given the tools at our disposal.
 
 At night, you write the contracts. By morning, the agent has built against them, deployed the result, rerun failures, fixed what it could, and left behind proof: what passed, what failed, what changed, and why. This is Contract Engineering.
 
 We're building in the open at [github.com/rubriclabs](https://github.com/rubriclabs).
+
+## Acknowledgments
+
+We’d like to share a special thank you with Jihad Esmail, Max Musing, and Erik Kaunismäki for their thoughtful pushback.
