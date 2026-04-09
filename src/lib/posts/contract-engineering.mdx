@@ -13,21 +13,21 @@ export const metadata = {
   bannerImageUrl: "/images/excavator.png",
 }
 
-Our team has been running experiments toward fully unsupervised development, with the goal of being able to write a spec at night, and wake up to working, deployed, production-ready software. Agents can already build and deploy without handing the keyboard back to you, given their own accounts, infrastructure, and verification tooling. We wrote about how we set that up in [Unblocking Agents](https://rubriclabs.com/blog/unblocking-agents).
+Our team has been running experiments toward fully unsupervised development, with the goal of being able to write a spec at night, and wake up to working, deployed, production-ready software. Agents can already build and deploy without handing the keyboard back to you, given their own accounts, infrastructure, and verification tooling. We wrote about how we set that up in [*Unblocking Agents*](https://rubriclabs.com/blog/unblocking-agents).
 
 But the results haven't always been consistent. Over time, we realized this was because nobody had defined what "done" means in a form the agent can be held to.
 
-We've been approaching this with something we call contracts: hard, versioned, executable claims about what the system must do. A contract is both the specification and the acceptance criteria. The agent builds until every contract passes, and it cannot ship until they do.
+We've been approaching this with something we call **contracts**: hard, versioned, executable claims about what the system must do. A contract is both the specification and the acceptance criteria. The agent builds until every contract passes, and it cannot ship until they do.
 
 ## The Problem with Prompting
 
 When building with agents, your spec is the conversation. The details of the product are teased out through your prompts, the agent's responses, and the ongoing back and forth. This is the source of truth for the entire system, and it breaks in three ways.
 
-The first is decay. The first prompt is always the best because you're offering the full picture with high context. As you continue your conversation with the agent, you might prompt to fix a specific issue: "Fix the auth redirect." The agent fixes it but breaks session handling. You catch that: "The session isn't persisting." It fixes the session, but the fix doesn't match the pattern used elsewhere. The context window fills up and gets compacted. The agent loses track of early decisions. You lose track of the code because you didn't write it. The spec is now scattered across dozens of messages with no sense of consistency.
+The first is **decay**. The first prompt is always the best because you're offering the full picture with high context. As you continue your conversation with the agent, you might prompt to fix a specific issue: "Fix the auth redirect." The agent fixes it but breaks session handling. You catch that: "The session isn't persisting." It fixes the session, but the fix doesn't match the pattern used elsewhere. The context window fills up and gets compacted. The agent loses track of early decisions. You lose track of the code because you didn't write it. The spec is now scattered across dozens of messages with no sense of consistency.
 
-The second is non-determinism. Even with a perfect prompt, agent runs aren't reproducible. You can have the same prompt in a different session and get a completely different result. Some runs feel locked in: the agent makes good decisions and the architecture is clean. Other runs drift. The difference is sampling luck, context ordering, and temperature. You can't reliably reproduce what worked, and you can't explain why something didn't.
+The second is **non-determinism**. Even with a perfect prompt, agent runs aren't reproducible. You can have the same prompt in a different session and get a completely different result. Some runs feel locked in: the agent makes good decisions and the architecture is clean. Other runs drift. The difference is sampling luck, context ordering, and temperature. You can't reliably reproduce what worked, and you can't explain why something didn't.
 
-The third is specificity. [PRDs](https://en.wikipedia.org/wiki/Product_requirements_document) were designed for humans under the assumption that engineering is expensive and that efforts take weeks with constant subtle feedback signals during sprints. A PRD says "the user should be able to send an email" and trusts the engineer to figure out what that means across OAuth, API calls, database writes, cache invalidation, and realtime updates. An agent, on the other hand, needs a level of specificity that would be unreasonable to ask of a human engineer, but is exactly right for a process where execution is cheap and restarts are free.
+The third is **specificity**. [PRDs](https://en.wikipedia.org/wiki/Product_requirements_document) were designed for humans under the assumption that engineering is expensive and that efforts take weeks with constant subtle feedback signals during sprints. A PRD says "the user should be able to send an email" and trusts the engineer to figure out what that means across OAuth, API calls, database writes, cache invalidation, and realtime updates. An agent, on the other hand, needs a level of specificity that would be unreasonable to ask of a human engineer, but is exactly right for a process where execution is cheap and restarts are free.
 
 We need a format that's durable, deterministic, and precise enough that an agent can execute against it with no interim feedback and get it right.
 
@@ -37,7 +37,7 @@ A contract is a hard, versioned, executable definition of what the system must d
 
 Contracts differ from [test-driven development (TDD)](https://en.wikipedia.org/wiki/Test-driven_development) in that they are durable and survive re-writes. As code changes, tests must be re-written, whereas contracts are expected to remain untouched except by the designer.
 
-This is the specificity that prompting lacks. A PRD says "the user should be able to send an email" and trusts the engineer to fill in the gaps. A contract, on the other hand, spells out every event the system must produce across every layer — UI, API, database, cache, webhooks, realtime — each with proof that it happened.
+This is the specificity that prompting lacks. A PRD says "the user should be able to send an email" and trusts the engineer to fill in the gaps. A contract, on the other hand, spells out ***every event the system must produce*** across every layer — UI, API, database, cache, webhooks, realtime — each with proof that it happened.
 
 ## What This Looks Like
 
@@ -50,7 +50,7 @@ The end-to-end contract for "send and receive" defines the exact event log the s
   <Figure.Caption>The full send-and-receive lifecycle. Each step maps to a contracted event with proof — screenshots, database queries, API responses, SSE messages.</Figure.Caption>
 </Figure>
 
-Each event is independently verifiable from outside the application. Verification combines deterministic checks like database queries, response codes, Redis messages, and log entries with qualitative checks where an LLM scores screenshots against expected states.
+Each event is independently verifiable from outside the application. Verification combines *deterministic* checks like database queries, response codes, Redis messages, and log entries with *qualitative* checks where an LLM scores screenshots against expected states.
 
 <Figure id="contract-event-log">
   <ContractEventLog />
@@ -67,13 +67,13 @@ Without the contract, the agent reports success. The app works in testing becaus
 
 With the contract, the agent gets kicked back. It knows exactly what failed, exactly what the proof requires, and it iterates until Redis shows the message.
 
-This is what specificity buys you. A PRD would never mention Redis cache invalidation. A prompt might, if you remembered in the moment. But a contract always does, because it defines every event the system must produce, not just the ones that are obvious.
+This is what specificity buys you. A PRD would never mention Redis cache invalidation. A prompt might, if you remembered in the moment. But a contract always does, because **it defines every event the system must produce**, not just the ones that are obvious.
 
 ## Sharpen the Spec
 
 Again, contracts don't decay. The specification moves out of the conversation and into the repo as a versioned, reviewable, durable document.
 
-This makes restarts cheap. Without contracts, a restart throws away hours of prompting and context, like edge cases and failures that taught you what the product really needed. With contracts, you can throw out the code, the context, and the thread, but the contracts still carry everything forward. Different agent runs produce different code but satisfy the same contracts.
+This makes restarts cheap. Without contracts, a restart throws away hours of prompting and context, like edge cases and failures that taught you what the product really needed. With contracts, you can throw out the code, the context, and the thread, but the contracts still carry everything forward. **Different agent runs produce different code but satisfy the same contracts.**
 
 And contracts accumulate. Run 1: the email app has 13 contracts. All pass. A week later, you discover the Gmail API rate-limits a send and the UI still shows a success toast. You add a new contract that sends 10 emails in quick succession, forcing the 429. Now the contract requires the API to surface the rate limit and the UI to show an error instead of a false success:
 
@@ -106,7 +106,7 @@ Contracts are the highest-level language that's still pseudo-deterministic. You'
 
 This also means the engineering effort shifts upstream. Instead of writing code and manually verifying, you define contracts and let the agent iterate until they pass. The hard thinking moves from implementation to specification: what does "done" actually mean, across every layer of the system?
 
-In a meaningful sense, the contracts are the application.
+In a meaningful sense, ***the contracts are the application***.
 
 ## Limitations
 
