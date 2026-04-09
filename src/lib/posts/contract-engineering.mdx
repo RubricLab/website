@@ -13,7 +13,7 @@ export const metadata = {
   bannerImageUrl: "/images/excavator.png",
 }
 
-Our team has been running experiments toward fully unsupervised development, with the goal of being able to write a spec at night, and wake up to working, deployed, production-ready software. Agents can already build and deploy without handing the keyboard back to you, given their own accounts, infrastructure, and verification tooling. We wrote about how we set that up in [*Unblocking Agents*](https://rubriclabs.com/blog/unblocking-agents).
+Our team has been running experiments toward fully unsupervised development, with the goal of being able to write a spec at night, and wake up to working, deployed, production-ready software. Agents can already build and deploy without handing the keyboard back to you, given their own accounts, infrastructure, and verification tooling. We wrote about how we set that up in [**Unblocking Agents**](https://rubriclabs.com/blog/unblocking-agents).
 
 But the results haven't always been consistent. Over time, we realized this was because nobody had defined what "done" means in a form the agent can be held to.
 
@@ -50,7 +50,7 @@ The end-to-end contract for "send and receive" defines the exact event log the s
   <Figure.Caption>The full send-and-receive lifecycle. Each step maps to a contracted event with proof — screenshots, database queries, API responses, SSE messages.</Figure.Caption>
 </Figure>
 
-Each event is independently verifiable from outside the application. Verification combines *deterministic* checks like database queries, response codes, Redis messages, and log entries with *qualitative* checks where an LLM scores screenshots against expected states.
+Each event is independently verifiable from outside the application. Verification combines **deterministic** checks like database queries, response codes, Redis messages, and log entries with **qualitative** checks where an LLM scores screenshots against expected states.
 
 <Figure id="contract-event-log">
   <ContractEventLog />
@@ -67,13 +67,13 @@ Without the contract, the agent reports success. The app works in testing becaus
 
 With the contract, the agent gets kicked back. It knows exactly what failed, exactly what the proof requires, and it iterates until Redis shows the message.
 
-This is what specificity buys you. A PRD would never mention Redis cache invalidation. A prompt might, if you remembered in the moment. But a contract always does, because **it defines every event the system must produce**, not just the ones that are obvious.
+This is what specificity buys you. A PRD would never mention Redis cache invalidation. A prompt might, if you remembered in the moment. But a contract always does, because ***it defines every event the system must produce***, not just the ones that are obvious.
 
 ## Sharpen the Spec
 
 Again, contracts don't decay. The specification moves out of the conversation and into the repo as a versioned, reviewable, durable document.
 
-This makes restarts cheap. Without contracts, a restart throws away hours of prompting and context, like edge cases and failures that taught you what the product really needed. With contracts, you can throw out the code, the context, and the thread, but the contracts still carry everything forward. **Different agent runs produce different code but satisfy the same contracts.**
+This makes restarts cheap. Without contracts, a restart throws away hours of prompting and context, like edge cases and failures that taught you what the product really needed. With contracts, you can throw out the code, the context, and the thread, but the contracts still carry everything forward. ***Different agent runs produce different code but satisfy the same contracts.***
 
 And contracts accumulate. Run 1: the email app has 13 contracts. All pass. A week later, you discover the Gmail API rate-limits a send and the UI still shows a success toast. You add a new contract that sends 10 emails in quick succession, forcing the 429. Now the contract requires the API to surface the rate limit and the UI to show an error instead of a false success:
 
