@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { cn } from '~/lib/utils/cn'
 import { Button } from '~/ui/button'
 import { Figure } from '~/ui/figure'
@@ -385,7 +385,25 @@ const Field = ({
 
 export const EmailAppLifecycleFigure = () => {
 	const [currentStep, setCurrentStep] = useState(0)
-	const [isPlaying, setIsPlaying] = useState(true)
+	const [isPlaying, setIsPlaying] = useState(false)
+	const hasAutoPlayed = useRef(false)
+	const containerRef = useRef<HTMLDivElement>(null)
+
+	useEffect(() => {
+		const el = containerRef.current
+		if (!el) return undefined
+		const observer = new IntersectionObserver(
+			([entry]) => {
+				if (entry?.isIntersecting && !hasAutoPlayed.current) {
+					hasAutoPlayed.current = true
+					setIsPlaying(true)
+				}
+			},
+			{ threshold: 0.3 }
+		)
+		observer.observe(el)
+		return () => observer.disconnect()
+	}, [])
 
 	const state = STATES[currentStep] ?? STATES[0]
 	const isComplete = currentStep >= STATES.length - 1
@@ -418,7 +436,7 @@ export const EmailAppLifecycleFigure = () => {
 	}, [isComplete])
 
 	return (
-		<div className="w-full rounded-xl border border-subtle bg-subtle/10 px-4 pt-4 pb-3">
+		<div ref={containerRef} className="w-full rounded-xl border border-subtle bg-subtle/10 px-4 pt-4 pb-3">
 			<div className="flex flex-col gap-3">
 				{/* App mockup */}
 				<div className="overflow-hidden rounded-lg border border-subtle/60">

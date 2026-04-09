@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { cn } from '~/lib/utils/cn'
 import { Button } from '~/ui/button'
 import { Figure } from '~/ui/figure'
@@ -157,7 +157,25 @@ const SpinnerIcon = () => (
 
 export const ContractEventLog = () => {
 	const [tick, setTick] = useState(0)
-	const [isPlaying, setIsPlaying] = useState(true)
+	const [isPlaying, setIsPlaying] = useState(false)
+	const hasAutoPlayed = useRef(false)
+	const containerRef = useRef<HTMLDivElement>(null)
+
+	useEffect(() => {
+		const el = containerRef.current
+		if (!el) return undefined
+		const observer = new IntersectionObserver(
+			([entry]) => {
+				if (entry?.isIntersecting && !hasAutoPlayed.current) {
+					hasAutoPlayed.current = true
+					setIsPlaying(true)
+				}
+			},
+			{ threshold: 0.3 }
+		)
+		observer.observe(el)
+		return () => observer.disconnect()
+	}, [])
 
 	const arrivedCount = Math.min(tick, EVENTS.length)
 	const evaluatedCount = Math.min(Math.max(tick - EVAL_DELAY, 0), EVENTS.length)
@@ -188,7 +206,7 @@ export const ContractEventLog = () => {
 	}, [isComplete])
 
 	return (
-		<div className="w-full rounded-xl border border-subtle bg-subtle/10 px-4 pt-4 pb-3">
+		<div ref={containerRef} className="w-full rounded-xl border border-subtle bg-subtle/10 px-4 pt-4 pb-3">
 			{/* Header */}
 			<div className="mb-3 flex items-center justify-between">
 				<span className="font-mono text-[9px] text-secondary/50 uppercase tracking-wide">
