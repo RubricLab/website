@@ -13,9 +13,9 @@ export const metadata = {
   bannerImageUrl: "/images/excavator.png",
 }
 
-Our team has been running experiments toward fully unsupervised development, with the goal of being able to write a spec at night, and wake up to working, deployed, production-ready software. Agents can already build and deploy without handing the keyboard back to you, given their own accounts, infrastructure, and verification tooling. We wrote about how we set that up in [Unblocking Agents](/blog/unblocking-agents).
+Our team has been running experiments toward fully unsupervised development, with the goal of being able to write a spec at night, and wake up to working, deployed, production-ready software. Agents can already build and deploy without handing the keyboard back to you, given their own accounts, infrastructure, and verification tooling. We wrote about how we set that up in [Unblocking Agents](https://rubriclabs.com/blog/unblocking-agents).
 
-But the results haven't always been consistent, because nobody defined what "done" means in a form the agent can be held to.
+But the results haven't always been consistent. Over time, we realized this was because nobody had defined what "done" means in a form the agent can be held to.
 
 We've been approaching this with something we call contracts: hard, versioned, executable claims about what the system must do. A contract is both the specification and the acceptance criteria. The agent builds until every contract passes, and it cannot ship until they do.
 
@@ -27,13 +27,15 @@ The first is decay. The first prompt is always the best because you're offering 
 
 The second is non-determinism. Even with a perfect prompt, agent runs aren't reproducible. You can have the same prompt in a different session and get a completely different result. Some runs feel locked in: the agent makes good decisions and the architecture is clean. Other runs drift. The difference is sampling luck, context ordering, and temperature. You can't reliably reproduce what worked, and you can't explain why something didn't.
 
-The third is specificity. PRDs were designed for humans under the assumption that engineering is expensive and that efforts take weeks with constant subtle feedback signals during sprints. A PRD says "the user should be able to send an email" and trusts the engineer to figure out what that means across OAuth, API calls, database writes, cache invalidation, and realtime updates. An agent, on the other hand, needs a level of specificity that would be unreasonable to ask of a human engineer, but is exactly right for a process where execution is cheap and restarts are free.
+The third is specificity. [PRDs](https://en.wikipedia.org/wiki/Product_requirements_document) were designed for humans under the assumption that engineering is expensive and that efforts take weeks with constant subtle feedback signals during sprints. A PRD says "the user should be able to send an email" and trusts the engineer to figure out what that means across OAuth, API calls, database writes, cache invalidation, and realtime updates. An agent, on the other hand, needs a level of specificity that would be unreasonable to ask of a human engineer, but is exactly right for a process where execution is cheap and restarts are free.
 
 We need a format that's durable, deterministic, and precise enough that an agent can execute against it with no interim feedback and get it right.
 
 ## Contracts
 
 A contract is a hard, versioned, executable definition of what the system must do. It defines a scenario — what the agent should build — and a sequence of events the system must produce, each with a proof requirement. Every claim resolves to something binary, verifiable against the real system. For example, either the database row exists or it doesn't, the webhook arrived or it didn't, etc. It doesn't live in a conversation or decay between runs. The agent doesn't decide what matters while it's building because the contract decides up front.
+
+Contracts differ from [test-driven development (TDD)](https://en.wikipedia.org/wiki/Test-driven_development) in that they are durable and survive re-writes. As code changes, tests must be re-written, whereas contracts are expected to remain untouched except by the designer.
 
 This is the specificity that prompting lacks. A PRD says "the user should be able to send an email" and trusts the engineer to fill in the gaps. A contract, on the other hand, spells out every event the system must produce across every layer — UI, API, database, cache, webhooks, realtime — each with proof that it happened.
 
@@ -73,7 +75,7 @@ Again, contracts don't decay. The specification moves out of the conversation an
 
 This makes restarts cheap. Without contracts, a restart throws away hours of prompting and context, like edge cases and failures that taught you what the product really needed. With contracts, you can throw out the code, the context, and the thread, but the contracts still carry everything forward. Different agent runs produce different code but satisfy the same contracts.
 
-And contracts accumulate. Run 1: the email app has 13 contracts. All pass. A week later, you discover the Gmail API rate-limits a send and the UI still shows a success toast. You add a new contract that sends 10 emails in quick succession, forcing the 429. Now the contract requires the API to surface the rate limit and the UI to show an error instead of a false success:
+And contracts accumulate. Run 1: the email app has 13 contracts. All pass. A week later, you discover the Gmail API rate-limits a send and the UI still shows a success toast. New contract:
 
 <div className="my-6">
   <CopyBlock copyContent={'{ event: "api:send:ratelimited", proof: apiResponse(429) }\n{ event: "ui:compose:error",     proof: screenshot({ toast: "error" }) }'}>
@@ -86,7 +88,7 @@ And contracts accumulate. Run 1: the email app has 13 contracts. All pass. A wee
 
 That edge case is locked in. The next agent run — potentially completely different code — must handle rate limiting correctly or the contract fails.
 
-A month later, the inbox doesn't sort correctly when two emails arrive within the same second. You add a contract that triggers two webhooks back-to-back with timestamps 10 milliseconds apart, then checks that the inbox renders the newer one first:
+A month later, the inbox doesn't sort correctly when two emails arrive within the same second:
 
 <div className="my-6">
   <CopyBlock copyContent={'{ event: "ui:inbox:order", proof: dom({ firstChild: newerEmail }) }'}>
@@ -108,7 +110,7 @@ In a meaningful sense, the contracts are the application.
 
 ## Limitations
 
-We've been running this approach against real applications, and it's already surfacing a new class of problems — the kind that only show up once the basic architecture is right.
+We've been running this approach against real applications and it works — but it surfaces a new class of problems that only show up once the basic architecture is right.
 
 **Scarce infrastructure.** Some contracts require resources that can't be cheaply provisioned on demand. For example, a first-time signup needs a fresh email account, SMS verification needs a real phone number outside the VOIP blocks, and payment flows need real bank accounts with real money. We're approaching this with resource pools — pre-provisioned resources leased to a run and returned afterward — but pools have limits, and some resources are genuinely finite.
 
@@ -116,10 +118,16 @@ We've been running this approach against real applications, and it's already sur
 
 **Qualitative drift.** LLM-scored screenshots are powerful but noisy. The same screenshot can score differently across evaluations. We're working on pinned scoring (caching evaluations so a passing screenshot stays passed until the UI actually changes) but calibrating the boundary between acceptable variance and a real regression is ongoing.
 
+**Ambiguity.** Contracts currently follow two principles: being verifiable (or, at least, having a feedback loop to hill-climb), and being unambiguous enough that a junior developer could implement them. Formalizing and streamlining these guidelines into a reusable framework is non-trivial, and something that we need a framework around.
+
 These are hard problems, but they're also the right problems given the tools at our disposal.
 
 ---
 
 At night, you write the contracts. By morning, the agent has built against them, deployed the result, rerun failures, fixed what it could, and left behind proof: what passed, what failed, what changed, and why. This is Contract Engineering.
 
-We're building in the open at [github.com/rubriclabs](https://github.com/rubriclabs).
+We're building in the open at [github.com/rubriclab](https://github.com/rubriclab).
+
+## Acknowledgments
+
+We'd like to share a special thank you with Jihad Esmail, Max Musing, and Erik Kaunismäki for their thoughtful feedback.
