@@ -75,7 +75,7 @@ Again, contracts don't decay. The specification moves out of the conversation an
 
 This makes restarts cheap. Without contracts, a restart throws away hours of prompting and context, like edge cases and failures that taught you what the product really needed. With contracts, you can throw out the code, the context, and the thread, but the contracts still carry everything forward. Different agent runs produce different code but satisfy the same contracts.
 
-And contracts accumulate. Run 1: the email app has 13 contracts. All pass. A week later, you discover the Gmail API rate-limits a send and the UI still shows a success toast. New contract:
+And contracts accumulate. Run 1: the email app has 13 contracts. All pass. A week later, you discover the Gmail API rate-limits a send and the UI still shows a success toast. You add a new contract that sends 10 emails in quick succession, forcing the 429. Now the contract requires the API to surface the rate limit and the UI to show an error instead of a false success:
 
 <div className="my-6">
   <CopyBlock copyContent={'{ event: "api:send:ratelimited", proof: apiResponse(429) }\n{ event: "ui:compose:error",     proof: screenshot({ toast: "error" }) }'}>
@@ -88,7 +88,7 @@ And contracts accumulate. Run 1: the email app has 13 contracts. All pass. A wee
 
 That edge case is locked in. The next agent run — potentially completely different code — must handle rate limiting correctly or the contract fails.
 
-A month later, the inbox doesn't sort correctly when two emails arrive within the same second:
+A month later, the inbox doesn't sort correctly when two emails arrive within the same second. You add a contract that triggers two webhooks back-to-back with timestamps 10 milliseconds apart, then checks that the inbox renders the newer one first:
 
 <div className="my-6">
   <CopyBlock copyContent={'{ event: "ui:inbox:order", proof: dom({ firstChild: newerEmail }) }'}>
@@ -110,7 +110,7 @@ In a meaningful sense, the contracts are the application.
 
 ## Limitations
 
-We've been running this approach against real applications and it works — but it surfaces a new class of problems that only show up once the basic architecture is right.
+We've been running this approach against real applications, and it's already surfacing a new class of problems — the kind that only show up once the basic architecture is right.
 
 **Scarce infrastructure.** Some contracts require resources that can't be cheaply provisioned on demand. For example, a first-time signup needs a fresh email account, SMS verification needs a real phone number outside the VOIP blocks, and payment flows need real bank accounts with real money. We're approaching this with resource pools — pre-provisioned resources leased to a run and returned afterward — but pools have limits, and some resources are genuinely finite.
 
