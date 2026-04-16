@@ -1,4 +1,6 @@
 import Link from 'next/link'
+import { Button } from '~/components/button'
+import { Arrow } from '~/components/icons/arrow'
 
 export function CTA() {
 	return (
@@ -11,12 +13,14 @@ export function CTA() {
 					We take on a small number of engagements.
 					Tell us what you're building.
 				</p>
-				<Link
-					href="/contact"
-					className="inline-block font-mono text-sm text-primary mt-8 hover:underline transition-all duration-150"
-				>
-					Start a conversation →
-				</Link>
+				<div className="mt-8 flex justify-center gap-3">
+					<Button asChild intent="primary" size="lg" trailingIcon={<Arrow />}>
+						<Link href="/contact">Start a conversation</Link>
+					</Button>
+					<Button asChild intent="secondary" size="lg">
+						<Link href="/work">Browse work</Link>
+					</Button>
+				</div>
 			</div>
 		</section>
 	)

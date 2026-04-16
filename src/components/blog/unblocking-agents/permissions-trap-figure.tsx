@@ -250,10 +250,10 @@ export const PermissionsTrapFigure = () => {
 
 				{/* Controls */}
 				<div className="flex items-center gap-2">
-					<Button size="sm" variant="icon" onClick={togglePlay}>
+					<Button intent="ghost" iconOnly size="xs" aria-label="Play/pause demo" onClick={togglePlay}>
 						{isPlaying ? <PauseIcon className="h-3.5 w-3.5" /> : <PlayIcon className="h-3.5 w-3.5" />}
 					</Button>
-					<Button size="sm" variant="icon" onClick={reset}>
+					<Button intent="ghost" iconOnly size="xs" aria-label="Restart demo" onClick={reset}>
 						<RestartIcon className="h-3.5 w-3.5" />
 					</Button>
 					<Figure.Share />

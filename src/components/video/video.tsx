@@ -237,12 +237,12 @@ export function Video({ hlsUrl, mp4Url, className = '', posterUrl, transcription
 				{showPlayButton && (
 					<div className="absolute bottom-4 left-4 z-20">
 						<Button
-							variant="default"
+							intent="secondary"
 							size="sm"
-							className="bg-black/30 text-white backdrop-blur-sm transition-all hover:bg-black/40"
+							leadingIcon={<PlayIcon />}
+							className="bg-black/30 text-white backdrop-blur-sm transition-all hover:bg-black/40 border-white/20"
 							onClick={playWithSound}
 						>
-							<PlayIcon className="size-4" />
 							Play with sound
 						</Button>
 					</div>
@@ -268,8 +268,9 @@ export function Video({ hlsUrl, mp4Url, className = '', posterUrl, transcription
 				{/* Close button for floating mode */}
 				{isFloating && (
 					<Button
-						variant="icon"
-						size="sm"
+						intent="ghost"
+						iconOnly
+						size="xs"
 						className="absolute top-1 right-1 z-30"
 						onClick={closeFloating}
 						aria-label="Close video"

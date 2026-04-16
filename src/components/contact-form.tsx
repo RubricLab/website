@@ -1,6 +1,8 @@
 'use client'
 
 import { useActionState, useRef } from 'react'
+import { Button } from '~/components/button'
+import { Arrow } from '~/components/icons/arrow'
 import { createContactRequest } from '~/lib/actions/create-contact-request'
 import { SITE } from '~/lib/constants'
 
@@ -100,18 +102,15 @@ export function ContactForm() {
 							{SITE.email}
 						</a>
 					</p>
-					<button
+					<Button
+						intent="primary"
+						size="lg"
 						type="submit"
-						disabled={isPending}
-						className="group inline-flex items-center gap-2 rounded-full border border-border bg-surface/50 px-5 py-2.5 font-mono text-[13px] text-text-primary transition-all duration-300 hover:border-border-hover hover:bg-surface disabled:opacity-40"
+						loading={isPending}
+						trailingIcon={<Arrow />}
 					>
-						<span>{isPending ? 'Sending...' : 'Send'}</span>
-						{!isPending && (
-							<span className="transition-transform duration-200 group-hover:translate-x-0.5">
-								&rarr;
-							</span>
-						)}
-					</button>
+						Send
+					</Button>
 				</div>
 			</form>
 		</div>

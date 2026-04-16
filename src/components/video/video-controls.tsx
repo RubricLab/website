@@ -145,8 +145,9 @@ export function VideoControls({
 				<div className="flex items-center gap-3">
 					{/* Play/Pause Button */}
 					<Button
-						variant="icon"
-						size="sm"
+						intent="ghost"
+						iconOnly
+						size="xs"
 						className="text-white"
 						onClick={onPlayPause}
 						aria-label={isPlaying ? 'Pause' : 'Play'}
@@ -158,8 +159,9 @@ export function VideoControls({
 				<div className="flex items-center gap-4">
 					{/* CC Button */}
 					<Button
-						variant="icon"
-						size="sm"
+						intent="ghost"
+						iconOnly
+						size="xs"
 						className={cn('text-white', isCaptionsOn ? 'bg-white/30' : '')}
 						onClick={onToggleCaptions}
 						aria-label="Toggle Captions"
@@ -169,8 +171,9 @@ export function VideoControls({
 
 					{/* Fullscreen Button */}
 					<Button
-						variant="icon"
-						size="sm"
+						intent="ghost"
+						iconOnly
+						size="xs"
 						className="text-white focus:outline-none"
 						onClick={onToggleFullscreen}
 						aria-label={isFullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}

@@ -1,6 +1,7 @@
-export const PlayIcon = ({ className }: { className?: string }) => {
+export const PlayIcon = ({ className, ...rest }: React.SVGProps<SVGSVGElement>) => {
 	return (
 		<svg
+			{...rest}
 			className={className}
 			fill="currentColor"
 			viewBox="2 2 20 20"

@@ -1,6 +1,7 @@
-export const Demaximize = ({ className }: { className?: string }) => {
+export const Demaximize = ({ className, ...rest }: React.SVGProps<SVGSVGElement>) => {
 	return (
 		<svg
+			{...rest}
 			className={className}
 			viewBox="2 2 20 20"
 			aria-hidden="true"

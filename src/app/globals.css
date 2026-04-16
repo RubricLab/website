@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+/* forge/ is design-system documentation with pseudo-class examples (e.g. `text-label-*`)
+   that break the Tailwind v4 parser if scanned as candidate classes. */
+@source not "../../forge";
+
 :root {
 	--primary: black;
 	--secondary: #666;
@@ -7,6 +11,7 @@
 	--negative: #222;
 	--subtle: #0000001a; /* black/10 */
 	--accent: #dedad7; /* black/20 on background */
+	--accent-hover: #d4cec9; /* one warm step below --accent */
 	--accent-foreground: black;
 	--tint: #8a9a9a;
 	--danger: red;
@@ -20,6 +25,7 @@
 		--negative: #ddd;
 		--subtle: #ffffff1a; /* white/10 */
 		--accent: #1d1d1d; /* white/20 on black */
+		--accent-hover: #262626; /* one neutral step above --accent */
 		--accent-foreground: white;
 		--tint: #7a9090;
 		--danger: red;
@@ -33,6 +39,7 @@
 	--negative: #222;
 	--subtle: #0000001a;
 	--accent: #dedad7;
+	--accent-hover: #d4cec9;
 	--accent-foreground: black;
 	--tint: #8a9a9a;
 	--danger: red;
@@ -46,6 +53,7 @@
 	--negative: #ddd;
 	--subtle: #ffffff1a;
 	--accent: #1d1d1d;
+	--accent-hover: #262626;
 	--accent-foreground: white;
 	--tint: #7a9090;
 	--danger: red;
@@ -65,6 +73,48 @@
 	--radius-custom: 1.625rem;
 	--font-sans: var(--font-matter);
 	--font-mono: var(--font-mono);
+
+	/* Semantic color aliases (Button + downstream components) */
+	--color-primary-foreground: var(--background);
+	--color-surface-raised: var(--accent);
+	--color-surface-raised-hover: var(--accent-hover);
+	--color-surface-ghost-hover: var(--subtle);
+	--color-border-hairline: var(--subtle);
+	--color-focus-ring: var(--primary); /* Stage 2 § 4.1 override: --primary, not --tint (WCAG contrast) */
+
+	/* Button state tokens (Stage 2 § 4.2 additions beyond Agent C's patch) */
+	--color-border-strong: color-mix(in srgb, var(--tint) 30%, transparent);
+	--color-disabled-foreground: color-mix(in srgb, var(--secondary) 90%, transparent);
+	--color-disabled-surface: color-mix(in srgb, var(--primary) 10%, transparent);
+
+	/* Radius scale (card-to-control nesting, 16 − 10 = 6) */
+	--radius-card: 1rem; /* 16px */
+	--radius-control: 0.375rem; /* 6px */
+
+	/* Type — label scale for controls, weight applied at component */
+	--text-label-xs: 0.75rem; /* 12px */
+	--text-label-sm: 0.8125rem; /* 13px */
+	--text-label-md: 0.875rem; /* 14px */
+	--text-label-lg: 0.9375rem; /* 15px */
+	--font-feature-tnum: "tnum";
+
+	/* Motion — durations and easings */
+	--duration-snap: 50ms;
+	--duration-fast: 150ms;
+	--duration-normal: 220ms;
+	--easing-out: cubic-bezier(0.16, 1, 0.3, 1);
+	--easing-snap: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+	/* Spacing — Button density (Linear-ish, per Stage 0 density table) */
+	--space-button-y-xs: 0.25rem; /* 4px */
+	--space-button-y-sm: 0.375rem; /* 6px */
+	--space-button-y-md: 0.5rem; /* 8px */
+	--space-button-y-lg: 0.625rem; /* 10px */
+	--space-button-x-xs: 0.625rem; /* 10px */
+	--space-button-x-sm: 0.75rem; /* 12px */
+	--space-button-x-md: 0.875rem; /* 14px */
+	--space-button-x-lg: 1.125rem; /* 18px */
+	--space-button-gap: 0.375rem; /* 6px */
 }
 
 @layer base {
@@ -147,6 +197,14 @@ article :is(h2, h3) {
 
 article a:not(:has(button)) {
 	@apply text-secondary hover:text-primary underline underline-offset-3 decoration-1 transition-colors;
+}
+
+/* Button link-variant underline cascade inside prose (Stage 2 spec § 8.4) */
+article button[data-intent="link"],
+article a:has(button[data-intent="link"]) {
+	text-decoration-line: underline;
+	text-decoration-thickness: 1px;
+	text-underline-offset: 3px;
 }
 
 article p,
@@ -473,6 +531,16 @@ video::-webkit-media-text-track-container {
 @keyframes pulse-dot {
 	0%, 80%, 100% { opacity: 0.2; transform: scale(0.8); }
 	40% { opacity: 1; transform: scale(1.2); }
+}
+
+/* Button spinner (Stage 2 spec § 5.6 / § 6.1) */
+@keyframes button-spinner {
+	to { transform: rotate(360deg); }
+}
+
+@keyframes button-spinner-blink {
+	0%, 100% { opacity: 1; }
+	50% { opacity: 0.3; }
 }
 
 .visual-placeholder {

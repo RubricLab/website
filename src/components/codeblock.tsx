@@ -17,8 +17,10 @@ export const CodeBlock = ({ children, ...props }: { children: React.ReactElement
 			</pre>
 			<Button
 				className="absolute top-1 right-1 opacity-0 transition-opacity group-hover:opacity-100"
-				variant="icon"
-				size="sm"
+				intent="ghost"
+				iconOnly
+				size="xs"
+				aria-label="Copy code"
 				onClick={() => handleCopy(preRef.current?.textContent || 'Code not found')}
 			>
 				{copied ? <Checkmark className="h-4 w-4" /> : <Copy className="h-4 w-4" />}

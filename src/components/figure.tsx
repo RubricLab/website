@@ -28,7 +28,7 @@ const FigureShare = ({ id }: { id?: string }) => {
 	}, [copied])
 
 	return (
-		<Button size="sm" variant="icon" onClick={copyLink}>
+		<Button intent="ghost" iconOnly size="xs" aria-label="Share figure" onClick={copyLink}>
 			<ShareIcon className="h-4 w-4" />
 		</Button>
 	)

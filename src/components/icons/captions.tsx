@@ -1,6 +1,7 @@
-export const CaptionsIcon = ({ className }: { className?: string }) => {
+export const CaptionsIcon = ({ className, ...rest }: React.SVGProps<SVGSVGElement>) => {
 	return (
 		<svg
+			{...rest}
 			xmlns="http://www.w3.org/2000/svg"
 			viewBox="0 0 24 24"
 			fill="none"

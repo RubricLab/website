@@ -366,10 +366,10 @@ export const PipelinePrimitivesFigure = () => {
 						top: CONTROLS_ROW_CENTER_Y - CONTROL_BUTTON_SIZE / 2
 					}}
 				>
-					<Button size="sm" variant="icon" onClick={togglePlay}>
+					<Button intent="ghost" iconOnly size="xs" aria-label="Play/pause demo" onClick={togglePlay}>
 						{isPlaying ? <PauseIcon className="h-3.5 w-3.5" /> : <PlayIcon className="h-3.5 w-3.5" />}
 					</Button>
-					<Button size="sm" variant="icon" onClick={resetAssembly}>
+					<Button intent="ghost" iconOnly size="xs" aria-label="Restart demo" onClick={resetAssembly}>
 						<RestartIcon className="h-3.5 w-3.5" />
 					</Button>
 					<Figure.Share />

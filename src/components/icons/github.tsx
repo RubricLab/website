@@ -1,6 +1,6 @@
-export const GithubIcon = ({ className }: { className?: string }) => {
+export const GithubIcon = ({ className, ...rest }: React.SVGProps<SVGSVGElement>) => {
 	return (
-		<svg className={className} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+		<svg {...rest} className={className} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<title>GitHub</title>
 			<g clipPath="url(#clip-github)">
 				<path

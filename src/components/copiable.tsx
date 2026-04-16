@@ -8,19 +8,21 @@ import { Button } from './button'
 
 export const Copiable = ({
 	children,
-	variant,
+	intent,
 	content,
-	size = 'md',
+	size,
 	className = '',
 	message = 'Copied'
 }: {
 	children: React.ReactNode
-	variant: 'default' | 'outline' | 'link'
+	intent: 'primary' | 'secondary' | 'ghost' | 'link'
 	content: string
-	size?: 'sm' | 'md' | 'lg'
+	size?: 'xs' | 'sm' | 'md' | 'lg'
 	className?: string
 	message?: string
 }) => {
+	// Inline link defaults to xs to avoid prose whitespace orphans; other intents default to md.
+	const resolvedSize = size ?? (intent === 'link' ? 'xs' : 'md')
 	const { copied, handleCopy } = useClipboard()
 
 	useEffect(() => {
@@ -30,8 +32,8 @@ export const Copiable = ({
 	return (
 		<Button
 			onClick={() => handleCopy(content)}
-			variant={variant}
-			size={size}
+			intent={intent}
+			size={resolvedSize}
 			className={cn(className, 'relative inline-flex')}
 		>
 			{children}

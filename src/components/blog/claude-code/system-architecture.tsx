@@ -332,20 +332,21 @@ export const SystemArchitecture = () => {
 			{/* Controls */}
 			<div className="mt-4 flex items-center justify-between">
 				<div className="flex items-center gap-2">
-					<Button size="sm" variant="icon" onClick={togglePlay}>
+					<Button intent="ghost" iconOnly size="xs" aria-label="Play/pause demo" onClick={togglePlay}>
 						{isPlaying ? <PauseIcon className="h-4 w-4" /> : <PlayIcon className="h-4 w-4" />}
 					</Button>
 					{SPEED_OPTIONS.map(s => (
 						<Button
 							key={s}
-							size="sm"
-							variant={speed === s ? 'default' : 'ghost'}
+							size="xs"
+							intent={speed === s ? 'secondary' : 'ghost'}
+							aria-pressed={speed === s}
 							onClick={() => setSpeed(s)}
 						>
 							{s}x
 						</Button>
 					))}
-					<Button size="sm" variant="icon" onClick={reset}>
+					<Button intent="ghost" iconOnly size="xs" aria-label="Restart demo" onClick={reset}>
 						<RestartIcon className="h-4 w-4" />
 					</Button>
 				</div>

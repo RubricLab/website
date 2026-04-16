@@ -1,6 +1,7 @@
-export const Maximize = ({ className }: { className?: string }) => {
+export const Maximize = ({ className, ...rest }: React.SVGProps<SVGSVGElement>) => {
 	return (
 		<svg
+			{...rest}
 			className={className}
 			viewBox="2 2 20 20"
 			aria-hidden="true"

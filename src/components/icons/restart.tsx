@@ -1,6 +1,7 @@
-export const RestartIcon = ({ className }: { className?: string }) => {
+export const RestartIcon = ({ className, ...rest }: React.SVGProps<SVGSVGElement>) => {
 	return (
 		<svg
+			{...rest}
 			viewBox="0 0 24 24"
 			fill="none"
 			stroke="currentColor"

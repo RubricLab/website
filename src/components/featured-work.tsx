@@ -1,5 +1,7 @@
 import Link from 'next/link'
 import type { ComponentType } from 'react'
+import { Button } from '~/components/button'
+import { Arrow } from '~/components/icons/arrow'
 import { getFeaturedCaseStudies } from '~/lib/case-studies'
 import { FadeIn } from './fade-in'
 import { Albertsons } from './logos/albertsons'
@@ -20,15 +22,9 @@ export function FeaturedWork() {
 					<span className="font-mono text-[11px] text-secondary tracking-[0.15em] uppercase">
 						Work
 					</span>
-					<Link
-						href="/work"
-						className="group inline-flex items-center gap-2 font-mono text-xs text-secondary transition-colors duration-200 hover:text-primary"
-					>
-						<span>See all</span>
-						<span className="transition-transform duration-200 group-hover:translate-x-0.5">
-							&rarr;
-						</span>
-					</Link>
+					<Button asChild intent="link" size="md" trailingIcon={<Arrow />}>
+						<Link href="/work">See all work</Link>
+					</Button>
 				</div>
 			</FadeIn>
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4">

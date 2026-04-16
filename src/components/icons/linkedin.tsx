@@ -1,6 +1,6 @@
-export const LinkedInIcon = ({ className }: { className?: string }) => {
+export const LinkedInIcon = ({ className, ...rest }: React.SVGProps<SVGSVGElement>) => {
 	return (
-		<svg className={className} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+		<svg {...rest} className={className} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<title>LinkedIn</title>
 			<g clipPath="url(#clip-linkedin)">
 				<path

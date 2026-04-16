@@ -1,6 +1,7 @@
-export const ShareIcon = ({ className }: { className?: string }) => {
+export const ShareIcon = ({ className, ...rest }: React.SVGProps<SVGSVGElement>) => {
 	return (
 		<svg
+			{...rest}
 			viewBox="0 0 24 24"
 			fill="none"
 			stroke="currentColor"

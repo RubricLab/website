@@ -245,20 +245,20 @@ export const ShoppingAgentChatFigure = () => {
 
 				<div className="flex items-center justify-between">
 					<div className="flex items-center gap-2">
-						<Button size="sm" variant="icon" onClick={handleTogglePlay}>
+						<Button intent="ghost" iconOnly size="xs" aria-label="Play/pause demo" onClick={handleTogglePlay}>
 							{isPlaying ? <PauseIcon className="h-3.5 w-3.5" /> : <PlayIcon className="h-3.5 w-3.5" />}
 						</Button>
-						<Button size="sm" variant="icon" onClick={reset}>
+						<Button intent="ghost" iconOnly size="xs" aria-label="Restart demo" onClick={reset}>
 							<RestartIcon className="h-3.5 w-3.5" />
 						</Button>
 						<Figure.Share />
 					</div>
 					<div className="flex items-center gap-2">
 						<p className="text-secondary text-xs">{scenario.intent}</p>
-						<Button size="sm" variant="icon" onClick={goToPreviousScenario}>
+						<Button intent="ghost" iconOnly size="xs" aria-label="Previous scenario" onClick={goToPreviousScenario}>
 							<Arrow className="h-3.5 w-3.5 rotate-180" />
 						</Button>
-						<Button size="sm" variant="icon" onClick={goToNextScenario}>
+						<Button intent="ghost" iconOnly size="xs" aria-label="Next scenario" onClick={goToNextScenario}>
 							<Arrow className="h-3.5 w-3.5" />
 						</Button>
 					</div>
