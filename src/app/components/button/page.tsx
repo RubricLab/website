@@ -38,8 +38,8 @@ function Playground() {
 					size={size}
 					loading={loading}
 					disabled={disabled}
-					leadingIcon={leading ? <Arrow /> : undefined}
-					trailingIcon={trailing ? <Arrow /> : undefined}
+					{...(leading && { leadingIcon: <Arrow /> })}
+					{...(trailing && { trailingIcon: <Arrow /> })}
 				>
 					Button
 				</Button>
