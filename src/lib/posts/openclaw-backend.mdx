@@ -1,0 +1,116 @@
+import { AUTHORS, CATEGORIES } from '~/lib/constants/blog'
+import { ContractEventLog, EmailAppLifecycleFigure } from '~/ui/blog/contract-engineering'
+import { CopyBlock } from '~/ui/blog/copy-block'
+
+export const metadata = {
+  title: "OpenClaw is your new backend.",
+  subtitle: "Or, why every production server deserves a coding agent.",
+  date: "2026-04-30",
+  isNew: true,
+  author: AUTHORS.TED_SPARE,
+  category: CATEGORIES.EXPERIMENT,
+  description: "Everything with a CPU deserves an OpenClaw to manage it.",
+  bannerImageUrl: "/images/manager.png",
+}
+
+## Text processing
+
+We recently ran an in-person experiment. We wanted to give non-technical people the chance to try [OpenClaw](https://openclaw.ai) (or, technically, a fork thereof, but we’ll use the term OpenClaw for simplicity).
+
+To make onboarding as frictionless as possible, users only had to text a number: 8677-RUBRIC.
+
+![Text us (or scan a QR code) to get an OpenClaw.](/images/qr.png "Text us (or scan a QR code) to get an OpenClaw.")
+
+Over a series of texts, the agent would guide them through picking a username, setting some goals, and deploying a site on their unique subdomain.
+
+Over the course of the night, several problems arose:
+
+1. **We needed a landing page.** Users didn’t know what the product was.
+2. **We needed onboarding.** Users understandably had no idea what to text to the agent and churned immediately.
+3. **We needed to fix bugs.** One user’s agent couldn’t find a browser. Another’s got rate-limited (when they had it send one text per second, which is technically in scope).
+
+Even one year ago, we would have noted these hiccups, written them up, converted them to tickets, prioritized them against a roadmap, then worked through the tickets over the course of days and weeks.
+
+In this case, the demo itself was being supervised by an OpenClaw instance. We simply Slacked it on the spot, got a landing page, got an onboarding flow, and got the agent harness fixed.
+
+These coding sessions took several minutes each, but since the superadmin OpenClaw lived on the production server, we skipped GitHub entirely and builds took mere seconds.
+
+## Secret code(s)
+
+There is no shortage of products that stream pages of AI-generated code to the end user. The pattern follows naturally from the legacy of AI-assisted IDEs like Cursor.
+
+However, if we instead allow ourselves to view code as increasingly low-cost, reliable, and ephemeral, it’s natural to hide it from view entirely and only show the result. Doing so enables a few interesting use cases:
+
+1. **Non-technical users can participate in the software-building process.** Software development can become a normal part of everyday life, much the same way reading and writing went from a practice of a niche group to a pillar of public education.
+2. **Software can be updated on the fly.** For example, from the subway, between conference talks, or on a site visit. Customer feedback can be implemented mid-interview, without the product owner context-switching to code. In practice, co-locating the coding agent with the source code does lead to minimal (often sub-10 second) build times.
+3. **Non-technical users can climb the capability ladder** without taking on the burden of tech know-how. Users can build one-off pages for events, farmers’ market stands can build loyalty programs, and WhatsApp-based logistics companies can scale NPS surveys.
+
+These last few require a few more steps, which we'll return to.
+
+> # it’s almost inevitable that this is the way people are gonna use computers
+
+## Faster horses
+
+New technologies enable new form factors. Pioneers of the web [think](https://www.latent.space/p/pmarca?selection=0b21cbcc-1fd1-41b7-a76a-388c7cde642e) this is a big one. We think OpenClaw is exciting because it gets several UX assumptions deeply right:
+
+1. **A computer terminal is the ultimate tool.** From the shell, an agent can do just about anything on the internet, like write code to [order coffee](https://www.terminal.shop/) then Slack you with the delivery time.
+2. **Being always-on is critical.** Using a computer is useful, but being able to save files and run long-running code supports [use cases](/blog/openclaw-backend#secret-codes) like serving a web app, setting reminders, or tracking a price.
+3. **A chat client is all you need.** This doesn’t have to be a fancy iOS app. Slack, iMessage, Discord, a CLI - anything works so long as it supports, at a minimum, text in and out. For longer-running work sprints, the chat client becomes especially useful as a surface for notifications. More on this later.
+
+We can push the standard OpenClaw setup further by giving it access to [rare digital goods](https://rubriclabs.com/blog/unblocking-agents), and by considering the system more as an admin dashboard than as a personal assistant.
+
+Once unblocked, one more interesting [primitive](https://rubriclabs.com/blog/primitives-over-pipelines) emerges: the agent can migrate its own tech extremely flexibly, e.g. from OpenClaw to Hermes Agent, from a closed-source to an open-source LLM, from Python to Rust, or from a VM in Singapore to the Raspberry Pi in your palm.
+
+In our in-person experiment, the underlying agent went from OpenClaw to [Hermes Agent](https://hermes-agent.nousresearch.com/) to a custom, lightweight harness. Since the [agent is increasingly its memories](https://x.com/hwchase17/status/2042978500567609738?s=20), little changed for users.
+
+## Messaging is the medium
+
+Some things are harder to migrate. We found that the medium of SMS lends itself to simple, casual requests, which ran counter to our goal of getting people deploying sites within minutes. More on this in a future post.
+
+That said, we think a great number of systems would benefit from a superhuman coding agent patching bugs, making improvements, and supporting new or unforeseen use cases.
+
+If you’re an OpenClaw user and want to try deploying OpenClaws for your non-technical friends and family, here’s the kernel:
+
+```md
+---
+name: subclaw
+description: Spin up a sandboxed sub-OpenClaw / Hermes-Agent on its own public subdomain, addressable from a chat client (e.g. SMS via Twilio). For giving a non-technical user their own always-on coding agent without exposing your inference key.
+when_to_use: You run an OpenClaw / Hermes-Agent for yourself and want to provision an isolated one for someone else.
+---
+
+# Sandboxed Sub-Agent
+
+## Key decisions
+
+1. **Sandbox = microVM, not container.** Firecracker (or Cloud Hypervisor / Kata) gives a real kernel boundary per tenant in ~125ms cold-boot, ~10MB overhead. Docker namespaces aren't enough once the agent has shell-exec — one bad apt install and you share a kernel with untrusted code. Don't compromise here; everything else is recoverable, a kernel breakout is not.
+
+2. **Persistence = per-tenant overlay on a shared rootfs.** Bake one golden rootfs.ext4 with the base OS + preinstalled tools (bun, jq, curl, git, ripgrep, sqlite). Each tenant gets a copy-on-write overlay file; their VM mounts rootfs (ro) + overlay (rw). Snapshot on shutdown, restore on next message. Cheap state, fast boots.
+
+3. **Inference lives on the host, not in the VM.** Most load-bearing decision. The VM has no API key, no model client, no rate limiter. The host runs the outer agent loop and calls the LLM; only tool I/O crosses into the VM. The tenant fully customizes their agent by editing files at a known path inside their VM (e.g. /etc/<product>/system.md, tools.json, skills/*.md) which the host re-reads each turn. Built-in privileged tools (DB writes, billing, llm_complete for nested calls) are non-shadowable. Every alternative leaks the key within a day.
+
+4. **Routing = wildcard DNS + dynamic Caddy.** Point *.yourdomain.com CNAME at one box. Run Caddy with on-demand TLS and the admin API enabled (localhost:2019). On VM boot, register a route mapping <username>.yourdomain.com → the VM's tap-device IP via the admin API. Two traps: **(a) use PUT /config/.../routes/N to insert at an index, not POST — POST always appends regardless of the index in the path, which dumps tenant routes after your wildcard catch-all and yields universal 502s; (b) keep the wildcard route last.** Idempotent pattern: PUT /id/<route> first (replaces in place if exists), fall back to PUT at the wildcard's index.
+
+5. **Base toolset is small and opinionated.** ~10 built-in host-side tools and trust the agent to compose: shell_exec (in-VM), read_file, write_file, search_files, list_channels / notify_user / schedule_notification (out-of-band notifications: persist jobs in a DB-backed scheduler, tick every 5s, claim atomically; for agent_turn mode, dependency-inject the agent runner from the bootstrap layer to avoid a scheduler:left_right_arrow:agent import cycle), reload_harness, and one llm_complete so the agent can fan out work without an API key. Let the tenant write their own tools in tools.json. Preinstall jq and pass tool input as a base64-encoded JSON env var — never string-interpolate user input into a shell command.
+
+6. **The user-facing UX lives in the system prompt.** Hard-won rules: (i) never narrate tool calls or stream raw tool output; summarize the outcome in one sentence — "your site is live at x.yourdomain.com," not the build log; (ii) prefer one short reply over a wall of text — chunk anything longer and ask before continuing; (iii) on failure, say what you'll try next, don't paste the stack trace; (iv) for ambiguous requests, ask one clarifying question, not three; (v) the agent's memory of the user is a markdown file the agent itself owns and edits — don't introduce a separate memory tool, it splits the truth. Ship a safe-default system.md in the rootfs overlay and have the host hot-reload it each turn, with a fingerprint check so user customizations aren't clobbered on upgrade.
+[11:52 AM]7. **Onboarding = one chat surface, one tenant.** Pick any chat client (SMS via Twilio is friendly for non-technical users; Discord, iMessage, Matrix all work). Point its inbound webhook at your host and route by sender ID → tenant. First message creates the tenant, picks a username, boots the VM, registers the Caddy route, and replies with the live URL. No app, no signup form, no GitHub. Note: VoIP numbers, non-.com domains, and fresh-IP egress get 2FA-blocklisted by major platforms — budget time for unblock work or use already-warmed assets.
+
+## Out of scope
+
+- **Egress controls.** A tenant with shell_exec can hit any external host or your cloud metadata endpoint. Add iptables rules on the VM's net namespace and an egress proxy with allowlisted destinations.
+- **Cost caps.** Meter tokens per tenant on the host (every LLM call goes through you, so this is easy) and hard-cap free tiers.
+
+## MVP shape
+
+Single VPS, ~20 LOC of TS per concern: an HTTP server handling chat-client webhooks, a Firecracker manager (/run/vmm.sock is fine), a Caddy admin client, and a per-turn agent loop that reads /etc/<product>/{system.md,tools.json} from each tenant's VM over a vsock or local socket. Bind-mount source into the server container so edits apply on docker compose restart server without a rebuild. Fits in a few thousand lines, runs comfortably on a $20/mo box for the first dozen tenants.
+
+## Why this works
+
+It aligns who-pays with who-controls — the operator pays for inference and owns the key, the tenant owns their prompt, tools, and files and lives entirely inside their VM. That gives the tenant maximum privacy in their box while keeping the operator's mistakes (and the tenant's) recoverable from outside it.
+```
+
+There are big problems to solve to make such an experience production-grade, which is something we do at Rubric.
+
+## Acknowledgments
+
+We'd like to share a special thank you with Jihad Esmail and Max Musing for their thoughtful feedback.
