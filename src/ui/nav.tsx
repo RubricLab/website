@@ -25,10 +25,14 @@ export function Nav() {
 	useShortcut('w', () => router.push('/work'))
 
 	return (
-		<nav className={cn('group fixed top-0 left-0 z-30 flex w-full items-start sm:justify-between')}>
+		<nav
+			className={cn(
+				'group pointer-events-none fixed top-0 left-0 z-30 flex w-full items-start sm:justify-between'
+			)}
+		>
 			<div
 				className={cn(
-					'flex items-center justify-center rounded-br-custom px-4 py-4 transition-all duration-300 sm:px-6',
+					'pointer-events-auto flex items-center justify-center rounded-br-custom px-4 py-4 transition-all duration-300 sm:px-6',
 					scrollDirection === 'down' ? 'opacity-0' : 'opacity-100',
 					scrollY > 0 ? 'bg-background' : ''
 				)}
@@ -42,7 +46,7 @@ export function Nav() {
 			</div>
 			<div
 				className={cn(
-					'flex items-center gap-6 rounded-bl-custom px-6 py-4 transition-all duration-300',
+					'pointer-events-auto flex items-center gap-6 rounded-bl-custom px-6 py-4 transition-all duration-300',
 					scrollDirection === 'down' ? 'opacity-0' : 'opacity-100',
 					scrollY > 0 ? 'bg-background' : '',
 					'invisible sm:visible'
