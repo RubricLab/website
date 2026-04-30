@@ -178,7 +178,7 @@ const NodeBox = ({
 const Packet = ({ at }: { at: Pt | null }) => {
 	if (!at) return null
 	return (
-		<g className={AMBER.text}>
+		<g>
 			<circle cx={at.x} cy={at.y} r={8} fill="currentColor" style={{ opacity: 0.22 }} />
 			<circle cx={at.x} cy={at.y} r={3.5} fill="currentColor" />
 		</g>
