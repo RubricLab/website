@@ -1,5 +1,5 @@
 import { AUTHORS, CATEGORIES } from '~/lib/constants/blog'
-import { BlogTestimonial } from '~/ui/blog/testimonial'
+import { OpenclawSystemFigure } from '~/ui/blog/openclaw-backend'
 
 export const metadata = {
   title: "OpenClaw is your new backend.",
@@ -34,6 +34,11 @@ In this case, the demo itself was being supervised by an OpenClaw instance. We s
 
 These coding sessions took several minutes each, but since the superadmin OpenClaw lived on the production server, we skipped GitHub entirely and builds took mere seconds.
 
+<Figure id="openclaw-system">
+  <OpenclawSystemFigure />
+  <Figure.Caption>One supervisor OpenClaw, a fleet of per-user OpenClaws, and a single chat channel. The supervisor patches the harness on the spot; clients keep messaging their own agents.</Figure.Caption>
+</Figure>
+
 ## To stream or not to stream
 
 There is no shortage of products that stream pages of AI-generated code to the end user. The pattern follows naturally from the legacy of AI-assisted IDEs like Cursor.
@@ -48,9 +53,7 @@ These last few require a few more steps, which we'll return to.
 
 ## Faster horses
 
-<BlogTestimonial
-  quote="it’s almost inevitable that this is the way people are gonna use computers"
-/>
+> "it’s almost inevitable that this is the way people are gonna use computers"
 
 New technologies enable new form factors. Pioneers of the web [think](https://www.latent.space/p/pmarca?selection=0b21cbcc-1fd1-41b7-a76a-388c7cde642e) "it’s almost inevitable that this is the way people are gonna use computers". We think OpenClaw is exciting because it gets several UX assumptions deeply right:
 

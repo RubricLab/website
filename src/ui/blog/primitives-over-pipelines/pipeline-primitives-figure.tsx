@@ -2,6 +2,13 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { cn } from '~/lib/utils/cn'
+import {
+	BLOCK_COLORS,
+	type BlockColor,
+	type BlockColorName,
+	FALLBACK_BLOCK_COLOR,
+	FIGURE_CONTAINER_CLASS
+} from '~/ui/blog/figure-palette'
 import { Button } from '~/ui/button'
 import { Figure } from '~/ui/figure'
 import { PauseIcon } from '~/ui/icons/pause'
@@ -28,35 +35,16 @@ const CONTROL_BUTTON_SIZE = 22
 
 type Label = (typeof LABELS)[number]
 
-const BLOCK_COLORS: Record<
-	string,
-	{ bg: string; border: string; text: string; dimBg: string; dimBorder: string; dimText: string }
-> = {
-	A: {
-		bg: 'bg-sky-500/15',
-		border: 'border-sky-500/40',
-		dimBg: 'bg-sky-500/5',
-		dimBorder: 'border-sky-500/10',
-		dimText: 'text-sky-500/20',
-		text: 'text-sky-600 dark:text-sky-400'
-	},
-	B: {
-		bg: 'bg-amber-500/15',
-		border: 'border-amber-500/40',
-		dimBg: 'bg-amber-500/5',
-		dimBorder: 'border-amber-500/10',
-		dimText: 'text-amber-500/20',
-		text: 'text-amber-600 dark:text-amber-400'
-	},
-	C: {
-		bg: 'bg-violet-500/15',
-		border: 'border-violet-500/40',
-		dimBg: 'bg-violet-500/5',
-		dimBorder: 'border-violet-500/10',
-		dimText: 'text-violet-500/20',
-		text: 'text-violet-600 dark:text-violet-400'
-	}
+// Each pipeline label maps to a palette color from the shared figure palette
+// so primitive blocks read the same way across blog figures.
+const LABEL_TO_COLOR: Record<Label, BlockColorName> = {
+	A: 'sky',
+	B: 'amber',
+	C: 'violet'
 }
+
+const colorsFor = (label: Label): BlockColor =>
+	BLOCK_COLORS[LABEL_TO_COLOR[label]] ?? FALLBACK_BLOCK_COLOR
 
 const WORKSPACE_TOP = 52
 const WORKSPACE_BOTTOM = H - 56
@@ -70,8 +58,6 @@ const assemblyStartY = (total: number, centerY: number) => {
 }
 const assemblyY = (i: number, total: number, centerY: number) =>
 	assemblyStartY(total, centerY) + i * (ASSEMBLY_SIZE + ARROW_H)
-
-const FALLBACK_COLORS = { bg: '', border: '', dimBg: '', dimBorder: '', dimText: '', text: '' }
 
 type AssemblyState = {
 	maxLength: number
@@ -140,7 +126,7 @@ const Block = ({
 	dim?: boolean
 	hidden?: boolean
 }) => {
-	const colors = BLOCK_COLORS[label] ?? FALLBACK_COLORS
+	const colors = colorsFor(label)
 
 	return (
 		<div
@@ -264,7 +250,7 @@ export const PipelinePrimitivesFigure = () => {
 	const legendTop = CONTROLS_ROW_CENTER_Y - LEGEND_SIZE / 2
 
 	return (
-		<div className="w-full rounded-xl border border-subtle bg-subtle/10 px-4 pt-4 pb-3">
+		<div className={FIGURE_CONTAINER_CLASS}>
 			<div className="relative w-full overflow-hidden" style={{ height: H }}>
 				{/* === LEFT HALF: Pipeline (always visible) === */}
 
