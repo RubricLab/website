@@ -72,6 +72,9 @@ const SB_LEGEND: Box = { h: 36, w: 88, x: 596, y: 46 }
 
 type Pt = { x: number; y: number }
 
+const NODE_RADIUS = 6
+const PATCH_GLOW_OUTSET = 3
+
 const adminRight: Pt = { x: ADMIN.x + ADMIN.w, y: ADMIN.y + ADMIN.h / 2 }
 const supLeft: Pt = { x: SUP.x, y: SUP.y + SUP.h / 2 }
 const supBottom: Pt = { x: OC0.x + OC0.w / 2, y: SUP.y + SUP.h }
@@ -124,7 +127,7 @@ const NodeBox = ({
 	label: string
 	tint?: boolean
 }) => {
-	// Tinted nodes (OpenClaws, Sandbox legend) borrow the shared "orange"
+	// Tinted nodes (OpenClaws, Sandbox legend) borrow the shared amber
 	// palette so the figure reads the same way as other blog figures.
 	const colorClass = tint ? AMBER.text : 'text-primary'
 	const baseOpacity = tint ? 0.7 : 0.5
@@ -133,11 +136,11 @@ const NodeBox = ({
 		<g className={colorClass}>
 			{emphasis === 'patch' && (
 				<rect
-					x={box.x - 3}
-					y={box.y - 3}
-					width={box.w + 6}
-					height={box.h + 6}
-					rx={6}
+					x={box.x - PATCH_GLOW_OUTSET}
+					y={box.y - PATCH_GLOW_OUTSET}
+					width={box.w + PATCH_GLOW_OUTSET * 2}
+					height={box.h + PATCH_GLOW_OUTSET * 2}
+					rx={NODE_RADIUS + PATCH_GLOW_OUTSET}
 					fill="currentColor"
 					className="animate-pulse"
 					style={{ opacity: 0.12 }}
@@ -148,13 +151,13 @@ const NodeBox = ({
 				y={box.y}
 				width={box.w}
 				height={box.h}
-				rx={4}
-				className={tint ? 'fill-orange-500/15' : 'fill-transparent'}
+				rx={NODE_RADIUS}
+				className={tint ? 'fill-amber-500/15' : 'fill-transparent'}
 				stroke="currentColor"
 				strokeWidth={active ? 1.6 : 1}
 				style={{
 					opacity: active ? activeOpacity : baseOpacity,
-					transition: 'opacity 250ms ease, stroke-width 250ms ease'
+					transition: 'opacity 700ms ease-in-out, stroke-width 700ms ease-in-out'
 				}}
 			/>
 			<text
@@ -162,11 +165,11 @@ const NodeBox = ({
 				y={box.y + box.h / 2 + 4}
 				textAnchor="middle"
 				fill="currentColor"
-				className="font-mono"
+				className="font-medium font-sans"
 				fontSize={11}
 				style={{
 					opacity: active ? 1 : 0.85,
-					transition: 'opacity 250ms ease'
+					transition: 'opacity 700ms ease-in-out'
 				}}
 			>
 				{label}
@@ -296,8 +299,8 @@ export const OpenclawSystemFigure = () => {
 						y={SB_LEGEND.y}
 						width={SB_LEGEND.w}
 						height={SB_LEGEND.h}
-						rx={4}
-						className="fill-orange-500/15"
+						rx={NODE_RADIUS}
+						className="fill-amber-500/15"
 						stroke="currentColor"
 						strokeWidth={1}
 						style={{ opacity: 0.9 }}
@@ -307,7 +310,7 @@ export const OpenclawSystemFigure = () => {
 						y={SB_LEGEND.y + SB_LEGEND.h / 2 + 4}
 						textAnchor="middle"
 						fill="currentColor"
-						className="font-mono"
+						className="font-medium font-sans"
 						fontSize={11}
 					>
 						Sandbox
@@ -320,9 +323,8 @@ export const OpenclawSystemFigure = () => {
 					y={SANDBOX.y - 6}
 					textAnchor="middle"
 					fill="currentColor"
-					className="font-mono text-secondary"
+					className="font-sans text-secondary/50"
 					fontSize={10}
-					style={{ opacity: 0.7 }}
 				>
 					Server
 				</text>
@@ -374,7 +376,7 @@ export const OpenclawSystemFigure = () => {
 			</svg>
 
 			{/* Live caption (sticky between beats so it stays readable) */}
-			<div className="mt-3 flex h-5 items-center justify-center font-mono text-primary/85 text-xs">
+			<div className="mt-3 flex h-5 items-center justify-center font-sans text-primary/80 text-xs">
 				{caption}
 			</div>
 
@@ -399,10 +401,10 @@ export const OpenclawSystemFigure = () => {
 			{/* Controls */}
 			<div className="mt-3 flex items-center gap-2">
 				<Button size="sm" variant="icon" onClick={togglePlay}>
-					{isPlaying ? <PauseIcon className="h-3.5 w-3.5" /> : <PlayIcon className="h-3.5 w-3.5" />}
+					{isPlaying ? <PauseIcon className="h-4 w-4" /> : <PlayIcon className="h-4 w-4" />}
 				</Button>
 				<Button size="sm" variant="icon" onClick={reset}>
-					<RestartIcon className="h-3.5 w-3.5" />
+					<RestartIcon className="h-4 w-4" />
 				</Button>
 				<Figure.Share />
 			</div>

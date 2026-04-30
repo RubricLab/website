@@ -5,17 +5,14 @@ export const ShareIcon = ({ className }: { className?: string }) => {
 			fill="none"
 			stroke="currentColor"
 			strokeWidth="2"
+			strokeLinecap="round"
+			strokeLinejoin="round"
 			className={className}
 			aria-hidden="true"
 		>
 			<title>Share icon</title>
-			<path d="M12 3v12" strokeLinecap="round" strokeLinejoin="round" />
-			<path d="M8 7l4-4 4 4" strokeLinecap="round" strokeLinejoin="round" />
-			<path
-				d="M20 21H4a1 1 0 0 1-1-1v-6a1 1 0 0 1 1-1h3m10 0h3a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1"
-				strokeLinecap="round"
-				strokeLinejoin="round"
-			/>
+			<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+			<path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
 		</svg>
 	)
 }
