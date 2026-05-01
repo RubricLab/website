@@ -310,12 +310,13 @@ const STEP_TO_PIPELINE: Record<string, 'send' | 'receive' | null> = {
 
 const ArrowRight = () => (
 	<svg
-		className="h-2.5 w-2.5 flex-shrink-0 text-secondary/20"
+		className="h-2.5 w-2.5 shrink-0 text-secondary/20"
 		viewBox="0 0 24 24"
 		fill="none"
 		stroke="currentColor"
 		strokeWidth="2"
 	>
+		<title>Arrow right</title>
 		<path d="M5 12h14m-4-4 4 4-4 4" strokeLinecap="round" strokeLinejoin="round" />
 	</svg>
 )
@@ -436,7 +437,10 @@ export const EmailAppLifecycleFigure = () => {
 	}, [isComplete])
 
 	return (
-		<div ref={containerRef} className="w-full rounded-xl border border-subtle bg-subtle/10 px-4 pt-4 pb-3">
+		<div
+			ref={containerRef}
+			className="w-full rounded-xl border border-subtle bg-subtle/10 px-4 pt-4 pb-3"
+		>
 			<div className="flex flex-col gap-3">
 				{/* App mockup */}
 				<div className="overflow-hidden rounded-lg border border-subtle/60">
