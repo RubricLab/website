@@ -2,13 +2,13 @@ import { AUTHORS, CATEGORIES } from '~/lib/constants/blog'
 import { OpenclawSystemFigure } from '~/ui/blog/openclaw-backend'
 
 export const metadata = {
-  title: "OpenClaw is your new backend.",
-  subtitle: "Or, why every production server deserves a coding agent.",
+  title: "OpenClaw is your new backend",
+  subtitle: "Or, why every production server deserves a coding agent",
   date: "2026-04-30",
   isNew: true,
   author: AUTHORS.TED_SPARE,
   category: CATEGORIES.EXPERIMENT,
-  description: "Everything with a CPU deserves an OpenClaw to manage it.",
+  description: "Everything with a CPU deserves an OpenClaw to manage it",
   bannerImageUrl: "/images/manager.png",
 }
 
@@ -16,9 +16,9 @@ export const metadata = {
 
 We recently ran an in-person experiment. We wanted to give non-technical people the chance to try [OpenClaw](https://openclaw.ai) (or, technically, a fork thereof, but we’ll use the term OpenClaw for simplicity).
 
-To make onboarding as frictionless as possible, users only had to text a number: 8677-RUBRIC.
+To make onboarding as frictionless as possible, users only had to text a number: [8677-RUBRIC](sms:+18677782742?body=hi!).
 
-![Text us (or scan a QR code) to get an OpenClaw.](/images/qr.png "Text us (or scan a QR code) to get an OpenClaw.")
+![Text us (or scan a QR code) to get an OpenClaw.](/images/qr.jpeg "Text us (or scan a QR code) to get an OpenClaw.")
 
 Over a series of texts, the agent would guide them through picking a username, setting some goals, and deploying a site on their unique subdomain.
 
@@ -57,9 +57,9 @@ These last few require a few more steps, which we'll return to.
 
 New technologies enable new form factors. Pioneers of the web [think](https://www.latent.space/p/pmarca?selection=0b21cbcc-1fd1-41b7-a76a-388c7cde642e) "it’s almost inevitable that this is the way people are gonna use computers". We think OpenClaw is exciting because it gets several UX assumptions deeply right:
 
-1. **A computer terminal is the ultimate tool.** From the shell, an agent can do just about anything on the internet, like write code to [order coffee](https://www.terminal.shop/) then Slack you with the delivery time.
-2. **Being always-on is critical.** Using a computer is useful, but being able to save files and run long-running code supports use cases like serving a web app, setting reminders, or tracking a price.
-3. **A chat client is all you need.** This doesn’t have to be a fancy iOS app. Slack, iMessage, Discord, a CLI - anything works so long as it supports, at a minimum, text in and out. For longer-running work sprints, the chat client becomes especially useful as a surface for notifications. More on this later.
+1. **A computer terminal is the everything tool.** From the shell, an agent can do just about anything on the internet, like write code to [order coffee](https://www.terminal.shop) then Slack you with the delivery time.
+2. **A chat client is all you need.** This doesn’t have to be a fancy iOS app. Slack, SMS, Discord, a CLI - anything works so long as it supports (at a minimum) text in and notifications out. The medium does influence the messaging; for instance, we found SMS lent itself to short, simple requests.
+3. **Being always-on is a must.** Using a computer is useful, but being able to save files and run long-running code supports use cases like serving a web app, setting reminders, or tracking a price.
 
 We can push the standard OpenClaw setup further by considering the system more as an admin dashboard than as a personal assistant, and then by giving it access to a few _rare digital goods_:
 
@@ -69,15 +69,7 @@ We can push the standard OpenClaw setup further by considering the system more a
 
 These are the OpenClaw’s passport to the internet.
 
-Once [unblocked](https://rubriclabs.com/blog/unblocking-agents), one more interesting [primitive](https://rubriclabs.com/blog/primitives-over-pipelines) emerges: the agent can migrate its own tech extremely flexibly, e.g. from OpenClaw to Hermes Agent, from a closed-source to an open-source LLM, from Python to Rust, or from a VM in Singapore to the Raspberry Pi in your palm.
-
-In our in-person experiment, the underlying agent went from OpenClaw to [Hermes Agent](https://hermes-agent.nousresearch.com/) to a custom, lightweight harness. Since the [agent is increasingly its memories](https://x.com/hwchase17/status/2042978500567609738?s=20), little changed for users.
-
-## Messaging is the medium
-
-Some things are harder to migrate. We found that the chosen medium of SMS lends itself to simple, casual requests, which ran counter to our goal of getting people deploying sites within minutes. More on this in a future post.
-
-That said, we think a great number of systems would benefit from a superhuman coding agent patching bugs, making improvements, and supporting new or unforeseen use cases.
+Once [unblocked](https://rubriclabs.com/blog/unblocking-agents), the agent can also migrate its own tech extremely flexibly, e.g. from Python to Rust, from a closed-source to an open-source LLM, or from a VM in Singapore to the Raspberry Pi in your palm. In our in-person experiment, the underlying agent went from OpenClaw to [Hermes Agent](https://hermes-agent.nousresearch.com) to a custom, lightweight harness. Since the [agent is increasingly its memories](https://x.com/hwchase17/status/2042978500567609738), little changed for users.
 
 If you’re an OpenClaw user (or OpenClaw instance...) and want to try deploying OpenClaws for your non-technical friends and family, here’s the key idea as an [agent skill](https://agentskills.io/home):
 
@@ -120,8 +112,14 @@ Single VPS, ~20 LOC of TS per concern: an HTTP server handling chat-client webho
 It aligns who-pays with who-controls — the operator pays for inference and owns the key, the tenant owns their prompt, tools, and files and lives entirely inside their VM. That gives the tenant maximum privacy in their box while keeping the operator's mistakes (and the tenant's) recoverable from outside it.
 ```
 
-There are big problems to solve to make such an experience production-grade, which is something we do at Rubric.
+## For every server, an agent
+
+[Coding agents](https://rubriclabs.com/blog/how-does-claude-code-actually-work) have [matured](https://epoch.ai/benchmarks?view=graph&tab=benchmarks&benchmark-selection=%7ESWE-Bench+verified%7Eterminalbench) to a point where they can routinely build working software. This unlocks a fundamentally new way to interface with computers, of which OpenClaw is one example.
+
+There are still serious security and UX challenges to making this type of app production-grade, but to skip the opportunity would be a loss for non-technical users.
+
+Text the system. Get software. Swap parts. Test and repeat.
 
 ## Acknowledgments
 
-We'd like to share a special thank you with [Jihad Esmail](https://x.com/jaesmail) and [Max Musing](https://x.com/MaxMusing) for their thoughtful feedback.
+Thank you to [Jihad Esmail](https://x.com/jaesmail), [Max Musing](https://x.com/MaxMusing), and [Justin Bellavance](https://www.justinbellavance.com) for their thoughtful input.
