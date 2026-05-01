@@ -13,7 +13,7 @@ const HOOK_BY_CATEGORY: Record<Category, string> = {
 	[CATEGORIES.BREAKDOWN]: "Want help implementing this in production? Let's talk",
 	[CATEGORIES.CASE_STUDY]: "Want outcomes like this in your product? Let's talk.",
 	[CATEGORIES.ESSAY]: "If this perspective matches what you're seeing, let's talk.",
-	[CATEGORIES.EXPERIMENT]: "Curious if this works for your company? Let's talk."
+	[CATEGORIES.EXPERIMENT]: "If this sparked an idea for your roadmap, let's talk."
 }
 
 export const CTA = ({ category }: { category?: Category }) => {

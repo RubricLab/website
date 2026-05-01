@@ -97,14 +97,14 @@ export const Footer = ({ className }: { className?: string }) => {
 						</div>
 					</div>
 				</div>
-				<div className="font-mono text-secondary">
+				<div className="text-secondary">
 					<Copiable
 						message="Website link copied"
 						variant="link"
 						content="https://rubriclabs.com"
-						className="group relative"
+						className="group relative gap-1"
 					>
-						© Rubric Labs Inc.{' '}
+						<span>© Rubric Labs Inc.</span>
 						<span className="opacity-0 transition-opacity delay-500 duration-1000 group-hover:opacity-100">
 							2049
 						</span>
