@@ -31,8 +31,8 @@ const Hero = () => {
 						We&apos;re an applied AI Lab helping companies build intelligent applications.
 					</h2>
 					<Video
-						hlsUrl="https://d2os0zhpsj02b0.cloudfront.net/hero/hls/master.m3u8"
-						mp4Url="https://d2os0zhpsj02b0.cloudfront.net/hero/preview.mp4"
+						hlsUrl="https://dhjl62jibmekr.cloudfront.net/hero/hls/master.m3u8"
+						mp4Url="https://dhjl62jibmekr.cloudfront.net/hero/preview.mp4"
 						posterUrl="/images/video-thumbnail.jpg"
 						transcriptionUrl="/transcripts/hero.vtt"
 					/>

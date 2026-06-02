@@ -12,7 +12,7 @@ export const CopiableHeading = ({
 	as: Component = 'h2',
 	id: idProp,
 	...props
-}: { children: React.ReactNode; as?: HeadingLevel } & React.HTMLAttributes<HTMLHeadingElement>) => {
+}: { children?: React.ReactNode; as?: HeadingLevel } & React.HTMLAttributes<HTMLHeadingElement>) => {
 	const fallbackId = children?.toString().toLowerCase().replaceAll(' ', '-')
 	const id = idProp ?? fallbackId
 

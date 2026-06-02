@@ -1,12 +1,12 @@
 'use client'
 
-import { useRef } from 'react'
+import { type ComponentPropsWithoutRef, useRef } from 'react'
 import { useClipboard } from '~/lib/hooks/use-clipboard'
 import { Button } from './button'
 import { Checkmark } from './icons/checkmark'
 import { Copy } from './icons/copy'
 
-export const CodeBlock = ({ children, ...props }: { children: React.ReactElement }) => {
+export const CodeBlock = ({ children, ...props }: ComponentPropsWithoutRef<'pre'>) => {
 	const { copied, handleCopy } = useClipboard()
 	const preRef = useRef<HTMLPreElement>(null)
 
