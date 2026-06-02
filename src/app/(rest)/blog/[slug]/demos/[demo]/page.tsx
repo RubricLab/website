@@ -9,7 +9,7 @@ import {
 } from '~/ui/blog/iterative-improvement/demos'
 
 // Only the iterative-self-improvement post has live demo pages.
-const DEMO_SLUG = 'iterative-self-improvement'
+const DEMO_SLUG = 'iterative-improvement'
 
 const DEMOS = {
 	dashboard: { Section: DashboardDemoSection, title: 'The filterable dashboard' },

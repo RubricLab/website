@@ -1,5 +1,3 @@
-// DO NOT DELETE; TED is WORKING ON THIS LIVE
-
 import { AUTHORS, CATEGORIES } from '~/lib/constants/blog'
 import { PerfIterationFigure } from '~/ui/blog/iterative-improvement'
 
@@ -26,7 +24,7 @@ To this end, we stumbled on a pattern unique to agent harnesses with all of:
 - Computer-use ability
 - Sub-agent support
 
-which is true of most leading-edge systems today. We tested it with Pi.
+which is true of most leading-edge systems today. We tested it with [Pi](https://pi.dev).
 
 In a [previous post](https://rubriclabs.com/blog/contract-engineering), we wrote about how [coding agents](https://rubriclabs.com/blog/how-does-claude-code-actually-work) have passed a threshold where, given complete requirements, they can generally one-shot a good result. This collapses a huge class of problems and leaves a more interesting class of new ones. For instance, a senior engineer might know to specify that a filterable React table should be memoized, but the average person does not.
 
@@ -84,11 +82,17 @@ And here is the result of three rounds of iteration on the top-level prompt “b
 
 The one-shot result is likely familiar to you as an all-too-common design language in 2026, characteristic of vibecoding. The third iteration is better (if not intriguing): clear visual hierarchy, good colour contrast, and better narrative arc.
 
-See the live results [here](/blog/iterative-self-improvement/demos/landing).
+See the live results [here](/blog/iterative-improvement/demos/landing).
 
-In the next example, we sought to replicate a key skill in backend development: performance optimization.
+In the next example, we explore a more quantifiable pursuit: performance optimization.
 
 ## Example 2: React Component Performance
+
+In this example, we ask the coding agent to build a simple table with search, sorting, and column-summing. We render it with 10 000 (fictional) transactions and measure how long it takes to load, and then we automatically enter a search query and measure how long it takes to filter results.
+
+The naive solution (with data recomputed on every keystroke) is extremely slow. At your own risk, you can try it out [here](/blog/iterative-improvement/demos/dashboard).
+
+Before iterating, the agent is instructed to lock off behaviour by writing a suite of unit tests. Tests must continue to pass for an iteration to be accepted.
 
 ```md
 # Iterate on performance
@@ -100,12 +104,24 @@ In the next example, we sought to replicate a key skill in backend development: 
 4. Stop when you hit the target or gains flatten. Log before/after numbers each pass.
 ```
 
+After two iterations, the model thinks to memoize computed data, debounce the search input, and virtualize the table (render only visible rows plus a small buffer). Here, the improvement is drastic.
+
 <Figure id="perf-iterations">
   <PerfIterationFigure />
-  <Figure.Caption>Original prompt: <em>“build a React transactions dashboard that lists 10,000 transactions with a search filter, sortable columns, and a running summary of totals.”</em></Figure.Caption>
+  <Figure.Caption>Original prompt: <em>“build a React transactions dashboard that lists 10 000 transactions with a search filter, sortable columns, and a running summary of totals.”</em></Figure.Caption>
 </Figure>
 
+In a third and final example, we seek to merge the previous two via a wider-reaching task: building a product walkthrough.
+
 ## Example 3: Product Onboarding Flow
+
+To improve an onboarding flow requires all of
+
+1. a working model of the product being shown,
+2. clicking through the flow, taking screenshots or screen recordings, and
+3. comparing the flow against the product.
+
+This is obviously quite complex and open-ended so we did not expect the agent to do well. Results were surprising.
 
 <Figure id="onboarding-iterations">
   <div className="grid grid-cols-3 gap-2 w-full">
@@ -113,10 +129,16 @@ In the next example, we sought to replicate a key skill in backend development: 
     <img src="/images/iterative-improvement/onboarding-1.gif" alt="Onboarding walkthrough iteration 1" className="rounded-lg border border-subtle/60" />
     <img src="/images/iterative-improvement/onboarding-2.gif" alt="Onboarding walkthrough iteration 2 — smooth" className="rounded-lg border border-subtle/60" />
   </div>
-  <Figure.Caption>Original prompt: <em>“scaffold a multi-step onboarding flow for Cadence — create an account, set up a team, pick some habits, and connect a tool.”</em> Three automated walkthroughs: the flow gains a progress indicator, inline validation, sensible defaults, and skippable steps as the agent removes the friction it kept hitting.</Figure.Caption>
+  <Figure.Caption>Original prompt: <em>“scaffold a multi-step onboarding flow for Cadence — create an account, set up a team, pick some habits, and connect a tool.”</em></Figure.Caption>
 </Figure>
 
-Click through the three onboarding flows [here](/blog/iterative-self-improvement/demos/onboarding).
+The onboarding flow gains a progress indicator, inline validation, sensible defaults, and skippable steps as the agent removes the friction it kept hitting.
+
+You can test the onboarding flows [here](/blog/iterative-improvement/demos/onboarding).
+
+## Putting it all together
+
+Below is a combined skill which attempts to capture the best of each of the above exercises.
 
 ```md
 ---
@@ -154,3 +176,5 @@ Re-capture the same evidence at the same settings.
 Stop when you meet the bar, run out of budget (cap the passes), or gains flatten.
 Keep a short changelog: what was wrong, what you changed, before → after.
 ```
+
+We are confident it can be improved.
