@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cadence — Habit tracking for teams</title>
+<style>
+  :root {
+    --ink: #15121d;
+    --muted: #6b6878;
+    --line: #ece9f1;
+    --accent: #6d28d9;
+    --accent-2: #8b5cf6;
+    --accent-soft: #f3effd;
+    --bg: #ffffff;
+    --soft: #faf9fc;
+    --green: #16a34a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: var(--ink); background: var(--bg); line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { text-decoration: none; }
+
+  nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 20px; border-bottom: 1px solid var(--line);
+    position: sticky; top: 0; background: rgba(255,255,255,0.88); backdrop-filter: blur(10px); z-index: 5;
+  }
+  .brand { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 18px; letter-spacing: -0.01em; }
+  .brand .dot { width: 22px; height: 22px; border-radius: 7px; background: linear-gradient(135deg, var(--accent-2), var(--accent)); }
+  .nav-btn { font-size: 13px; font-weight: 600; color: white; background: var(--accent); padding: 8px 14px; border-radius: 9px; }
+
+  /* HERO with subtle backdrop */
+  .hero {
+    position: relative; padding: 38px 20px 30px; overflow: hidden;
+    background:
+      radial-gradient(120% 60% at 80% -8%, rgba(139,92,246,0.16), rgba(139,92,246,0) 60%),
+      radial-gradient(90% 50% at -10% 0%, rgba(109,40,217,0.10), rgba(109,40,217,0) 55%);
+  }
+  .pill {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: white; border: 1px solid var(--line); color: var(--accent);
+    font-size: 12px; font-weight: 600; padding: 5px 11px 5px 9px; border-radius: 999px; margin-bottom: 18px;
+    box-shadow: 0 2px 8px -4px rgba(109,40,217,0.3);
+  }
+  .pill .ld { width: 7px; height: 7px; border-radius: 50%; background: var(--accent-2); }
+  .hero h1 { font-size: 36px; line-height: 1.06; letter-spacing: -0.03em; font-weight: 800; margin-bottom: 14px; }
+  .hero .lede { font-size: 17px; color: var(--muted); margin-bottom: 24px; max-width: 32ch; }
+  .btn-primary {
+    display: block; width: 100%; color: white;
+    background: linear-gradient(180deg, var(--accent-2), var(--accent));
+    padding: 15px; border-radius: 13px; font-size: 16px; font-weight: 700;
+    text-align: center; box-shadow: 0 12px 24px -10px rgba(109,40,217,0.55);
+  }
+  .btn-sub { font-size: 13px; color: var(--muted); margin-top: 11px; text-align: center; }
+  .rating { display: flex; align-items: center; gap: 9px; margin-top: 20px; }
+  .stars { color: #f59e0b; font-size: 15px; letter-spacing: 1px; }
+  .rating span { font-size: 13px; color: var(--muted); }
+
+  .mock {
+    position: relative; margin-top: 26px; background: white; border: 1px solid var(--line);
+    border-radius: 20px; padding: 16px 16px 18px; box-shadow: 0 24px 50px -24px rgba(72,29,148,0.45);
+  }
+  .mock-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .mock-head .t { font-size: 14px; font-weight: 700; }
+  .mock-head .badge { font-size: 11px; font-weight: 700; color: var(--accent); background: var(--accent-soft); padding: 3px 8px; border-radius: 999px; }
+  .row { display: flex; align-items: center; gap: 11px; padding: 11px 0; border-top: 1px solid var(--line); }
+  .row:first-of-type { border-top: none; }
+  .check { width: 24px; height: 24px; border-radius: 8px; background: var(--green); display: flex; align-items: center; justify-content: center; flex: none; }
+  .check.off { background: #e7e5ec; }
+  .check svg { width: 14px; height: 14px; }
+  .row .label { font-size: 14px; font-weight: 600; flex: 1; }
+  .row .streak { font-size: 12px; color: var(--muted); font-weight: 600; }
+  .row.next .label { color: var(--muted); }
+
+  /* METRICS STRIP */
+  .metrics { display: flex; padding: 22px 20px; border-bottom: 1px solid var(--line); }
+  .metric { flex: 1; text-align: center; }
+  .metric .v { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; }
+  .metric .k { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .metric + .metric { border-left: 1px solid var(--line); }
+
+  /* LOGOS */
+  .logos { padding: 24px 20px 4px; text-align: center; }
+  .logos p { font-size: 11px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; }
+  .logo-row { display: flex; justify-content: space-between; align-items: center; }
+  .logo-row span { font-size: 15px; font-weight: 800; color: #c6c3d0; letter-spacing: -0.02em; }
+
+  /* FEATURES */
+  .features { padding: 38px 20px; }
+  .features .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); margin-bottom: 7px; }
+  .features h2 { font-size: 26px; font-weight: 800; letter-spacing: -0.025em; margin-bottom: 22px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .card { background: var(--soft); border: 1px solid var(--line); border-radius: 16px; padding: 16px; }
+  .card .ico { width: 38px; height: 38px; border-radius: 11px; background: var(--accent-soft); display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
+  .card .ico svg { width: 19px; height: 19px; stroke: var(--accent); stroke-width: 1.9; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .card h3 { font-size: 15px; font-weight: 700; margin-bottom: 4px; letter-spacing: -0.01em; }
+  .card p { font-size: 13px; color: var(--muted); line-height: 1.45; }
+
+  /* TESTIMONIAL */
+  .quote-wrap { padding: 8px 20px 40px; }
+  .quote { background: var(--accent); color: white; border-radius: 20px; padding: 24px 22px; position: relative; overflow: hidden; }
+  .quote .mark { font-size: 64px; line-height: 0.6; font-weight: 800; opacity: 0.25; height: 28px; display: block; }
+  .quote blockquote { font-size: 18px; font-weight: 600; line-height: 1.42; letter-spacing: -0.01em; margin: 6px 0 18px; }
+  .who { display: flex; align-items: center; gap: 11px; }
+  .who .av { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg,#ddd6fe,#a78bfa); flex: none; }
+  .who .n { font-size: 14px; font-weight: 700; }
+  .who .r { font-size: 12px; opacity: 0.8; }
+
+  /* CLOSING */
+  .cta { padding: 6px 20px 40px; text-align: center; }
+  .cta h2 { font-size: 27px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.025em; }
+  .cta p { font-size: 15px; color: var(--muted); margin-bottom: 20px; }
+  .cta .btn-sub { margin-top: 11px; }
+
+  /* FOOTER */
+  footer { border-top: 1px solid var(--line); padding: 26px 20px 34px; }
+  .foot-top { display: flex; align-items: center; gap: 8px; font-weight: 700; margin-bottom: 14px; }
+  .foot-top .dot { width: 18px; height: 18px; border-radius: 6px; background: linear-gradient(135deg, var(--accent-2), var(--accent)); }
+  .foot-links { display: flex; gap: 18px; margin-bottom: 16px; }
+  .foot-links a { font-size: 13px; color: var(--muted); }
+  .foot-fine { font-size: 12px; color: #a8a5b3; }
+</style>
+</head>
+<body>
+  <nav>
+    <div class="brand"><span class="dot"></span> Cadence</div>
+    <a href="#" class="nav-btn">Start free</a>
+  </nav>
+
+  <header class="hero">
+    <span class="pill"><span class="ld"></span> New · Slack huddle reminders</span>
+    <h1>Build habits your whole team keeps.</h1>
+    <p class="lede">Cadence turns daily routines into shared streaks, so teams stay consistent — without the nagging.</p>
+    <a href="#" class="btn-primary">Start free trial</a>
+    <div class="btn-sub">Free for 14 days · No credit card required</div>
+
+    <div class="rating">
+      <span class="stars">★★★★★</span>
+      <span>4.9 / 5 · loved by 2,000+ teams</span>
+    </div>
+
+    <div class="mock">
+      <div class="mock-head"><span class="t">Design team · Today</span><span class="badge">4 of 5 done</span></div>
+      <div class="row">
+        <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span>
+        <span class="label">Daily standup</span><span class="streak">🔥 23</span>
+      </div>
+      <div class="row">
+        <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span>
+        <span class="label">Design review</span><span class="streak">🔥 12</span>
+      </div>
+      <div class="row">
+        <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span>
+        <span class="label">Inbox zero</span><span class="streak">🔥 8</span>
+      </div>
+      <div class="row next">
+        <span class="check off"></span>
+        <span class="label">Weekly retro</span><span class="streak">due 5:00pm</span>
+      </div>
+    </div>
+  </header>
+
+  <section class="metrics">
+    <div class="metric"><div class="v">92%</div><div class="k">habit completion</div></div>
+    <div class="metric"><div class="v">2,000+</div><div class="k">teams</div></div>
+    <div class="metric"><div class="v">4.9★</div><div class="k">avg rating</div></div>
+  </section>
+
+  <section class="logos">
+    <p>Trusted by teams at</p>
+    <div class="logo-row">
+      <span>Northwind</span><span>Loop</span><span>Vela</span><span>Onset</span>
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="eyebrow">Why Cadence</div>
+    <h2>Consistency, made shared.</h2>
+    <div class="grid">
+      <div class="card">
+        <div class="ico"><svg viewBox="0 0 24 24"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg></div>
+        <h3>Shared streaks</h3>
+        <p>See who's on track and keep momentum across the team.</p>
+      </div>
+      <div class="card">
+        <div class="ico"><svg viewBox="0 0 24 24"><path d="M12 3a6 6 0 00-6 6c0 4-2 5-2 5h16s-2-1-2-5a6 6 0 00-6-6z"/><path d="M10 19a2 2 0 004 0"/></svg></div>
+        <h3>Gentle nudges</h3>
+        <p>Adaptive reminders that fit each person's schedule.</p>
+      </div>
+      <div class="card">
+        <div class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 4v16"/></svg></div>
+        <h3>Weekly recaps</h3>
+        <p>Auto summaries show progress and where you're slipping.</p>
+      </div>
+      <div class="card">
+        <div class="ico"><svg viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="3"/><path d="M11 18h2"/></svg></div>
+        <h3>Works where you do</h3>
+        <p>Slack, calendar and mobile — log a habit in two taps.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="quote-wrap">
+    <div class="quote">
+      <span class="mark">&ldquo;</span>
+      <blockquote>Our standup attendance went from a coin flip to a 6-week streak. Cadence just made it stick.</blockquote>
+      <div class="who">
+        <span class="av"></span>
+        <div><div class="n">Maya Okonkwo</div><div class="r">Head of Ops, Loop</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <h2>Start your team's streak today.</h2>
+    <p>Set up your first habit in under two minutes.</p>
+    <a href="#" class="btn-primary">Start free trial</a>
+    <div class="btn-sub">Free for 14 days · No credit card required</div>
+  </section>
+
+  <footer>
+    <div class="foot-top"><span class="dot"></span> Cadence</div>
+    <div class="foot-links"><a href="#">Product</a><a href="#">Pricing</a><a href="#">Privacy</a><a href="#">Terms</a></div>
+    <div class="foot-fine">© 2026 Cadence Labs, Inc. All rights reserved.</div>
+  </footer>
+</body>
+</html>
