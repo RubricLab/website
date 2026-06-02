@@ -12,8 +12,9 @@ import { DemoSection } from './demo-row'
 // 10k-row dataset through a different implementation. Nothing heavy mounts until
 // the reader clicks "Run", and every column reports its own real, measured
 // mount + filter latency so the speedup is verifiable, not asserted.
-export const DashboardDemoSection = () => (
+export const DashboardDemoSection = ({ bare = false }: { bare?: boolean }) => (
 	<DemoSection
+		bare={bare}
 		blurb="Same 10k-row dataset in each column. Hit Run, then type in the filter and watch the measured latency — the naive version lags, the virtualized one stays instant."
 		columns={[
 			{ body: <DashboardColumn component={IterationZero} />, caption: 'naive', label: 'Iteration 0' },

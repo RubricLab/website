@@ -10,9 +10,10 @@ import { FlowV2 } from './onboarding/FlowV2'
 // multi-step flow with local state. Iteration 0 is deliberately frictional
 // (too many fields, dead-ends, no skip); iteration 2 is smooth. Each column
 // has a Restart control that remounts its flow so the reader can replay it.
-export const OnboardingDemoSection = () => {
+export const OnboardingDemoSection = ({ bare = false }: { bare?: boolean }) => {
 	return (
 		<DemoSection
+			bare={bare}
 			id="onboarding"
 			title="3 · The onboarding flow"
 			blurb="Click through each version. The early flow has friction the agent kept hitting; the final one is smooth."

@@ -3,9 +3,10 @@ import { DemoSection } from './demo-row'
 // Shows the three landing-page iterations side by side. Each iteration is the
 // exact self-contained HTML artifact, iframed at a mobile viewport so readers
 // see the real page and can scroll it.
-export const LandingDemoSection = () => {
+export const LandingDemoSection = ({ bare = false }: { bare?: boolean }) => {
 	return (
 		<DemoSection
+			bare={bare}
 			id="landing"
 			title="1 · The purple-hell landing page"
 			blurb="The one-shot baseline, a mid de-slop pass, and the final polished page. Scroll each frame."

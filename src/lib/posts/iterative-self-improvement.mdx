@@ -52,6 +52,8 @@ We pointed Claude Code at a deliberately lazy prompt — _"build a mobile landin
   <Figure.Caption>Left: the one-shot baseline. Middle: after the agent critiques contrast and hierarchy. Right: the final pass — restrained palette, real type scale, a clear CTA, and social proof.</Figure.Caption>
 </Figure>
 
+[Read all three landing pages live →](/blog/iterative-self-improvement/demos/landing)
+
 Just by screenshotting its own work and being asked "what looks bad?", the agent walked itself out of slop. But the loop was fragile. It would declare victory early, fixate on one detail, or "improve" something into a regression — because _"until it looks good"_ has no definition. The skill needs a rubric and a budget.
 
 ```md
@@ -80,6 +82,8 @@ The visual rubric is useless here. Performance work needs a _measurable objectiv
   <Figure.Caption>Real measurements across iterations. Each pass changed one thing, re-ran the benchmark, and kept the win only if the unit tests stayed green.</Figure.Caption>
 </Figure>
 
+[Type into all three dashboards live →](/blog/iterative-self-improvement/demos/dashboard) — same 10k-row dataset, real measured latency per version.
+
 The skill grows two requirements — a target you can measure, and a regression gate:
 
 ```md
@@ -106,6 +110,8 @@ So we had Claude Code scaffold a five-step onboarding for Cadence, then drive it
   </div>
   <Figure.Caption>Three automated walkthroughs. The flow gains a progress indicator, inline validation, sensible defaults, and skippable steps as the agent removes the friction it kept hitting.</Figure.Caption>
 </Figure>
+
+[Click through all three onboarding flows live →](/blog/iterative-self-improvement/demos/onboarding)
 
 The final lesson for the skill: when the artifact is interactive, the success metric is _"can the agent complete the task without confusion?"_ — so it has to exercise the feature end-to-end, not glance at it.
 
@@ -153,8 +159,6 @@ Keep a short changelog: what was wrong, what you changed, before → after.
 ## Closing
 
 None of the three runs needed a smarter model — they needed a model that looks at its own output before declaring done. A screenshot, a benchmark, a walkthrough: cheap mirrors that turn one-shot generation into something closer to craft. Drop the skill above next to a long-running agent and let it grade its own homework.
-
-Don't take our word for it — [compare all three iterations live](/blog/iterative-self-improvement/demos): read the landing pages, type into the dashboards to feel the speedup, and click through the onboarding flows yourself.
 
 ## Acknowledgments
 
