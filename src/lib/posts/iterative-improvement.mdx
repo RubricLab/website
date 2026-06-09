@@ -64,7 +64,7 @@ name: iterate-ui
 description: Build a UI, screenshot it, critique the screenshot, and improve it.
 ---
 
-# Iterate on UI
+# To iterate on UI
 
 1. Build the feature.
 2. Run the dev server and take a screenshot.
@@ -73,7 +73,7 @@ description: Build a UI, screenshot it, critique the screenshot, and improve it.
 5. Repeat until it looks good.
 ```
 
-You’ll notice it’s intentionally simple and UI-specific.
+You’ll notice it’s intentionally simple and UI-specific, but it steers clear of defining what's good.
 
 We will make it more general in the coming examples.
 
@@ -96,19 +96,21 @@ In the next example, we get quantitative.
 
 ### 2. Performance Optimization
 
-In this example, we have the coding agent build a simple table with sort and filter.
+In this example, we have the coding agent build an interactive table.
 
-The agent writes unit tests to lock the table’s behaviour. Tests must pass for a valid solution.
+We render it with 10 000 rows and measure how long it takes to load and filter.
 
-We render it with 10 000 transactions and measure how long it takes to load and filter.
+The agent's initial solution is slow and costly.
 
-Our meta-prompt is as follows:
+To improve it, we add the following to our meta-prompt. Note that this introduces some definition of what we consider "good". We will generalize it in the final example.
 
-```md
-# Iterate on performance
+```
+...
 
-1. Define the metric (e.g. p50 filter latency in ms) and write a benchmark that prints it.
-2. Write/keep a test suite that pins correct behavior. It must pass before and after every change.
+# To iterate on performance
+
+1. Define a metric (e.g. p50 filter latency in ms) and write a benchmark for it.
+2. Write a test suite that pins behavior. Ensure it passes.
 3. Each pass: form one hypothesis, change one thing, re-run tests + benchmark.
    Keep the change only if tests pass AND the metric improved. Otherwise revert.
 4. Stop when you hit the target or gains flatten. Log before/after numbers each pass.
@@ -127,37 +129,51 @@ Here, the improvement is drastic:
   <Figure.Caption>“build a React table that lists transactions with a search filter, sortable columns, and column sums"</Figure.Caption>
 </Figure>
 
-The agent's initial solution is slow and costly.
+With a benchmarking harness, the agent improved load speed by 13x and search performance by almost 100x.
 
-With a benchmarking harness, the agent improves load speed by 13x and search performance by almost 100x.
+You can try each iteration [here](/blog/iterative-improvement/demos/dashboard).
 
-In the next example, we task the agent with building a full-stack, product-level feature.
+In the next example, we task the agent with iterating on a full-stack, product-level feature.
 
 ### 3. Product Onboarding Flow
 
 To improve an onboarding flow requires all of
 
-1. a working model of the product being shown,
-2. clicking through the flow, taking screenshots or screen recordings, and
-3. comparing the flow against the product.
+1. a model of the underlying product,
+2. the ability to click through the flow and take screenshots, and
+3. the ability to judge (2) against (1).
 
-This is obviously quite complex and open-ended so we did not expect the agent to do well. Results were surprising.
+The agent's initial solution is dense and high-friction.
+
+Try stepping through each iteration below:
 
 <Figure id="onboarding-iterations">
   <OnboardingDemoSection bare />
-  <Figure.Caption>Original prompt: <em>“scaffold a multi-step onboarding flow for Cadence — create an account, set up a team, pick some habits, and connect a tool.”</em> Click through each version.</Figure.Caption>
+  <Figure.Caption>“scaffold an onboarding flow for Cadence - create an account, set up a team, and pick some habits"</Figure.Caption>
 </Figure>
 
-The onboarding flow gains a progress indicator, inline validation, sensible defaults, and skippable steps as the agent removes the friction it kept hitting.
+The agent added optimistic validation, sensible defaults, and made optional steps skippable. It also removed fields that can be completed later.
 
-## Putting it all together
+In general, these changes reduce friction.
 
-Below is a combined skill which attempts to capture the best of each of the above exercises.
+Friction was probably the correct metric to focus on.
+
+## A skill for all scenarios
+
+We want the agent to be able to improve any feature without an explicit rubric, which means identifying _which_ metrics to push forward.
+
+To do so, we generalize the meta-prompt to _whatever the agent thinks is highest-impact_.
+
+- Given a static page, polish the UI.
+- Given a pre-built component, make it fast.
+- Given a marketing feature, remove friction.
+
+Below is the combined skill:
 
 ```md
 ---
-name: iterate
-description: Improve your own work across iterations. After building anything, define how to judge it, measure the current state, fix the highest-impact problem, and re-measure — until it meets the bar or gains flatten.
+name: improve-feature
+description: Improve a feature across iterations. After building the feature, define how to judge it, measure the current state, fix the highest-impact problem, and re-measure until it meets the bar or gains flatten.
 when_to_use: After producing any artifact (a UI, a component, an API, a flow) where the first attempt is unlikely to be the best one.
 ---
 
@@ -191,4 +207,4 @@ Stop when you meet the bar, run out of budget (cap the passes), or gains flatten
 Keep a short changelog: what was wrong, what you changed, before → after.
 ```
 
-We are confident it can be improved - maybe even automatically.
+We are confident this skill can be improved - maybe even automatically.
