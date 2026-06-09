@@ -7,7 +7,7 @@ import { Chevron } from './icons/chevron'
 
 export const TableOfContents = ({
 	items,
-	defaultOpen = true
+	defaultOpen = false
 }: {
 	items: TocItem[]
 	defaultOpen?: boolean

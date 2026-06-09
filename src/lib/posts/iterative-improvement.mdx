@@ -12,8 +12,6 @@ export const metadata = {
   bannerImageUrl: "/images/iterative-improvement/banner.webp",
 }
 
-## Introduction
-
 Coding agents [can often one-shot complex features](https://rubriclabs.com/blog/contract-engineering) given sufficient specifications.
 
 Obviously, we cannot specify *every* requirement. Some are common-sense. Others only emerge after launch. Of those, many could have been foreseen by an expert.
@@ -52,7 +50,13 @@ In the same way, we can expect better results by pushing agents to iterate more.
 
 ### 1. SaaS Landing Page
 
-As a start, we (actually, Claude Code, in a meta way) wrote the following [SKILL.md](https://skill.md) to test the thesis. We started with the challenge of building a distinct landing page for a fictional SaaS:
+We start with a straightforward example: building a landing page for a software product.
+
+By default, coding agents tend to produce the familiar purple-gradient look.
+
+We want pages to be distinct.
+
+The meta-prompt we used is captured as a [SKILL.md](https://skill.md):
 
 ```md
 ---
@@ -69,7 +73,7 @@ description: Build a UI, screenshot it, critique the screenshot, and improve it.
 5. Repeat until it looks good.
 ```
 
-You’ll notice the prompt is very UI-specific, which is more an artifact of our upstream prompt than anything else, but it serves well as a high-water mark to gauge how well our prompt generalizes in the coming examples.
+You’ll notice it’s intentionally simple and UI-specific. We will see how well it generalizes in the coming examples.
 
 And here is the result of three rounds of iteration on the top-level prompt “build a mobile landing page for Cadence, a habit tracker for teams”:
 
@@ -167,4 +171,4 @@ Stop when you meet the bar, run out of budget (cap the passes), or gains flatten
 Keep a short changelog: what was wrong, what you changed, before → after.
 ```
 
-We are confident it can be improved.
+We are confident it can be improved - maybe even automatically.
