@@ -86,13 +86,15 @@ The one-shot result is likely familiar to you as an all-too-common design langua
 
 In the next example, we explore a more quantifiable pursuit: performance optimization.
 
-## Example 2: React Component Performance
+## Example 2: Performance Optimization
 
-In this example, we ask the coding agent to build a simple table with search, sorting, and column-summing. We render it with 10 000 (fictional) transactions and measure how long it takes to load, and then we automatically enter a search query and measure how long it takes to filter results.
+In this example, we have the coding agent build a simple table with sort and filter.
 
-The naive solution (with data recomputed on every keystroke) is extremely slow.
+The agent writes unit tests to lock the table’s behaviour. Tests must pass for a valid solution.
 
-Before iterating, the agent is instructed to lock off behaviour by writing a suite of unit tests. Tests must continue to pass for an iteration to be accepted.
+We render it with 10 000 transactions and measure how long it takes to load and filter.
+
+Our meta-prompt is as follows:
 
 ```md
 # Iterate on performance
@@ -104,7 +106,13 @@ Before iterating, the agent is instructed to lock off behaviour by writing a sui
 4. Stop when you hit the target or gains flatten. Log before/after numbers each pass.
 ```
 
-After two iterations, the model thinks to memoize computed data, debounce the search input, and virtualize the table (render only visible rows plus a small buffer). Here, the improvement is drastic.
+After two iterations, the model recalls common optimization techniques:
+
+- memoize computed data,
+- debounce the search input, and
+- virtualize the table (render only visible rows plus a small buffer).
+
+Here, the improvement is drastic.
 
 <Figure id="perf-iterations">
   <PerfIterationFigure />
