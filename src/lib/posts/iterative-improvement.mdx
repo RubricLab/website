@@ -104,7 +104,7 @@ The agent's initial solution is slow and costly.
 
 To improve it, we add the following to our meta-prompt. Note that this introduces some definition of what we consider "good". We will generalize it in the final example.
 
-```
+```md
 ...
 
 # To iterate on performance
@@ -183,11 +183,11 @@ The first version is a draft. Your job is the loop that follows.
 
 ## 1. Define the bar
 Before improving anything, write down how this artifact will be judged:
-- **Visual** → a 1–5 rubric (hierarchy, contrast, type scale, spacing, CTA clarity,
+- Visual → a 1–5 rubric (hierarchy, contrast, type scale, spacing, CTA clarity,
   trust signals, "does it look generic?"). Always screenshot at a fixed viewport.
-- **Performance** → one measurable metric (e.g. p50 latency in ms) plus a benchmark
+- Performance → one measurable metric (e.g. p50 latency in ms) plus a benchmark
   that prints it, and a test suite that pins correct behavior.
-- **Flow / interactive** → a concrete task to complete; success = the artifact can be
+- Flow / interactive → a concrete task to complete; success = the artifact can be
   used end-to-end without confusion. Drive it with browser/computer use, not a glance.
 
 ## 2. Measure the current state
