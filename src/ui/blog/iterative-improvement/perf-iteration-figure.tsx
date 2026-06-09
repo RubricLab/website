@@ -8,12 +8,22 @@ type Row = { label: string; mountMs: number; filterMs: number; note: string }
 const DATA: Row[] = [
 	{
 		filterMs: 299,
-		label: 'Iter 0 — naive',
+		label: 'Iteration 1 (one-shot)',
 		mountMs: 328,
-		note: 'all 10k rows mounted, derived data recomputed each keystroke'
+		note: 'data recomputed on each keystroke'
 	},
-	{ filterMs: 42, label: 'Iter 1', mountMs: 70, note: 'memoized derived data + debounced filter' },
-	{ filterMs: 3, label: 'Iter 2', mountMs: 25, note: 'windowed list — render only visible rows' }
+	{
+		filterMs: 42,
+		label: 'Iteration 2',
+		mountMs: 70,
+		note: 'memoized data + debounced filter'
+	},
+	{
+		filterMs: 3,
+		label: 'Iteration 3',
+		mountMs: 25,
+		note: 'virtualized list (only visible rows rendered)'
+	}
 ]
 
 const Bar = ({ value, max, color }: { value: number; max: number; color: string }) => (

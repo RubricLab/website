@@ -27,12 +27,11 @@ export const DemoSection = ({
 		// Break out of the prose column (max-w-2xl) so the three columns get room to
 		// breathe — up to the 5xl shell / banner width. The parent <figure> is a
 		// flex column with items-center, which keeps this wider grid centered.
-		<div className="grid w-[92vw] max-w-5xl grid-cols-1 gap-4 md:grid-cols-3">
+		<div className="grid w-[92vw] max-w-5xl grid-cols-1 gap-4 pt-4 pb-2 md:grid-cols-3">
 			{columns.map(col => (
 				<div key={col.label} className="flex flex-col gap-2">
 					<div className="flex items-baseline justify-between gap-2">
-						<span className="font-medium text-primary text-sm">{col.label}</span>
-						{col.caption ? <span className="text-[11px] text-secondary/70">{col.caption}</span> : null}
+						<span className="mx-auto font-medium text-primary text-sm">{col.label}</span>
 					</div>
 					{col.body}
 				</div>

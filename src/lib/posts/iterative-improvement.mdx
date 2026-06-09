@@ -2,13 +2,13 @@ import { AUTHORS, CATEGORIES } from '~/lib/constants/blog'
 import { LandingDemoSection, OnboardingDemoSection, PerfIterationFigure } from '~/ui/blog/iterative-improvement'
 
 export const metadata = {
-  title: "Adversarial Improvement of Code",
-  subtitle: "Automating polish through self-critique of code output",
-  date: "2026-06-01",
+  title: "Automated Self-Improvement",
+  subtitle: "Testing coding agents' ability to improve a feature automatically",
+  date: "2026-06-10",
   isNew: true,
   author: AUTHORS.TED_SPARE,
   category: CATEGORIES.EXPERIMENT,
-  description: "Automating polish through self-critique of code output",
+  description: "Testing coding agents' ability to improve a feature automatically",
   bannerImageUrl: "/images/iterative-improvement/banner.webp",
 }
 
@@ -18,7 +18,7 @@ Obviously, we cannot specify *every* requirement. Some are common-sense. Others 
 
 In this post, we ask whether a coding agent can ratchet itself to better results.
 
-### Method
+## Method
 
 Our core idea is quite simple:
 
@@ -44,15 +44,15 @@ Coding agents are [optimized against multiple metrics](https://arxiv.org/abs/260
 
 In 2022, [models started thinking before speaking](https://arxiv.org/abs/2201.11903). Math scores got [way better](https://openai.com/index/learning-to-reason-with-llms/).
 
-In the same way, we can expect better results by pushing agents to iterate more.
+In the same way, we can get better results by pushing agents to iterate more.
 
 ## Examples
 
 ### 1. SaaS Landing Page
 
-We start with a straightforward example: building a landing page for a software product.
+We start with a straightforward example: building a marketing page for a software product.
 
-By default, coding agents tend to produce the familiar purple-gradient look.
+By default, coding agents tend to produce the [familiar](https://x.com/wesbos/status/2062180597015990472) purple-gradient look.
 
 We want pages to be distinct.
 
@@ -73,20 +73,28 @@ description: Build a UI, screenshot it, critique the screenshot, and improve it.
 5. Repeat until it looks good.
 ```
 
-You’ll notice it’s intentionally simple and UI-specific. We will see how well it generalizes in the coming examples.
+You’ll notice it’s intentionally simple and UI-specific.
 
-And here is the result of three rounds of iteration on the top-level prompt “build a mobile landing page for Cadence, a habit tracker for teams”:
+We will make it more general in the coming examples.
+
+Here is the result of three rounds of iteration:
 
 <Figure id="ui-iterations">
   <LandingDemoSection bare />
-  <Figure.Caption>Original prompt: <em>“build a mobile landing page for Cadence, a habit tracker for teams.”</em> Scroll each frame — these are the real generated pages.</Figure.Caption>
+  <Figure.Caption>“build a mobile landing page for Cadence, a habit tracker for teams”</Figure.Caption>
 </Figure>
 
-The one-shot result is likely familiar to you as an all-too-common design language in 2026, characteristic of vibecoding. The third iteration is better (if not intriguing): clear visual hierarchy, good colour contrast, and better narrative arc.
+The one-shot result covers basic copy but lacks hierarchy or variety.
 
-In the next example, we explore a more quantifiable pursuit: performance optimization.
+The third iteration is scannable, with a clear H1. It leads with a representation of the product itself. It adds social trust as ratings, user logos, and testimonials. Its CTA nudges the user forward with a low time commitment and the option to back out.
 
-## Example 2: Performance Optimization
+The site feels more polished, even without an explicit rubric.
+
+We’ve successfully squeezed quality out of the agent.
+
+In the next example, we get quantitative.
+
+### 2. Performance Optimization
 
 In this example, we have the coding agent build a simple table with sort and filter.
 
@@ -112,16 +120,20 @@ After two iterations, the model recalls common optimization techniques:
 - debounce the search input, and
 - virtualize the table (render only visible rows plus a small buffer).
 
-Here, the improvement is drastic.
+Here, the improvement is drastic:
 
 <Figure id="perf-iterations">
   <PerfIterationFigure />
-  <Figure.Caption>Original prompt: <em>“build a React transactions dashboard that lists 10 000 transactions with a search filter, sortable columns, and a running summary of totals.”</em></Figure.Caption>
+  <Figure.Caption>“build a React table that lists transactions with a search filter, sortable columns, and column sums"</Figure.Caption>
 </Figure>
 
-In a third and final example, we seek to merge the previous two via a wider-reaching task: building a product walkthrough.
+The agent's initial solution is slow and costly.
 
-## Example 3: Product Onboarding Flow
+With a benchmarking harness, the agent improves load speed by 13x and search performance by almost 100x.
+
+In the next example, we task the agent with building a full-stack, product-level feature.
+
+### 3. Product Onboarding Flow
 
 To improve an onboarding flow requires all of
 

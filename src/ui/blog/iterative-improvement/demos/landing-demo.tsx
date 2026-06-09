@@ -19,7 +19,7 @@ export const LandingDemoSection = ({ bare = false }: { bare?: boolean }) => {
 						/>
 					),
 					caption: 'one-shot',
-					label: 'Iteration 0'
+					label: 'Iteration 1 (one-shot)'
 				},
 				{
 					body: (
