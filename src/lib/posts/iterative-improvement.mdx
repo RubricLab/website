@@ -1,0 +1,198 @@
+import { AUTHORS, CATEGORIES } from '~/lib/constants/blog'
+import { LandingDemoSection, OnboardingDemoSection, PerfIterationFigure } from '~/ui/blog/iterative-improvement'
+
+export const metadata = {
+  title: "Autonomous Iteration",
+  subtitle: "Testing coding agents' ability to improve a feature automatically",
+  date: "2026-06-10",
+  isNew: true,
+  author: AUTHORS.TED_SPARE,
+  category: CATEGORIES.EXPERIMENT,
+  description: "Testing coding agents' ability to improve a feature automatically",
+  bannerImageUrl: "/images/iterative-improvement/banner.webp",
+}
+
+A coding agent’s first draft is usually good, but it’s rarely the best it could be.
+
+People close that gap by hand: look at the work, notice what’s off, fix the worst thing, look again.
+
+We wanted to see if the agent could run that loop on its own, so we ran a series of experiments across UI, performance, and UX.
+
+## Method
+
+Our core idea is quite simple:
+
+1. a coding agent writes code,
+2. another agent critiques the output,
+3. the original agent addresses the feedback.
+
+We repeat until the critic is happy.
+
+Any coding agent will do, so long as it can use a computer, see screenshots, and deploy sub-agents.
+
+We used [Pi](https://pi.dev) for its simplicity.
+
+We’ll develop the prompt over the course of three examples, in order of increasing difficulty.
+
+## Examples
+
+### 1. SaaS Landing Page
+
+We start with a straightforward example: building a marketing page for a software product.
+
+By default, coding agents tend to produce the [familiar](https://x.com/wesbos/status/2062180597015990472) purple-gradient look.
+
+We want pages to be distinct.
+
+The meta-prompt we used is captured as a [SKILL.md](https://skill.md):
+
+```md
+---
+name: iterate-ui
+description: Build a UI, screenshot it, critique the screenshot, and improve it.
+---
+
+# To iterate on UI
+
+1. Build the feature.
+2. Run the dev server and take a screenshot.
+3. Look at the screenshot and list what looks bad.
+4. Fix the worst issues.
+5. Repeat until it looks good.
+```
+
+You’ll notice it’s intentionally simple and UI-specific, but it steers clear of defining what's good.
+
+We will make it more general in the coming examples.
+
+Here is the result of three rounds of iteration:
+
+<Figure id="ui-iterations">
+  <LandingDemoSection bare />
+  <Figure.Caption>“build a mobile landing page for Cadence, a habit tracker for teams”</Figure.Caption>
+</Figure>
+
+The one-shot result covers basic copy but lacks hierarchy or variety.
+
+The third iteration is scannable, with a clear H1. It leads with a representation of the product itself. It adds social trust as ratings, user logos, and testimonials. Its CTA nudges the user forward with a low time commitment and the option to back out.
+
+The site feels more polished, even without an explicit rubric.
+
+We’ve successfully squeezed quality out of the agent.
+
+In the next example, we get quantitative.
+
+### 2. Performance Optimization
+
+In this example, we have the coding agent build an interactive table.
+
+We render it with 10 000 rows and measure how long it takes to load and filter.
+
+The agent's initial solution is slow and costly.
+
+To improve it, we add the following to our meta-prompt. Note that this introduces some definition of what we consider "good". We will generalize it in the final example.
+
+```md
+...
+
+# To iterate on performance
+
+1. Define a metric (e.g. p50 filter latency in ms) and write a benchmark for it.
+2. Write a test suite that pins behavior. Ensure it passes.
+3. Each pass: form one hypothesis, change one thing, re-run tests + benchmark.
+   Keep the change only if tests pass AND the metric improved. Otherwise revert.
+4. Stop when you hit the target or gains flatten. Log before/after numbers each pass.
+```
+
+After two iterations, the model recalls common optimization techniques:
+
+- memoize computed data,
+- debounce the search input, and
+- virtualize the table (render only visible rows plus a small buffer).
+
+Here, the improvement is drastic:
+
+<Figure id="perf-iterations">
+  <PerfIterationFigure />
+  <Figure.Caption>“build a React table that lists transactions with a search filter, sortable columns, and column sums"</Figure.Caption>
+</Figure>
+
+With a benchmarking harness, the agent improved load speed by 13x and search performance by almost 100x.
+
+You can try each iteration [here](/blog/iterative-improvement/demos/dashboard).
+
+In the next example, we task the agent with iterating on a full-stack, product-level feature.
+
+### 3. Product Onboarding Flow
+
+To improve an onboarding flow requires all of
+
+1. a model of the underlying product,
+2. the ability to click through the flow and take screenshots, and
+3. the ability to judge (2) against (1).
+
+The agent's initial solution is dense and high-friction.
+
+Try stepping through each iteration below:
+
+<Figure id="onboarding-iterations">
+  <OnboardingDemoSection bare />
+  <Figure.Caption>“scaffold an onboarding flow for Cadence - create an account, set up a team, and pick some habits"</Figure.Caption>
+</Figure>
+
+The agent added optimistic validation, sensible defaults, and made optional steps skippable. It also removed fields that can be completed later.
+
+In general, these changes reduce friction.
+
+Friction was probably the correct metric to focus on.
+
+## A skill for all scenarios
+
+We want the agent to be able to improve any feature without an explicit rubric, which means identifying _which_ metrics to push forward.
+
+To do so, we generalize the meta-prompt to _whatever the agent thinks is highest-impact_.
+
+- Given a static page, polish the UI.
+- Given a pre-built component, make it fast.
+- Given a marketing feature, remove friction.
+
+Below is the combined skill:
+
+```md
+---
+name: improve-feature
+description: Improve a feature across iterations. After building the feature, define how to judge it, measure the current state, fix the highest-impact problem, and re-measure until it meets the bar or gains flatten.
+when_to_use: After producing any artifact (a UI, a component, an API, a flow) where the first attempt is unlikely to be the best one.
+---
+
+# Iterate
+
+The first version is a draft. Your job is the loop that follows.
+
+## 1. Define the bar
+Before improving anything, write down how this artifact will be judged:
+- Visual → a 1–5 rubric (hierarchy, contrast, type scale, spacing, CTA clarity,
+  trust signals, "does it look generic?"). Always screenshot at a fixed viewport.
+- Performance → one measurable metric (e.g. p50 latency in ms) plus a benchmark
+  that prints it, and a test suite that pins correct behavior.
+- Flow / interactive → a concrete task to complete; success = the artifact can be
+  used end-to-end without confusion. Drive it with browser/computer use, not a glance.
+
+## 2. Measure the current state
+Run it and capture evidence (screenshot, benchmark number, walkthrough recording).
+Write down the top problems, ranked by impact.
+
+## 3. Change one thing
+Fix only the highest-impact problem this pass. Don't refactor opportunistically.
+
+## 4. Re-measure and gate
+Re-capture the same evidence at the same settings.
+- Keep the change only if it improved the bar AND broke no guardrail (tests stay green).
+- Otherwise revert and try the next hypothesis.
+
+## 5. Stop deliberately
+Stop when you meet the bar, run out of budget (cap the passes), or gains flatten.
+Keep a short changelog: what was wrong, what you changed, before → after.
+```
+
+We are confident this skill can be improved - maybe even automatically.
