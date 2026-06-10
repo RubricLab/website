@@ -4,6 +4,7 @@ import { META } from '~/lib/constants/metadata'
 import { createMetadata } from '~/lib/utils/create-metadata'
 import {
 	DashboardDemoSection,
+	FpsCounter,
 	LandingDemoSection,
 	OnboardingDemoSection
 } from '~/ui/blog/iterative-improvement/demos'
@@ -45,10 +46,9 @@ export default async function Page({ params }: Props) {
 	const { Section } = entry
 
 	return (
-		<div className="min-h-screen w-full px-4 py-16">
-			<div className="mx-auto w-full max-w-6xl">
-				<Section bare />
-			</div>
+		<div className="flex min-h-screen w-full flex-col items-center justify-center px-4 py-16">
+			<Section bare />
+			{demo === 'dashboard' && <FpsCounter />}
 		</div>
 	)
 }
