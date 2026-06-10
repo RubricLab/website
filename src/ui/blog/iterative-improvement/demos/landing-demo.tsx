@@ -69,6 +69,10 @@ const SyncScrollProvider = ({ children }: { children: ReactNode }) => {
 }
 
 const syncFrom = (group: SyncGroup, win: Window) => {
+	// Below the md breakpoint the grid stacks (see DemoSection), so the frames
+	// aren't side by side and coupled scrolling just yanks off-screen frames
+	// around. Checked per scroll event so resizes are picked up.
+	if (!window.matchMedia('(min-width: 768px)').matches) return
 	if (group.source && group.source !== win) return
 	group.source = win
 	window.clearTimeout(group.timer)
