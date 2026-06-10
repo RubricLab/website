@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, type ReactNode, type SyntheticEvent, useContext, useRef } from 'react'
+import { createContext, type ReactNode, useContext, useRef } from 'react'
 import { DemoSection } from './demo-row'
 
 // Shows the three landing-page iterations side by side. Each iteration is the
@@ -91,13 +91,25 @@ const IterationFrame = ({ src, title }: { src: string; title: string }) => {
 	const group = useContext(SyncScrollContext)
 
 	// The artifacts are same-origin static HTML, so we can hook each frame's
-	// window directly once it loads. The listener dies with the iframe's
-	// window on unmount/navigation, so only registry cleanup is needed.
-	const handleLoad = (event: SyntheticEvent<HTMLIFrameElement>) => {
-		const win = event.currentTarget.contentWindow
-		if (!win || !group) return
-		group.windows.add(win)
-		win.addEventListener('scroll', () => syncFrom(group, win), { passive: true })
+	// window directly once it loads. Registration happens in a callback ref
+	// rather than onLoad: the frame often finishes loading before hydration,
+	// so a React onLoad handler would miss the event entirely. The scroll
+	// listener dies with the frame's window, so only registry cleanup is needed.
+	const attach = (el: HTMLIFrameElement | null) => {
+		if (!el || !group) return
+		const register = () => {
+			const win = el.contentWindow
+			// Ignore the initial about:blank document before the src loads.
+			if (!win || win.location.href === 'about:blank' || group.windows.has(win)) return
+			group.windows.add(win)
+			win.addEventListener('scroll', () => syncFrom(group, win), { passive: true })
+		}
+		if (el.contentDocument?.readyState === 'complete') register()
+		el.addEventListener('load', register)
+		return () => {
+			el.removeEventListener('load', register)
+			if (el.contentWindow) group.windows.delete(el.contentWindow)
+		}
 	}
 
 	return (
@@ -105,7 +117,7 @@ const IterationFrame = ({ src, title }: { src: string; title: string }) => {
 			src={src}
 			title={title}
 			loading="lazy"
-			onLoad={handleLoad}
+			ref={attach}
 			className="h-[560px] w-full rounded-lg border border-subtle bg-white"
 		/>
 	)
