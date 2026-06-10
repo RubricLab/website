@@ -2,9 +2,9 @@
 
 import { type ComponentType, memo, useMemo, useState } from 'react'
 import { getTransactions, type Transaction } from './dashboard/data'
-import IterationZero from './dashboard/iteration-0'
 import IterationOne from './dashboard/iteration-1'
 import IterationTwo from './dashboard/iteration-2'
+import IterationThree from './dashboard/iteration-3'
 import type { IterDashboardProps } from './dashboard/types'
 import { DemoSection } from './demo-row'
 
@@ -17,16 +17,16 @@ export const DashboardDemoSection = ({ bare = false }: { bare?: boolean }) => (
 		bare={bare}
 		blurb="Same 10k-row dataset in each column. Hit Run, then type in the filter and watch the measured latency — the naive version lags, the virtualized one stays instant."
 		columns={[
-			{ body: <DashboardColumn component={IterationZero} />, caption: 'naive', label: 'Iteration 0' },
-			{
-				body: <DashboardColumn component={IterationOne} />,
-				caption: 'memoized',
-				label: 'Iteration 1'
-			},
+			{ body: <DashboardColumn component={IterationOne} />, caption: 'naive', label: 'Iteration 1' },
 			{
 				body: <DashboardColumn component={IterationTwo} />,
-				caption: 'virtualized',
+				caption: 'memoized',
 				label: 'Iteration 2'
+			},
+			{
+				body: <DashboardColumn component={IterationThree} />,
+				caption: 'virtualized',
+				label: 'Iteration 3'
 			}
 		]}
 		id="dashboard"

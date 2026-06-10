@@ -20,7 +20,7 @@ export const LandingDemoSection = ({ bare = false }: { bare?: boolean }) => {
 						body: (
 							<IterationFrame
 								src="/iterative-improvement/landing/iter-0.html"
-								title="Landing page — iteration 0 (one-shot)"
+								title="Landing page — iteration 1 (one-shot)"
 							/>
 						),
 						caption: 'one-shot',

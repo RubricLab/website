@@ -1,9 +1,9 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { FilterInput, Row, StatBar, VIEWPORT_H } from './chrome'
 import {
-	computePercentilesFast,
+	computePercentilesNaive,
 	computeSummary,
 	filterTransactions,
 	sortTransactions
@@ -11,20 +11,21 @@ import {
 import type { IterDashboardProps } from './types'
 import { usePerfMeasure } from './use-perf'
 
-// ITERATION 1 — stop recomputing in render.
-//  - All derived data wrapped in useMemo with precise deps, so a re-render that
-//    doesn't change inputs reuses the previous result.
-//  - The whole-history percentile depends only on `data`, so it is computed
-//    ONCE instead of on every keystroke, and uses the O(n log n) algorithm.
-// (Still renders every matching row — addressed in iteration 2.)
+// ITERATION 1 — naive baseline. Perf sins (deliberate, do not "fix"):
+//  - All derived data (filter, sort, summary, percentiles) recomputed in the
+//    render body on EVERY keystroke, with no useMemo.
+//  - O(n^2) percentile computation over the FULL dataset every render.
+//  - Renders ALL matching rows into the DOM (no virtualization).
 export default function IterationOne({ data, mountStart, onMount, onFilter }: IterDashboardProps) {
 	const [query, setQuery] = useState('')
 
-	const filtered = useMemo(() => filterTransactions(data, query), [data, query])
-	const sorted = useMemo(() => sortTransactions(filtered, 'date', 'desc'), [filtered])
-	const summary = useMemo(() => computeSummary(sorted), [sorted])
-	// depends only on the dataset → computed once
-	const percentiles = useMemo(() => computePercentilesFast(data), [data])
+	// ---- expensive work, in render, every time ----
+	const filtered = filterTransactions(data, query)
+	const sorted = sortTransactions(filtered, 'date', 'desc')
+	const summary = computeSummary(sorted)
+	// percentile rank over the whole history, recomputed from scratch every
+	// keystroke. O(n^2).
+	const percentiles = computePercentilesNaive(data)
 
 	const markFilterStart = usePerfMeasure({ mountStart, onFilter, onMount, signature: query })
 

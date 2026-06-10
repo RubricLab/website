@@ -1,6 +1,6 @@
 // Filter / sort / summary / percentile logic shared by the dashboard iterations.
 // Ported from /tmp/iter-improve/demo2-perf/src/transactions.ts. The naive O(n^2)
-// percentile is kept deliberately so iteration 0 is genuinely slow.
+// percentile is kept deliberately so iteration 1 is genuinely slow.
 
 import type { Transaction } from './data'
 
