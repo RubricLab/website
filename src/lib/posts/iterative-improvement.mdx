@@ -2,7 +2,7 @@ import { AUTHORS, CATEGORIES } from '~/lib/constants/blog'
 import { LandingDemoSection, OnboardingDemoSection, PerfIterationFigure } from '~/ui/blog/iterative-improvement'
 
 export const metadata = {
-  title: "Automating Polish",
+  title: "Autonomous Iteration",
   subtitle: "Testing coding agents' ability to improve a feature automatically",
   date: "2026-06-10",
   isNew: true,
@@ -12,11 +12,11 @@ export const metadata = {
   bannerImageUrl: "/images/iterative-improvement/banner.webp",
 }
 
-Coding agents [can often one-shot complex features](https://rubriclabs.com/blog/contract-engineering) given sufficient specifications.
+A coding agent’s first draft is usually good, but it’s rarely the best it could be.
 
-Obviously, we cannot specify *every* requirement. Some are common-sense. Others only emerge after launch. Of those, many could have been foreseen by an expert.
+People close that gap by hand: look at the work, notice what’s off, fix the worst thing, look again.
 
-In this post, we ask whether a coding agent can self-correct toward better results.
+We wanted to see if the agent could run that loop on its own, so we ran a series of experiments across UI, performance, and UX.
 
 ## Method
 
@@ -33,18 +33,6 @@ Any coding agent will do, so long as it can use a computer, see screenshots, and
 We used [Pi](https://pi.dev) for its simplicity.
 
 We’ll develop the prompt over the course of three examples, in order of increasing difficulty.
-
-### Sanity Check
-
-Why haven’t the big labs done this?
-
-If there is juice to be squeezed by simply having LLMs critique their own outputs, why haven’t the big AI labs *trained* their models to do so?
-
-Coding agents are [optimized against multiple metrics](https://arxiv.org/abs/2605.25604) (like, maybe, Time to Accepted Code) which leads to solutions that balance multiple factors.
-
-In 2022, [models started thinking before speaking](https://arxiv.org/abs/2201.11903). Math scores got [way better](https://openai.com/index/learning-to-reason-with-llms/).
-
-In the same way, we can get better results by pushing agents to iterate more.
 
 ## Examples
 
