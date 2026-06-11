@@ -5,6 +5,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { useScrollDirection } from '~/lib/hooks/use-scroll-direction'
 import { useShortcut } from '~/lib/hooks/use-shortcut'
 import { cn } from '~/lib/utils/cn'
+import { BrandContextMenu } from '~/ui/brand-context-menu'
 
 const links = [
 	{ href: '/blog', label: 'Blog' },
@@ -37,12 +38,14 @@ export function Nav() {
 					scrollY > 0 ? 'bg-background' : ''
 				)}
 			>
-				<Link
-					href="/"
-					className={cn('whitespace-nowrap text-xl', { 'text-primary': pathname === '/' })}
-				>
-					Rubric Labs
-				</Link>
+				<BrandContextMenu>
+					<Link
+						href="/"
+						className={cn('whitespace-nowrap text-xl', { 'text-primary': pathname === '/' })}
+					>
+						Rubric Labs
+					</Link>
+				</BrandContextMenu>
 			</div>
 			<div
 				className={cn(

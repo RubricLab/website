@@ -23,6 +23,7 @@ const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
 		createEntry(`${base}/blog`, 'daily', 0.9, now),
 		createEntry(`${base}/work`, 'monthly', 0.8, now),
 		createEntry(`${base}/contact`, 'monthly', 0.7, now),
+		createEntry(`${base}/brand`, 'monthly', 0.5, now),
 		createEntry(`${base}/privacy`, 'yearly', 0.3, now)
 	]
 
