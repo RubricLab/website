@@ -46,7 +46,7 @@ const links = [
 		label: 'Work'
 	},
 	{
-		href: 'https://brand.rubriclabs.com',
+		href: '/brand',
 		label: 'Brand'
 	},
 	{
